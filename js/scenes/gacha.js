@@ -165,6 +165,7 @@ const GachaScene = {
         const currency = CONFIG.currencyName || 'Chikistrites';
         const rate = (typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160;
         const op = GachaRoster.BANNERS.onepiece;
+        const featuredStars = this.featuredStarsFor(op);
         const featuredLabel = op.featuredNote;
         const leftCopy = `${invocations} INV · ${chiki.toLocaleString('es-ES')} ${currency} · ${metaTickets} Metaphor`;
         const startArt = `${op.banner || op.art}?v=${this.CACHE}`;
@@ -317,7 +318,7 @@ const GachaScene = {
                         <div>
                             <div class="gw-rate-row">
                                 <span>Destacado</span>
-                                <span class="gw-stars-row">★★★★★</span>
+                                <span class="gw-stars-row">${'★'.repeat(featuredStars)}</span>
                             </div>
                             <p class="gw-rate-note" id="gw-featured-label">${featuredLabel}</p>
                             <p class="gw-left-note" id="gacha-left">${leftCopy}</p>
@@ -332,9 +333,9 @@ const GachaScene = {
                         <span class="gw-reward-q">?</span>
                     </div>
                     <div class="gw-reward-banner">
-                        <span class="gw-reward-k"><span aria-hidden="true">✦</span> Destacado 5★</span>
+                        <span class="gw-reward-k"><span aria-hidden="true">✦</span> Destacado ${featuredStars}★</span>
                         <strong class="gw-reward-v" id="hl-pulls">${op.featured}</strong>
-                        <span class="gw-stars-row gw-reward-stars">★★★★★</span>
+                        <span class="gw-stars-row gw-reward-stars">${'★'.repeat(featuredStars)}</span>
                     </div>
                     <div class="gw-cost-pill gw-reward-chip" id="gw-cost-chip" title="${currency}">
                         <div class="gw-currency-gem sm" aria-hidden="true"></div>
@@ -439,6 +440,17 @@ const GachaScene = {
         }[rarity] || '★★★';
     },
 
+    featuredStarsFor(b) {
+        if (!b) return 5;
+        if (b.isMetaphor) return 7;
+        if (b.featuredStars) return b.featuredStars;
+        if (b.featuredId && typeof GachaRoster !== 'undefined' && GachaRoster.bannerStars) {
+            const stars = GachaRoster.bannerStars(b.featuredId);
+            if (stars.length) return Math.max(...stars);
+        }
+        return 5;
+    },
+
     pityHintText(b, st) {
         if (!b || !st) return '';
         if (b.isMetaphor) {
@@ -499,7 +511,7 @@ const GachaScene = {
         }
         if (r.kind === 'star_seal' || r.starSeals) {
             const amount = r.starSeals || 1;
-            return { kind: 'currency', label: `+${amount} SELLO ESTELAR · TIENDA DE DUPES` };
+            return { kind: 'currency', label: `+${amount} SELLO ${r.stars || 4}★ · TIENDA DE DUPES` };
         }
         if (r.kind === 'inv_refund' || r.refundInv) {
             const amount = r.refundInv || 1;
@@ -1203,6 +1215,10 @@ const GachaScene = {
         set('.gw-sub', null, b.subtitle);
         set('#gw-featured-label', null, b.featuredNote);
         set('#hl-pulls', null, b.featured);
+        const featuredStars = this.featuredStarsFor(b);
+        set('.gw-rate-row .gw-stars-row', null, '★'.repeat(featuredStars));
+        set('.gw-reward-k', '<span aria-hidden="true">✦</span> Destacado ' + featuredStars + '★');
+        set('.gw-reward-stars', null, '★'.repeat(featuredStars));
         const rewardSil = el.querySelector('.gw-reward-sil');
         if (rewardSil) {
             const thumbUrl = `${b.thumb}?v=${this.CACHE}`;
@@ -1269,7 +1285,7 @@ const GachaScene = {
             return `assets/gacha/${sealAsset}?v=${this.CACHE}`;
         }
         if (r.kind === 'equipment' && r.equipmentId && typeof EquipmentSystem !== 'undefined') {
-            return `${EquipmentSystem.get(r.equipmentId)?.icon || 'assets/equipment/reliquia.svg'}?v=${this.CACHE}`;
+            return `${EquipmentSystem.artFor(r.equipmentId)}?v=${this.CACHE}`;
         }
         if (r.metaphor || r.kind === 'legendary') {
             return this.BANNER_STATIC;
@@ -1303,6 +1319,7 @@ const GachaScene = {
         const rows = (typeof GachaRates !== 'undefined' && GachaRates.rateRows)
             ? GachaRates.rateRows(b)
             : [];
+        const featuredStars = this.featuredStarsFor(b);
         return `
             <div class="gw-rate-table" role="table" aria-label="Probabilidades">
                 ${rows.map(r => `
@@ -1315,8 +1332,8 @@ const GachaScene = {
                 `).join('')}
             </div>
             <p class="gw-rate-5050">${b.featured5050
-                ? `Destacado ${(Math.round((b.featuredRate ?? 0.7) * 100))}% en 5★ (si pierdes, el siguiente es garantía).`
-                : 'Destacado garantizado en 5★.'}</p>`;
+                ? `Destacado ${(Math.round((b.featuredRate ?? 0.7) * 100))}% en ${featuredStars}★ (si pierdes, el siguiente es garantía).`
+                : `Destacado garantizado en ${featuredStars}★.`}</p>`;
     },
 
     poolGridHTML(items, stars, emptyNote) {

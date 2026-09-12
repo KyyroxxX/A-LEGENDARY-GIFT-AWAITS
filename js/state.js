@@ -43,6 +43,7 @@ const GameState = {
             metaphorTickets: 0,
             metaphorTicketsEarned: 0,
             starSeals: 0,
+            starSeals4: 0,
             starSeals5: 0,
             starSeals6: 0,
             huntRunsCompleted: 0,
@@ -94,6 +95,7 @@ const GameState = {
                 if (this._state.metaphorTickets == null) this._state.metaphorTickets = 0;
                 if (this._state.metaphorTicketsEarned == null) this._state.metaphorTicketsEarned = 0;
                 if (this._state.starSeals == null) this._state.starSeals = 0;
+                if (this._state.starSeals4 == null) this._state.starSeals4 = 0;
                 if (this._state.starSeals5 == null) this._state.starSeals5 = 0;
                 if (this._state.starSeals6 == null) this._state.starSeals6 = 0;
                 if (!this._state.locationsUnlocked) {
@@ -262,7 +264,7 @@ const GameState = {
     addStarSeal(n = 1, stars = 4) {
         const add = Math.max(0, n | 0);
         const current = this.get('starSeals') || 0;
-        const tierKey = Number(stars) >= 6 ? 'starSeals6' : Number(stars) >= 5 ? 'starSeals5' : null;
+        const tierKey = Number(stars) >= 6 ? 'starSeals6' : Number(stars) >= 5 ? 'starSeals5' : 'starSeals4';
         const update = { starSeals: current + add };
         if (tierKey) update[tierKey] = (this.get(tierKey) || 0) + add;
         this.update(update);
@@ -272,12 +274,26 @@ const GameState = {
     useStarSeal(n = 1, stars = 4) {
         const need = Math.max(1, n | 0);
         const current = this.get('starSeals') || 0;
-        const tierKey = Number(stars) >= 6 ? 'starSeals6' : Number(stars) >= 5 ? 'starSeals5' : null;
+        const tierKey = Number(stars) >= 6 ? 'starSeals6' : Number(stars) >= 5 ? 'starSeals5' : 'starSeals4';
         const tierCurrent = tierKey ? (this.get(tierKey) || 0) : current;
         if (current < need || tierCurrent < need) return false;
         const update = { starSeals: current - need };
         if (tierKey) update[tierKey] = tierCurrent - need;
         this.update(update);
+        return true;
+    },
+
+    convertStarSeals(fromStars, toStars, cost) {
+        const fromKey = `starSeals${Number(fromStars)}`;
+        const toKey = `starSeals${Number(toStars)}`;
+        const need = Math.max(1, Number(cost) || 1);
+        const available = this.get(fromKey) || 0;
+        if (available < need || Number(toStars) <= Number(fromStars)) return false;
+        this.update({
+            [fromKey]: available - need,
+            [toKey]: (this.get(toKey) || 0) + 1,
+            starSeals: Math.max(0, (this.get('starSeals') || 0) - need + 1)
+        });
         return true;
     },
 

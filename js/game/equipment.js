@@ -61,7 +61,11 @@ const EquipmentSystem = {
     },
     idForName(name) { return this.ALIASES[name] || Object.keys(this.ITEMS).find(id => this.ITEMS[id].name === name) || null; },
     get(id) { return this.ITEMS[id] || null; },
-    artForName(name) { return this.get(this.idForName(name))?.icon || 'assets/equipment/fragmento-sombrero.svg'; },
+    artFor(item) {
+        const entry = typeof item === 'string' ? this.get(item) : item;
+        return entry?.photo || entry?.icon || 'assets/equipment/fragmento-sombrero.svg';
+    },
+    artForName(name) { return this.artFor(this.get(this.idForName(name))); },
     owned(id) { return Number(this.ensure().inv[id] || 0); },
     add(id, amount = 1) {
         if (!this.ITEMS[id]) return 0;
@@ -107,7 +111,7 @@ const EquipmentSystem = {
         const chars = typeof GachaRoster !== 'undefined' ? GachaRoster.ownedTemplates() : [];
         const modal = document.createElement('div');
         modal.className = 'equipment-modal';
-        modal.innerHTML = `<div class="equipment-panel"><button class="equipment-close" type="button">×</button><p class="equipment-kicker">ARSENAL DE CAMPAÑA</p><h2>EQUIPAMIENTO</h2><p class="equipment-intro">Elige un personaje y asígnale un objeto 3★. Solo puede activarlo una vez por combate.</p><div class="equipment-layout"><aside class="equipment-chars">${chars.map((c, i) => `<button class="equipment-char ${i === 0 ? 'is-active' : ''}" data-char="${c.id}" type="button"><span style="background-image:url('${c.img || `assets/sprites/anim/${c.id}_idle.png`}')"></span><b>${c.name}</b><small>${this.equippedFor(c.id)?.name || 'SIN EQUIPO'}</small></button>`).join('')}</aside><section class="equipment-items"><div class="equipment-selected" id="equipment-selected"></div><div class="equipment-grid">${owned.length ? owned.map(id => { const x = this.ITEMS[id]; return `<button class="equipment-item" data-item="${id}" type="button"><img src="${x.icon}" alt=""><span class="equipment-stars">★★★</span><b>${x.name}</b><small>${x.desc}</small></button>`; }).join('') : '<p class="equipment-empty">Todavía no tienes objetos 3★. Consíguelos en el Convenio.</p>'}</div></section></div></div>`;
+        modal.innerHTML = `<div class="equipment-panel"><button class="equipment-close" type="button">×</button><p class="equipment-kicker">ARSENAL DE CAMPAÑA</p><h2>EQUIPAMIENTO</h2><p class="equipment-intro">Elige un personaje y asígnale un objeto 3★. Solo puede activarlo una vez por combate.</p><div class="equipment-layout"><aside class="equipment-chars">${chars.map((c, i) => `<button class="equipment-char ${i === 0 ? 'is-active' : ''}" data-char="${c.id}" type="button"><span style="background-image:url('${c.img || `assets/sprites/anim/${c.id}_idle.png`}')"></span><b>${c.name}</b><small>${this.equippedFor(c.id)?.name || 'SIN EQUIPO'}</small></button>`).join('')}</aside><section class="equipment-items"><div class="equipment-selected" id="equipment-selected"></div><div class="equipment-grid">${owned.length ? owned.map(id => { const x = this.ITEMS[id]; return `<button class="equipment-item" data-item="${id}" type="button"><img src="${this.artFor(x)}" data-fallback="${x.icon}" onerror="this.onerror=null;this.src=this.dataset.fallback" alt=""><span class="equipment-stars">★★★</span><b>${x.name}</b><small>${x.desc}</small></button>`; }).join('') : '<p class="equipment-empty">Todavía no tienes objetos 3★. Consíguelos en el Convenio.</p>'}</div></section></div></div>`;
         document.body.appendChild(modal);
         let selected = chars[0]?.id || '';
         const paint = () => {

@@ -47,8 +47,14 @@ const BattleMotion = {
 
         if (skill?.transform || /awaken|bankai|gear|mode|liberad|sharingan|requiem|world|ashura|sage|puerta|gates/i.test(name)) {
             kind = 'awakening';
-        } else if (/heal|restore|regen|protect|guard|buff|shield|support|soten|santen|katsuyu|mirage|byakugan|epitaph|quiet_life/i.test(name) || action?.type === 'guard') {
-            kind = /heal|restore|regen|soten|santen/i.test(name) ? 'recovery' : 'stance';
+        } else if (action?.type === 'guard') {
+            kind = 'guard';
+        } else if (skill?.debuff || /debuff|lower|weaken|break|bind|seal/i.test(name)) {
+            kind = 'debuff';
+        } else if (skill?.heal || skill?.aoeHeal || skill?.revive != null || /heal|restore|regen|soten|santen|katsuyu/i.test(name)) {
+            kind = 'heal';
+        } else if (skill?.buff || skill?.allyBuff || skill?.partyBuff || skill?.charge || skill?.cover || /protect|buff|shield|support|mirage|byakugan|epitaph|quiet_life/i.test(name)) {
+            kind = 'buff';
         } else if (/ora|muda|gatling|barrage|rush|flurry|claw|punch|kick|dora|hihio|hakke|palms|frenzy/i.test(name) || hits >= 4) {
             kind = 'barrage';
         } else if (/slash|giri|senkei|getsuga|shunpo|zabimaru|sword|blade|sever|string|web|birdcage|overheat/i.test(name) || type === 'slash') {
@@ -106,8 +112,12 @@ const BattleMotion = {
             'projectile-fire': [base(entry * d, 0), base(-recoil * 1.7 * d, lift, .96, -rotation), base(-recoil * .2 * d, -rise * 1.5, 1.08, rotation), base(travel * .15 * d, -rise, 1.03, -rotation / 2), base(0, 0)],
             'projectile-element': [base(entry * d, 0), base(-recoil * d, lift + 2, .97, -rotation / 2), base(0, -rise * 2, 1.07, rotation), base(travel * .2 * d, -rise, 1.03, -rotation / 2), base(0, 0)],
             'control': [base(entry * d, 0), base(-recoil * d, lift, .98, -rotation / 2), base(0, -rise * 1.5, 1.06, rotation / 2), base(travel * .2 * d, -rise / 2, 1.02, -rotation / 2), base(0, 0)],
+            'debuff': [base(entry * d, 0), base(-recoil * .45 * d, lift * .6, .98, -rotation), base(0, -rise * 1.15, 1.04, rotation * 1.4), base(-travel * .16 * d, -rise * .35, 1.02, -rotation), base(0, 0)],
             'stance': [base(entry * d, 0), base(0, -rise, 1.02, -rotation / 2), base(0, -rise * 2, 1.06, rotation), base(0, -rise / 2, 1.02, 0), base(0, 0)],
             'recovery': [base(entry * d, 0), base(0, -rise * 1.2, 1.03, -rotation / 2), base(0, -rise * 2.2, 1.08, rotation), base(0, -rise / 2, 1.03, 0), base(0, 0)],
+            'heal': [base(entry * .35 * d, 0), base(0, -rise * .7, 1.03, -rotation / 2), base(0, -rise * 1.7, 1.1, rotation), base(0, -rise * .45, 1.04, 0), base(0, 0)],
+            'buff': [base(entry * .2 * d, 0), base(-recoil * .25 * d, -lift * .25, 1.01, -rotation), base(0, -rise * 1.35, 1.07, rotation * .7), base(recoil * .12 * d, -rise * .4, 1.03, -rotation / 2), base(0, 0)],
+            'guard': [base(0, 0), base(-recoil * .12 * d, 1, .99, -rotation / 2), base(0, -rise * .65, 1.04, rotation / 2), base(0, 0, 1.02), base(0, 0)],
             'awakening': [base(entry * d, 0), base(-3 * d, rise, .94, -rotation / 2), base(0, -rise * 2.2, 1.14, rotation), base(0, -rise / 2, 1.07, -rotation / 2), base(0, 0)],
             'finisher': [base(entry * d, 0), base(-recoil * 2 * d, rise + 3, .93, -rotation), base(travel * .2 * d, -rise * 2, 1.1, rotation), base((travel + 32) * d, -rise, 1.08, -rotation * 1.3), base(0, 0)]
         };
@@ -134,8 +144,12 @@ const BattleMotion = {
             'projectile-fire': [base(0, 0), base(-amount * .6 * d, lift, .95, -lean - 3), base(-amount * .1 * d, -lift * 1.5, 1.08, lean + 3, 1.34), base(amount * .15 * d, -lift, 1.03, -lean), base(0, 0)],
             'projectile-element': [base(0, 0), base(-amount * .35 * d, lift, .97, -lean), base(0, -lift * 1.7, 1.07, lean, 1.2), base(amount * .18 * d, -lift, 1.03, -lean), base(0, 0)],
             'control': [base(0, 0), base(-amount * .3 * d, lift, .98, -lean), base(0, -lift * 1.3, 1.06, lean, 1.15), base(amount * .2 * d, -lift / 2, 1.02, -lean), base(0, 0)],
+            'debuff': [base(0, 0), base(-amount * .12 * d, lift * .45, .99, -lean), base(0, -lift * 1.1, 1.04, lean * 1.4, 1.16), base(-amount * .08 * d, -lift * .35, 1.02, -lean), base(0, 0)],
             'stance': [base(0, 0), base(0, -lift, 1.02, lean), base(0, -lift * 1.8, 1.06, -lean, 1.14), base(0, -lift / 2, 1.02), base(0, 0)],
             'recovery': [base(0, 0), base(0, -lift * 1.2, 1.03, lean, 1.1), base(0, -lift * 2, 1.08, -lean, 1.3), base(0, -lift / 2, 1.03), base(0, 0)],
+            'heal': [base(0, 0), base(0, -lift * .65, 1.03, lean, 1.12), base(0, -lift * 1.55, 1.1, -lean, 1.38), base(0, -lift * .35, 1.04), base(0, 0)],
+            'buff': [base(0, 0), base(-amount * .08 * d, -lift * .25, 1.01, lean, 1.08), base(0, -lift * 1.2, 1.07, -lean, 1.28), base(amount * .06 * d, -lift * .35, 1.03, lean / 2), base(0, 0)],
+            'guard': [base(0, 0), base(-amount * .04 * d, 1, .99, -lean, 1.05), base(0, -lift * .55, 1.04, lean / 2, 1.16), base(0, 0, 1.02), base(0, 0)],
             'awakening': [base(0, 0), base(-amount * .08, lift, .94, lean, 1.2), base(0, -lift * 2.2, 1.14, -lean, 1.5), base(0, -lift / 2, 1.07, lean), base(0, 0)],
             'finisher': [base(0, 0), base(-amount * .7 * d, lift * 1.2, .92, -lean - 5), base(amount * .3 * d, -lift * 2, 1.1, lean + 5, 1.5), base(amount * 1.2 * d, -lift, 1.08, -lean, 1.18), base(0, 0)]
         };

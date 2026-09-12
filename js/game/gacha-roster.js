@@ -664,12 +664,16 @@ const GachaRoster = {
         return this.bannerStars(id).includes(6) || id === this.GOJO_ID;
     },
 
+    isFourStarChar(id) {
+        return this.bannerStars(id).includes(4) && !this.isFiveStarChar(id);
+    },
+
     starSealRewardFor(stars) {
         return Number(stars) >= 6 ? this.STAR_SEAL_FROM_6 : this.STAR_SEAL_FROM_5;
     },
 
     starSealCostFor(id) {
-        return this.isSixStarChar(id) ? this.STAR_SEAL_COST_6 : this.STAR_SEAL_COST_5;
+        return this.isFourStarChar(id) ? 1 : (this.isSixStarChar(id) ? this.STAR_SEAL_COST_6 : this.STAR_SEAL_COST_5);
     },
 
     /** True only if the unit is on BOTH 4★ and 5★ banner pools (rare). Never from enemy EX. */
@@ -821,13 +825,14 @@ const GachaRoster = {
 
     starSealResult(stars = 4, fromName = null) {
         const n = this.STAR_SEAL_FROM_4 || 1;
+        const tier = Number(stars) >= 6 ? 6 : Number(stars) >= 5 ? 5 : 4;
         return {
             kind: 'star_seal',
             rarity: 'rare',
             stars: stars || 4,
             reward: fromName
-                ? `+${n} Sello Estelar · ${fromName} max`
-                : `+${n} Sello Estelar`,
+                ? `+${n} Sello ${tier}★ · ${fromName} max`
+                : `+${n} Sello ${tier}★`,
             charId: null,
             starSeals: n,
             dupe: false
@@ -840,7 +845,7 @@ const GachaRoster = {
         const seen = new Set();
         Object.values(this.BANNERS).forEach((b) => {
             if (b.isMetaphor) return;
-            const ids = [b.featuredId, ...(b.pool6 || []), ...(b.pool5Std || [])].filter(Boolean);
+            const ids = [b.featuredId, ...(b.pool6 || []), ...(b.pool5Std || []), ...(b.pool4 || [])].filter(Boolean);
             ids.forEach((id) => {
                 if (seen.has(id) || !this.getTemplate(id)) return;
                 seen.add(id);
@@ -867,21 +872,20 @@ const GachaRoster = {
         return this.dupeShopList();
     },
 
-    buyFiveStarDupe(charId) {
+    buyDupe(charId, requestedTier = null) {
         const id = String(charId || '').trim();
         if (!id) return { ok: false, reason: 'Personaje inválido.' };
         // Prefer a real battle template; dual 4★/5★ enemies still resolve via enemyAsAlly.
         const tpl = this.getTemplate(id) || (this.isEnemyPlayable(id) ? this.enemyAsAlly(id) : null);
         if (!tpl) return { ok: false, reason: 'Personaje inválido.' };
-        if (!this.isFiveStarChar(id)) {
-            return { ok: false, reason: 'Solo dupes de 5★/6★.' };
-        }
+        const tier = requestedTier || (this.isFourStarChar(id) ? 4 : (this.isSixStarChar(id) ? 6 : 5));
+        if (tier === 4 ? !this.isFourStarChar(id) : !this.isFiveStarChar(id) || (tier === 6 && !this.isSixStarChar(id))) return { ok: false, reason: `Este personaje no pertenece a la tienda ${tier}★.` };
         if (!this.owns(id)) return { ok: false, reason: 'Primero tienes que sacar al personaje.' };
         if (this.isCopyMaxed(id)) return { ok: false, reason: 'Ya está al máximo.' };
         const cost = this.starSealCostFor(id);
         const seals = GameState.get('starSeals') || 0;
         if (seals < cost) return { ok: false, reason: `Necesitas ${cost} Sello${cost === 1 ? '' : 's'} Estelar.` };
-        const sealTier = this.isSixStarChar(id) ? 6 : 5;
+        const sealTier = tier;
         if (!GameState.useStarSeal(cost, sealTier)) return { ok: false, reason: `Sin sellos ${sealTier}★ suficientes.` };
         const info = typeof CharProgress !== 'undefined'
             ? CharProgress.addCopy(id)
@@ -897,11 +901,27 @@ const GachaRoster = {
         };
     },
 
+    buyFiveStarDupe(charId) {
+        return this.buyDupe(charId, this.isSixStarChar(charId) ? 6 : 5);
+    },
+
+    buyFourStarDupe(charId) {
+        return this.buyDupe(charId, 4);
+    },
+
     pickCharFrom(pool, pickFn) {
         const open = this.availablePool(pool);
         if (!open.length) return null;
-        const pick = pickFn || ((list) => list[Math.floor(Math.random() * list.length)]);
-        return pick(open);
+        return this.pickWithCollectionBias(open, pickFn);
+    },
+
+    pickWithCollectionBias(pool, pickFn) {
+        const list = (pool || []).filter(Boolean);
+        if (!list.length) return null;
+        const pick = pickFn || ((items) => items[Math.floor(Math.random() * items.length)]);
+        const missing = list.filter(id => !this.owns(id));
+        if (missing.length && Math.random() < 0.78) return pick(missing);
+        return pick(list);
     },
 
     rollOne(bannerId) {
@@ -955,11 +975,11 @@ const GachaRoster = {
                     featured = true;
                     st.guaranteedFeatured = false;
                 } else if (stdOpen.length) {
-                    charId = pick(stdOpen);
+                    charId = this.pickWithCollectionBias(stdOpen, pick);
                     st.guaranteedFeatured = false;
                 }
             } else if (stdOpen.length) {
-                charId = pick(stdOpen);
+                charId = this.pickWithCollectionBias(stdOpen, pick);
                 st.guaranteedFeatured = true;
             } else if (featOpen) {
                 charId = b.featuredId;

@@ -1134,6 +1134,7 @@ body.arena-dupes-open { overflow: hidden; }
     border: 1px solid rgba(232, 199, 106, 0.34);
 }
 .dupes-tier-fund.is-six { border-color: rgba(255, 72, 92, 0.48); }
+.dupes-tier-fund.is-four { border-color: rgba(154, 212, 255, 0.42); }
 .dupes-tier-fund .arena-dupes-seal-ico {
     border: 0;
     background-color: transparent;
@@ -1143,10 +1144,11 @@ body.arena-dupes-open { overflow: hidden; }
 }
 .dupes-tier-fund.is-five .arena-dupes-seal-ico { background-image: url('../assets/gacha/star-seal-5.png?v=1'); }
 .dupes-tier-fund.is-six .arena-dupes-seal-ico { background-image: url('../assets/gacha/star-seal-6.png?v=1'); }
+.dupes-tier-fund.is-four .arena-dupes-seal-ico { background-image: url('../assets/gacha/star-seal-5.png?v=1'); filter: hue-rotate(155deg) saturate(.8); }
 .dupes-tier-fund.is-six strong { color: #ff9aa6; }
 .dupes-shop-tabs {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.45rem;
     margin-top: 0.7rem;
 }

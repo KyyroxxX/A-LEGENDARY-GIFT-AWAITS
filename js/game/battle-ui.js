@@ -337,9 +337,14 @@ const BattleUI = {
         let typeFilter = ''; // '' = all; otherwise BattleData type id
 
         const charById = (id) => playable.find(p => p.id === id) || (typeof GachaRoster !== 'undefined' ? GachaRoster.getTemplate(id) : null);
+        const starsForCharacter = (character) => (typeof GachaRoster !== 'undefined' && GachaRoster.primaryStars)
+            ? GachaRoster.primaryStars(character.id)
+            : 3;
 
         const render = () => {
-            const rosterAll = playable.filter(p => p.series === activeSeries);
+            const rosterAll = playable
+                .filter(p => p.series === activeSeries)
+                .sort((a, b) => starsForCharacter(b) - starsForCharacter(a));
             const roster = typeFilter
                 ? rosterAll.filter(p => BattleData.dealsType(p, typeFilter))
                 : rosterAll;
@@ -1659,7 +1664,9 @@ const BattleUI = {
         const isSupport = action?.type === 'guard' || (action?.type === 'skill' && sk && !sk.power);
         const supportMode = this.supportEffectKind(sk, action);
         const fxType = isSupport
-            ? ((sk?.heal || sk?.aoeHeal || sk?.revive != null) ? 'heal' : 'support')
+            ? (supportMode === 'heal' ? 'heal'
+                : supportMode === 'debuff' ? 'curse'
+                    : supportMode === 'buff' ? 'bless' : 'support')
             : type;
         const slug = id ? `sig-${id.replace(/_/g, '-')}` : '';
 

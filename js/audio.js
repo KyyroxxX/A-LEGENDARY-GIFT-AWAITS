@@ -128,7 +128,10 @@ const AudioManager = {
             { youtube: 'O6Y9y2kOy0w', weight: 3, label: 'Metaphor · Battle Theme' },
             { youtube: 'lvuHvXsZPrk', weight: 2.5, label: 'Persona 5 · Rivers in the Desert' },
             { youtube: 'ZNGqBDRJgvo', weight: 2.5, label: 'Persona 5 · Last Surprise' },
-            { youtube: 'glo0lQfTpIs', weight: 2, label: 'Persona 4 · Reach Out to the Truth' }
+            { youtube: 'glo0lQfTpIs', weight: 2, label: 'Persona 4 · Reach Out to the Truth' },
+            { youtube: 'F7XKQ_yDoFQ', weight: 2.5, label: 'Bleach · Principio de lucha' },
+            { youtube: 'Z9Onb_z0XPI', weight: 2.5, label: 'Bleach · Clavar la espada' },
+            { youtube: 'fZx7yUztxJ0', weight: 2, label: 'Bleach · Escalon' }
         ],
 
         /** Character select */
@@ -142,7 +145,9 @@ const AudioManager = {
 
         /* ── Gacha menus por banner ── */
         menu_op: [
-            { youtube: 'daFi4MScfl8', startSeconds: 8, weight: 1, label: 'One Piece · Overtaken' }
+            { youtube: 'daFi4MScfl8', startSeconds: 8, weight: 2, label: 'One Piece · Overtaken' },
+            { youtube: 'bfW6dzCFy2A', weight: 2, label: 'One Piece · Overtaken Epic' },
+            { youtube: 'QGbeqYJAUAc', weight: 1.5, label: 'One Piece · Grand Line' }
         ],
         menu_naruto: [
             { youtube: 'qAGvQDoL5s4', weight: 3, label: 'Afternoon of Konoha' },
@@ -162,7 +167,11 @@ const AudioManager = {
             { youtube: '7JEjQG4-tpU', weight: 4, label: 'Number One - Bankai' },
             { youtube: 'jBhM-b93bsY', weight: 3, label: 'Precipice of Defeat' },
             { youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One' },
-            { youtube: 'GwIEDIxuXQU', weight: 2, label: 'Precipice · Full' }
+            { youtube: 'GwIEDIxuXQU', weight: 2, label: 'Precipice · Full' },
+            { youtube: 'F7XKQ_yDoFQ', weight: 3.5, label: 'Principio de lucha' },
+            { youtube: 'Z9Onb_z0XPI', weight: 3.5, label: 'Clavar la espada' },
+            { youtube: 'fZx7yUztxJ0', weight: 2.5, label: 'Escalon' },
+            { youtube: 'MZXerA8nfsg', weight: 2.5, label: 'Fiesta de Guerra' }
         ],
         menu_jjk: [
             /* Official OP MVs — Kaikai Kitan is the default banner bed */
@@ -173,11 +182,15 @@ const AudioManager = {
         ],
 
         menu_kimetsu: [
-            { youtube: 'CwkzK-F0Y00', weight: 1, label: 'Gurenge · LiSA (OP1)', endSeconds: 110 }
+            { youtube: 'CwkzK-F0Y00', weight: 2, label: 'Gurenge · LiSA (OP1)', endSeconds: 110 },
+            { youtube: 'I-MOWW4Io6I', weight: 2, label: 'Kimetsu · Battle Themes' },
+            { youtube: 'nioQfmYE1Bk', weight: 2, label: 'Kimetsu · Infinity Castle' }
         ],
 
         menu_chainsaw: [
-            { youtube: 'M2cckDmNLMI', weight: 10, label: 'KICK BACK · Kenshi Yonezu' }
+            { youtube: 'M2cckDmNLMI', weight: 6, label: 'KICK BACK · Kenshi Yonezu' },
+            { youtube: 'bfW6dzCFy2A', weight: 2, label: 'Chainsaw Man · Pressure' },
+            { youtube: 'h_9RC8DCEPM', weight: 2, label: 'Chainsaw Man · Ritual' }
         ],
 
         /* Metaphor: ReFantazio — banner / convene */
@@ -287,7 +300,11 @@ const AudioManager = {
             { youtube: '7JEjQG4-tpU', weight: 5, label: 'Number One - Bankai' },
             { youtube: 'jBhM-b93bsY', weight: 4, label: 'Precipice of Defeat' },
             { youtube: '7nQAGywy3Rw', weight: 3, label: 'Number One' },
-            { youtube: 'GwIEDIxuXQU', weight: 2.5, label: 'Precipice · Full' }
+            { youtube: 'GwIEDIxuXQU', weight: 2.5, label: 'Precipice · Full' },
+            { youtube: 'F7XKQ_yDoFQ', weight: 4, label: 'Principio de lucha' },
+            { youtube: 'Z9Onb_z0XPI', weight: 4, label: 'Clavar la espada' },
+            { youtube: 'fZx7yUztxJ0', weight: 3, label: 'Escalon' },
+            { youtube: 'MZXerA8nfsg', weight: 3, label: 'Fiesta de Guerra' }
         ],
         battle_aizen: [
             { youtube: '7JEjQG4-tpU', weight: 5, label: 'Number One - Bankai' },

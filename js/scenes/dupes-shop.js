@@ -26,6 +26,10 @@ const DupesShop = {
                     <button type="button" class="btn-secondary" id="dupes-shop-close">CERRAR</button>
                 </div>
                 <div class="arena-dupes-funds">
+                    <div class="arena-dupes-seal-chip dupes-tier-fund is-four" id="dupes-shop-seal-chip-4">
+                        <span class="arena-dupes-seal-ico" aria-hidden="true"></span>
+                        <div><em>Sellos 4★</em><strong id="dupes-shop-seals-4">0</strong></div>
+                    </div>
                     <div class="arena-dupes-seal-chip dupes-tier-fund is-five" id="dupes-shop-seal-chip-5">
                         <span class="arena-dupes-seal-ico" aria-hidden="true"></span>
                         <div>
@@ -42,15 +46,20 @@ const DupesShop = {
                     </div>
                 </div>
                 <div class="dupes-shop-tabs" role="tablist" aria-label="Rareza de dupes">
+                    <button type="button" class="dupes-shop-tab" data-dupes-tier="4" role="tab" aria-selected="false">TIENDA 4★</button>
                     <button type="button" class="dupes-shop-tab is-active" data-dupes-tier="5" role="tab" aria-selected="true">TIENDA 5★</button>
                     <button type="button" class="dupes-shop-tab" data-dupes-tier="6" role="tab" aria-selected="false">TIENDA 6★</button>
                 </div>
                 <p class="arena-dupes-note">
                     Un <strong>4★</strong> al C-max convierte en <strong>Sello Estelar</strong>
                     (los 3★ maxean en eco, no en sello).
-                    Canjea sellos por dupes de <strong>5★/6★</strong> que ya tengas
-                    (5★ cuesta 1 sello y 6★ cuesta 2 · ambos usan C0–C3).
+                    Canjea sellos por dupes de <strong>4★/5★/6★</strong> que ya tengas
+                    (4★ cuesta 1, 5★ cuesta 1 y 6★ cuesta 2 · los 4★ usan C0–C6).
                 </p>
+                <div class="dupes-shop-conversions" aria-label="Conversión de sellos">
+                    <div><span>CONVERSIÓN</span><strong>5 Sellos 4★ → 1 Sello 5★</strong><button type="button" class="btn-secondary" data-convert-from="4" data-convert-to="5" data-convert-cost="5">CONVERTIR</button></div>
+                    <div><span>CONVERSIÓN</span><strong>4 Sellos 5★ → 1 Sello 6★</strong><button type="button" class="btn-secondary" data-convert-from="5" data-convert-to="6" data-convert-cost="4">CONVERTIR</button></div>
+                </div>
                 <div class="arena-dupes-body">
                     <h4 class="arena-dupes-sub" id="dupes-shop-tier-title">Tienda 5★</h4>
                     <div class="arena-shop-list" id="dupes-shop-list"></div>
@@ -66,9 +75,16 @@ const DupesShop = {
         overlay.querySelector('#dupes-shop-close')?.addEventListener('click', () => this.close());
         overlay.querySelectorAll('[data-dupes-tier]').forEach((tab) => {
             tab.addEventListener('click', () => {
-                this.activeTier = Number(tab.dataset.dupesTier) === 6 ? 6 : 5;
+                this.activeTier = Math.max(4, Math.min(6, Number(tab.dataset.dupesTier) || 5));
                 this.refresh({ animateIn: true });
             });
+        });
+        overlay.querySelectorAll('[data-convert-from]').forEach((button) => {
+            button.addEventListener('click', () => this.convert(
+                Number(button.dataset.convertFrom),
+                Number(button.dataset.convertTo),
+                Number(button.dataset.convertCost)
+            ));
         });
         if (!this._escBound) {
             this._escBound = (e) => {
@@ -106,6 +122,7 @@ const DupesShop = {
             document.querySelectorAll(sel).forEach((n) => { n.textContent = String(seals); });
         };
         set('#dupes-shop-seals');
+        document.querySelectorAll('#dupes-shop-seals-4').forEach((n) => { n.textContent = String(GameState.get('starSeals4') || 0); });
         document.querySelectorAll('#dupes-shop-seals-5').forEach((n) => { n.textContent = String(GameState.get('starSeals5') || 0); });
         document.querySelectorAll('#dupes-shop-seals-6').forEach((n) => { n.textContent = String(GameState.get('starSeals6') || 0); });
         set('#arena-seals');
@@ -156,10 +173,10 @@ const DupesShop = {
         const overlay = this.ensure();
         const shop = overlay.querySelector('#dupes-shop-list');
         const list = overlay.querySelector('#dupes-roster-list');
-        const tier = this.activeTier === 6 ? 6 : 5;
+        const tier = Math.max(4, Math.min(6, Number(this.activeTier) || 5));
         const sealsNode = overlay.querySelector(`#dupes-shop-seals-${tier}`);
         const chip = overlay.querySelector(`#dupes-shop-seal-chip-${tier}`);
-        const seals = GameState.get(tier === 6 ? 'starSeals6' : 'starSeals5') || 0;
+        const seals = GameState.get(`starSeals${tier}`) || 0;
         const animateIn = !!opts.animateIn;
         const flashId = opts.flashId || this._lastBuyId;
         const sealsDelta = opts.sealsDelta;
@@ -187,6 +204,11 @@ const DupesShop = {
         const tierTitle = overlay.querySelector('#dupes-shop-tier-title');
         if (tierTitle) tierTitle.textContent = `Tienda ${tier}★`;
         this.syncHud();
+        overlay.querySelectorAll('[data-convert-from]').forEach((button) => {
+            const from = Number(button.dataset.convertFrom);
+            const cost = Number(button.dataset.convertCost);
+            button.disabled = (GameState.get(`starSeals${from}`) || 0) < cost;
+        });
 
         if (shop) {
             if (typeof GachaRoster === 'undefined') {
@@ -194,7 +216,9 @@ const DupesShop = {
             } else {
                 const items = GachaRoster.dupeShopList().filter((it) => tier === 6
                     ? GachaRoster.isSixStarChar?.(it.id)
-                    : !GachaRoster.isSixStarChar?.(it.id));
+                    : tier === 5
+                        ? GachaRoster.isFiveStarChar?.(it.id) && !GachaRoster.isSixStarChar?.(it.id)
+                        : GachaRoster.isFourStarChar?.(it.id));
                 shop.innerHTML = items.length
                     ? items.map((it, i) => {
                         const starTag = GachaRoster.starsLabel?.(it.id) || '5★';
@@ -260,7 +284,9 @@ const DupesShop = {
     buy(charId) {
         if (typeof GachaRoster === 'undefined') return;
         const id = String(charId || '').trim();
-        const res = GachaRoster.buyFiveStarDupe(id);
+        const res = this.activeTier === 4
+            ? GachaRoster.buyFourStarDupe(id)
+            : GachaRoster.buyFiveStarDupe(id);
         if (!res.ok) {
             this.toast(res.reason || 'No se pudo comprar.');
             return;
@@ -273,5 +299,15 @@ const DupesShop = {
             flashId: id,
             sealsDelta: -(res.cost || 1)
         });
+    },
+
+    convert(fromStars, toStars, cost) {
+        if (!GameState.convertStarSeals(fromStars, toStars, cost)) {
+            this.toast(`Necesitas ${cost} sellos ${fromStars}★.`);
+            return;
+        }
+        try { AudioManager.ui?.click?.(); } catch (_) { /* ignore */ }
+        this.toast(`Convertidos ${cost} sellos ${fromStars}★ en 1 sello ${toStars}★.`);
+        this.refresh({ animateIn: false });
     }
 };
