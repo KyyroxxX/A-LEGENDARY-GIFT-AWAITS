@@ -32,7 +32,7 @@ const GachaRates = {
     ratesBlurb(b) {
         if (b.isMetaphor) {
             const pct7 = ((b.rate7 || 0.008) * 100).toFixed(2);
-            return `7★ base ${pct7}% (soft ${b.soft7} · hard ${b.hard7}) · rate-up ${Math.round((b.featuredRate ?? 0.7) * 100)}%`;
+            return `7★ base ${pct7}% (soft ${b.soft7} · hard ${b.hard7}) · rate-up ${Math.round((b.featuredRate ?? 0.3) * 100)}%`;
         }
         const pct6 = ((b.rate6 || 0.003) * 100).toFixed(2);
         const pct5 = ((b.rate5 || 0.02) * 100).toFixed(1);

@@ -1332,8 +1332,8 @@ const GachaScene = {
                 `).join('')}
             </div>
             <p class="gw-rate-5050">${b.featured5050
-                ? `Destacado ${(Math.round((b.featuredRate ?? 0.7) * 100))}% en ${featuredStars}★ (si pierdes, el siguiente es garantía).`
-                : `Destacado garantizado en ${featuredStars}★.`}</p>`;
+                ? `Destacado con una ligera ventaja sobre cada personaje del pool en ${featuredStars}★ · sin garantía.`
+                : `Destacado disponible en ${featuredStars}★.`}</p>`;
     },
 
     poolGridHTML(items, stars, emptyNote) {
@@ -1504,9 +1504,7 @@ const GachaScene = {
         setText('#gacha-pity', `Garantía · ${b.featured}`);
         setText('#gacha-pity-count', `5★ ${st.pity5}/${b.hard5} · 4★ ${st.pity4}/${b.hard4}`);
         setText('#gacha-left', `Tiradas infinitas · ${st.pulls} hechas · no jugable`);
-        setText('#gw-featured-label', st.guaranteedFeatured
-            ? `Garantía destacado · próximo 5★ = ${b.featured}`
-            : b.featuredNote);
+        setText('#gw-featured-label', b.featuredNote);
         setText('#hl-collection', '∞');
         setText('#gacha-invocations', GameState.get('invocations') || 0);
         setText('#gacha-meta-tickets', GameState.get('metaphorTickets') || 0);
@@ -1943,9 +1941,7 @@ const GachaScene = {
             : `6★ ${st.pity6 || 0}/${b.hard6 || 80} · 5★ ${st.pity5}/${b.hard5}`);
         setText('#details-pity', String(isMeta ? (st.pity7 || 0) : (st.pity6 || 0)));
         setText('#gacha-pity-hint', this.pityHintText(b, st));
-        setText('#gw-featured-label', st.guaranteedFeatured
-            ? `Garantía destacado · próximo ${b.featuredStars || (isMeta ? 7 : 5)}★ = ${b.featured}`
-            : b.featuredNote);
+        setText('#gw-featured-label', b.featuredNote);
         setText('#gacha-left', isMeta
             ? `${metaTickets} tiradas rojas · finales de apartado + THE 50/50 · garantía ${b.hard7 || 80}`
             : `${invocations} INV · ${chiki.toLocaleString('es-ES')} Chiki · ${st.pulls} tiradas en ${b.short} · colección ${progress.have}/${progress.total}`);

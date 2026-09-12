@@ -32,7 +32,7 @@ const GachaRoster = {
         hard5: 50,
         hard4: 8,
         featured5050: true,
-        featuredRate: 0.7
+        featuredRate: 0.3
     },
 
     ENEMY_SERIES: {
@@ -69,7 +69,7 @@ const GachaRoster = {
             rate6: 0.003, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['doflamingo', 'zoro', 'sanji'],
             pool5Std: ['law', 'shanks', 'mihawk'],
             pool4: ['nami', 'robin', 'crocodile', 'enel', 'lucci'],
@@ -95,7 +95,7 @@ const GachaRoster = {
             rate6: 0.003, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['sasuke', 'jiraiya', 'kakashi', 'itachi', 'hidan'],
             pool5Std: ['gai', 'minato', 'tsunade', 'kisame'],
             pool4: ['gaara', 'sakura', 'zabuza', 'orochimaru', 'sasori', 'deidara'],
@@ -121,7 +121,7 @@ const GachaRoster = {
             rate6: 0.003, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['dio', 'diavolo', 'kira', 'pucci', 'weather', 'giorno'],
             pool5Std: ['polnareff', 'kakyoin', 'mista', 'bucciarati', 'anasui', 'risotto', 'caesar', 'rohan'],
             pool4: ['josuke', 'jolyne', 'joseph', 'narancia', 'abbacchio', 'okuyasu', 'trish', 'ff'],
@@ -146,7 +146,7 @@ const GachaRoster = {
             rate6: 0.003, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['aizen', 'ulquiorra', 'grimmjow', 'shunsui'],
             pool5Std: ['byakuya', 'rukia', 'toshiro', 'yoruichi', 'urahara', 'kenpachi'],
             pool4: ['renji', 'orihime', 'ginjo', 'gantenbainne'],
@@ -172,7 +172,7 @@ const GachaRoster = {
             rate6: 0.003, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['gojo', 'sukuna', 'hakari', 'yuta'],
             pool5Std: ['geto', 'toji', 'nanami', 'yuki', 'higuruma', 'choso'],
             pool4: ['yuji', 'megumi', 'maki', 'nobara', 'mahito', 'jogo', 'uro', 'ryu'],
@@ -222,7 +222,7 @@ const GachaRoster = {
             rate6: 0.003, pity6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, pity5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['tanjiro', 'gyomei', 'kokushibo', 'rengoku'],
             pool5Std: ['giyu', 'tengen', 'sanemi', 'mitsuri', 'muichiro', 'obanai', 'akaza', 'doma', 'nezuko'],
             pool4: ['zenitsu', 'inosuke', 'daki', 'hantengu', 'gyokko', 'sabito'],
@@ -249,7 +249,7 @@ const GachaRoster = {
             rate6: 0.003, pity6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, pity5: 35, hard5: 50, hard4: 8,
             featured5050: true,
-            featuredRate: 0.7,
+            featuredRate: 0.3,
             pool6: ['denji', 'makima'],
             pool5Std: ['power', 'reze', 'aki', 'angel'],
             pool4: ['beam'],
@@ -955,11 +955,10 @@ const GachaRoster = {
         const pick = rates ? rates.pick.bind(rates) : (list) => list[Math.floor(Math.random() * list.length)];
         const featChance = b.featuredRate != null
             ? b.featuredRate
-            : (this.SERIES_RATES?.featuredRate ?? 0.7);
+            : (this.SERIES_RATES?.featuredRate ?? 0.3);
         const featStars = b.featuredStars || 5;
 
         const rollHigh = (starsTarget) => {
-            const force = st.guaranteedFeatured || !b.featured5050;
             let charId = null;
             let featured = false;
             const poolKey = starsTarget >= 6 ? 'pool6' : 'pool5Std';
@@ -969,22 +968,19 @@ const GachaRoster = {
                 && featStars === starsTarget
                 && this.getTemplate(b.featuredId);
 
-            if (force || Math.random() < featChance) {
-                if (featOpen) {
-                    charId = b.featuredId;
-                    featured = true;
-                    st.guaranteedFeatured = false;
-                } else if (stdOpen.length) {
-                    charId = this.pickWithCollectionBias(stdOpen, pick);
-                    st.guaranteedFeatured = false;
-                }
+            const featuredWeight = 1.25;
+            const standardWeight = 1;
+            const featuredChance = featOpen
+                ? featuredWeight / (featuredWeight + (standardWeight * stdOpen.length))
+                : 0;
+            if (featOpen && Math.random() < featuredChance) {
+                charId = b.featuredId;
+                featured = true;
             } else if (stdOpen.length) {
                 charId = this.pickWithCollectionBias(stdOpen, pick);
-                st.guaranteedFeatured = true;
             } else if (featOpen) {
                 charId = b.featuredId;
                 featured = true;
-                st.guaranteedFeatured = false;
             }
 
             if (!charId) {
@@ -1011,9 +1007,7 @@ const GachaRoster = {
                 st.pity6 = 0;
                 st.pity5 = 0;
                 st.pity4 = 0;
-                const force = st.guaranteedFeatured || !b.featured5050;
-                if (force || Math.random() < featChance) {
-                    st.guaranteedFeatured = false;
+                if (Math.random() < featChance) {
                     result = {
                         kind: 'legendary',
                         rarity: 'celestial',
@@ -1025,7 +1019,6 @@ const GachaRoster = {
                         bannerId
                     };
                 } else {
-                    st.guaranteedFeatured = true;
                     result = this.shardResult(pick(b.pool5StdNames) || 'Destino Falso', 5);
                     result.featured = false;
                 }
@@ -1180,7 +1173,7 @@ const GachaRoster = {
                         const stdOpen = this.availablePool(b.pool5Std || [], true);
                         let charId = null;
                         let featured = false;
-                        if (featOpen && Math.random() < (b.featuredRate ?? 0.7)) {
+                        if (featOpen && Math.random() < (b.featuredRate ?? 0.3)) {
                             charId = b.featuredId;
                             featured = true;
                         } else if (stdOpen.length) {
