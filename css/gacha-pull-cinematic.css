@@ -1386,6 +1386,9 @@
     opacity: 1;
     pointer-events: auto;
 }
+.pull-character-cutin.is-loading {
+    opacity: 0;
+}
 .pull-character-cutin-backdrop {
     position: absolute;
     inset: -12%;

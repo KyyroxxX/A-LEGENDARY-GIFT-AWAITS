@@ -13,7 +13,7 @@ const GachaScene = {
     _gsapTweens: [],
 
     /** Banner media — animated webp primary, convene key art static, gif/png fallbacks. */
-    CACHE: 'arena258',
+    CACHE: 'arena290',
     activeBanner: 'onepiece', // onepiece|naruto|jojo|bleach|jjk|metaphor|wuwa|tof|genshin
     _bannerPreloadStarted: false,
     get META_TICKET() { return `assets/gacha/metaphor-ticket.svg?v=${this.CACHE}`; },
@@ -457,7 +457,7 @@ const GachaScene = {
             const p7 = st.pity7 || 0;
             const soft = b.soft7 || 50;
             const hard = b.hard7 || 80;
-            if (GameState.get('legendaryObtained')) return 'Metaphor obtenido · garantía congelada';
+            if (GameState.get('legendaryObtained')) return 'Metaphor obtenido · tiradas adicionales disponibles';
             if (p7 + 1 >= hard) return '7★ CELESTIAL GARANTIZADO en la próxima tirada';
             if (p7 >= soft) return `Garantía suave 7★ · bloqueado en ${hard - p7} tirada${hard - p7 === 1 ? '' : 's'}`;
             return `7★ celestial en ${hard} · sube desde ${soft}`;
@@ -557,6 +557,7 @@ const GachaScene = {
         const candidates = this.cutinVideoCandidates(r);
         if (!candidates.length) return false;
         host?.classList.add('is-cutin-host-hidden');
+        try { await AudioManager?._fadeMusicTo?.(0, 160); } catch (_) { /* */ }
         await this.playCutinBridge(r);
         const firstObtain = !this.hasSeenCutin(r.charId);
         const outcome = this.resultOutcome(r);
@@ -597,6 +598,7 @@ const GachaScene = {
                     AudioManager?._fadeMusicTo?.(Math.max(0.28, normal * 0.42), 260);
                 } catch (_) { /* */ }
                 if (played) this.markCutinSeen(r.charId);
+                window.dispatchEvent(new Event('pull-cutin-ready'));
                 cutin.classList.remove('is-on');
                 host?.classList.remove('is-cutin-host-hidden');
                 const removeTimer = setTimeout(() => cutin.remove(), 180);
@@ -615,12 +617,8 @@ const GachaScene = {
                 if (settled) return;
                 cutin.classList.remove('is-loading');
                 cutin.classList.add('is-ready');
-                try {
-                    const normal = Number.isFinite(AudioManager?._conveneMusicNorm)
-                        ? AudioManager._conveneMusicNorm
-                        : 1;
-                    AudioManager?._fadeMusicTo?.(Math.max(0.025, normal * 0.08), 180);
-                } catch (_) { /* */ }
+                window.dispatchEvent(new Event('pull-cutin-ready'));
+                try { AudioManager?._fadeMusicTo?.(0, 100); } catch (_) { /* */ }
                 video.volume = 0.92;
                 video.muted = false;
                 video.play().catch(() => {
@@ -658,39 +656,39 @@ const GachaScene = {
         const video = bridge.querySelector('video');
         let settled = false;
         let timer = null;
-        let endHold = null;
-        const bridgeHandoffHold = 560;
-        const normalMusic = Number.isFinite(AudioManager?._conveneMusicNorm)
-            ? AudioManager._conveneMusicNorm
-            : 1;
-        try { AudioManager._fadeMusicTo?.(0.03, 180); } catch (_) { /* */ }
+        try { AudioManager._fadeMusicTo?.(0, 120); } catch (_) { /* */ }
 
         return new Promise((resolve) => {
             const finish = async () => {
                 if (settled) return;
                 settled = true;
                 if (timer) clearTimeout(timer);
-                if (endHold) clearTimeout(endHold);
-                video?.pause();
-                video?.classList.remove('is-ready');
-                bridge.classList.remove('is-on');
-                const removeTimer = setTimeout(() => {
+                const hideBridge = () => {
+                    bridge.classList.remove('is-on');
+                    const removeTimer = setTimeout(() => {
                     video?.removeAttribute('src');
                     video?.load();
                     bridge.remove();
-                }, 460);
-                this._timers.push(removeTimer);
-                try { AudioManager._fadeMusicTo?.(Math.max(0.12, normalMusic * 0.18), 180); } catch (_) { /* */ }
+                    }, 460);
+                    this._timers.push(removeTimer);
+                };
+                window.addEventListener('pull-cutin-ready', hideBridge, { once: true });
+                const fallbackTimer = setTimeout(hideBridge, 5000);
+                this._timers.push(fallbackTimer);
                 resolve(true);
             };
             video.onended = () => {
-                if (settled || endHold) return;
-                endHold = setTimeout(finish, bridgeHandoffHold);
+                if (!settled) finish();
             };
             video.onerror = finish;
             video.oncanplay = () => {
                 bridge.classList.remove('is-loading');
                 bridge.classList.add('is-ready');
+                const durationMs = Number.isFinite(video.duration) && video.duration > 0
+                    ? video.duration * 1000
+                    : 2966;
+                clearTimeout(timer);
+                timer = setTimeout(finish, Math.max(0, durationMs - 250));
                 const playback = video.play();
                 if (playback?.catch) playback.catch(() => {
                     video.muted = true;
@@ -1735,11 +1733,6 @@ const GachaScene = {
             this.showEgg('Este banner aún está sellado.');
             return;
         }
-        if (this.activeBanner === 'metaphor' && GameState.get('legendaryObtained')) {
-            this.showEgg('Ya tienes Metaphor. Banner completado.');
-            return;
-        }
-
         const isMeta = this.activeBanner === 'metaphor';
         const bal = isMeta
             ? (GameState.get('metaphorTickets') || 0)
@@ -1955,12 +1948,11 @@ const GachaScene = {
         if (fill) fill.style.width = `${Math.min(100, (pityNow / pityHard) * 100)}%`;
         fill?.classList.toggle('soft-active', pityNow >= pitySoft && pityNow < pityHard);
 
-        const metaDone = bannerId === 'metaphor' && GameState.get('legendaryObtained');
         const locked = !GachaRoster.isBannerUnlocked(bannerId);
         const btn1 = el.querySelector('#btn-pull-1');
         const btn10 = el.querySelector('#btn-pull-10');
-        if (btn1) btn1.disabled = locked || metaDone || spendBal < 1;
-        if (btn10) btn10.disabled = locked || metaDone || spendBal < 10;
+        if (btn1) btn1.disabled = locked || spendBal < 1;
+        if (btn10) btn10.disabled = locked || spendBal < 10;
         this.syncSpendUI(el, isMeta ? 'meta' : 'inv');
 
         // Unlock thumb visuals
@@ -2075,6 +2067,7 @@ const GachaScene = {
     },
 
     pullAnimationVideo(rarity, opts = {}) {
+        if (opts.singlePull && rarity === 'common') return 'assets/gacha/pull-videos/wuwa-blue.mp4';
         if (opts.mythicForce || rarity === 'mythic') return 'assets/gacha/pull-videos/wuwa-red.mp4';
         if (rarity === 'rare') return 'assets/gacha/pull-videos/wuwa-purple.mp4';
         if (rarity === 'epic' || rarity === 'legendary') return 'assets/gacha/pull-videos/wuwa-gold.mp4';
@@ -2200,7 +2193,7 @@ const GachaScene = {
         const mythicForce = !!opts.mythicForce;
         const celestialForce = !!opts.celestialForce;
 
-        const pullVideo = this.pullAnimationVideo(peak, opts);
+        const pullVideo = this.pullAnimationVideo(peak, { ...opts, singlePull: count === 1 });
         if (pullVideo) {
             return this.playWuwaPullVideo(overlay, pullVideo, mythicForce ? 'mythic' : peak);
         }

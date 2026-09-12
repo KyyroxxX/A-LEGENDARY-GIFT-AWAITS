@@ -1461,10 +1461,10 @@
     height: 1.55rem;
     flex-shrink: 0;
     display: inline-block;
-    border: 1px solid rgba(255, 136, 150, 0.8);
-    background: linear-gradient(145deg, #d73558, #5d0b25);
-    box-shadow: 0 0 10px rgba(196, 30, 58, 0.6);
-    clip-path: polygon(12% 0, 88% 0, 100% 50%, 88% 100%, 12% 100%, 0 50%);
+    border: 0;
+    background: url('../assets/gacha/metaphor-ticket.png?v=arena290') center / contain no-repeat;
+    box-shadow: 0 0 10px rgba(196, 30, 58, 0.42);
+    clip-path: none;
 }
 
 .gw-currency-gem,
