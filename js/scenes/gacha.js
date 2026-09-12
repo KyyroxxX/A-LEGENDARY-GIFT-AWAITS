@@ -2853,7 +2853,16 @@ const GachaScene = {
             : staged;
         if (!playList.length) return true;
         for (let i = 0; i < playList.length; i++) {
-            if (this._skipSolo) return true;
+            if (this._skipSolo) {
+                this._skipSolo = false;
+                const remainingJackpots = playList
+                    .slice(i)
+                    .filter((result) => this.isFiveStarResult(result));
+                for (const jackpot of remainingJackpots) {
+                    await this.showOneSoloReveal(jackpot, i, remainingJackpots.length);
+                }
+                return true;
+            }
             await this.showOneSoloReveal(playList[i], i, playList.length);
         }
         return this._skipSolo;
