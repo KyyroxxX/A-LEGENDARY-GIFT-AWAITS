@@ -6,7 +6,7 @@
  * multiple characters into a "collage". Use one URL only.
  */
 const StagedSprites = {
-    BASE: 'assets/sprites/src/user_refs/staged',
+    BASE: 'assets/sprites/src/user_refs/_staged',
     _ver: null,
     _files: null,
     _facesLeft: null,
