@@ -1,0 +1,463 @@
+/* Authored layered VFX pass. These shapes are deliberately asymmetric and
+   family-specific; they are not the old one-node recolour system. */
+.vfx-pro {
+    position: absolute;
+    inset: 0;
+    z-index: 18;
+    pointer-events: none;
+    isolation: isolate;
+    color: var(--vfx-primary);
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--vfx-primary), transparent 45%));
+    animation: vfx-pro-life .68s cubic-bezier(.2,.85,.18,1) both;
+}
+.vfx-pro > i,
+.vfx-pro > b { position: absolute; display: block; pointer-events: none; }
+.vfx-pro__flipbook { left:50%; top:43%; width:58%; height:58%; transform:translate(-50%,-50%); background-repeat:no-repeat; background-size:400% 400%; background-position:0 0; image-rendering:auto; }
+.vfx-pro__flipbook--gum-pistol-charge,
+.vfx-pro__flipbook--gum-pistol-travel,
+.vfx-pro__flipbook--gum-pistol-impact { background-image:url('../assets/vfx/generated/luffy/gum-pistol-impact-sheet-v2.png'); background-size:400% 400%; filter:drop-shadow(0 0 8px rgba(255,225,80,.42)); }
+.vfx-pro__flipbook--gum-pistol-charge { left:68%; top:43%; width:34%; height:34%; animation:vfx-pro-gum-pistol-charge .24s steps(1,end) both; }
+.vfx-pro__flipbook--gum-pistol-travel { left:38%; top:39%; width:72%; height:42%; animation:vfx-pro-gum-pistol-travel .38s steps(1,end) both; }
+.vfx-pro__flipbook--gum-pistol-impact { animation:vfx-pro-gum-pistol-impact .62s steps(1,end) both; }
+.vfx-pro__halo { inset: 12% 16% 20%; border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--vfx-primary), transparent 45%) 0 4%, color-mix(in srgb, var(--vfx-secondary), transparent 78%) 25%, transparent 70%); filter: blur(12px); opacity: .75; transform: rotate(var(--vfx-orbit)); }
+.vfx-pro__core { left: 50%; top: 42%; width: calc(24% * var(--vfx-span)); height: 12%; transform: translate(-50%,-50%) rotate(var(--vfx-tilt)); background: linear-gradient(90deg, transparent, var(--vfx-primary) 25%, #fff 50%, var(--vfx-secondary) 75%, transparent); clip-path: polygon(0 50%,18% 25%,49% 0,82% 25%,100% 50%,82% 75%,49% 100%,18% 75%); filter: blur(.3px); }
+.vfx-pro__trail { left: 21%; right: 17%; top: 37%; height: 14%; transform: skewX(calc(-22deg + var(--vfx-shear))); opacity: .62; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--vfx-secondary), transparent 30%) 38%, var(--vfx-primary) 68%, transparent); clip-path: polygon(0 48%,25% 22%,73% 35%,100% 50%,73% 66%,25% 78%); filter: blur(3px); }
+.vfx-pro__accent { left: 34%; top: 24%; width: 32%; height: 44%; border: 1px solid color-mix(in srgb, var(--vfx-primary), transparent 30%); border-radius: 48% 54% 42% 56%; transform: rotate(calc(-22deg + var(--vfx-tilt))) skewY(12deg); opacity: .7; }
+.vfx-pro__shard { left: 50%; top: 43%; width: calc(6px + var(--vfx-seed) * 7px); height: calc(16px + var(--vfx-seed) * 18px); transform-origin: 50% 120%; transform: rotate(var(--vfx-angle)) translateY(calc(-36px - var(--vfx-i) * 4px)) skewX(-15deg); background: linear-gradient(var(--vfx-primary), transparent); clip-path: polygon(50% 0,100% 70%,58% 100%,0 70%); opacity: 0; animation: vfx-pro-shard .68s cubic-bezier(.1,.75,.15,1) calc(var(--vfx-i) * 12ms) both; }
+
+.vfx-pro--charge { animation-duration: .56s; }
+.vfx-pro--charge .vfx-pro__halo { animation: vfx-pro-charge-halo .56s ease-out both; }
+.vfx-pro--charge .vfx-pro__core { width: 12%; height: 12%; animation: vfx-pro-charge-core .56s cubic-bezier(.12,.9,.18,1) both; }
+.vfx-pro--charge .vfx-pro__trail { opacity: .22; transform: rotate(-18deg) scale(.65); animation: vfx-pro-charge-trail .56s ease-out both; }
+.vfx-pro--emit { animation-duration: .62s; }
+.vfx-pro--emit .vfx-pro__core { animation: vfx-pro-emit-core .62s cubic-bezier(.12,.9,.18,1) both; }
+.vfx-pro--emit .vfx-pro__trail { animation: vfx-pro-emit-trail .62s cubic-bezier(.12,.9,.18,1) both; }
+.vfx-pro--trail .vfx-pro__trail { animation: vfx-pro-trail .6s cubic-bezier(.12,.82,.14,1) both; }
+.vfx-pro--trail .vfx-pro__core { opacity: .65; transform: translate(-50%,-50%) scaleX(.7); }
+
+/* Family silhouettes */
+.vfx-pro--blade .vfx-pro__core,
+.vfx-pro--blade .vfx-pro__trail,
+.vfx-pro--cut .vfx-pro__core { height: 5%; border-radius: 0; clip-path: polygon(0 65%,70% 0,100% 34%,25% 100%); transform: rotate(-14deg); }
+.vfx-pro--blade .vfx-pro__accent,
+.vfx-pro--cut .vfx-pro__accent { left: 25%; top: 22%; width: 57%; height: 7%; border-width: 2px; border-color: var(--vfx-primary); border-radius: 0; transform: rotate(-17deg); box-shadow: 0 0 10px var(--vfx-secondary); }
+.vfx-pro--barrage .vfx-pro__core { width: 38%; height: 30%; background: radial-gradient(ellipse at 20% 50%,var(--vfx-primary) 0 7%,transparent 8%),radial-gradient(ellipse at 50% 50%,var(--vfx-secondary) 0 9%,transparent 10%),radial-gradient(ellipse at 80% 50%,var(--vfx-primary) 0 7%,transparent 8%); filter: blur(1px); }
+.vfx-pro--barrage .vfx-pro__trail { height: 28%; background: repeating-linear-gradient(170deg,transparent 0 13%,var(--vfx-secondary) 14% 18%,transparent 19% 28%); clip-path: polygon(0 35%,100% 0,100% 14%,0 52%,100% 47%,100% 60%,0 72%); }
+.vfx-pro--spiral .vfx-pro__core { width: 24%; height: 24%; border-radius: 50%; background: conic-gradient(from 45deg,transparent,var(--vfx-primary),transparent 28%,var(--vfx-secondary),transparent 62%); border: 5px solid color-mix(in srgb, var(--vfx-primary), transparent 35%); animation: vfx-pro-spin .62s cubic-bezier(.12,.88,.15,1) both; }
+.vfx-pro--spiral .vfx-pro__accent { border-radius: 50%; border-width: 3px; transform: rotate(20deg) scaleX(1.5); }
+.vfx-pro--lightning .vfx-pro__core { width: 44%; height: 42%; background: var(--vfx-primary); clip-path: polygon(42% 0,58% 0,49% 34%,78% 34%,34% 100%,43% 56%,19% 56%); filter: drop-shadow(0 0 8px var(--vfx-secondary)); }
+.vfx-pro--lightning .vfx-pro__trail { background: repeating-linear-gradient(94deg,transparent 0 9%,var(--vfx-secondary) 10% 12%,transparent 13% 20%); clip-path: polygon(0 30%,100% 0,100% 6%,0 43%,100% 58%,100% 66%,0 51%); }
+.vfx-pro--inferno .vfx-pro__core { width: 29%; height: 38%; background: radial-gradient(ellipse at 50% 75%,#fff 0 9%,var(--vfx-primary) 10% 28%,var(--vfx-secondary) 46%,transparent 71%); clip-path: polygon(50% 0,66% 27%,91% 42%,68% 55%,76% 100%,49% 76%,24% 100%,32% 57%,7% 42%,38% 27%); }
+.vfx-pro--inferno .vfx-pro__trail { background: linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter: blur(8px); animation: vfx-pro-flame .62s ease-out both; }
+.vfx-pro--element .vfx-pro__core { width: 34%; height: 32%; background: repeating-conic-gradient(from 10deg,transparent 0 12deg,var(--vfx-primary) 13deg 20deg,transparent 21deg 36deg); border-radius: 50%; border: 2px solid var(--vfx-secondary); }
+.vfx-pro--hex .vfx-pro__core { width: 30%; height: 30%; background: conic-gradient(from 30deg,var(--vfx-secondary),transparent 12%,var(--vfx-primary) 25%,transparent 38%,var(--vfx-secondary) 52%,transparent 67%); clip-path: polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%); }
+.vfx-pro--hex .vfx-pro__accent { border-radius: 0; transform: rotate(30deg); border-width: 2px; }
+.vfx-pro--finisher .vfx-pro__halo { inset: -15%; filter: blur(22px); opacity: .92; }
+.vfx-pro--finisher .vfx-pro__core { width: 43%; height: 43%; background: radial-gradient(circle,var(--vfx-primary) 0 5%,#fff 6% 10%,var(--vfx-secondary) 20%,transparent 64%); clip-path: polygon(50% 0,57% 36%,100% 50%,57% 64%,50% 100%,43% 64%,0 50%,43% 36%); }
+.vfx-pro--finisher .vfx-pro__accent { inset: 8%; border-width: 2px; border-radius: 50%; transform: scaleX(1.35); box-shadow: 0 0 30px var(--vfx-secondary); }
+.vfx-pro--heal .vfx-pro__core { width: 28%; height: 28%; background: radial-gradient(circle,var(--vfx-primary) 0 8%,transparent 9%),conic-gradient(var(--vfx-secondary),transparent 20%,var(--vfx-primary),transparent 60%); clip-path: polygon(50% 0,61% 35%,100% 50%,61% 65%,50% 100%,39% 65%,0 50%,39% 35%); }
+
+.vfx-pro--impact { animation-duration: .72s; }
+.vfx-pro--impact .vfx-pro__halo { inset: 0; background: radial-gradient(circle,color-mix(in srgb, var(--vfx-primary), transparent 25%) 0 4%,color-mix(in srgb, var(--vfx-secondary), transparent 48%) 18%,transparent 70%); animation: vfx-pro-impact-halo .72s cubic-bezier(.1,.7,.12,1) both; }
+.vfx-pro--impact .vfx-pro__core { width: 46%; height: 46%; background: conic-gradient(from 10deg,transparent 0 7%,var(--vfx-primary) 8% 12%,transparent 13% 26%,var(--vfx-secondary) 27% 31%,transparent 32% 55%,var(--vfx-primary) 56% 60%,transparent 61%); clip-path: polygon(50% 0,58% 34%,100% 50%,58% 66%,50% 100%,42% 66%,0 50%,42% 34%); animation: vfx-pro-impact-core .72s cubic-bezier(.1,.8,.1,1) both; }
+.vfx-pro--ring .vfx-pro__core { width: 48%; height: 48%; border: 3px solid var(--vfx-primary); border-radius: 50%; background: transparent; animation: vfx-pro-ring .62s cubic-bezier(.1,.8,.1,1) both; }
+.vfx-pro--projectile { left: calc(50% + var(--vfx-dx, 0px)); right: auto; width: 100%; top: calc(42% + var(--vfx-dy, 0px)); }
+.vfx-pro--projectile .vfx-pro__core { animation: vfx-pro-projectile .68s cubic-bezier(.1,.85,.12,1) both; }
+.vfx-pro--projectile .vfx-pro__trail { animation: vfx-pro-projectile-trail .68s cubic-bezier(.1,.85,.12,1) both; }
+.vfx-pro--spark { left: calc(50% + var(--vfx-dx, 0px)); right: auto; width: 100%; top: calc(42% + var(--vfx-dy, 0px)); animation-duration: .42s; }
+.vfx-pro--spark .vfx-pro__core { width: 8%; height: 8%; clip-path: polygon(50% 0,64% 36%,100% 50%,64% 64%,50% 100%,36% 64%,0 50%,36% 36%); }
+.vfx-pro--arena .vfx-pro__core { width: 70%; height: 70%; border: 2px solid var(--vfx-primary); border-radius: 50%; background: conic-gradient(transparent,var(--vfx-secondary),transparent 25%,var(--vfx-primary),transparent 60%); animation: vfx-pro-spin 1s linear both; }
+.vfx-pro--flash { position: fixed; z-index: 100; mix-blend-mode: screen; background: radial-gradient(circle,color-mix(in srgb,var(--vfx-primary),transparent 20%),transparent 65%); animation: vfx-pro-flash .42s ease-out both; }
+
+/* Luffy technique signatures: same compositor, deliberately different visual
+   grammar for each move instead of a recoloured shared projectile. */
+.vfx-style-elastic-pistol .vfx-pro__core { width: 58%; height: 5%; clip-path: polygon(0 50%,8% 18%,88% 0,100% 50%,88% 100%,8% 82%); }
+.vfx-style-elastic-pistol .vfx-pro__trail { height: 5%; top: 42%; filter: blur(1px); background: repeating-linear-gradient(90deg,transparent 0 9%,var(--vfx-secondary) 10% 12%,transparent 13% 20%); }
+.vfx-style-elastic-pistol.vfx-pro--impact > .vfx-pro__halo,
+.vfx-style-elastic-pistol.vfx-pro--impact > .vfx-pro__core,
+.vfx-style-elastic-pistol.vfx-pro--impact > .vfx-pro__trail,
+.vfx-style-elastic-pistol.vfx-pro--impact > .vfx-pro__accent,
+.vfx-style-elastic-pistol.vfx-pro--impact > .vfx-pro__shard { opacity:0; }
+.vfx-style-elastic-pistol.vfx-pro--charge > .vfx-pro__halo,
+.vfx-style-elastic-pistol.vfx-pro--charge > .vfx-pro__core,
+.vfx-style-elastic-pistol.vfx-pro--charge > .vfx-pro__trail,
+.vfx-style-elastic-pistol.vfx-pro--charge > .vfx-pro__accent,
+.vfx-style-elastic-pistol.vfx-pro--charge > .vfx-pro__shard,
+.vfx-style-elastic-pistol.vfx-pro--emit > .vfx-pro__halo,
+.vfx-style-elastic-pistol.vfx-pro--emit > .vfx-pro__core,
+.vfx-style-elastic-pistol.vfx-pro--emit > .vfx-pro__trail,
+.vfx-style-elastic-pistol.vfx-pro--emit > .vfx-pro__accent,
+.vfx-style-elastic-pistol.vfx-pro--emit > .vfx-pro__shard,
+.vfx-style-elastic-pistol.vfx-pro--trail > .vfx-pro__halo,
+.vfx-style-elastic-pistol.vfx-pro--trail > .vfx-pro__core,
+.vfx-style-elastic-pistol.vfx-pro--trail > .vfx-pro__trail,
+.vfx-style-elastic-pistol.vfx-pro--trail > .vfx-pro__accent,
+.vfx-style-elastic-pistol.vfx-pro--trail > .vfx-pro__shard { opacity:0; }
+.vfx-style-elastic-gatling .vfx-pro__core { width: 54%; height: 35%; background: repeating-linear-gradient(90deg,transparent 0 9%,var(--vfx-primary) 10% 13%,transparent 14% 20%); clip-path: polygon(0 50%,12% 25%,100% 0,88% 50%,100% 100%,12% 75%); }
+.vfx-style-elastic-gatling .vfx-pro__trail { height: 38%; background: repeating-linear-gradient(168deg,transparent 0 8%,var(--vfx-secondary) 9% 12%,transparent 13% 19%); }
+.vfx-style-steam-activation .vfx-pro__core { width: 52%; height: 44%; background: repeating-radial-gradient(ellipse at 50% 80%,transparent 0 9%,var(--vfx-primary) 10% 13%,transparent 14% 23%); filter: blur(2px); }
+.vfx-style-steam-activation .vfx-pro__trail { height: 52%; top: 12%; background: repeating-linear-gradient(82deg,transparent 0 15%,var(--vfx-secondary) 16% 20%,transparent 21% 31%); filter: blur(5px); }
+.vfx-style-king-kong .vfx-pro__core { width: 68%; height: 60%; background: radial-gradient(ellipse at 36% 58%,#fff 0 4%,var(--vfx-primary) 5% 16%,var(--vfx-secondary) 17% 34%,transparent 65%); clip-path: polygon(50% 0,62% 34%,100% 50%,62% 66%,50% 100%,38% 66%,0 50%,38% 34%); }
+.vfx-style-king-kong .vfx-pro__accent { inset: 2%; border-width: 3px; border-radius: 46% 53% 41% 58%; transform: rotate(var(--vfx-tilt)) scale(1.2); }
+.vfx-style-jet-pistol .vfx-pro__core { width: 70%; height: 4%; clip-path: polygon(0 50%,20% 20%,100% 0,88% 50%,100% 100%,20% 80%); }
+.vfx-style-jet-pistol .vfx-pro__trail { left: 5%; right: 10%; height: 19%; top: 34%; opacity: .34; filter: blur(5px); }
+.vfx-style-jet-gatling .vfx-pro__core { width: 70%; height: 52%; background: repeating-linear-gradient(174deg,transparent 0 12%,var(--vfx-primary) 13% 17%,transparent 18% 25%); clip-path: polygon(0 46%,100% 0,100% 8%,0 55%,100% 55%,100% 63%,0 64%); }
+.vfx-style-jet-gatling .vfx-pro__accent { width: 58%; height: 58%; left: 20%; top: 18%; border-radius: 50%; transform: rotate(var(--vfx-orbit)); border-style: dashed; }
+.vfx-style-soru .vfx-pro__core { width: 56%; height: 12%; background: linear-gradient(90deg,transparent,var(--vfx-primary),transparent); clip-path: polygon(0 50%,30% 0,100% 50%,30% 100%); }
+.vfx-style-soru .vfx-pro__trail { left: 30%; right: 30%; top: 20%; height: 55%; background: repeating-linear-gradient(90deg,transparent 0 11%,var(--vfx-secondary) 12% 14%,transparent 15% 23%); transform: skewX(var(--vfx-shear)); }
+.vfx-style-red-hawk .vfx-pro__core { width: 42%; height: 50%; background: radial-gradient(ellipse at 48% 72%,#fff 0 7%,var(--vfx-primary) 8% 28%,var(--vfx-secondary) 42%,transparent 68%); clip-path: polygon(50% 0,72% 26%,100% 48%,72% 63%,58% 100%,42% 70%,8% 61%,32% 42%); }
+.vfx-style-red-hawk .vfx-pro__trail { height: 24%; background: linear-gradient(90deg,transparent,var(--vfx-secondary),var(--vfx-primary),transparent); filter: blur(5px); }
+
+/* Zoro signatures: steel, wind and nine-sword silhouettes. */
+.vfx-style-oni-giri .vfx-pro__core { width: 64%; height: 8%; background: linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); transform: translate(-50%,-50%) rotate(-28deg); clip-path: polygon(0 50%,16% 22%,84% 0,100% 50%,84% 100%,16% 78%); }
+.vfx-style-oni-giri .vfx-pro__accent { width: 58%; height: 10%; left: 21%; top: 48%; transform: rotate(28deg); border-width: 2px; }
+.vfx-style-iron-body .vfx-pro__core { width: 32%; height: 48%; background: repeating-linear-gradient(90deg,transparent 0 12%,var(--vfx-primary) 13% 17%,transparent 18% 28%); clip-path: polygon(50% 0,94% 25%,82% 78%,50% 100%,18% 78%,6% 25%); }
+.vfx-style-iron-body .vfx-pro__halo { inset: 4%; border: 2px solid color-mix(in srgb,var(--vfx-secondary),transparent 30%); filter: blur(2px); }
+.vfx-style-tatsumaki .vfx-pro__core { width: 54%; height: 54%; border: 6px solid var(--vfx-secondary); border-left-color: transparent; border-radius: 50%; background: conic-gradient(transparent,var(--vfx-primary),transparent 24%,var(--vfx-secondary),transparent 64%); animation: vfx-pro-tatsumaki 1s cubic-bezier(.12,.8,.12,1) both; }
+.vfx-style-tatsumaki .vfx-pro__trail { height: 46%; background: repeating-conic-gradient(from 20deg,transparent 0 20deg,var(--vfx-primary) 21deg 26deg,transparent 27deg 44deg); border-radius: 50%; }
+.vfx-style-ashura-awakening .vfx-pro__core { width: 40%; height: 52%; background: repeating-linear-gradient(90deg,transparent 0 13%,var(--vfx-primary) 14% 18%,transparent 19% 28%); clip-path: polygon(50% 0,82% 20%,100% 50%,82% 80%,50% 100%,18% 80%,0 50%,18% 20%); }
+.vfx-style-ashura-awakening .vfx-pro__accent { width: 74%; left: 13%; border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleY(.78); border-width: 2px; }
+.vfx-style-ashura-ichibugin .vfx-pro__core { width: 70%; height: 58%; background: repeating-conic-gradient(from 12deg,transparent 0 7deg,var(--vfx-primary) 8deg 13deg,transparent 14deg 32deg); clip-path: polygon(50% 0,63% 30%,100% 50%,63% 70%,50% 100%,37% 70%,0 50%,37% 30%); }
+.vfx-style-ashura-ichibugin .vfx-pro__trail { height: 50%; background: repeating-linear-gradient(165deg,transparent 0 9%,var(--vfx-secondary) 10% 13%,transparent 14% 22%); }
+.vfx-style-tora-gari .vfx-pro__core { width: 62%; height: 12%; background: linear-gradient(90deg,transparent,var(--vfx-primary) 22%,#fff 50%,var(--vfx-secondary) 78%,transparent); clip-path: polygon(0 50%,28% 8%,100% 28%,76% 50%,100% 72%,28% 92%); transform: translate(-50%,-50%) rotate(14deg); }
+.vfx-style-tora-gari .vfx-pro__accent { width: 52%; height: 42%; left: 24%; top: 24%; border-radius: 50%; transform: rotate(-22deg) skewX(-18deg); }
+.vfx-style-kiki-kyu-ten .vfx-pro__core { width: 65%; height: 7%; background: linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); clip-path: polygon(0 50%,20% 0,100% 42%,100% 58%,20% 100%); }
+.vfx-style-kiki-kyu-ten .vfx-pro__trail { height: 8%; top: 42%; background: repeating-linear-gradient(90deg,transparent 0 14%,var(--vfx-secondary) 15% 17%,transparent 18% 29%); }
+.vfx-style-hyakuhachi .vfx-pro__core { width: 52%; height: 25%; background: radial-gradient(ellipse,var(--vfx-primary) 0 14%,var(--vfx-secondary) 15% 32%,transparent 66%); clip-path: polygon(0 50%,26% 18%,100% 0,84% 50%,100% 100%,26% 82%); }
+.vfx-style-hyakuhachi .vfx-pro__accent { width: 66%; height: 14%; left: 17%; top: 36%; border-radius: 50%; transform: rotate(-8deg); border-style: dashed; }
+
+/* Nami signatures: weather control, refraction and fluid motion. */
+.vfx-style-mirage-veil .vfx-pro__core { width: 42%; height: 48%; background: repeating-linear-gradient(90deg,transparent 0 12%,color-mix(in srgb,var(--vfx-primary),transparent 20%) 13% 17%,transparent 18% 28%); clip-path: polygon(50% 0,92% 24%,74% 50%,92% 76%,50% 100%,8% 76%,26% 50%,8% 24%); filter: blur(1px); }
+.vfx-style-mirage-veil .vfx-pro__accent { inset: 12%; border-style: dashed; border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleX(.72); }
+.vfx-style-water-shot .vfx-pro__core { width: 52%; height: 23%; background: radial-gradient(ellipse at 20% 50%,#fff 0 7%,var(--vfx-primary) 8% 26%,var(--vfx-secondary) 42%,transparent 70%); clip-path: polygon(0 50%,22% 15%,100% 0,76% 50%,100% 100%,22% 85%); }
+.vfx-style-water-shot .vfx-pro__trail { height: 13%; background: repeating-linear-gradient(90deg,transparent 0 8%,var(--vfx-secondary) 9% 13%,transparent 14% 22%); filter: blur(2px); }
+.vfx-style-thunderbolt .vfx-pro__core { width: 19%; height: 68%; background: var(--vfx-primary); clip-path: polygon(48% 0,64% 32%,88% 32%,55% 58%,66% 58%,22% 100%,39% 55%,15% 55%); filter: drop-shadow(0 0 12px var(--vfx-secondary)); }
+.vfx-style-thunderbolt .vfx-pro__trail { width: 36%; left: 32%; right: auto; height: 72%; top: 12%; background: repeating-linear-gradient(90deg,transparent 0 20%,var(--vfx-secondary) 21% 24%,transparent 25% 39%); clip-path: polygon(50% 0,64% 35%,100% 50%,62% 65%,50% 100%,38% 65%,0 50%,36% 35%); }
+.vfx-style-cyclone .vfx-pro__core { width: 56%; height: 54%; border: 5px solid var(--vfx-secondary); border-right-color: transparent; border-radius: 50%; background: repeating-conic-gradient(from 10deg,transparent 0 18deg,var(--vfx-primary) 19deg 25deg,transparent 26deg 42deg); animation: vfx-pro-cyclone 1s cubic-bezier(.1,.8,.12,1) both; }
+.vfx-style-cyclone .vfx-pro__accent { width: 70%; left: 15%; height: 70%; top: 14%; border-radius: 50%; border-style: dotted; transform: rotate(var(--vfx-orbit)) scaleY(.72); }
+
+/* Naruto signatures: chakra spheres, clones, claws and bijuu pressure. */
+.vfx-style-rasengan .vfx-pro__core { width: 30%; height: 30%; border-radius: 50%; background: repeating-conic-gradient(var(--vfx-primary) 0 18deg,transparent 19deg 31deg,var(--vfx-secondary) 32deg 44deg); border: 3px solid var(--vfx-primary); animation: vfx-pro-spin 1s cubic-bezier(.1,.85,.12,1) both; }
+.vfx-style-rasengan .vfx-pro__trail { left: 30%; right: 12%; height: 16%; background: linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter: blur(4px); }
+.vfx-style-shadow-clones .vfx-pro__core { width: 56%; height: 42%; background: repeating-linear-gradient(90deg,transparent 0 16%,var(--vfx-primary) 17% 20%,transparent 21% 34%); clip-path: polygon(0 50%,12% 18%,50% 0,88% 18%,100% 50%,88% 82%,50% 100%,12% 82%); opacity:.8; }
+.vfx-style-shadow-clones .vfx-pro__accent { inset: 8%; border-style: dashed; transform: rotate(var(--vfx-orbit)); }
+.vfx-style-odama-rasengan .vfx-pro__core { width: 64%; height: 64%; border-radius: 50%; background: repeating-conic-gradient(from 20deg,var(--vfx-primary) 0 13deg,transparent 14deg 29deg,var(--vfx-secondary) 30deg 38deg,transparent 39deg 58deg); border: 5px solid var(--vfx-secondary); animation: vfx-pro-spin 1.2s cubic-bezier(.1,.82,.1,1) both; }
+.vfx-style-odama-rasengan .vfx-pro__halo { inset:-10%; filter:blur(18px); }
+.vfx-style-kyubi-awakening .vfx-pro__core { width: 48%; height: 62%; background: repeating-linear-gradient(90deg,transparent 0 12%,var(--vfx-primary) 13% 18%,transparent 19% 29%); clip-path: polygon(50% 0,72% 18%,88% 48%,68% 76%,50% 100%,32% 76%,12% 48%,28% 18%); }
+.vfx-style-kyubi-awakening .vfx-pro__accent { width: 78%; left: 11%; border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleY(.8); border-width:3px; }
+.vfx-style-kyubi-claw .vfx-pro__core { width: 60%; height: 20%; background: repeating-linear-gradient(160deg,transparent 0 9%,var(--vfx-primary) 10% 15%,transparent 16% 27%); clip-path: polygon(0 50%,18% 14%,100% 0,78% 50%,100% 100%,18% 86%); }
+.vfx-style-kyubi-claw .vfx-pro__trail { height: 32%; background: repeating-linear-gradient(165deg,transparent 0 12%,var(--vfx-secondary) 13% 17%,transparent 18% 28%); }
+.vfx-style-kyubi-regen .vfx-pro__core { width: 38%; height: 58%; background: repeating-radial-gradient(ellipse at 50% 80%,transparent 0 9%,var(--vfx-primary) 10% 14%,transparent 15% 24%); clip-path: polygon(50% 0,78% 25%,100% 50%,78% 75%,50% 100%,22% 75%,0 50%,22% 25%); }
+.vfx-style-kyubi-regen .vfx-pro__halo { inset: 0; filter: blur(15px); }
+.vfx-style-bijuu-roar .vfx-pro__core { width: 72%; height: 46%; background: repeating-linear-gradient(90deg,transparent 0 7%,var(--vfx-primary) 8% 13%,transparent 14% 21%); clip-path: polygon(0 50%,24% 12%,100% 0,80% 50%,100% 100%,24% 88%); }
+.vfx-style-bijuu-roar .vfx-pro__trail { height: 52%; background: repeating-linear-gradient(90deg,transparent 0 17%,var(--vfx-secondary) 18% 22%,transparent 23% 34%); filter: blur(4px); }
+.vfx-style-menacing-ball .vfx-pro__core { width: 48%; height: 48%; border-radius:50%; background: radial-gradient(circle,#111 0 24%,var(--vfx-secondary) 25% 42%,#171026 43% 58%,transparent 70%); box-shadow:0 0 24px var(--vfx-secondary); animation:vfx-pro-void-ball .9s cubic-bezier(.1,.85,.1,1) both; }
+.vfx-style-menacing-ball .vfx-pro__accent { inset:12%; border-radius:50%; border-color:var(--vfx-secondary); transform:rotate(var(--vfx-orbit)); }
+
+/* Sasuke signatures: focused lightning, flame control and ocular space. */
+.vfx-style-chidori .vfx-pro__core { width: 38%; height: 28%; background: repeating-linear-gradient(105deg,transparent 0 7%,var(--vfx-primary) 8% 13%,transparent 14% 21%); clip-path: polygon(0 50%,18% 20%,100% 0,72% 50%,100% 100%,18% 80%); filter: drop-shadow(0 0 10px var(--vfx-secondary)); }
+.vfx-style-chidori .vfx-pro__trail { height: 28%; background: repeating-linear-gradient(100deg,transparent 0 10%,var(--vfx-secondary) 11% 15%,transparent 16% 25%); }
+.vfx-style-katon .vfx-pro__core { width: 54%; height: 38%; background: radial-gradient(ellipse at 22% 50%,#fff 0 5%,var(--vfx-primary) 6% 23%,var(--vfx-secondary) 34%,transparent 70%); clip-path: polygon(0 50%,18% 12%,100% 0,76% 50%,100% 100%,18% 88%); }
+.vfx-style-katon .vfx-pro__trail { height: 30%; background: repeating-linear-gradient(165deg,transparent 0 14%,var(--vfx-secondary) 15% 20%,transparent 21% 31%); filter: blur(4px); }
+.vfx-style-chidori-nagashi .vfx-pro__core { width: 58%; height: 58%; border-radius:50%; border:4px solid var(--vfx-primary); background: repeating-conic-gradient(transparent 0 14deg,var(--vfx-secondary) 15deg 21deg,transparent 22deg 39deg); animation:vfx-pro-spin 1s ease-out both; }
+.vfx-style-chidori-nagashi .vfx-pro__trail { inset: 19%; background: repeating-linear-gradient(90deg,transparent 0 11%,var(--vfx-primary) 12% 15%,transparent 16% 25%); }
+.vfx-style-sharingan-awakening .vfx-pro__core { width: 34%; height: 34%; border-radius:50%; border:4px solid var(--vfx-primary); background: repeating-conic-gradient(var(--vfx-secondary) 0 28deg,transparent 29deg 58deg); animation:vfx-pro-spin .8s linear both; }
+.vfx-style-sharingan-awakening .vfx-pro__accent { inset: 5%; border-radius:50%; border-color:var(--vfx-secondary); transform:rotate(var(--vfx-orbit)) scaleX(.7); }
+.vfx-style-chidori-spear .vfx-pro__core { width: 74%; height: 4%; background: linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); clip-path:polygon(0 50%,24% 0,100% 40%,100% 60%,24% 100%); }
+.vfx-style-chidori-spear .vfx-pro__trail { height: 13%; background:repeating-linear-gradient(90deg,transparent 0 8%,var(--vfx-secondary) 9% 12%,transparent 13% 22%); }
+.vfx-style-genjutsu .vfx-pro__core { width: 46%; height: 46%; background:repeating-conic-gradient(from 12deg,transparent 0 18deg,var(--vfx-secondary) 19deg 27deg,transparent 28deg 44deg); clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%); animation:vfx-pro-spin 1s ease-in-out both; }
+.vfx-style-genjutsu .vfx-pro__accent { inset: 4%; border-color:var(--vfx-primary); border-radius:50%; transform:rotate(var(--vfx-orbit)) scaleX(.7); }
+.vfx-style-kirin .vfx-pro__core { width: 28%; height: 78%; background:var(--vfx-primary); clip-path:polygon(44% 0,62% 28%,82% 28%,57% 52%,74% 52%,28% 100%,42% 58%,20% 58%); filter:drop-shadow(0 0 14px var(--vfx-secondary)); }
+.vfx-style-kirin .vfx-pro__trail { width: 56%; left:22%; right:auto; height:78%; top:11%; background:repeating-linear-gradient(90deg,transparent 0 16%,var(--vfx-secondary) 17% 20%,transparent 21% 33%); clip-path:polygon(50% 0,64% 36%,100% 50%,62% 64%,50% 100%,38% 64%,0 50%,36% 36%); }
+.vfx-style-sharingan-counter .vfx-pro__core { width: 40%; height: 40%; border-radius:50%; border:3px solid var(--vfx-primary); background:radial-gradient(circle,transparent 0 22%,var(--vfx-secondary) 23% 27%,transparent 28% 46%,var(--vfx-primary) 47% 50%,transparent 51%); }
+.vfx-style-sharingan-counter .vfx-pro__accent { inset: 0; border-radius:50%; border-style:dashed; transform:rotate(var(--vfx-orbit)); }
+
+/* Sakura signatures: medical chakra, mass and controlled strength. */
+.vfx-style-sakura-heal .vfx-pro__core { width: 30%; height: 30%; border-radius:50%; background:radial-gradient(circle,#fff 0 9%,var(--vfx-primary) 10% 22%,var(--vfx-secondary) 23% 42%,transparent 65%); }
+.vfx-style-sakura-heal .vfx-pro__trail { height: 46%; top:18%; background:repeating-linear-gradient(90deg,transparent 0 13%,var(--vfx-secondary) 14% 18%,transparent 19% 30%); clip-path:polygon(50% 0,72% 28%,100% 50%,72% 72%,50% 100%,28% 72%,0 50%,28% 28%); }
+.vfx-style-cherry-punch .vfx-pro__core { width: 58%; height: 20%; background:linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); clip-path:polygon(0 50%,18% 8%,100% 0,78% 50%,100% 100%,18% 92%); }
+.vfx-style-cherry-punch .vfx-pro__trail { height: 42%; top:30%; background:repeating-linear-gradient(165deg,transparent 0 15%,var(--vfx-secondary) 16% 20%,transparent 21% 32%); }
+.vfx-style-sakura-heal-all .vfx-pro__core { width: 58%; height: 58%; border:4px solid var(--vfx-primary); border-radius:50%; background:repeating-conic-gradient(transparent 0 16deg,var(--vfx-secondary) 17deg 27deg,transparent 28deg 46deg); animation:vfx-pro-spin 1s ease-out both; }
+.vfx-style-sakura-heal-all .vfx-pro__accent { inset:4%; border-radius:50%; border-style:dotted; transform:rotate(var(--vfx-orbit)); }
+.vfx-style-sakura-strength .vfx-pro__core { width: 38%; height: 48%; background:radial-gradient(ellipse,var(--vfx-primary) 0 8%,var(--vfx-secondary) 9% 27%,transparent 66%); clip-path:polygon(50% 0,88% 25%,76% 72%,50% 100%,24% 72%,12% 25%); }
+.vfx-style-sakura-strength .vfx-pro__accent { width:62%; left:19%; top:19%; height:62%; border-width:3px; border-radius:50%; transform:rotate(var(--vfx-orbit)) scaleX(.65); }
+
+/* Jotaro signatures: close-range Stand pressure, precision and time. */
+.vfx-style-ora-barrage .vfx-pro__core { width:58%; height:36%; background:repeating-radial-gradient(ellipse at 14% 50%,var(--vfx-primary) 0 5%,transparent 6% 14%); clip-path:polygon(0 50%,12% 15%,100% 0,83% 50%,100% 100%,12% 85%); }
+.vfx-style-ora-barrage .vfx-pro__trail { height:28%; background:repeating-linear-gradient(170deg,transparent 0 8%,var(--vfx-secondary) 9% 13%,transparent 14% 22%); }
+.vfx-style-star-finger .vfx-pro__core { width:68%; height:5%; background:linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); clip-path:polygon(0 50%,30% 0,100% 42%,100% 58%,30% 100%); }
+.vfx-style-star-finger .vfx-pro__accent { width:25%; left:62%; top:35%; height:20%; border-radius:50%; border-width:2px; }
+.vfx-style-star-platinum-awakening .vfx-pro__core { width:44%; height:58%; background:repeating-linear-gradient(90deg,transparent 0 12%,var(--vfx-primary) 13% 18%,transparent 19% 29%); clip-path:polygon(50% 0,82% 20%,100% 50%,82% 80%,50% 100%,18% 80%,0 50%,18% 20%); }
+.vfx-style-star-platinum-awakening .vfx-pro__accent { inset:5%; border-width:3px; border-radius:50%; transform:rotate(var(--vfx-orbit)) scaleX(.8); }
+.vfx-style-star-platinum-transform .vfx-pro__core { width:30%; height:62%; border:4px solid var(--vfx-primary); background:radial-gradient(ellipse,var(--vfx-secondary),transparent 64%); clip-path:polygon(50% 0,88% 25%,76% 72%,50% 100%,24% 72%,12% 25%); }
+.vfx-style-star-platinum-transform .vfx-pro__trail { inset:8%; border:2px solid var(--vfx-secondary); border-radius:50%; transform:rotate(var(--vfx-orbit)) scaleX(.7); }
+.vfx-style-ora-overdrive .vfx-pro__core { width:74%; height:44%; background:repeating-linear-gradient(90deg,transparent 0 6%,var(--vfx-primary) 7% 11%,transparent 12% 18%); clip-path:polygon(0 50%,20% 9%,100% 0,82% 50%,100% 100%,20% 91%); }
+.vfx-style-ora-overdrive .vfx-pro__accent { width:72%; left:14%; top:25%; height:50%; border-style:dashed; transform:rotate(var(--vfx-orbit)); }
+.vfx-style-time-stop .vfx-pro__core { width:46%; height:46%; border:4px solid var(--vfx-primary); border-radius:50%; background:repeating-conic-gradient(transparent 0 25deg,var(--vfx-secondary) 26deg 30deg,transparent 31deg 57deg); animation:vfx-pro-time-stop .9s steps(2,end) both; }
+.vfx-style-time-stop .vfx-pro__accent { inset:2%; border-radius:50%; border-style:dotted; transform:rotate(var(--vfx-orbit)); }
+.vfx-style-star-breaker .vfx-pro__core { width:66%; height:60%; background:radial-gradient(ellipse at 35% 52%,#fff 0 5%,var(--vfx-primary) 6% 20%,var(--vfx-secondary) 21% 40%,transparent 68%); clip-path:polygon(50% 0,61% 35%,100% 50%,61% 65%,50% 100%,39% 65%,0 50%,39% 35%); }
+.vfx-style-star-breaker .vfx-pro__halo { inset:-12%; filter:blur(20px); }
+.vfx-style-precision-guard .vfx-pro__core { width:36%; height:36%; border:3px solid var(--vfx-primary); background:radial-gradient(circle,transparent 0 30%,var(--vfx-secondary) 31% 36%,transparent 37%); clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
+.vfx-style-precision-guard .vfx-pro__accent { inset:16%; border-style:solid; transform:rotate(45deg); }
+
+/* Josuke signatures: repair, diamond pressure and returning force. */
+.vfx-style-crazy-diamond-heal .vfx-pro__core { width:32%; height:32%; background:repeating-conic-gradient(transparent 0 18deg,var(--vfx-primary) 19deg 30deg,transparent 31deg 48deg); clip-path:polygon(50% 0,82% 18%,100% 50%,82% 82%,50% 100%,18% 82%,0 50%,18% 18%); }
+.vfx-style-crazy-diamond-heal .vfx-pro__trail { height:42%; top:20%; background:repeating-linear-gradient(90deg,transparent 0 13%,var(--vfx-secondary) 14% 18%,transparent 19% 29%); }
+.vfx-style-dora-punch .vfx-pro__core { width:58%; height:18%; background:linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); clip-path:polygon(0 50%,20% 6%,100% 0,80% 50%,100% 100%,20% 94%); }
+.vfx-style-dora-punch .vfx-pro__accent { width:38%; left:42%; top:28%; height:44%; border-width:3px; border-radius:50%; transform:rotate(var(--vfx-tilt)); }
+.vfx-style-restore-all .vfx-pro__core { width:64%; height:64%; border:3px solid var(--vfx-primary); border-radius:50%; background:repeating-conic-gradient(transparent 0 14deg,var(--vfx-secondary) 15deg 24deg,transparent 25deg 42deg); animation:vfx-pro-spin 1s ease-out both; }
+.vfx-style-restore-all .vfx-pro__accent { inset:6%; border-style:dotted; border-radius:50%; transform:rotate(var(--vfx-orbit)); }
+.vfx-style-crazy-diamond-awakening .vfx-pro__core { width:46%; height:58%; background:linear-gradient(135deg,transparent 0 35%,var(--vfx-primary) 36% 42%,transparent 43% 57%,var(--vfx-secondary) 58% 64%,transparent 65%); clip-path:polygon(50% 0,88% 25%,76% 73%,50% 100%,24% 73%,12% 25%); }
+.vfx-style-crazy-diamond-awakening .vfx-pro__accent { inset:4%; border-width:3px; border-radius:50%; transform:rotate(var(--vfx-orbit)) scaleX(.75); }
+.vfx-style-dora-barrage .vfx-pro__core { width:68%; height:34%; background:repeating-linear-gradient(90deg,transparent 0 8%,var(--vfx-primary) 9% 13%,transparent 14% 20%); clip-path:polygon(0 50%,13% 15%,100% 0,84% 50%,100% 100%,13% 85%); }
+.vfx-style-dora-barrage .vfx-pro__trail { height:32%; background:repeating-linear-gradient(170deg,transparent 0 8%,var(--vfx-secondary) 9% 14%,transparent 15% 24%); }
+.vfx-style-fix-pulse .vfx-pro__core { width:24%; height:24%; border:4px solid var(--vfx-primary); border-radius:50%; background:radial-gradient(circle,var(--vfx-secondary),transparent 64%); animation:vfx-pro-ring .7s ease-out both; }
+.vfx-style-fix-pulse .vfx-pro__accent { inset:18%; border-style:dashed; border-radius:50%; transform:rotate(var(--vfx-orbit)); }
+.vfx-style-reflect-fix .vfx-pro__core { width:46%; height:46%; background:repeating-conic-gradient(transparent 0 21deg,var(--vfx-primary) 22deg 30deg,transparent 31deg 55deg); clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%); transform:translate(-50%,-50%) scaleX(-1); }
+.vfx-style-reflect-fix .vfx-pro__trail { transform:scaleX(-1) skewX(var(--vfx-shear)); background:linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); }
+.vfx-style-team-restore .vfx-pro__core { width:74%; height:74%; border:4px solid var(--vfx-primary); border-radius:50%; background:repeating-conic-gradient(transparent 0 10deg,var(--vfx-secondary) 11deg 17deg,transparent 18deg 30deg); animation:vfx-pro-spin 1.2s ease-out both; }
+.vfx-style-team-restore .vfx-pro__halo { inset:-8%; filter:blur(18px); }
+
+/* Jolyne signatures: threads, tension, folding space and Stone Free pressure. */
+.vfx-style-stone-free-string .vfx-pro__core { width:72%; height:3%; background:linear-gradient(90deg,transparent,var(--vfx-primary),#fff,var(--vfx-secondary),transparent); clip-path:polygon(0 50%,20% 0,100% 42%,100% 58%,20% 100%); }
+.vfx-style-stone-free-string .vfx-pro__trail { height:12%; background:repeating-linear-gradient(90deg,transparent 0 10%,var(--vfx-secondary) 11% 13%,transparent 14% 24%); }
+.vfx-style-jolyne-ora .vfx-pro__core { width:66%; height:34%; background:repeating-linear-gradient(90deg,transparent 0 8%,var(--vfx-primary) 9% 13%,transparent 14% 20%); clip-path:polygon(0 50%,14% 14%,100% 0,84% 50%,100% 100%,14% 86%); }
+.vfx-style-jolyne-ora .vfx-pro__trail { height:28%; background:repeating-linear-gradient(168deg,transparent 0 8%,var(--vfx-secondary) 9% 13%,transparent 14% 23%); }
+.vfx-style-stone-free-web .vfx-pro__core { width:64%; height:64%; background:repeating-linear-gradient(45deg,transparent 0 11%,var(--vfx-primary) 12% 14%,transparent 15% 25%),repeating-linear-gradient(-45deg,transparent 0 11%,var(--vfx-secondary) 12% 14%,transparent 15% 25%); clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
+.vfx-style-stone-free-web .vfx-pro__accent { inset:0; border-style:dotted; transform:rotate(var(--vfx-orbit)) scale(.85); }
+.vfx-style-stone-free-awakening .vfx-pro__core { width:38%; height:62%; background:repeating-linear-gradient(90deg,transparent 0 10%,var(--vfx-primary) 11% 14%,transparent 15% 23%); clip-path:polygon(50% 0,86% 24%,78% 74%,50% 100%,22% 74%,14% 24%); }
+.vfx-style-stone-free-awakening .vfx-pro__accent { inset:4%; border-radius:50%; border-width:2px; transform:rotate(var(--vfx-orbit)) scaleX(.7); }
+.vfx-style-string-storm .vfx-pro__core { width:60%; height:60%; border:3px solid var(--vfx-primary); border-radius:50%; background:repeating-conic-gradient(transparent 0 8deg,var(--vfx-secondary) 9deg 13deg,transparent 14deg 26deg); animation:vfx-pro-spin 1s cubic-bezier(.1,.85,.1,1) both; }
+.vfx-style-string-storm .vfx-pro__trail { height:56%; background:repeating-linear-gradient(84deg,transparent 0 10%,var(--vfx-primary) 11% 14%,transparent 15% 24%); }
+.vfx-style-mobius-strip .vfx-pro__core { width:56%; height:38%; border:3px solid var(--vfx-primary); background:linear-gradient(90deg,transparent 0 30%,var(--vfx-secondary) 31% 40%,transparent 41% 65%,var(--vfx-primary) 66% 75%,transparent 76%); transform:translate(-50%,-50%) rotate(var(--vfx-tilt)) skewX(-18deg); }
+.vfx-style-mobius-strip .vfx-pro__accent { width:65%; left:18%; top:29%; height:42%; border-radius:50%; transform:rotate(var(--vfx-orbit)) scaleX(.6); }
+.vfx-style-string-guard .vfx-pro__core { width:52%; height:52%; border:3px solid var(--vfx-primary); border-radius:50%; background:repeating-conic-gradient(transparent 0 20deg,var(--vfx-secondary) 21deg 25deg,transparent 26deg 50deg); }
+.vfx-style-string-guard .vfx-pro__accent { inset:16%; border-style:dashed; transform:rotate(var(--vfx-orbit)) scaleX(.7); }
+.vfx-style-stone-free-beatdown .vfx-pro__core { width:76%; height:52%; background:repeating-linear-gradient(90deg,transparent 0 6%,var(--vfx-primary) 7% 11%,transparent 12% 17%); clip-path:polygon(0 50%,18% 10%,100% 0,82% 50%,100% 100%,18% 90%); }
+.vfx-style-stone-free-beatdown .vfx-pro__halo { inset:-12%; filter:blur(20px); }
+
+/* Katana set: ten readable silhouettes, all driven by the character palette. */
+.vfx-pro.vfx-blade-draw .vfx-pro__core {
+    width: 78%; height: 3%; background: linear-gradient(90deg, transparent, var(--vfx-primary) 22%, #fff 50%, var(--vfx-secondary) 78%, transparent);
+    clip-path: polygon(0 50%, 12% 18%, 88% 0, 100% 50%, 88% 100%, 12% 82%);
+    transform: translate(-50%, -50%) rotate(-20deg);
+    filter: drop-shadow(0 0 9px var(--vfx-primary));
+}
+.vfx-pro.vfx-blade-draw .vfx-pro__trail { left: 13%; right: 13%; top: 45%; height: 7%; opacity: .34; transform: rotate(-20deg); background: linear-gradient(90deg, transparent, var(--vfx-secondary), transparent); filter: blur(4px); }
+.vfx-pro.vfx-blade-draw .vfx-pro__accent { left: 20%; top: 29%; width: 60%; height: 26%; border: 2px solid var(--vfx-primary); border-right-color: transparent; border-bottom-color: transparent; border-radius: 50%; transform: rotate(-18deg) skewX(-22deg); }
+
+.vfx-pro.vfx-blade-cross .vfx-pro__core {
+    width: 82%; height: 4%; background: linear-gradient(90deg, transparent, #fff 35%, var(--vfx-primary) 50%, var(--vfx-secondary) 68%, transparent);
+    clip-path: polygon(0 50%, 15% 20%, 86% 0, 100% 50%, 86% 100%, 15% 80%); transform: translate(-50%, -50%) rotate(-27deg);
+    filter: drop-shadow(0 0 10px var(--vfx-secondary));
+}
+.vfx-pro.vfx-blade-cross .vfx-pro__accent { left: 10%; top: 39%; width: 80%; height: 4%; border: 0; background: linear-gradient(90deg, transparent, var(--vfx-secondary) 30%, #fff 50%, var(--vfx-primary) 70%, transparent); transform: rotate(27deg); filter: drop-shadow(0 0 7px var(--vfx-primary)); }
+.vfx-pro.vfx-blade-cross .vfx-pro__trail { left: 7%; right: 7%; top: 48%; height: 12%; opacity: .28; transform: rotate(-27deg); background: linear-gradient(90deg, transparent, var(--vfx-primary), transparent); filter: blur(6px); }
+
+.vfx-pro.vfx-blade-crescent .vfx-pro__core {
+    width: 52%; height: 62%; background: transparent; border: 7px solid var(--vfx-primary); border-left-color: transparent; border-bottom-color: var(--vfx-secondary);
+    border-radius: 50%; clip-path: none; transform: translate(-50%, -50%) rotate(-32deg) scaleX(1.18); filter: drop-shadow(0 0 9px var(--vfx-secondary));
+}
+.vfx-pro.vfx-blade-crescent .vfx-pro__accent { left: 18%; top: 42%; width: 64%; height: 4%; border: 0; background: linear-gradient(90deg, transparent, #fff, var(--vfx-primary), transparent); transform: rotate(-32deg); }
+.vfx-pro.vfx-blade-crescent .vfx-pro__trail { left: 23%; right: 19%; top: 22%; height: 56%; opacity: .2; border-radius: 50%; background: conic-gradient(from 210deg, transparent, var(--vfx-secondary), transparent 38%); filter: blur(8px); }
+
+.vfx-pro.vfx-blade-storm .vfx-pro__core {
+    width: 86%; height: 55%; background: repeating-linear-gradient(164deg, transparent 0 13%, var(--vfx-primary) 14% 17%, #fff 18% 19%, transparent 20% 29%);
+    clip-path: polygon(0 50%, 13% 10%, 100% 0, 83% 50%, 100% 100%, 13% 90%); transform: translate(-50%, -50%) rotate(-8deg); filter: drop-shadow(0 0 9px var(--vfx-secondary));
+}
+.vfx-pro.vfx-blade-storm .vfx-pro__trail { left: 4%; right: 4%; top: 30%; height: 44%; opacity: .24; background: repeating-linear-gradient(166deg, transparent 0 15%, var(--vfx-secondary) 16% 19%, transparent 20% 30%); transform: rotate(-7deg); filter: blur(3px); }
+.vfx-pro.vfx-blade-storm .vfx-pro__accent { inset: 10%; border: 1px solid var(--vfx-primary); border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleX(1.25); opacity: .45; }
+
+.vfx-pro.vfx-blade-moon .vfx-pro__core {
+    width: 78%; height: 28%; background: radial-gradient(ellipse at 50% 50%, #fff 0 5%, var(--vfx-primary) 14% 27%, var(--vfx-secondary) 29% 42%, transparent 66%);
+    clip-path: polygon(0 50%, 18% 22%, 50% 0, 82% 22%, 100% 50%, 82% 78%, 50% 100%, 18% 78%); transform: translate(-50%, -50%) rotate(-14deg) scaleX(1.22); filter: drop-shadow(0 0 16px var(--vfx-secondary));
+}
+.vfx-pro.vfx-blade-moon .vfx-pro__trail { left: 4%; right: 4%; top: 35%; height: 25%; opacity: .26; background: linear-gradient(90deg, transparent, var(--vfx-secondary), var(--vfx-primary), transparent); filter: blur(10px); transform: rotate(-14deg); }
+.vfx-pro.vfx-blade-moon .vfx-pro__accent { inset: 12%; border: 2px solid var(--vfx-primary); border-left-color: transparent; border-radius: 50%; transform: rotate(-25deg) scaleX(1.3); box-shadow: 0 0 18px var(--vfx-secondary); }
+
+.vfx-pro.vfx-blade-iaido .vfx-pro__core {
+    width: 92%; height: 2%; background: linear-gradient(90deg, transparent, #fff 22%, var(--vfx-primary) 48%, #fff 63%, transparent);
+    clip-path: polygon(0 50%, 14% 0, 100% 35%, 86% 50%, 100% 65%, 14% 100%); transform: translate(-50%, -50%) rotate(-5deg);
+    filter: drop-shadow(0 0 11px var(--vfx-primary));
+}
+.vfx-pro.vfx-blade-iaido .vfx-pro__trail { left: 5%; right: 5%; top: 48%; height: 4%; background: linear-gradient(90deg, transparent, var(--vfx-secondary), transparent); transform: rotate(-5deg); filter: blur(5px); }
+.vfx-pro.vfx-blade-iaido .vfx-pro__accent { left: 44%; top: 22%; width: 2%; height: 56%; border: 1px solid var(--vfx-primary); border-radius: 50%; transform: rotate(13deg); opacity: .7; }
+
+.vfx-pro.vfx-blade-spiral .vfx-pro__core {
+    width: 62%; height: 62%; border: 5px solid var(--vfx-primary); border-right-color: transparent; border-bottom-color: var(--vfx-secondary);
+    border-radius: 50%; background: repeating-conic-gradient(from 0deg, transparent 0 18deg, var(--vfx-primary) 19deg 25deg, transparent 26deg 43deg);
+    transform: translate(-50%, -50%) rotate(-35deg); filter: drop-shadow(0 0 10px var(--vfx-secondary));
+}
+.vfx-pro.vfx-blade-spiral .vfx-pro__trail { inset: 17%; border-radius: 50%; background: repeating-conic-gradient(from 20deg, transparent 0 24deg, var(--vfx-secondary) 25deg 29deg, transparent 30deg 48deg); opacity: .28; filter: blur(6px); }
+.vfx-pro.vfx-blade-spiral .vfx-pro__accent { inset: 4%; border: 1px dashed var(--vfx-primary); border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleX(.72); }
+
+.vfx-pro.vfx-blade-waterfall .vfx-pro__core {
+    width: 8%; height: 86%; background: linear-gradient(180deg, transparent, #fff 18%, var(--vfx-primary) 44%, var(--vfx-secondary) 76%, transparent);
+    clip-path: polygon(50% 0, 100% 24%, 72% 50%, 100% 76%, 50% 100%, 0 76%, 28% 50%, 0 24%); transform: translate(-50%, -50%) rotate(8deg);
+    filter: drop-shadow(0 0 11px var(--vfx-primary));
+}
+.vfx-pro.vfx-blade-waterfall .vfx-pro__trail { left: 24%; right: 24%; top: 8%; height: 84%; background: repeating-linear-gradient(165deg, transparent 0 12%, var(--vfx-secondary) 13% 16%, transparent 17% 25%); transform: rotate(8deg); opacity: .32; filter: blur(4px); }
+.vfx-pro.vfx-blade-waterfall .vfx-pro__accent { left: 18%; top: 45%; width: 64%; height: 9%; border: 0; background: linear-gradient(90deg, transparent, #fff, var(--vfx-primary), transparent); transform: rotate(8deg); filter: blur(1px); }
+
+.vfx-pro.vfx-blade-flame-arc .vfx-pro__core {
+    width: 76%; height: 62%; background: transparent; border: 8px solid var(--vfx-primary); border-left-color: transparent; border-bottom-color: var(--vfx-secondary);
+    border-radius: 70% 30% 65% 35%; transform: translate(-50%, -50%) rotate(-20deg) skewX(-8deg); filter: drop-shadow(0 0 12px var(--vfx-primary));
+}
+.vfx-pro.vfx-blade-flame-arc .vfx-pro__trail { left: 9%; right: 9%; top: 30%; height: 35%; background: repeating-linear-gradient(155deg, transparent 0 12%, var(--vfx-secondary) 13% 18%, transparent 19% 29%); transform: rotate(-18deg); opacity: .3; filter: blur(7px); }
+.vfx-pro.vfx-blade-flame-arc .vfx-pro__accent { left: 19%; top: 40%; width: 66%; height: 10%; border: 0; background: linear-gradient(90deg, transparent, #fff 35%, var(--vfx-primary) 70%, transparent); transform: rotate(-18deg); }
+
+.vfx-pro.vfx-blade-serpent .vfx-pro__core {
+    width: 88%; height: 12%; background: repeating-linear-gradient(162deg, transparent 0 10%, var(--vfx-primary) 11% 18%, #fff 19% 22%, transparent 23% 32%);
+    clip-path: polygon(0 50%, 10% 12%, 27% 40%, 45% 0, 63% 42%, 82% 8%, 100% 50%, 82% 92%, 63% 58%, 45% 100%, 27% 60%, 10% 88%); transform: translate(-50%, -50%) rotate(-9deg);
+    filter: drop-shadow(0 0 9px var(--vfx-secondary));
+}
+.vfx-pro.vfx-blade-serpent .vfx-pro__trail { left: 5%; right: 5%; top: 35%; height: 28%; background: repeating-linear-gradient(162deg, transparent 0 14%, var(--vfx-secondary) 15% 19%, transparent 20% 30%); transform: rotate(-9deg); opacity: .3; filter: blur(4px); }
+.vfx-pro.vfx-blade-serpent .vfx-pro__accent { left: 13%; top: 23%; width: 74%; height: 54%; border: 1px dashed var(--vfx-primary); border-radius: 48% 52% 44% 56%; transform: rotate(var(--vfx-orbit)) skewX(-15deg); opacity: .55; }
+
+/* Energy set: distinct non-blade silhouettes for lightning, beams and projectiles. */
+.vfx-pro[class*="vfx-energy-"] .vfx-pro__core { filter: drop-shadow(0 0 12px var(--vfx-primary)); }
+.vfx-pro.vfx-energy-lightning .vfx-pro__core { width: 18%; height: 78%; background: var(--vfx-primary); clip-path: polygon(44% 0, 68% 27%, 55% 27%, 83% 53%, 55% 53%, 69% 100%, 28% 59%, 43% 59%, 17% 34%, 43% 34%); transform: translate(-50%,-50%) rotate(var(--vfx-tilt)); }
+.vfx-pro.vfx-energy-lightning .vfx-pro__trail { width: 54%; left: 23%; right: auto; height: 82%; top: 9%; background: repeating-linear-gradient(90deg, transparent 0 12%, var(--vfx-secondary) 13% 16%, transparent 17% 28%); clip-path: polygon(48% 0, 62% 30%, 100% 50%, 62% 70%, 48% 100%, 36% 70%, 0 50%, 36% 30%); opacity: .38; }
+.vfx-pro.vfx-energy-lightning .vfx-pro__accent { inset: 8%; border: 1px solid var(--vfx-secondary); border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleX(.62); opacity: .52; }
+
+.vfx-pro.vfx-energy-laser .vfx-pro__core { width: 94%; height: 3%; background: linear-gradient(90deg, transparent, var(--vfx-secondary) 18%, #fff 48%, var(--vfx-primary) 72%, transparent); clip-path: polygon(0 50%, 14% 0, 100% 35%, 86% 50%, 100% 65%, 14% 100%); transform: translate(-50%,-50%) rotate(-7deg); }
+.vfx-pro.vfx-energy-laser .vfx-pro__trail { left: 7%; right: 4%; top: 37%; height: 15%; background: linear-gradient(90deg, transparent, var(--vfx-primary), var(--vfx-secondary), transparent); transform: rotate(-7deg); opacity: .26; filter: blur(9px); }
+.vfx-pro.vfx-energy-laser .vfx-pro__accent { left: 16%; top: 34%; width: 68%; height: 11%; border: 1px solid #fff; border-left-color: transparent; border-right-color: transparent; transform: rotate(-7deg); opacity: .65; }
+
+.vfx-pro.vfx-energy-beam .vfx-pro__core { width: 70%; height: 32%; background: radial-gradient(ellipse at 8% 50%, #fff 0 6%, var(--vfx-primary) 7% 24%, var(--vfx-secondary) 42%, transparent 72%); clip-path: polygon(0 50%, 17% 12%, 100% 0, 82% 50%, 100% 100%, 17% 88%); transform: translate(-50%,-50%) rotate(-4deg); }
+.vfx-pro.vfx-energy-beam .vfx-pro__trail { left: 2%; right: 9%; top: 30%; height: 40%; background: repeating-linear-gradient(168deg, transparent 0 12%, var(--vfx-secondary) 13% 18%, transparent 19% 29%); transform: rotate(-4deg); opacity: .34; filter: blur(5px); }
+.vfx-pro.vfx-energy-beam .vfx-pro__accent { left: 10%; top: 25%; width: 80%; height: 50%; border: 2px solid var(--vfx-primary); border-left-color: transparent; border-radius: 50%; transform: rotate(-4deg) scaleY(.6); opacity: .55; }
+
+.vfx-pro.vfx-energy-chain-lightning .vfx-pro__core { width: 76%; height: 54%; background: repeating-linear-gradient(105deg, transparent 0 8%, var(--vfx-primary) 9% 13%, #fff 14% 16%, transparent 17% 24%); clip-path: polygon(0 50%, 15% 8%, 33% 38%, 49% 0, 65% 37%, 84% 12%, 100% 50%, 84% 88%, 65% 63%, 49% 100%, 33% 62%, 15% 92%); transform: translate(-50%,-50%) rotate(-8deg); }
+.vfx-pro.vfx-energy-chain-lightning .vfx-pro__trail { left: 8%; right: 8%; top: 26%; height: 48%; background: repeating-linear-gradient(100deg, transparent 0 12%, var(--vfx-secondary) 13% 16%, transparent 17% 27%); transform: rotate(-8deg); opacity: .3; }
+.vfx-pro.vfx-energy-chain-lightning .vfx-pro__accent { inset: 10%; border: 1px dashed var(--vfx-primary); border-radius: 50%; transform: rotate(var(--vfx-orbit)); opacity: .42; }
+
+.vfx-pro.vfx-energy-energy-orb .vfx-pro__core { width: 42%; height: 42%; border-radius: 50%; background: radial-gradient(circle, #fff 0 8%, var(--vfx-primary) 9% 26%, var(--vfx-secondary) 34% 54%, transparent 70%); transform: translate(-50%,-50%); }
+.vfx-pro.vfx-energy-energy-orb .vfx-pro__trail { left: 10%; right: 10%; top: 37%; height: 18%; background: repeating-linear-gradient(90deg, transparent 0 12%, var(--vfx-secondary) 13% 17%, transparent 18% 28%); opacity: .36; filter: blur(5px); }
+.vfx-pro.vfx-energy-energy-orb .vfx-pro__accent { inset: 14%; border: 2px solid var(--vfx-primary); border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleX(.72); }
+
+.vfx-pro.vfx-energy-plasma .vfx-pro__core { width: 52%; height: 52%; border-radius: 50%; background: repeating-conic-gradient(from 25deg, var(--vfx-primary) 0 12deg, transparent 13deg 25deg, var(--vfx-secondary) 26deg 39deg, transparent 40deg 55deg); border: 4px solid var(--vfx-primary); transform: translate(-50%,-50%); }
+.vfx-pro.vfx-energy-plasma .vfx-pro__trail { inset: 18%; border-radius: 50%; background: radial-gradient(circle, transparent 0 35%, var(--vfx-secondary) 36% 42%, transparent 43%); opacity: .35; filter: blur(5px); }
+.vfx-pro.vfx-energy-plasma .vfx-pro__accent { inset: 5%; border: 1px dotted var(--vfx-primary); border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleY(.72); }
+
+.vfx-pro.vfx-energy-frost-lance .vfx-pro__core { width: 20%; height: 84%; background: linear-gradient(180deg, transparent, #fff 16%, var(--vfx-primary) 42%, var(--vfx-secondary) 78%, transparent); clip-path: polygon(50% 0, 100% 23%, 67% 50%, 100% 77%, 50% 100%, 0 77%, 33% 50%, 0 23%); transform: translate(-50%,-50%) rotate(10deg); }
+.vfx-pro.vfx-energy-frost-lance .vfx-pro__trail { left: 25%; right: 25%; top: 8%; height: 84%; background: repeating-linear-gradient(165deg, transparent 0 10%, var(--vfx-secondary) 11% 15%, transparent 16% 26%); transform: rotate(10deg); opacity: .32; filter: blur(4px); }
+.vfx-pro.vfx-energy-frost-lance .vfx-pro__accent { left: 17%; top: 42%; width: 66%; height: 16%; border: 1px solid #fff; border-radius: 50%; transform: rotate(10deg); opacity: .6; }
+
+.vfx-pro.vfx-energy-meteor .vfx-pro__core { width: 36%; height: 36%; border-radius: 50%; background: radial-gradient(circle at 35% 32%, #fff 0 7%, var(--vfx-primary) 8% 26%, var(--vfx-secondary) 27% 54%, transparent 70%); transform: translate(-50%,-50%); }
+.vfx-pro.vfx-energy-meteor .vfx-pro__trail { left: 22%; right: 14%; top: 18%; height: 42%; background: repeating-linear-gradient(155deg, transparent 0 10%, var(--vfx-secondary) 11% 18%, transparent 19% 29%); transform: rotate(18deg); opacity: .36; filter: blur(6px); }
+.vfx-pro.vfx-energy-meteor .vfx-pro__accent { left: 12%; top: 18%; width: 76%; height: 72%; border: 2px solid var(--vfx-primary); border-left-color: transparent; border-bottom-color: transparent; border-radius: 50%; transform: rotate(-28deg) scaleX(.75); opacity: .5; }
+
+/* Transformation pass: charge, reveal and break use a dedicated silhouette. */
+.vfx-pro.vfx-pro--transform { z-index: 24; animation-duration: 1.02s; }
+.vfx-pro.vfx-pro--transform .vfx-pro__halo { inset: 5%; border: 2px solid color-mix(in srgb, var(--vfx-primary), transparent 32%); background: radial-gradient(circle, color-mix(in srgb, var(--vfx-primary), transparent 48%) 0 8%, color-mix(in srgb, var(--vfx-secondary), transparent 76%) 28%, transparent 68%); filter: blur(7px); }
+.vfx-pro.vfx-pro--transform .vfx-pro__core { width: 32%; height: 72%; background: repeating-linear-gradient(90deg, transparent 0 13%, var(--vfx-primary) 14% 18%, transparent 19% 28%), radial-gradient(ellipse, #fff 0 5%, var(--vfx-secondary) 24%, transparent 69%); clip-path: polygon(50% 0, 73% 18%, 91% 50%, 72% 82%, 50% 100%, 28% 82%, 9% 50%, 27% 18%); transform: translate(-50%,-50%); filter: drop-shadow(0 0 18px var(--vfx-primary)); }
+.vfx-pro.vfx-pro--transform .vfx-pro__trail { left: 7%; right: 7%; top: 15%; height: 70%; border-radius: 50%; background: repeating-conic-gradient(from var(--vfx-orbit), transparent 0 14deg, var(--vfx-secondary) 15deg 20deg, transparent 21deg 38deg); opacity: .4; filter: blur(4px); }
+.vfx-pro.vfx-pro--transform .vfx-pro__accent { inset: 9%; border: 2px solid var(--vfx-primary); border-left-color: transparent; border-right-color: var(--vfx-secondary); border-radius: 50%; transform: rotate(var(--vfx-orbit)) scaleX(.72); box-shadow: 0 0 24px color-mix(in srgb, var(--vfx-secondary), transparent 30%); }
+.vfx-pro.vfx-pro--transform .vfx-pro__shard { background: linear-gradient(var(--vfx-primary), var(--vfx-secondary), transparent); }
+.vfx-pro.vfx-pro--transform.vfx-pro--charge { animation-duration: .88s; }
+.vfx-pro.vfx-pro--transform.vfx-pro--charge .vfx-pro__halo { animation: vfx-transform-halo .88s cubic-bezier(.1,.8,.12,1) both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--charge .vfx-pro__core { animation: vfx-transform-charge .88s cubic-bezier(.12,.9,.14,1) both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--charge .vfx-pro__trail { animation: vfx-transform-orbit .9s ease-out both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--charge .vfx-pro__accent { animation: vfx-transform-ring .9s cubic-bezier(.1,.82,.14,1) both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--cast { animation-duration: 1.02s; }
+.vfx-pro.vfx-pro--transform.vfx-pro--cast .vfx-pro__halo { animation: vfx-transform-halo 1.02s ease-out both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--cast .vfx-pro__core { animation: vfx-transform-reveal 1.02s cubic-bezier(.08,.86,.12,1) both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--cast .vfx-pro__trail { animation: vfx-transform-orbit 1.05s ease-out both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--cast .vfx-pro__accent { animation: vfx-transform-ring 1.08s ease-out both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--impact { animation-duration: .78s; }
+.vfx-pro.vfx-pro--transform.vfx-pro--impact .vfx-pro__halo { animation: vfx-transform-break-halo .78s cubic-bezier(.08,.8,.12,1) both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--impact .vfx-pro__core { animation: vfx-transform-break .78s cubic-bezier(.08,.88,.14,1) both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--impact .vfx-pro__trail { animation: vfx-transform-break-trail .78s ease-out both; }
+.vfx-pro.vfx-pro--transform.vfx-pro--impact .vfx-pro__accent { animation: vfx-transform-break-ring .82s ease-out both; }
+
+@keyframes vfx-transform-halo { 0%{opacity:0;transform:scale(.25)} 35%{opacity:.9;transform:scale(.86)} 72%{opacity:.68;transform:scale(1.1)} 100%{opacity:0;transform:scale(1.3)} }
+@keyframes vfx-transform-charge { 0%{opacity:0;transform:translate(-50%,-50%) scaleY(.12) scaleX(.35)} 24%{opacity:1} 65%{opacity:1;transform:translate(-50%,-50%) scaleY(.92) scaleX(.72)} 100%{opacity:0;transform:translate(-50%,-50%) scaleY(1.18) scaleX(1.05)} }
+@keyframes vfx-transform-reveal { 0%{opacity:0;transform:translate(-50%,16%) scaleY(.08) scaleX(.32)} 22%{opacity:1;transform:translate(-50%,2%) scaleY(.62) scaleX(.58)} 58%{opacity:1;transform:translate(-50%,-50%) scaleY(1) scaleX(1)} 100%{opacity:0;transform:translate(-50%,-62%) scaleY(1.18) scaleX(1.15)} }
+@keyframes vfx-transform-orbit { 0%{opacity:0;transform:rotate(0) scale(.32)} 25%{opacity:.8} 100%{opacity:0;transform:rotate(280deg) scale(1.16)} }
+@keyframes vfx-transform-ring { 0%{opacity:0;transform:rotate(0) scale(.35,.15)} 28%{opacity:.9} 100%{opacity:0;transform:rotate(220deg) scale(1.18,.78)} }
+@keyframes vfx-transform-break-halo { 0%{opacity:.65;transform:scale(.55)} 18%{opacity:1;transform:scale(.9)} 100%{opacity:0;transform:scale(1.8)} }
+@keyframes vfx-transform-break { 0%{opacity:.95;transform:translate(-50%,-50%) scale(.72)} 17%{opacity:1;transform:translate(-50%,-50%) scale(1.12)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.7) rotate(22deg)} }
+@keyframes vfx-transform-break-trail { 0%{opacity:.5;transform:rotate(0) scale(.55)} 100%{opacity:0;transform:rotate(-90deg) scale(1.35)} }
+@keyframes vfx-transform-break-ring { 0%{opacity:.8;transform:rotate(0) scale(.48)} 100%{opacity:0;transform:rotate(160deg) scale(1.55)} }
+
+@keyframes vfx-energy-pulse { 0%{opacity:0;transform:translate(-50%,-50%) scale(.25)} 22%{opacity:1} 72%{opacity:1} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.2)} }
+.vfx-pro.vfx-energy-lightning .vfx-pro__core,
+.vfx-pro.vfx-energy-chain-lightning .vfx-pro__core { animation: vfx-energy-pulse .58s steps(2,end) both; }
+.vfx-pro.vfx-energy-laser .vfx-pro__core { animation: vfx-blade-iaido .5s cubic-bezier(.05,.95,.16,1) both; }
+.vfx-pro.vfx-energy-beam .vfx-pro__core { animation: vfx-blade-iaido .66s cubic-bezier(.1,.86,.14,1) both; }
+.vfx-pro.vfx-energy-energy-orb .vfx-pro__core,
+.vfx-pro.vfx-energy-plasma .vfx-pro__core { animation: vfx-energy-pulse .78s cubic-bezier(.1,.84,.12,1) both; }
+.vfx-pro.vfx-energy-frost-lance .vfx-pro__core { animation: vfx-blade-waterfall .72s cubic-bezier(.16,.9,.18,1) both; }
+.vfx-pro.vfx-energy-meteor .vfx-pro__core { animation: vfx-blade-moon .76s cubic-bezier(.08,.82,.14,1) both; }
+
+.vfx-pro.vfx-blade-draw .vfx-pro__core { animation: vfx-blade-draw .46s cubic-bezier(.12,.82,.16,1) both; }
+.vfx-pro.vfx-blade-draw .vfx-pro__trail { animation: vfx-blade-trail-snap .5s ease-out both; }
+.vfx-pro.vfx-blade-cross .vfx-pro__core { animation: vfx-blade-cross .54s cubic-bezier(.08,.9,.14,1) both; }
+.vfx-pro.vfx-blade-cross .vfx-pro__accent { animation: vfx-blade-cross-accent .62s ease-out both; }
+.vfx-pro.vfx-blade-crescent .vfx-pro__core { animation: vfx-blade-crescent .66s cubic-bezier(.12,.8,.14,1) both; }
+.vfx-pro.vfx-blade-crescent .vfx-pro__trail { animation: vfx-blade-crescent-trail .7s ease-out both; }
+.vfx-pro.vfx-blade-storm .vfx-pro__core { animation: vfx-blade-storm .7s cubic-bezier(.08,.78,.14,1) both; }
+.vfx-pro.vfx-blade-storm .vfx-pro__trail { animation: vfx-blade-storm-trail .76s ease-out both; }
+.vfx-pro.vfx-blade-moon .vfx-pro__core { animation: vfx-blade-moon .82s cubic-bezier(.08,.82,.14,1) both; }
+.vfx-pro.vfx-blade-moon .vfx-pro__accent { animation: vfx-blade-moon-accent .88s ease-out both; }
+.vfx-pro.vfx-blade-iaido .vfx-pro__core { animation: vfx-blade-iaido .38s cubic-bezier(.05,.95,.16,1) both; }
+.vfx-pro.vfx-blade-iaido .vfx-pro__trail { animation: vfx-blade-iaido-trail .48s ease-out both; }
+.vfx-pro.vfx-blade-spiral .vfx-pro__core { animation: vfx-blade-spiral .8s cubic-bezier(.1,.82,.12,1) both; }
+.vfx-pro.vfx-blade-spiral .vfx-pro__trail { animation: vfx-blade-spiral-trail .86s ease-out both; }
+.vfx-pro.vfx-blade-waterfall .vfx-pro__core { animation: vfx-blade-waterfall .7s cubic-bezier(.16,.9,.18,1) both; }
+.vfx-pro.vfx-blade-waterfall .vfx-pro__trail { animation: vfx-blade-waterfall-trail .78s ease-out both; }
+.vfx-pro.vfx-blade-flame-arc .vfx-pro__core { animation: vfx-blade-flame-arc .72s cubic-bezier(.12,.84,.16,1) both; }
+.vfx-pro.vfx-blade-flame-arc .vfx-pro__trail { animation: vfx-blade-flame-trail .76s ease-out both; }
+.vfx-pro.vfx-blade-serpent .vfx-pro__core { animation: vfx-blade-serpent .74s cubic-bezier(.12,.82,.16,1) both; }
+.vfx-pro.vfx-blade-serpent .vfx-pro__trail { animation: vfx-blade-serpent-trail .8s ease-out both; }
+
+@keyframes vfx-blade-draw { 0%{opacity:0;transform:translate(-72%,-50%) rotate(-20deg) scaleX(.08)} 22%{opacity:1} 58%{opacity:1;transform:translate(-50%,-50%) rotate(-20deg) scaleX(1.06)} 100%{opacity:0;transform:translate(-29%,-50%) rotate(-20deg) scaleX(1.2)} }
+@keyframes vfx-blade-trail-snap { 0%{opacity:0;transform:translateX(-20%) rotate(-20deg) scaleX(.15)} 35%{opacity:.4} 100%{opacity:0;transform:translateX(18%) rotate(-20deg) scaleX(1.2)} }
+@keyframes vfx-blade-cross { 0%{opacity:0;transform:translate(-62%,-50%) rotate(-27deg) scaleX(.12)} 20%{opacity:1} 46%{transform:translate(-50%,-50%) rotate(-27deg) scaleX(1.08)} 100%{opacity:0;transform:translate(-35%,-50%) rotate(-27deg) scaleX(1.3)} }
+@keyframes vfx-blade-cross-accent { 0%{opacity:0;transform:rotate(27deg) scaleX(.1)} 32%{opacity:.9} 100%{opacity:0;transform:rotate(27deg) scaleX(1.1)} }
+@keyframes vfx-blade-crescent { 0%{opacity:0;transform:translate(-50%,-50%) rotate(-80deg) scale(.35)} 25%{opacity:1} 68%{opacity:1;transform:translate(-50%,-50%) rotate(18deg) scale(1.05)} 100%{opacity:0;transform:translate(-50%,-50%) rotate(62deg) scale(1.25)} }
+@keyframes vfx-blade-crescent-trail { 0%{opacity:0;transform:rotate(-70deg) scale(.35)} 35%{opacity:.25} 100%{opacity:0;transform:rotate(24deg) scale(1.15)} }
+@keyframes vfx-blade-storm { 0%{opacity:0;transform:translate(-54%,-50%) rotate(-8deg) scaleX(.25) scaleY(.35)} 22%{opacity:1} 100%{opacity:0;transform:translate(-46%,-50%) rotate(-8deg) scaleX(1.15) scaleY(1.08)} }
+@keyframes vfx-blade-storm-trail { 0%{opacity:0;transform:rotate(-7deg) translateX(-14%) scale(.45)} 30%{opacity:.3} 100%{opacity:0;transform:rotate(-7deg) translateX(10%) scale(1.12)} }
+@keyframes vfx-blade-moon { 0%{opacity:0;transform:translate(-50%,-50%) rotate(-42deg) scale(.3)} 28%{opacity:1} 72%{opacity:1;transform:translate(-50%,-50%) rotate(8deg) scale(1.08)} 100%{opacity:0;transform:translate(-50%,-50%) rotate(28deg) scale(1.3)} }
+@keyframes vfx-blade-moon-accent { 0%{opacity:0;transform:rotate(-55deg) scale(.35)} 30%{opacity:.7} 100%{opacity:0;transform:rotate(30deg) scale(1.12)} }
+@keyframes vfx-blade-iaido { 0%{opacity:0;transform:translate(-75%,-50%) rotate(-5deg) scaleX(.03)} 20%{opacity:1} 52%{opacity:1;transform:translate(-50%,-50%) rotate(-5deg) scaleX(1)} 100%{opacity:0;transform:translate(25%,-50%) rotate(-5deg) scaleX(1.08)} }
+@keyframes vfx-blade-iaido-trail { 0%{opacity:0;transform:translateX(-40%) rotate(-5deg) scaleX(.05)} 25%{opacity:.35} 100%{opacity:0;transform:translateX(28%) rotate(-5deg) scaleX(1.16)} }
+@keyframes vfx-blade-spiral { 0%{opacity:0;transform:translate(-50%,-50%) rotate(-160deg) scale(.2)} 25%{opacity:1} 100%{opacity:0;transform:translate(-50%,-50%) rotate(300deg) scale(1.18)} }
+@keyframes vfx-blade-spiral-trail { 0%{opacity:0;transform:rotate(-120deg) scale(.25)} 28%{opacity:.3} 100%{opacity:0;transform:rotate(260deg) scale(1.16)} }
+@keyframes vfx-blade-waterfall { 0%{opacity:0;transform:translate(-50%,-72%) rotate(8deg) scaleY(.08)} 22%{opacity:1} 68%{opacity:1;transform:translate(-50%,-50%) rotate(8deg) scaleY(1)} 100%{opacity:0;transform:translate(-50%,-22%) rotate(8deg) scaleY(1.12)} }
+@keyframes vfx-blade-waterfall-trail { 0%{opacity:0;transform:translateY(-22%) rotate(8deg) scaleY(.15)} 28%{opacity:.3} 100%{opacity:0;transform:translateY(14%) rotate(8deg) scaleY(1.1)} }
+@keyframes vfx-blade-flame-arc { 0%{opacity:0;transform:translate(-50%,-50%) rotate(-62deg) scale(.25)} 24%{opacity:1} 72%{opacity:1;transform:translate(-50%,-50%) rotate(-4deg) scale(1.02)} 100%{opacity:0;transform:translate(-50%,-50%) rotate(22deg) scale(1.2)} }
+@keyframes vfx-blade-flame-trail { 0%{opacity:0;transform:rotate(-45deg) scaleX(.25)} 28%{opacity:.35} 100%{opacity:0;transform:rotate(-2deg) scaleX(1.2)} }
+@keyframes vfx-blade-serpent { 0%{opacity:0;transform:translate(-62%,-50%) rotate(-9deg) scaleX(.14)} 20%{opacity:1} 58%{opacity:1;transform:translate(-50%,-50%) rotate(-9deg) scaleX(1.02)} 100%{opacity:0;transform:translate(-34%,-50%) rotate(-9deg) scaleX(1.18)} }
+@keyframes vfx-blade-serpent-trail { 0%{opacity:0;transform:translateX(-18%) rotate(-9deg) scaleX(.2)} 30%{opacity:.3} 100%{opacity:0;transform:translateX(15%) rotate(-9deg) scaleX(1.15)} }
+
+@keyframes vfx-pro-life { 0%{opacity:0;transform:scale(.7)} 18%{opacity:1} 58%{opacity:1} 100%{opacity:0;transform:scale(1.06)} }
+@keyframes vfx-pro-shard { 0%{opacity:0;transform:rotate(var(--vfx-angle)) translateY(-8px) scale(.5)} 22%{opacity:.95} 100%{opacity:0;transform:rotate(var(--vfx-angle)) translateY(calc(-100px - var(--vfx-i) * 12px)) scale(.25)} }
+@keyframes vfx-pro-charge-halo { 0%{opacity:0;transform:scale(.35)} 55%{opacity:1;transform:scale(1.18)} 100%{opacity:.15;transform:scale(1)} }
+@keyframes vfx-pro-charge-core { 0%{opacity:0;transform:translate(-50%,-50%) scale(.2)} 70%{opacity:1;transform:translate(-50%,-50%) scale(1.5)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1)} }
+@keyframes vfx-pro-charge-trail { from{opacity:0;transform:rotate(-18deg) scale(.3)} 50%{opacity:.7} to{opacity:0;transform:rotate(-18deg) scale(1.25)} }
+@keyframes vfx-pro-emit-core { 0%{opacity:0;transform:translate(-50%,-50%) scale(.15)} 18%{opacity:1} 42%{transform:translate(45%,-50%) scale(1.35)} 100%{opacity:0;transform:translate(145%,-50%) scale(.55)} }
+@keyframes vfx-pro-emit-trail { 0%{opacity:0;transform:skewX(-22deg) scaleX(.1)} 24%{opacity:1} 100%{opacity:0;transform:skewX(-22deg) scaleX(1.3)} }
+@keyframes vfx-pro-trail { from{opacity:0;transform:skewX(-22deg) translateX(-12%) scaleX(.2)} 30%{opacity:1} to{opacity:0;transform:skewX(-22deg) translateX(25%) scaleX(1.2)} }
+@keyframes vfx-pro-spin { from{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.45)} 25%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) rotate(260deg) scale(1.5)} }
+@keyframes vfx-pro-flame { from{opacity:0;transform:scaleX(.2)} 35%{opacity:1} to{opacity:0;transform:scaleX(1.5) translateX(15%)} }
+@keyframes vfx-pro-impact-halo { from{opacity:0;transform:scale(.25)} 18%{opacity:1;transform:scale(.7)} to{opacity:0;transform:scale(1.65)} }
+@keyframes vfx-pro-impact-core { from{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(-20deg)} 18%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(10deg)} to{opacity:0;transform:translate(-50%,-50%) scale(1.7) rotate(70deg)} }
+@keyframes vfx-pro-ring { from{opacity:0;transform:translate(-50%,-50%) scale(.15)} 20%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) scale(1.7)} }
+@keyframes vfx-pro-projectile { from{opacity:0;transform:translate(-50%,-50%) scale(.3)} 16%{opacity:1} 78%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) scale(1.2)} }
+@keyframes vfx-pro-projectile-trail { from{opacity:0;transform:skewX(-22deg) scaleX(.15)} 18%{opacity:.9} to{opacity:0;transform:skewX(-22deg) scaleX(1.7)} }
+@keyframes vfx-pro-flash { from{opacity:0} 30%{opacity:.75} to{opacity:0} }
+@keyframes vfx-pro-gum-pistol-charge { 0%{background-position:0 0;opacity:0;transform:translate(-50%,-50%) scale(.55) rotate(-12deg)} 30%{opacity:1} 55%{background-position:33.333% 0;transform:translate(-50%,-50%) scale(.82) rotate(-6deg)} 100%{background-position:66.666% 0;opacity:.2;transform:translate(-50%,-50%) scale(1.05) rotate(0)} }
+@keyframes vfx-pro-gum-pistol-travel { 0%{background-position:0 0;opacity:0;transform:translate(-18%,-50%) scaleX(.35)} 12%{opacity:1} 38%{background-position:33.333% 0} 66%{background-position:66.666% 0} 86%{background-position:100% 0;opacity:.9} 100%{background-position:0 33.333%;opacity:0;transform:translate(28%,-50%) scaleX(1.1)} }
+@keyframes vfx-pro-gum-pistol-impact { 0%{background-position:0 0;opacity:0} 4%{opacity:1} 10%{background-position:33.333% 0} 16%{background-position:66.666% 0} 22%{background-position:100% 0} 30%{background-position:0 33.333%} 38%{background-position:33.333% 33.333%} 46%{background-position:66.666% 33.333%} 54%{background-position:100% 33.333%} 62%{background-position:0 66.666%} 70%{background-position:33.333% 66.666%} 78%{background-position:66.666% 66.666%} 86%{background-position:100% 66.666%} 90%{background-position:0 100%} 93%{background-position:33.333% 100%} 96%{background-position:66.666% 100%} 100%{background-position:100% 100%;opacity:0} }
+@keyframes vfx-pro-tatsumaki { from{opacity:0;transform:translate(-50%,-50%) rotate(-120deg) scale(.25)} 22%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) rotate(380deg) scale(1.45)} }
+@keyframes vfx-pro-cyclone { from{opacity:0;transform:translate(-50%,-50%) rotate(-160deg) scale(.2)} 20%{opacity:1} 72%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) rotate(420deg) scale(1.38)} }
+@keyframes vfx-pro-void-ball { from{opacity:0;transform:translate(-50%,-50%) scale(.12)} 30%{opacity:1;transform:translate(-50%,-50%) scale(1.08)} 75%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) scale(1.55)} }
+@keyframes vfx-pro-time-stop { 0%{opacity:0;transform:translate(-50%,-50%) scale(.7) rotate(0)} 20%{opacity:1} 55%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1) rotate(90deg)} }
+
+@media (prefers-reduced-motion: reduce) {
+    .vfx-pro { animation-duration: .01ms !important; }
+    .vfx-pro > * { animation-duration: .01ms !important; }
+}

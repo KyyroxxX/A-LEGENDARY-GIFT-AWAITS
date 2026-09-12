@@ -1,0 +1,998 @@
+/* Thematic battle skill FX — types + families + signature techniques */
+
+.skfx {
+    position: absolute;
+    pointer-events: none;
+    z-index: 9;
+    mix-blend-mode: screen;
+}
+.skfx-cast {
+    inset: 8% -8% 16%;
+    opacity: 0;
+}
+.skfx-charge {
+    inset: 12% 8% 22%;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 8;
+}
+.skfx-arc {
+    inset: 18% -18% 28%;
+    opacity: 0;
+    z-index: 10;
+}
+.skfx-bolt {
+    width: 72px;
+    height: 72px;
+    left: 55%;
+    top: 28%;
+    margin: -36px 0 0 -36px;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 12;
+}
+.skfx-bolt-trail {
+    width: 42px;
+    height: 42px;
+    left: 55%;
+    top: 28%;
+    margin: -21px 0 0 -21px;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 11;
+    filter: blur(1px);
+}
+.skfx-impact {
+    left: 50%;
+    top: 32%;
+    width: 140px;
+    height: 140px;
+    margin: -70px 0 0 -70px;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 12;
+}
+.skfx-ring {
+    left: 50%;
+    top: 40%;
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+    opacity: 0;
+    z-index: 11;
+}
+.skfx-sprite-burst {
+    display: none !important;
+}
+.skfx-spark {
+    left: 50%;
+    top: 36%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    z-index: 13;
+    box-shadow: 0 0 10px #fff;
+}
+.skfx-cut {
+    left: 20%;
+    right: 10%;
+    top: 28%;
+    height: 4px;
+    opacity: 0;
+    z-index: 12;
+    background: linear-gradient(90deg, transparent, #fff 30%, #ffd7a8 55%, transparent);
+    transform-origin: left center;
+}
+@keyframes skfxSpriteBurst {
+    0% { opacity: 0; transform: scale(0.55) rotate(-6deg); }
+    18% { opacity: 1; transform: scale(0.95) rotate(0deg); }
+    100% { opacity: 0; transform: scale(1.18) rotate(4deg); }
+}
+
+/* Stage shake */
+.skfx-shake {
+    animation: skfxShake 0.32s ease-out both;
+}
+@keyframes skfxShake {
+    0%, 100% { transform: translate(0, 0); }
+    15% { transform: translate(calc(var(--skfx-shake, 6px) * -1), 2px); }
+    30% { transform: translate(var(--skfx-shake, 6px), -3px); }
+    45% { transform: translate(calc(var(--skfx-shake, 6px) * -0.6), 3px); }
+    60% { transform: translate(calc(var(--skfx-shake, 6px) * 0.7), -2px); }
+    75% { transform: translate(calc(var(--skfx-shake, 6px) * -0.3), 1px); }
+}
+
+/* ---- Charge ---- */
+.skfx-charge.strike,
+.skfx-charge.slash,
+.skfx-charge.pierce {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.55), rgba(255, 120, 80, 0.35) 45%, transparent 70%);
+    animation: skfxCharge 0.42s ease-out both;
+}
+.skfx-charge.fire,
+.skfx-charge.fam-inferno {
+    background: radial-gradient(circle, rgba(255, 240, 180, 0.8), rgba(231, 76, 60, 0.45) 50%, transparent 72%);
+    animation: skfxCharge 0.45s ease-out both;
+}
+.skfx-charge.elec,
+.skfx-charge.fam-lightning {
+    background: radial-gradient(circle, #fff, rgba(244, 208, 63, 0.55) 48%, transparent 70%);
+    animation: skfxFlicker 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-charge.wind,
+.skfx-charge.fam-spiral {
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 8%, rgba(93, 173, 226, 0.55) 30%, transparent 65%),
+        conic-gradient(from 0deg, rgba(255, 255, 255, 0.4), transparent 40%, rgba(93, 173, 226, 0.5), transparent);
+    animation: skfxSpinAura 0.55s linear both;
+}
+.skfx-charge.ice,
+.skfx-charge.water,
+.skfx-charge.fam-element {
+    background: radial-gradient(circle, rgba(220, 240, 255, 0.85), rgba(52, 152, 219, 0.4) 50%, transparent 70%);
+    animation: skfxCharge 0.45s ease-out both;
+}
+.skfx-charge.curse,
+.skfx-charge.psy,
+.skfx-charge.fam-hex {
+    background: radial-gradient(circle, rgba(230, 180, 255, 0.7), rgba(100, 40, 140, 0.5) 50%, transparent 70%);
+    animation: skfxCharge 0.5s ease-out both;
+}
+.skfx-charge.heal,
+.skfx-charge.support {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7), rgba(88, 214, 141, 0.45) 50%, transparent 70%);
+    animation: skfxCharge 0.5s ease-out both;
+}
+.skfx-charge.almighty,
+.skfx-charge.fam-finisher,
+.skfx-charge.fam-transform {
+    background: radial-gradient(circle, #fff, rgba(196, 30, 58, 0.65) 42%, transparent 70%);
+    animation: skfxCharge 0.55s ease-out both;
+    filter: drop-shadow(0 0 18px #c41e3a);
+}
+
+/* ---- Arc overlays (readable technique silhouette) ---- */
+.skfx-arc.fam-blade,
+.skfx-arc.slash {
+    background: linear-gradient(125deg, transparent 28%, rgba(255, 255, 255, 0.95) 48%, rgba(255, 80, 60, 0.75) 55%, transparent 72%);
+    animation: skfxSlash 0.48s ease-out both;
+    filter: drop-shadow(0 0 12px rgba(255, 120, 80, 0.9));
+}
+.skfx-arc.fam-pierce,
+.skfx-arc.pierce {
+    background: linear-gradient(90deg, transparent 40%, #fff 50%, transparent 60%);
+    animation: skfxPierce 0.4s ease-out both;
+}
+.skfx-arc.fam-barrage {
+    background:
+        radial-gradient(circle at 35% 45%, rgba(255, 255, 255, 0.8), transparent 22%),
+        radial-gradient(circle at 55% 38%, rgba(255, 180, 120, 0.7), transparent 24%),
+        radial-gradient(circle at 72% 50%, rgba(255, 100, 80, 0.6), transparent 26%);
+    animation: skfxBarrage 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-arc.fam-spiral {
+    background:
+        radial-gradient(circle at 58% 42%, #fff 0 6%, rgba(93, 173, 226, 0.9) 16%, transparent 55%),
+        conic-gradient(from 20deg, rgba(255, 255, 255, 0.5), transparent 35%, #5dade2, transparent 75%);
+    animation: skfxSpinAura 0.7s linear both;
+}
+.skfx-arc.fam-lightning {
+    background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 200, 0.9) 50%, transparent 65%);
+    animation: skfxFlicker 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-arc.fam-inferno {
+    background: radial-gradient(circle at 55% 48%, rgba(255, 220, 120, 0.75), transparent 60%);
+    animation: skfxBurst 0.55s ease-out both;
+}
+.skfx-arc.fam-hex {
+    background: radial-gradient(circle, rgba(180, 100, 255, 0.55), transparent 60%);
+    animation: skfxSpinAura 0.65s ease-out both;
+}
+.skfx-arc.fam-finisher {
+    background: radial-gradient(circle at 50% 45%, #fff, rgba(196, 30, 58, 0.7) 40%, transparent 68%);
+    animation: skfxBurst 0.6s ease-out both;
+}
+.skfx-arc.fam-melee,
+.skfx-arc.fam-element {
+    background: linear-gradient(110deg, transparent 38%, rgba(255, 255, 255, 0.85) 50%, transparent 62%);
+    animation: skfxSlash 0.45s ease-out both;
+}
+
+/* ---- Type casts / trails ---- */
+.skfx-cast.strike {
+    background:
+        radial-gradient(circle at 60% 45%, rgba(255, 255, 255, 0.75), transparent 42%),
+        linear-gradient(110deg, transparent 40%, rgba(255, 90, 60, 0.7) 50%, transparent 62%);
+    animation: skfxSlash 0.48s ease-out both;
+}
+.skfx-cast.slash {
+    background: linear-gradient(118deg, transparent 36%, rgba(255, 255, 255, 0.95) 49%, rgba(255, 70, 40, 0.75) 54%, transparent 66%);
+    animation: skfxSlash 0.46s ease-out both;
+}
+.skfx-cast.pierce {
+    background: linear-gradient(90deg, transparent 45%, rgba(255, 255, 255, 0.95) 50%, transparent 55%);
+    animation: skfxPierce 0.4s ease-out both;
+}
+.skfx-cast.fire {
+    background: radial-gradient(circle at 55% 50%, rgba(255, 200, 80, 0.85), rgba(231, 76, 60, 0.55) 45%, transparent 70%);
+    animation: skfxBurst 0.55s ease-out both;
+}
+.skfx-cast.ice {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.7), transparent 40%),
+        radial-gradient(circle at 50% 45%, rgba(174, 214, 241, 0.85), rgba(52, 152, 219, 0.45) 50%, transparent 72%);
+    animation: skfxBurst 0.55s ease-out both;
+}
+.skfx-cast.elec {
+    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 200, 0.9), rgba(244, 208, 63, 0.5) 48%, transparent 70%);
+    animation: skfxFlicker 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-cast.wind {
+    background: repeating-linear-gradient(115deg, transparent, transparent 10px, rgba(46, 204, 113, 0.35) 11px, transparent 18px);
+    animation: skfxSlash 0.5s ease-out both;
+}
+.skfx-cast.water {
+    background:
+        radial-gradient(ellipse at 50% 70%, rgba(174, 214, 241, 0.7), transparent 55%),
+        linear-gradient(180deg, transparent, rgba(52, 152, 219, 0.55));
+    animation: skfxBurst 0.55s ease-out both;
+}
+.skfx-cast.bless {
+    background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.9), rgba(249, 231, 159, 0.65) 40%, transparent 70%);
+    animation: skfxBurst 0.6s ease-out both;
+}
+.skfx-cast.curse {
+    background: radial-gradient(circle at 50% 50%, rgba(155, 89, 182, 0.8), rgba(74, 35, 90, 0.55) 50%, transparent 72%);
+    animation: skfxBurst 0.55s ease-out both;
+}
+.skfx-cast.psy {
+    background: radial-gradient(circle at 50% 45%, rgba(187, 143, 206, 0.85), rgba(125, 60, 152, 0.5) 48%, transparent 70%);
+    animation: skfxSpinAura 0.7s ease-out both;
+}
+.skfx-cast.almighty {
+    background: radial-gradient(circle at 50% 45%, #fff, rgba(196, 30, 58, 0.75) 40%, transparent 70%);
+    animation: skfxBurst 0.65s ease-out both;
+}
+.skfx-cast.support,
+.skfx-cast.heal {
+    background: radial-gradient(circle at 50% 50%, rgba(88, 214, 141, 0.75), transparent 65%);
+    animation: skfxBurst 0.55s ease-out both;
+}
+
+/* Family cast boosts */
+.skfx-cast.fam-spiral {
+    background:
+        radial-gradient(circle at 58% 42%, #fff 0 8%, rgba(93, 173, 226, 0.95) 18%, rgba(41, 128, 185, 0.55) 42%, transparent 62%),
+        conic-gradient(from 0deg, rgba(255, 255, 255, 0.55), transparent 30%, rgba(93, 173, 226, 0.7), transparent 70%, rgba(255, 255, 255, 0.4));
+    animation: skfxSpinAura 0.75s linear both;
+}
+.skfx-cast.fam-barrage {
+    background:
+        radial-gradient(circle at 40% 45%, rgba(255, 255, 255, 0.7), transparent 28%),
+        radial-gradient(circle at 55% 40%, rgba(255, 180, 120, 0.65), transparent 30%),
+        radial-gradient(circle at 70% 50%, rgba(255, 100, 80, 0.55), transparent 32%);
+    animation: skfxBarrage 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-cast.fam-finisher {
+    background: radial-gradient(circle at 50% 45%, #fff, rgba(196, 30, 58, 0.8) 38%, transparent 68%);
+    animation: skfxBurst 0.7s ease-out both;
+    filter: drop-shadow(0 0 24px #c41e3a);
+}
+
+/* ---- Signature skill casts ---- */
+.skfx-cast.sig-rasengan,
+.skfx-cast.sig-odama {
+    background:
+        radial-gradient(circle at 58% 42%, #fff 0 8%, rgba(93, 173, 226, 0.95) 18%, rgba(41, 128, 185, 0.55) 42%, transparent 62%),
+        conic-gradient(from 0deg, rgba(255, 255, 255, 0.55), transparent 30%, rgba(93, 173, 226, 0.7), transparent 70%, rgba(255, 255, 255, 0.4));
+    animation: skfxSpinAura 0.75s linear both;
+}
+.skfx-cast.sig-chidori,
+.skfx-cast.sig-chidori-nagashi,
+.skfx-cast.sig-chidori-spear,
+.skfx-cast.sig-raiton,
+.skfx-cast.sig-kirin,
+.skfx-cast.sig-raikiri-twin,
+.skfx-cast.sig-lightning-hound,
+.skfx-cast.sig-el-thor,
+.skfx-cast.sig-thunderbolt,
+.skfx-cast.sig-byakurai {
+    background: radial-gradient(circle at 55% 45%, rgba(255, 255, 255, 0.95), rgba(120, 190, 255, 0.55) 40%, transparent 68%);
+    animation: skfxFlicker 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-cast.sig-katon,
+.skfx-cast.sig-katon-i,
+.skfx-cast.sig-red-hawk,
+.skfx-cast.sig-diable,
+.skfx-cast.sig-amaterasu,
+.skfx-cast.sig-fragor {
+    background: radial-gradient(circle at 55% 48%, rgba(255, 220, 120, 0.9), rgba(231, 76, 60, 0.6) 45%, transparent 70%);
+    animation: skfxBurst 0.6s ease-out both;
+}
+.skfx-cast.sig-getsuga,
+.skfx-cast.sig-getsuga-black,
+.skfx-cast.sig-getsuga-barrage,
+.skfx-cast.sig-kuroi-getsuga,
+.skfx-cast.sig-shunpo-slash,
+.skfx-cast.sig-bankai-shunpo {
+    background:
+        radial-gradient(ellipse at 60% 45%, rgba(40, 40, 60, 0.2), transparent 50%),
+        linear-gradient(125deg, transparent 30%, rgba(180, 220, 255, 0.95) 48%, rgba(30, 60, 140, 0.8) 56%, transparent 70%);
+    animation: skfxSlash 0.55s ease-out both;
+    filter: drop-shadow(0 0 18px #5dade2);
+}
+.skfx-cast.sig-ora,
+.skfx-cast.sig-ora-jolyne,
+.skfx-cast.sig-ora-overdrive,
+.skfx-cast.sig-dona,
+.skfx-cast.sig-gum-gatling,
+.skfx-cast.sig-jet-gatling,
+.skfx-cast.sig-muda,
+.skfx-cast.sig-mudas,
+.skfx-cast.sig-hihio-rush,
+.skfx-cast.sig-kyubi-claw,
+.skfx-cast.sig-stone-free {
+    background:
+        radial-gradient(circle at 40% 45%, rgba(255, 255, 255, 0.7), transparent 28%),
+        radial-gradient(circle at 55% 40%, rgba(255, 180, 120, 0.65), transparent 30%),
+        radial-gradient(circle at 70% 50%, rgba(255, 100, 80, 0.55), transparent 32%);
+    animation: skfxBarrage 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-cast.sig-gum-pistol,
+.skfx-cast.sig-jet-pistol,
+.skfx-cast.sig-king-kong,
+.skfx-cast.sig-star-finger,
+.skfx-cast.sig-shigan,
+.skfx-cast.sig-air-palm,
+.skfx-cast.sig-hakke {
+    background: linear-gradient(95deg, transparent 35%, rgba(255, 120, 80, 0.85) 48%, rgba(255, 255, 255, 0.9) 52%, transparent 65%);
+    animation: skfxPierce 0.45s ease-out both;
+}
+.skfx-cast.sig-oni-giri,
+.skfx-cast.sig-ashura,
+.skfx-cast.sig-tatsumaki,
+.skfx-cast.sig-string,
+.skfx-cast.sig-web,
+.skfx-cast.sig-senkei-blade,
+.skfx-cast.sig-kubikiri,
+.skfx-cast.sig-kusanagi,
+.skfx-cast.sig-zabimaru-roar {
+    background: linear-gradient(120deg, transparent 32%, rgba(255, 255, 255, 0.95) 49%, rgba(200, 40, 40, 0.7) 56%, transparent 70%);
+    animation: skfxSlash 0.5s ease-out both;
+}
+.skfx-cast.sig-star-platinum,
+.skfx-cast.sig-time-stop,
+.skfx-cast.sig-sp-transform,
+.skfx-cast.sig-the-world,
+.skfx-cast.sig-king-crimson,
+.skfx-cast.sig-erase,
+.skfx-cast.sig-kamui {
+    background:
+        radial-gradient(circle at 50% 45%, rgba(180, 140, 255, 0.55), transparent 55%),
+        repeating-radial-gradient(circle at 50% 45%, transparent 0 12px, rgba(200, 160, 255, 0.35) 13px 15px);
+    animation: skfxTimeStop 0.7s ease-out both;
+}
+.skfx-cast.sig-bankai,
+.skfx-cast.sig-bankai-r,
+.skfx-cast.sig-senkei,
+.skfx-cast.sig-kyubi,
+.skfx-cast.sig-gear-second,
+.skfx-cast.sig-sharingan-s,
+.skfx-cast.sig-sharingan-k,
+.skfx-cast.sig-pantera,
+.skfx-cast.sig-byakugan {
+    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.95), rgba(196, 30, 58, 0.7) 38%, transparent 68%);
+    animation: skfxBurst 0.7s ease-out both;
+    filter: drop-shadow(0 0 24px #c41e3a);
+}
+.skfx-cast.sig-heal-sakura,
+.skfx-cast.sig-heal-all,
+.skfx-cast.sig-heal-josuke,
+.skfx-cast.sig-restore-all,
+.skfx-cast.sig-kyubi-regen,
+.skfx-cast.sig-ge-heal,
+.skfx-cast.sig-ge-team,
+.skfx-cast.sig-heal-oro,
+.skfx-cast.sig-heal-wave,
+.skfx-cast.sig-santen,
+.skfx-cast.sig-revive {
+    background:
+        radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.7), rgba(88, 214, 141, 0.55) 40%, transparent 68%);
+    animation: skfxBurst 0.6s ease-out both;
+}
+.skfx-cast.sig-kage-bunshin,
+.skfx-cast.sig-kage-shibari,
+.skfx-cast.sig-kage-kubishibari,
+.skfx-cast.sig-shadow-hold,
+.skfx-cast.sig-tsukuyomi,
+.skfx-cast.sig-kyoka,
+.skfx-cast.sig-genjutsu-s {
+    background: radial-gradient(circle at 50% 50%, rgba(120, 40, 160, 0.55), rgba(20, 0, 40, 0.4) 55%, transparent 70%);
+    animation: skfxSpinAura 0.6s ease-out both;
+}
+.skfx-cast.sig-cero,
+.skfx-cast.sig-hadou,
+.skfx-cast.sig-desgarron,
+.skfx-cast.sig-lanza,
+.skfx-cast.sig-menacing-ball,
+.skfx-cast.sig-bijuu-roar,
+.skfx-cast.sig-yasaka,
+.skfx-cast.sig-bomb {
+    background:
+        radial-gradient(circle at 55% 45%, #fff 0 10%, rgba(255, 80, 120, 0.85) 28%, rgba(120, 0, 40, 0.5) 55%, transparent 72%);
+    animation: skfxBurst 0.65s ease-out both;
+}
+.skfx-cast.sig-hyorin,
+.skfx-cast.sig-san-no-mai,
+.skfx-cast.sig-sode,
+.skfx-cast.sig-ice-focus,
+.skfx-cast.sig-frost-debuff {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.85), transparent 45%),
+        radial-gradient(circle, rgba(174, 214, 241, 0.9), rgba(41, 128, 185, 0.5) 50%, transparent 72%);
+    animation: skfxBurst 0.58s ease-out both;
+    box-shadow: 0 0 28px rgba(93, 173, 226, 0.7);
+}
+.skfx-cast.sig-sabaku,
+.skfx-cast.sig-desert,
+.skfx-cast.sig-sand-bind,
+.skfx-cast.sig-sunashield,
+.skfx-cast.sig-sables,
+.skfx-cast.sig-ground,
+.skfx-cast.sig-doton {
+    background:
+        radial-gradient(circle at 50% 60%, rgba(210, 180, 120, 0.75), rgba(140, 90, 40, 0.45) 50%, transparent 70%);
+    animation: skfxBurst 0.55s ease-out both;
+}
+.skfx-cast.sig-room,
+.skfx-cast.sig-shambles,
+.skfx-cast.sig-space,
+.skfx-cast.sig-scan {
+    background:
+        radial-gradient(circle, rgba(100, 220, 255, 0.45), transparent 60%),
+        repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(80, 200, 255, 0.25) 9px);
+    animation: skfxTimeStop 0.55s ease-out both;
+}
+.skfx-cast.sig-clay,
+.skfx-cast.sig-c1,
+.skfx-cast.sig-c2,
+.skfx-cast.sig-puppet,
+.skfx-cast.sig-senbon {
+    background: radial-gradient(circle, rgba(255, 200, 100, 0.55), rgba(180, 60, 40, 0.4) 55%, transparent 70%);
+    animation: skfxBurst 0.5s ease-out both;
+}
+.skfx-cast.sig-hamon-punch,
+.skfx-cast.sig-clacker,
+.skfx-cast.sig-your-next {
+    background: radial-gradient(circle, rgba(255, 230, 120, 0.8), rgba(230, 160, 40, 0.45) 50%, transparent 70%);
+    animation: skfxBurst 0.5s ease-out both;
+}
+.skfx-cast.sig-cherry-punch,
+.skfx-cast.sig-star-breaker,
+.skfx-cast.sig-concasse {
+    background:
+        radial-gradient(circle at 55% 45%, #fff, rgba(255, 100, 130, 0.65) 40%, transparent 68%);
+    animation: skfxImpact 0.5s ease-out both;
+}
+
+/* ---- Projectiles ---- */
+.skfx-bolt.fire,
+.skfx-bolt.fam-inferno {
+    background: radial-gradient(circle, #fff, #e74c3c 55%, transparent 70%);
+    animation: skfxFly 0.38s ease-in both;
+}
+.skfx-bolt.elec,
+.skfx-bolt.fam-lightning {
+    background: radial-gradient(circle, #fff, #f4d03f 55%, transparent 70%);
+    animation: skfxFly 0.32s linear both;
+}
+.skfx-bolt.ice {
+    background: radial-gradient(circle, #fff, #5dade2 50%, transparent 70%);
+    box-shadow: 0 0 18px #5dade2;
+    animation: skfxFly 0.36s ease-in both;
+}
+.skfx-bolt.wind,
+.skfx-bolt.fam-spiral {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.85), #2ecc71 50%, transparent 70%);
+    animation: skfxFly 0.34s ease-in both;
+}
+.skfx-bolt.water {
+    background: radial-gradient(circle, #d6eaf8, #3498db 55%, transparent 70%);
+    animation: skfxFly 0.36s ease-in both;
+}
+.skfx-bolt.curse,
+.skfx-bolt.psy,
+.skfx-bolt.fam-hex {
+    background: radial-gradient(circle, #e8daef, #8e44ad 55%, transparent 70%);
+    animation: skfxFly 0.36s ease-in both;
+}
+.skfx-bolt.almighty,
+.skfx-bolt.fam-finisher {
+    background: radial-gradient(circle, #fff, #c41e3a 55%, transparent 70%);
+    animation: skfxFly 0.34s ease-in both;
+    filter: drop-shadow(0 0 14px #c41e3a);
+}
+.skfx-bolt.sig-rasengan,
+.skfx-bolt.sig-odama {
+    width: 88px; height: 88px; margin: -44px 0 0 -44px;
+    background:
+        radial-gradient(circle, #fff 0 12%, #5dade2 28%, #1a5276 55%, transparent 70%),
+        conic-gradient(from 90deg, rgba(255, 255, 255, 0.6), transparent, #5dade2, transparent);
+    animation: skfxFlySpin 0.4s linear both;
+}
+.skfx-bolt.sig-getsuga,
+.skfx-bolt.sig-getsuga-black,
+.skfx-bolt.sig-kuroi-getsuga,
+.skfx-bolt.sig-getsuga-barrage {
+    width: 160px; height: 70px; margin: -35px 0 0 -80px; border-radius: 40%;
+    background: linear-gradient(90deg, transparent, rgba(180, 220, 255, 0.95), rgba(40, 80, 180, 0.75), transparent);
+    animation: skfxFly 0.36s ease-in both;
+    filter: drop-shadow(0 0 12px #5dade2);
+}
+.skfx-bolt.sig-menacing-ball,
+.skfx-bolt.sig-cero,
+.skfx-bolt.sig-hadou,
+.skfx-bolt.sig-lanza,
+.skfx-bolt.sig-yasaka {
+    background: radial-gradient(circle, #f5b7b1, #7b241c 55%, transparent 70%);
+    animation: skfxFly 0.4s ease-in both;
+    box-shadow: 0 0 22px rgba(192, 57, 43, 0.9);
+}
+.skfx-bolt.sig-chidori,
+.skfx-bolt.sig-chidori-spear,
+.skfx-bolt.sig-kirin,
+.skfx-bolt.sig-el-thor {
+    background: radial-gradient(circle, #fff, #85c1e9 50%, transparent 70%);
+    animation: skfxFly 0.28s linear both;
+    filter: drop-shadow(0 0 16px #f4d03f);
+}
+.skfx-bolt-trail {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.75), transparent 70%);
+    animation: skfxFly 0.4s ease-in both;
+}
+.skfx-bolt-trail.fire,
+.skfx-bolt-trail.fam-inferno { background: radial-gradient(circle, rgba(255, 160, 60, 0.8), transparent 70%); }
+.skfx-bolt-trail.elec,
+.skfx-bolt-trail.fam-lightning { background: radial-gradient(circle, rgba(255, 255, 160, 0.85), transparent 70%); }
+.skfx-bolt-trail.wind,
+.skfx-bolt-trail.fam-spiral { background: radial-gradient(circle, rgba(100, 200, 255, 0.8), transparent 70%); }
+.skfx-bolt-trail.curse,
+.skfx-bolt-trail.fam-hex { background: radial-gradient(circle, rgba(180, 100, 255, 0.75), transparent 70%); }
+
+/* ---- Impacts ---- */
+.skfx-impact.strike,
+.skfx-impact.slash,
+.skfx-impact.pierce,
+.skfx-impact.fam-melee,
+.skfx-impact.fam-blade,
+.skfx-impact.fam-pierce {
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 90, 50, 0.55) 40%, transparent 70%);
+    animation: skfxImpact 0.42s ease-out both;
+}
+.skfx-impact.fire,
+.skfx-impact.fam-inferno {
+    background:
+        radial-gradient(circle, #fff, rgba(231, 76, 60, 0.75) 40%, transparent 70%);
+    animation: skfxImpact 0.5s ease-out both;
+}
+.skfx-impact.elec,
+.skfx-impact.fam-lightning {
+    background: radial-gradient(circle, #fff, rgba(244, 208, 63, 0.7) 40%, transparent 70%);
+    animation: skfxImpact 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.skfx-impact.ice {
+    background: radial-gradient(circle, #fff, rgba(93, 173, 226, 0.85) 42%, transparent 70%);
+    animation: skfxImpact 0.48s ease-out both;
+    box-shadow: 0 0 30px rgba(93, 173, 226, 0.8);
+}
+.skfx-impact.wind,
+.skfx-impact.fam-spiral {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(46, 204, 113, 0.55) 45%, transparent 70%);
+    animation: skfxImpact 0.45s ease-out both;
+}
+.skfx-impact.water,
+.skfx-impact.fam-element {
+    background: radial-gradient(circle, #eaf2f8, rgba(52, 152, 219, 0.7) 42%, transparent 70%);
+    animation: skfxImpact 0.48s ease-out both;
+}
+.skfx-impact.bless,
+.skfx-impact.support,
+.skfx-impact.heal {
+    background: radial-gradient(circle, #fff, rgba(88, 214, 141, 0.7) 42%, transparent 70%);
+    animation: skfxImpact 0.5s ease-out both;
+}
+.skfx-impact.curse,
+.skfx-impact.psy,
+.skfx-impact.fam-hex {
+    background: radial-gradient(circle, #f5eef8, rgba(142, 68, 173, 0.7) 42%, transparent 70%);
+    animation: skfxImpact 0.48s ease-out both;
+}
+.skfx-impact.almighty,
+.skfx-impact.fam-finisher {
+    background: radial-gradient(circle, #fff, rgba(196, 30, 58, 0.8) 40%, transparent 70%);
+    animation: skfxImpact 0.55s ease-out both;
+    filter: drop-shadow(0 0 20px #c41e3a);
+}
+.skfx-impact.sig-rasengan,
+.skfx-impact.sig-odama {
+    background:
+        radial-gradient(circle, #fff 0 10%, #5dade2 25%, #1a5276 50%, transparent 70%);
+    animation: skfxImpactSpin 0.55s ease-out both;
+}
+.skfx-impact.sig-ora,
+.skfx-impact.sig-dona,
+.skfx-impact.sig-gum-gatling,
+.skfx-impact.sig-jet-gatling,
+.skfx-impact.sig-ora-overdrive,
+.skfx-impact.sig-muda,
+.skfx-impact.sig-mudas,
+.skfx-impact.fam-barrage {
+    animation: skfxImpactBarrage 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+    background: radial-gradient(circle, #fff, rgba(255, 120, 80, 0.7) 40%, transparent 70%);
+}
+.skfx-impact.multi::after {
+    content: '';
+    position: absolute;
+    inset: 18%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    animation: skfxRingOut 0.45s ease-out both;
+}
+
+.skfx-ring.pop {
+    animation: skfxRingOut 0.5s ease-out both;
+}
+.skfx-ring.fam-spiral { border-color: rgba(93, 173, 226, 0.95); box-shadow: 0 0 16px #5dade2; }
+.skfx-ring.fam-finisher { border-color: rgba(196, 30, 58, 0.95); box-shadow: 0 0 16px #c41e3a; }
+.skfx-ring.heal { border-color: rgba(88, 214, 141, 0.95); }
+.skfx-ring.fam-hex { border-color: rgba(180, 100, 255, 0.9); }
+
+.skfx-spark {
+    animation: skfxSpark 0.38s ease-out both;
+}
+.skfx-spark.fire,
+.skfx-spark.fam-inferno { background: #ff9f43; box-shadow: 0 0 12px #e74c3c; }
+.skfx-spark.elec,
+.skfx-spark.fam-lightning { background: #f9e79f; box-shadow: 0 0 12px #f4d03f; }
+.skfx-spark.wind,
+.skfx-spark.fam-spiral { background: #a9dfbf; box-shadow: 0 0 12px #2ecc71; }
+.skfx-spark.curse,
+.skfx-spark.fam-hex { background: #d2b4de; box-shadow: 0 0 12px #8e44ad; }
+.skfx-spark.heal { background: #abebc6; box-shadow: 0 0 12px #58d68d; }
+
+.skfx-cut {
+    animation: skfxCut 0.38s ease-out both;
+}
+.skfx-cut.elec { filter: hue-rotate(40deg) brightness(1.4); }
+.skfx-cut.curse { filter: hue-rotate(250deg); }
+.skfx-cut.ice { filter: hue-rotate(160deg); }
+
+/* AoE wash */
+.p5-fx.skfx-aoe.show {
+    opacity: 0.55 !important;
+}
+.p5-fx.skfx-aoe.fam-inferno { background: radial-gradient(circle, rgba(231, 76, 60, 0.45), transparent 70%); }
+.p5-fx.skfx-aoe.fam-lightning { background: radial-gradient(circle, rgba(244, 208, 63, 0.4), transparent 70%); }
+.p5-fx.skfx-aoe.fam-spiral { background: radial-gradient(circle, rgba(93, 173, 226, 0.4), transparent 70%); }
+.p5-fx.skfx-aoe.fam-hex { background: radial-gradient(circle, rgba(142, 68, 173, 0.4), transparent 70%); }
+.p5-fx.skfx-aoe.fam-finisher { background: radial-gradient(circle, rgba(196, 30, 58, 0.5), transparent 70%); }
+
+/* Fighter family juice */
+.p5-fighter.fx-barrage.attacking .p5-sprite {
+    filter: brightness(1.15) saturate(1.2);
+}
+.p5-fighter.fx-lightning.attacking .p5-sprite {
+    filter: brightness(1.25) drop-shadow(0 0 12px #f4d03f);
+}
+.p5-fighter.fx-inferno.attacking .p5-sprite {
+    filter: brightness(1.2) saturate(1.35) drop-shadow(0 0 14px #e74c3c);
+}
+.p5-fighter.fx-spiral.attacking .p5-sprite {
+    filter: brightness(1.15) drop-shadow(0 0 14px #5dade2);
+}
+.p5-fighter.fx-finisher.attacking .p5-sprite,
+.p5-fighter.fx-transform.casting .p5-sprite {
+    filter: brightness(1.35) drop-shadow(0 0 18px #c41e3a);
+}
+.p5-fighter.fx-hex.attacking .p5-sprite,
+.p5-fighter.fx-hex.casting .p5-sprite {
+    filter: brightness(1.1) hue-rotate(20deg) drop-shadow(0 0 12px #8e44ad);
+}
+
+@keyframes skfxCharge {
+    0% { opacity: 0; transform: scale(0.4); }
+    45% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes skfxSlash {
+    0% { opacity: 0; transform: scaleX(0.2) translateX(-35%); }
+    35% { opacity: 1; transform: scaleX(1.2) translateX(6%); }
+    100% { opacity: 0; transform: scaleX(1.45) translateX(42%); }
+}
+@keyframes skfxPierce {
+    0% { opacity: 0; transform: scaleX(0.2) translateX(-20%); }
+    40% { opacity: 1; transform: scaleX(1.3) translateX(10%); }
+    100% { opacity: 0; transform: scaleX(1.6) translateX(50%); }
+}
+@keyframes skfxBurst {
+    0% { opacity: 0; transform: scale(0.55); }
+    40% { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.4); }
+}
+@keyframes skfxFlicker {
+    0% { opacity: 0; filter: brightness(1); }
+    25% { opacity: 1; filter: brightness(1.6); }
+    50% { opacity: 0.7; filter: brightness(1.1); }
+    75% { opacity: 1; filter: brightness(1.8); }
+    100% { opacity: 0; }
+}
+@keyframes skfxSpinAura {
+    0% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+    40% { opacity: 1; transform: scale(1.1) rotate(160deg); }
+    100% { opacity: 0; transform: scale(1.35) rotate(320deg); }
+}
+@keyframes skfxBarrage {
+    0%, 100% { opacity: 0; }
+    15%, 35%, 55%, 75% { opacity: 1; transform: translateX(8px) scale(1.05); }
+    25%, 45%, 65% { opacity: 0.55; transform: translateX(-6px) scale(0.95); }
+}
+@keyframes skfxTimeStop {
+    0% { opacity: 0; transform: scale(0.4); filter: saturate(0.2); }
+    45% { opacity: 1; transform: scale(1.2); filter: saturate(1.4) hue-rotate(40deg); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+@keyframes skfxFly {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--skfx-dx, 120px), var(--skfx-dy, -40px)) scale(1.1); }
+}
+@keyframes skfxFlySpin {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.5) rotate(0deg); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--skfx-dx, 120px), var(--skfx-dy, -40px)) scale(1.15) rotate(420deg); }
+}
+
+/* Assault / finisher cinema */
+.p5-stage.assault-cinema::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, transparent 0 14%, rgba(255, 221, 120, .16) 14.2% 14.5%, transparent 14.7% 33%, rgba(255, 255, 255, .12) 33.2% 33.5%, transparent 33.7% 61%, rgba(211, 52, 77, .18) 61.2% 61.5%, transparent 61.7%),
+        radial-gradient(ellipse at 50% 52%, rgba(255, 220, 125, .22), transparent 34%),
+        rgba(3, 4, 12, .22);
+    mix-blend-mode: screen;
+    animation: assaultCinemaWash 1.18s cubic-bezier(.2,.8,.16,1) both;
+}
+.p5-stage.remate-cinema::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 50% 44%, rgba(255, 241, 190, .34), transparent 20%),
+        linear-gradient(90deg, rgba(6, 5, 16, .56), transparent 38% 62%, rgba(6, 5, 16, .56));
+    mix-blend-mode: screen;
+    animation: remateCinemaWash 1.04s ease-out both;
+}
+.skfx-assault-cinema,
+.skfx-remate-cinema {
+    position: absolute;
+    inset: 0;
+    z-index: 16;
+    pointer-events: none;
+    overflow: hidden;
+    mix-blend-mode: screen;
+}
+.p5-remate-title {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    z-index: 24;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .34rem;
+    transform: translate(-50%, -50%) skewX(-12deg);
+    pointer-events: none;
+    text-align: center;
+    animation: remateTitleIn 1.28s cubic-bezier(.12,.86,.16,1) both;
+}
+.p5-remate-title span {
+    color: #fff4c7;
+    font: 900 clamp(2rem, 7vw, 6.8rem)/.9 'Cinzel', serif;
+    letter-spacing: .2em;
+    white-space: nowrap;
+    text-shadow: 0 0 8px #fff, 0 0 24px #ffb52e, 0 0 54px #c41e3a, 8px 8px 0 rgba(53, 5, 14, .9);
+}
+.p5-remate-title small {
+    color: #ffd978;
+    font: 800 clamp(.58rem, 1.2vw, 1rem)/1 'Cinzel', serif;
+    letter-spacing: .48em;
+    text-shadow: 0 0 12px #c41e3a;
+}
+.p5-remate-title.is-assault span { color: #fff7d7; }
+@keyframes remateTitleIn {
+    0% { opacity: 0; transform: translate(-50%, -50%) skewX(-12deg) scale(.42); filter: blur(9px); }
+    22% { opacity: 1; transform: translate(-50%, -50%) skewX(-12deg) scale(1.12); filter: blur(0); }
+    38% { transform: translate(-50%, -50%) skewX(-12deg) scale(.96); }
+    78% { opacity: 1; transform: translate(-50%, -50%) skewX(-12deg) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) skewX(-12deg) scale(1.18); filter: blur(2px); }
+}
+.skfx-assault-cinema::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18vmin;
+    height: 18vmin;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 241, 183, .95);
+    border-radius: 50%;
+    box-shadow: 0 0 28px rgba(255, 177, 65, .9), 0 0 90px rgba(196, 30, 58, .55), inset 0 0 28px rgba(255, 255, 255, .7);
+    animation: assaultCore 1.05s cubic-bezier(.12,.86,.12,1) both;
+}
+.skfx-assault-cinema::after {
+    content: 'ASSAULT';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(.65) skewX(-12deg);
+    color: #fff2be;
+    font: 900 clamp(1.5rem, 5vw, 4.8rem)/1 'Cinzel', serif;
+    letter-spacing: .28em;
+    text-shadow: 0 0 12px #fff, 0 0 34px #c41e3a, 6px 6px 0 rgba(80, 7, 20, .8);
+    opacity: 0;
+    animation: assaultTitle 1.05s cubic-bezier(.16,.8,.16,1) both;
+}
+.skfx-remate-cinema::before,
+.skfx-remate-cinema::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 72%;
+    height: 2px;
+    transform: translate(-50%, -50%) rotate(-18deg) scaleX(0);
+    background: linear-gradient(90deg, transparent, #fff6ce 20%, #c41e3a 50%, #fff6ce 80%, transparent);
+    box-shadow: 0 0 16px #c41e3a;
+    animation: remateCross 1s cubic-bezier(.12,.9,.14,1) both;
+}
+.skfx-remate-cinema::after {
+    transform: translate(-50%, -50%) rotate(18deg) scaleX(0);
+    animation-delay: 90ms;
+}
+.skfx-assault-lock,
+.skfx-remate-sigil {
+    position: absolute;
+    inset: -18%;
+    z-index: 22;
+    pointer-events: none;
+    border: 2px solid rgba(255, 230, 150, .9);
+    border-radius: 50%;
+    background:
+        repeating-conic-gradient(from 8deg, transparent 0 12deg, rgba(255, 230, 150, .82) 13deg 14deg, transparent 15deg 28deg),
+        radial-gradient(circle, transparent 0 48%, rgba(196, 30, 58, .35) 49% 53%, transparent 54%);
+    box-shadow: 0 0 12px rgba(255, 215, 100, .95), inset 0 0 18px rgba(196, 30, 58, .7);
+    animation: assaultLock .92s cubic-bezier(.12,.85,.15,1) both;
+}
+.skfx-remate-sigil {
+    inset: -26%;
+    border-color: rgba(255, 244, 196, .98);
+    background:
+        repeating-conic-gradient(from 45deg, transparent 0 16deg, rgba(255, 245, 190, .95) 17deg 19deg, transparent 20deg 34deg),
+        radial-gradient(circle, transparent 0 42%, rgba(196, 30, 58, .5) 43% 48%, transparent 49%);
+    animation: remateSigil .9s cubic-bezier(.1,.9,.1,1) both;
+}
+.p5-fighter.assault-squad {
+    animation: assaultSquadEntry .62s cubic-bezier(.16,.88,.2,1) both;
+}
+.p5-fighter.finisher-executor {
+    z-index: 30;
+    filter: brightness(1.35) saturate(1.25) drop-shadow(0 0 24px rgba(255, 219, 133, .92));
+    animation: finisherExecutor .66s cubic-bezier(.18,.9,.15,1) both;
+}
+.p5-fighter.finisher-target {
+    z-index: 28;
+    filter: saturate(.7) brightness(1.22) drop-shadow(0 0 20px rgba(196, 30, 58, .95));
+    animation: finisherTarget .8s cubic-bezier(.16,.88,.2,1) both;
+}
+@keyframes assaultCinemaWash {
+    0% { opacity: 0; transform: scale(1.12); }
+    24% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.04); }
+}
+@keyframes assaultCore {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(.1); }
+    32% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(8); }
+}
+@keyframes assaultTitle {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(.4) skewX(-12deg); }
+    28% { opacity: 1; transform: translate(-50%, -50%) scale(1) skewX(-12deg); }
+    72% { opacity: 1; transform: translate(-50%, -50%) scale(1.04) skewX(-12deg); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2) skewX(-12deg); }
+}
+@keyframes assaultSquadEntry {
+    0% { opacity: .3; transform: translateX(-18px) scale(.96); }
+    55% { opacity: 1; transform: translateX(5px) scale(1.03); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes assaultLock {
+    0% { opacity: 0; transform: scale(1.8) rotate(-90deg); }
+    28% { opacity: 1; transform: scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: scale(.74) rotate(120deg); }
+}
+@keyframes remateCinemaWash {
+    0% { opacity: 0; }
+    24% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes remateCross {
+    0% { opacity: 0; transform: translate(-50%, -50%) rotate(-18deg) scaleX(0); }
+    35% { opacity: 1; transform: translate(-50%, -50%) rotate(-18deg) scaleX(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) rotate(-18deg) scaleX(1.32); }
+}
+@keyframes remateSigil {
+    0% { opacity: 0; transform: scale(1.9) rotate(-180deg); }
+    34% { opacity: 1; transform: scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: scale(.62) rotate(140deg); }
+}
+@keyframes finisherExecutor {
+    0% { transform: translateX(0) scale(1); }
+    48% { transform: translateX(18px) scale(1.06); }
+    72% { transform: translateX(42px) scale(1.02); }
+    100% { transform: translateX(0) scale(1); }
+}
+@keyframes finisherTarget {
+    0% { transform: translateX(0) scale(1); }
+    40% { transform: translateX(-8px) scale(1.04); }
+    58% { transform: translateX(7px) scale(.98); }
+    100% { transform: translateX(0) scale(1); }
+}
+@keyframes skfxImpact {
+    0% { opacity: 0; transform: scale(0.4); }
+    35% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(1.55); }
+}
+@keyframes skfxImpactSpin {
+    0% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+    40% { opacity: 1; transform: scale(1.25) rotate(180deg); }
+    100% { opacity: 0; transform: scale(1.6) rotate(360deg); }
+}
+@keyframes skfxImpactBarrage {
+    0%, 100% { opacity: 0; transform: scale(0.7); }
+    10%, 30%, 50%, 70%, 90% { opacity: 1; transform: scale(1.15) translate(4px, -3px); }
+    20%, 40%, 60%, 80% { opacity: 0.6; transform: scale(0.9) translate(-5px, 2px); }
+}
+@keyframes skfxRingOut {
+    0% { opacity: 0.9; transform: scale(0.4); }
+    100% { opacity: 0; transform: scale(1.8); }
+}
+@keyframes skfxSpark {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--skfx-sx, 24px), var(--skfx-sy, -18px)) scale(0.2); }
+}
+@keyframes skfxCut {
+    0% { opacity: 0; transform: scaleX(0.15) rotate(-18deg); }
+    35% { opacity: 1; transform: scaleX(1.1) rotate(-8deg); }
+    100% { opacity: 0; transform: scaleX(1.35) translateX(20%) rotate(4deg); }
+}
+
+.p5-afterimage {
+    width: 70% !important;
+    height: 100% !important;
+    margin-left: -35% !important;
+    bottom: 0 !important;
+}

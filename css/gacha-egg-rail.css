@@ -1,0 +1,218 @@
+/* Easter-egg rail thumbs + Detalles/Historial (load after gacha-wuwa.css) */
+
+.gw-thumb {
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    text-align: left;
+    font: inherit;
+}
+.gw-thumb:not(.is-active):hover {
+    border-color: rgba(232, 199, 106, 0.55);
+    filter: brightness(1.1);
+}
+.gw-thumb.is-locked {
+    opacity: 0.72;
+    filter: grayscale(0.35) brightness(0.78);
+    cursor: not-allowed;
+}
+.gw-thumb.is-locked:hover {
+    filter: grayscale(0.35) brightness(0.78);
+    border-color: rgba(200, 60, 80, 0.55);
+}
+.gw-thumb.is-locked .gw-thumb-game {
+    color: #ffb4b4;
+}
+.gw-thumb-lock {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(155, 16, 40, 0.28), rgba(5, 3, 8, 0.55) 70%);
+}
+.gw-thumb-lock i {
+    position: absolute;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1.5px solid rgba(232, 199, 106, 0.45);
+    box-shadow: 0 0 16px rgba(155, 16, 40, 0.35);
+    background: rgba(8, 4, 10, 0.55);
+}
+.gw-thumb-lock b {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    color: #ffb4b8;
+    border: 1px solid rgba(200, 60, 80, 0.55);
+    padding: 0.18rem 0.4rem;
+    background: rgba(20, 6, 10, 0.85);
+    transform: rotate(-8deg);
+    text-shadow: 0 1px 2px #000;
+}
+.gw-thumb-game {
+    position: absolute;
+    left: 0.22rem;
+    right: 0.22rem;
+    bottom: 0.16rem;
+    z-index: 3;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+    color: #ffe9a0;
+    text-shadow: 0 1px 2px #000, 0 0 6px rgba(0, 0, 0, 0.95);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+.gw-thumb:has(.gw-thumb-game) .gw-thumb-name {
+    bottom: 1.1rem;
+    padding-bottom: 0;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #fffaf0;
+    text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, 0.9);
+}
+
+.gw-rail-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.45rem;
+    margin-bottom: 0.35rem;
+    flex: 0 0 auto;
+}
+.gw-rail-tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0.35rem 0.25rem;
+    background: rgba(8, 4, 10, 0.92);
+    border: 1.5px solid rgba(232, 199, 106, 0.58);
+    color: #ffe9a0;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.gw-rail-tool:hover {
+    border-color: var(--meta-gold, #e8c76a);
+    background: rgba(155, 16, 40, 0.42);
+    transform: translateY(-1px);
+}
+.gw-rail-tool .gw-tool-ico { font-size: 1.15rem; line-height: 1; }
+.gw-rail-tool > span:last-child {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: #fff8e0;
+    text-shadow: 0 1px 2px #000;
+}
+
+.gw-egg-free {
+    font-size: 1.15rem;
+    letter-spacing: 0.18em;
+    color: #1a0a08;
+    font-weight: 900;
+}
+
+.gacha-wuwa.is-egg .gw-reward-q { opacity: 0.15; }
+
+.gw-reward-sil.has-egg-art {
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 106, 0.55);
+    box-shadow: 0 0 22px rgba(255, 215, 106, 0.28);
+    width: 132px;
+    height: 168px;
+    background-repeat: no-repeat;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+}
+.gw-reward-sil.has-egg-art .gw-reward-body {
+    display: none;
+}
+.gw-reward-sil.has-egg-art .gw-reward-q {
+    position: absolute;
+    right: 0.2rem;
+    bottom: 0.05rem;
+    font-size: 1.1rem;
+    opacity: 0.55;
+}
+
+/* Egg stage: sharper full-bleed key art */
+.gw-art.is-egg-stage .gw-banner-media.is-loaded {
+    image-rendering: auto;
+    filter: none;
+}
+
+/* Volume on gacha: bottom-center, above convene dock (does not cover currencies) */
+body:has(.gacha-scene.active) .vol-dock {
+    left: 50% !important;
+    right: auto !important;
+    bottom: max(5.85rem, calc(5.5rem + env(safe-area-inset-bottom, 0px))) !important;
+    transform: translateX(-50%) !important;
+    z-index: 40 !important;
+}
+
+body:has(.arena-scene) .vol-dock {
+    left: auto !important;
+    right: max(0.7rem, env(safe-area-inset-right, 0px)) !important;
+    bottom: max(0.7rem, env(safe-area-inset-bottom, 0px)) !important;
+    transform: none !important;
+}
+
+/* Party select: bottom-left so it doesn't cover ENTRAR EN COMBATE */
+body:has(.psel) .vol-dock {
+    left: max(0.7rem, env(safe-area-inset-left, 0px)) !important;
+    right: auto !important;
+    bottom: max(0.7rem, env(safe-area-inset-bottom, 0px)) !important;
+    transform: none !important;
+}
+
+/* Battle HUD: bottom-left — clear of enemy bar (top-right) and turn dock (bottom-right) */
+body:has(.hud-p5) .vol-dock {
+    left: max(0.65rem, env(safe-area-inset-left, 0px)) !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px)) !important;
+    transform: none !important;
+    z-index: 50 !important;
+}
+
+@media (max-width: 900px) {
+    body:has(.gacha-scene.active) .vol-dock {
+        left: 50% !important;
+        right: auto !important;
+        bottom: max(6.8rem, calc(6.4rem + env(safe-area-inset-bottom, 0px))) !important;
+        transform: translateX(-50%) !important;
+    }
+    body:has(.hud-p5) .vol-dock {
+        left: max(0.55rem, env(safe-area-inset-left, 0px)) !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: max(0.55rem, env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .gw-rail-tools {
+        flex-direction: row;
+        margin-top: 0;
+    }
+    .gw-rail-tool { min-height: 2.8rem; }
+}

@@ -1,0 +1,307 @@
+/* ============================================================
+   Motion — Wuthering Waves / Convene flow
+   Soft expo eases, wipe transitions, staggered UI reveals.
+   ============================================================ */
+
+:root {
+    --mx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --mx-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --mx-ease-in: cubic-bezier(0.55, 0.06, 0.68, 0.19);
+    --mx-ease-snap: cubic-bezier(0.34, 1.3, 0.64, 1);
+    --mx-ease-flow: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --mx-fast: 0.18s;
+    --mx-med: 0.36s;
+    --mx-slow: 0.58s;
+    --mx-gold: rgba(232, 199, 106, 0.85);
+}
+
+/* ── Scene wipe overlay ─────────────────────────────────────── */
+.mx-wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+}
+.mx-wipe.is-on {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.mx-wipe-veil {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(40, 28, 18, 0.35), transparent 55%),
+        linear-gradient(105deg, #06040a 0%, #0c0812 42%, #120a10 100%);
+    transform: translateX(-104%);
+    will-change: transform;
+}
+.mx-wipe-edge {
+    position: absolute;
+    top: -5%;
+    bottom: -5%;
+    width: 28%;
+    left: 0;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(232, 199, 106, 0.04) 22%,
+        rgba(255, 233, 160, 0.28) 44%,
+        rgba(255, 245, 210, 0.72) 52%,
+        rgba(196, 30, 58, 0.42) 62%,
+        rgba(155, 16, 40, 0.18) 78%,
+        transparent 100%);
+    opacity: 0;
+    transform: translate3d(-40%, 0, 0);
+    will-change: transform, opacity;
+    pointer-events: none;
+    /* Soft bloom without animating filter (GPU-friendly) */
+    box-shadow:
+        0 0 40px 8px rgba(255, 220, 140, 0.18),
+        0 0 90px 20px rgba(196, 30, 58, 0.12);
+}
+.mx-wipe-sigil {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    transform: translate3d(-50%, -50%, 0) scale(0.88);
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.7rem, 1.8vw, 0.95rem);
+    letter-spacing: 0.42em;
+    color: rgba(255, 233, 160, 0.78);
+    text-indent: 0.42em;
+    opacity: 0;
+    text-shadow: 0 0 28px rgba(232, 199, 106, 0.4);
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+.mx-wipe-sigil::before {
+    content: '✦';
+    display: block;
+    text-align: center;
+    letter-spacing: 0;
+    text-indent: 0;
+    font-size: 1.1em;
+    margin-bottom: 0.55rem;
+    opacity: 0.9;
+}
+
+/* ── Interactive press / hover language ─────────────────────── */
+.btn-destiny,
+.btn-secondary,
+.btn-convene,
+.arena-mission,
+.arena-tab,
+.arena-portal,
+.arena-sandbox,
+.gw-thumb,
+.gw-pull-btn,
+.gw-link,
+.gw-panel-close,
+.gw-rail-tool,
+.agc-cta,
+.atc-cta,
+.vn-choice,
+.vn-next,
+.party-chip,
+.p5-cmd,
+.hub-clock-btn {
+    transition:
+        transform var(--mx-fast) var(--mx-ease-out),
+        border-color var(--mx-med) var(--mx-ease),
+        box-shadow var(--mx-med) var(--mx-ease),
+        background var(--mx-med) var(--mx-ease),
+        opacity var(--mx-med) var(--mx-ease) !important;
+}
+.btn-destiny:active:not(:disabled),
+.btn-secondary:active:not(:disabled),
+.btn-convene:active:not(:disabled),
+.arena-mission:active:not(:disabled),
+.arena-portal:active:not(:disabled),
+.arena-sandbox:active:not(:disabled),
+.gw-thumb:active:not(:disabled),
+.gw-pull-btn:active:not(:disabled),
+.gw-rail-tool:active:not(:disabled),
+.vn-choice:active,
+.p5-cmd:active:not(:disabled),
+.hub-clock-btn:active:not(:disabled) {
+    transform: scale(0.965) translateZ(0) !important;
+}
+
+/* ── Arena enter cascade (JS sets opacity/y; CSS polish) ───── */
+.arena-scene.is-entering .arena-bg-art {
+    filter: saturate(1.05) contrast(1.05) brightness(0.72);
+}
+.arena-scene .arena-mission {
+    transform-origin: left center;
+}
+.arena-missions-grid .arena-mission {
+    transform-origin: center center;
+}
+.arena-toast {
+    transition: opacity 0.35s var(--mx-ease-out), transform 0.45s var(--mx-ease-out) !important;
+}
+.arena-toast:not(.show) {
+    transform: translateY(12px);
+}
+.arena-toast.show {
+    transform: translateY(0);
+}
+.arena-tab {
+    position: relative;
+}
+.arena-tab::after {
+    content: '';
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--a-gold, #e8c76a), transparent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.35s var(--mx-ease-out);
+    opacity: 0.9;
+}
+.arena-tab.is-active::after {
+    transform: scaleX(1);
+}
+
+/* ── Gacha banner switch + panels (opacity only — no zoom) ──── */
+.gw-art {
+    transition: opacity 0.35s var(--mx-ease-out);
+}
+.gw-banner-media {
+    transition: opacity 0.35s var(--mx-ease-out) !important;
+}
+.gw-backdrop {
+    transition: opacity 0.35s var(--mx-ease) !important;
+}
+.gw-panel {
+    transition:
+        transform 0.5s var(--mx-ease-out),
+        opacity 0.4s var(--mx-ease),
+        visibility 0.4s !important;
+}
+.gw-thumb.is-active {
+    transition: transform 0.35s var(--mx-ease-snap), border-color 0.3s, box-shadow 0.35s !important;
+}
+
+/* ── Dialogue / VN ──────────────────────────────────────────── */
+.vn-root {
+    animation: mxVnIn 0.45s var(--mx-ease-out) both;
+}
+.vn-dim {
+    animation: mxFadeIn 0.4s var(--mx-ease) both;
+}
+.vn-panel {
+    animation: mxPanelUp 0.55s var(--mx-ease-out) both;
+}
+.vn-portrait {
+    animation: mxPortraitIn 0.65s var(--mx-ease-out) both !important;
+}
+@keyframes mxVnIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes mxFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes mxPanelUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mxPortraitIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Battle / party select ──────────────────────────────────── */
+#game-container.persona-mode:not(.hidden) {
+    animation: mxBattleIn 0.55s var(--mx-ease-out) both;
+}
+@keyframes mxBattleIn {
+    from { opacity: 0; transform: translate3d(0, 10px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.party-select,
+.p5-root {
+    animation: mxRiseIn 0.55s var(--mx-ease-out) both;
+}
+@keyframes mxRiseIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Letter / prologue soft polish ──────────────────────────── */
+.letter-scene .letter-paper,
+.prologue-scene .prologue-panel {
+    animation: mxRiseIn 0.7s var(--mx-ease-out) both;
+}
+
+/* Boot / FOUC guard — hide chrome until MotionFx.revealGacha */
+.mx-booting .gacha-wuwa.gw-boot .gw-boot-layer {
+    opacity: 0;
+    transform: translateY(12px);
+}
+.gacha-wuwa.gw-boot .gw-art {
+    opacity: 0.92;
+}
+.scene.mx-booting {
+    pointer-events: none;
+}
+
+/* Prefer GPU for wipe + full-bleed art.
+   Do NOT set transform on .mx-wipe-edge — GSAP owns xPercent there. */
+.mx-wipe-veil,
+.arena-bg-art {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+/* Don't permanently will-change the full gacha art layer — costs VRAM */
+.mx-wipe-edge {
+    will-change: transform, opacity;
+}
+.mx-wipe.is-on .mx-wipe-veil,
+.mx-wipe.is-on .mx-wipe-edge {
+    backface-visibility: hidden;
+}
+
+/* Faster, cleaner banner media crossfade — never animate transform here */
+.gw-banner-media {
+    transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+.gacha-wuwa.is-banner-switching .gw-art {
+    filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mx-booting .gacha-wuwa.gw-boot .gw-boot-layer {
+        opacity: 1;
+        transform: none;
+    }
+    .mx-wipe,
+    .mx-wipe-veil,
+    .mx-wipe-edge,
+    .mx-wipe-sigil,
+    .vn-root,
+    .vn-dim,
+    .vn-panel,
+    .vn-portrait,
+    #game-container.persona-mode,
+    .party-select,
+    .p5-root,
+    .letter-scene .letter-paper,
+    .prologue-scene .prologue-panel,
+    .arena-bg-art {
+        animation: none !important;
+        transition: none !important;
+    }
+    .btn-destiny:active,
+    .arena-mission:active,
+    .gw-thumb:active {
+        transform: none !important;
+    }
+}

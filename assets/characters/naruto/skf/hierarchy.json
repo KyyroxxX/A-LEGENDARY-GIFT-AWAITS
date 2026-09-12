@@ -1,0 +1,90 @@
+{
+  "version": "0.8.0",
+  "bones": [
+    {
+      "id": 0,
+      "name": "pelvis",
+      "parent": null
+    },
+    {
+      "id": 1,
+      "name": "torso",
+      "parent": "pelvis"
+    },
+    {
+      "id": 2,
+      "name": "neck",
+      "parent": "torso"
+    },
+    {
+      "id": 3,
+      "name": "head",
+      "parent": "neck"
+    },
+    {
+      "id": 4,
+      "name": "hair",
+      "parent": "head"
+    },
+    {
+      "id": 5,
+      "name": "upper_arm_r",
+      "parent": "torso"
+    },
+    {
+      "id": 6,
+      "name": "forearm_r",
+      "parent": "upper_arm_r"
+    },
+    {
+      "id": 7,
+      "name": "hand_r",
+      "parent": "forearm_r"
+    },
+    {
+      "id": 8,
+      "name": "upper_arm_l",
+      "parent": "torso"
+    },
+    {
+      "id": 9,
+      "name": "forearm_l",
+      "parent": "upper_arm_l"
+    },
+    {
+      "id": 10,
+      "name": "hand_l",
+      "parent": "forearm_l"
+    },
+    {
+      "id": 11,
+      "name": "upper_leg_r",
+      "parent": "pelvis"
+    },
+    {
+      "id": 12,
+      "name": "lower_leg_r",
+      "parent": "upper_leg_r"
+    },
+    {
+      "id": 13,
+      "name": "foot_r",
+      "parent": "lower_leg_r"
+    },
+    {
+      "id": 14,
+      "name": "upper_leg_l",
+      "parent": "pelvis"
+    },
+    {
+      "id": 15,
+      "name": "lower_leg_l",
+      "parent": "upper_leg_l"
+    },
+    {
+      "id": 16,
+      "name": "foot_l",
+      "parent": "lower_leg_l"
+    }
+  ]
+}

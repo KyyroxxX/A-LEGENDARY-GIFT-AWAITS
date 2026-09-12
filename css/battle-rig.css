@@ -1,0 +1,124 @@
+/* Hierarchical fine-pixel fighter rig. Loaded after legacy battle styles. */
+.hud-p5 .p5-rig {
+    position: relative;
+    width: 280px;
+    height: 360px;
+    isolation: isolate;
+    image-rendering: auto !important;
+    transform-origin: 50% 88%;
+    background: none !important;
+    overflow: visible;
+}
+
+.hud-p5 .p5-rig-fallback,
+.hud-p5 .p5-rig-part,
+.hud-p5 .p5-rig-swap {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    image-rendering: auto;
+    overflow: visible;
+}
+
+.hud-p5 .p5-rig-fallback {
+    z-index: 0;
+    opacity: 1;
+}
+.hud-p5 .p5-rig-bones {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    /* Part masks leave transparent holes on HQ anime sprites — keep full sprite. */
+    opacity: 0 !important;
+    pointer-events: none;
+}
+.hud-p5 .p5-rig.parts-ready .p5-rig-bones { opacity: 0 !important; }
+.hud-p5 .p5-rig.parts-ready .p5-rig-fallback { opacity: 1 !important; }
+
+/* Soft idle on the full sprite instead of bone layers */
+.hud-p5 .p5-fighter.ally .p5-rig:not(.rig-busy) .p5-rig-fallback {
+    animation: softRigBob var(--rig-idle, 2100ms) cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+}
+.hud-p5 .p5-fighter.enemy .p5-rig:not(.rig-busy) .p5-rig-fallback {
+    /* Flip is on the .p5-rig parent — don't animate transform here or it fights scaleX(-1) */
+    animation: softRigBobEnemy var(--rig-idle, 2100ms) cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+/* Match flat-sprite Hiyuki idle: soft weight shift, feet planted */
+@keyframes softRigBob {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -2.5px, 0); }
+}
+@keyframes softRigBobEnemy {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -2.5px, 0); }
+}
+
+/* Bone CSS keyframes fight JS Web Animations + hidden bones — disable. */
+.hud-p5 .p5-rig.parts-ready:not(.rig-busy) .bone-root,
+.hud-p5 .p5-rig.parts-ready:not(.rig-busy) .bone-torso,
+.hud-p5 .p5-rig.parts-ready:not(.rig-busy) .bone-head {
+    animation: none !important;
+}
+
+.hud-p5 .p5-rig-bone {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+.hud-p5 .p5-rig-swap {
+    z-index: 20;
+    opacity: 0;
+    background-image: var(--fighter-image);
+}
+
+.hud-p5 .p5-fighter.enemy .p5-rig {
+    transform: scaleX(-1) !important;
+    transform-origin: center bottom;
+}
+.hud-p5 .p5-fighter.enemy.face-native .p5-rig {
+    transform: none !important;
+}
+
+.hud-p5 .p5-fighter.form-shifted .p5-sprite,
+.hud-p5 .p5-fighter.form-shifted .p5-rig,
+.hud-p5 .p5-fighter.form-shifted .p5-rig-fallback,
+.hud-p5 .p5-fighter.transforming .p5-sprite,
+.hud-p5 .p5-fighter.transforming .p5-rig,
+.hud-p5 .p5-fighter.transforming .p5-rig-fallback {
+    background-size: auto 100% !important;
+    background-position: bottom center !important;
+    background-repeat: no-repeat !important;
+}
+
+.hud-p5 .p5-fighter.ally.face-flip .p5-rig {
+    transform: scaleX(-1) !important;
+    transform-origin: center bottom;
+}
+.hud-p5 .p5-fighter.down .p5-rig-bone {
+    animation-play-state: paused !important;
+}
+.hud-p5 .p5-fighter.down .bone-root {
+    transform: translateY(10px) rotate(7deg);
+}
+.hud-p5 .p5-fighter.hit-flash .p5-rig-bones {
+    filter: brightness(1.8);
+}
+.hud-p5 .p5-rig.rig-transforming .p5-rig-bones {
+    filter: brightness(1.7) drop-shadow(0 0 18px currentColor);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hud-p5 .p5-rig-bone { animation: none !important; }
+}

@@ -1,0 +1,102 @@
+.psel .psel-chip{background:linear-gradient(145deg,#16121c 0%,#07080d 58%,#140b12 100%);border-width:1px;box-shadow:7px 8px 0 rgba(0,0,0,.72),inset 0 0 0 1px rgba(255,255,255,.08);isolation:isolate}
+.psel .psel-chip::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;background:linear-gradient(115deg,rgba(255,255,255,.12),transparent 18%,transparent 72%,rgba(232,199,106,.08));mix-blend-mode:screen}
+.psel .psel-chip:hover{border-color:#ffe9a0;box-shadow:8px 9px 0 #5f1321,0 0 24px rgba(232,199,106,.2)}
+.psel .psel-chip.selected{border-color:#ff596f;box-shadow:0 0 0 2px #ffe9a0,7px 8px 0 #9b1028,0 0 28px rgba(196,30,58,.42)}
+.psel .psel-chip.rarity-epic{border-color:#e7bd58;box-shadow:7px 8px 0 rgba(0,0,0,.72),0 0 19px rgba(232,199,106,.16)}
+.psel .psel-chip.rarity-mythic{border-color:#ff536f;box-shadow:7px 8px 0 rgba(0,0,0,.72),0 0 25px rgba(255,42,74,.32)}
+.psel .psel-chip-frame{position:relative;display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden}
+.psel .psel-chip-art{flex:1 1 auto;min-height:7rem;background-position:center bottom;background-size:contain;filter:saturate(1.08) contrast(1.03);}
+.psel .psel-chip-art::before{background:radial-gradient(ellipse at 50% 73%,rgba(232,199,106,.18),transparent 54%),linear-gradient(180deg,rgba(7,8,13,.08),transparent 48%,rgba(0,0,0,.7))}
+.psel .psel-chip-info{padding:.52rem .58rem .58rem;gap:.24rem;background:linear-gradient(180deg,rgba(9,8,13,.68),#050509 82%);border-top:1px solid rgba(232,199,106,.36)}
+.psel .psel-chip-info strong{font-family:'Cinzel',serif;font-size:clamp(.64rem,1.25vw,.84rem);letter-spacing:.05em;text-shadow:0 1px 0 #000}
+.psel .psel-chip-info .party-role{font-size:.54rem;border:1px solid currentColor;background:rgba(155,16,40,.15);letter-spacing:.12em}
+.psel .party-tagline{font-family:'Cormorant Garamond',serif;font-size:.76rem;color:#e3d3b9;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.psel .psel-const{top:.36rem;right:.42rem;display:flex;align-items:baseline;gap:.08rem;padding:.14rem .34rem .12rem;background:linear-gradient(135deg,rgba(10,8,12,.92),rgba(73,47,16,.85));border:1px solid rgba(255,233,160,.72);color:#ffe9a0;box-shadow:2px 2px 0 rgba(0,0,0,.72),0 0 10px rgba(232,199,106,.18);transform:skewX(6deg)}
+.psel .psel-const strong{font:800 .72rem 'Cinzel',serif;letter-spacing:.05em}.psel .psel-const small{font:600 .52rem 'Cinzel',serif;opacity:.65}
+.psel .psel-dupe-meter{position:absolute;top:2.05rem;right:.43rem;width:2.7rem;height:.22rem;padding:0;background:rgba(0,0,0,.72);border:1px solid rgba(255,233,160,.35);transform:skewX(6deg);z-index:2}
+.psel .psel-dupe-meter i{display:block;height:100%;background:linear-gradient(90deg,#e0a735,#fff0a6);box-shadow:0 0 7px rgba(255,220,120,.75)}
+.arena-dupes-panel{width:min(760px,96vw);background:radial-gradient(ellipse at 50% 0%,rgba(126,35,53,.18),transparent 48%),linear-gradient(155deg,rgba(26,10,19,.98),rgba(5,5,10,.99))}
+.arena-dupes-head h3{font-size:1.08rem;text-shadow:0 0 18px rgba(255,233,160,.22)}
+.arena-dupe-row{grid-template-columns:3.5rem 1fr auto;min-height:4.2rem;padding:.48rem .7rem;background:linear-gradient(105deg,rgba(36,16,28,.78),rgba(7,7,12,.72));border-color:rgba(232,199,106,.28);transition:transform .2s,border-color .2s,box-shadow .2s}
+.arena-dupe-row:hover{transform:translateX(4px);border-color:#ffe9a0;box-shadow:0 0 20px rgba(232,199,106,.14)}
+.arena-dupe-art{width:3.25rem;height:3.25rem;background-size:contain;background-position:center bottom;border-color:rgba(255,233,160,.5);box-shadow:inset 0 -16px 18px rgba(0,0,0,.45),0 0 12px rgba(232,199,106,.12)}
+.arena-dupe-copy strong{font-size:.84rem;color:#fff4d5}.arena-dupe-copy em{color:#d8b760}.arena-dupe-c{padding:.2rem .42rem;border:1px solid rgba(232,199,106,.42);background:rgba(0,0,0,.34);font-size:.72rem}
+
+.psel .psel-const {
+    top: .42rem !important;
+    right: .42rem !important;
+    bottom: auto !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    justify-content: center !important;
+    gap: .12rem !important;
+    width: auto !important;
+    min-width: 2.65rem !important;
+    height: auto !important;
+    min-height: 1.45rem !important;
+    padding: .18rem .42rem .16rem !important;
+    white-space: nowrap !important;
+    writing-mode: horizontal-tb !important;
+    overflow: visible !important;
+    border: 1px solid rgba(255, 233, 160, .78) !important;
+    border-radius: 2px !important;
+    background: linear-gradient(135deg, rgba(10, 8, 12, .96), rgba(91, 59, 18, .92)) !important;
+    color: #ffe9a0 !important;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, .8), 0 0 12px rgba(232, 199, 106, .24) !important;
+    transform: skewX(6deg) !important;
+}
+
+.psel .psel-const strong,
+.psel .psel-const small {
+    display: inline !important;
+    width: auto !important;
+    height: auto !important;
+    writing-mode: horizontal-tb !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    transform: none !important;
+}
+
+.psel .psel-const strong {
+    font: 900 .78rem/1 'Cinzel', serif !important;
+    letter-spacing: .04em !important;
+}
+
+.psel .psel-const small {
+    font: 700 .58rem/1 'Cinzel', serif !important;
+    color: rgba(255, 233, 160, .72) !important;
+}
+
+.psel .psel-dupe-meter {
+    top: 2.18rem !important;
+    right: .44rem !important;
+    width: 2.7rem !important;
+    height: .22rem !important;
+    border: 1px solid rgba(255, 233, 160, .5) !important;
+    border-radius: 999px !important;
+    transform: skewX(6deg) !important;
+    overflow: hidden !important;
+    z-index: 3 !important;
+}
+
+.psel .dupe-next .psel-const {
+    border-color: rgba(255, 233, 160, .88) !important;
+}
+
+.psel .dupe-max .psel-const {
+    min-width: 3.15rem !important;
+    color: #211506 !important;
+    border-color: #fff0a6 !important;
+    background: linear-gradient(135deg, #fff0a6, #c99328 58%, #805314) !important;
+    box-shadow: 2px 2px 0 #000, 0 0 16px rgba(255, 211, 86, .45) !important;
+}
+
+.psel .dupe-max .psel-const small {
+    color: rgba(33, 21, 6, .72) !important;
+}
+
+.psel .dupe-max .psel-dupe-meter i {
+    background: linear-gradient(90deg, #fff0a6, #d19a2e) !important;
+    box-shadow: 0 0 8px rgba(255, 220, 120, .9) !important;
+}

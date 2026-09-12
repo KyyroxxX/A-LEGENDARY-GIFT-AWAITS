@@ -1,0 +1,688 @@
+{
+  "luffy": {
+    "idle": "assets/sprites/anim/luffy_idle.png",
+    "frames": [
+      "assets/sprites/anim/luffy_idle_0.png",
+      "assets/sprites/anim/luffy_idle_1.png",
+      "assets/sprites/anim/luffy_idle_2.png",
+      "assets/sprites/anim/luffy_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/luffy_attack_0.png",
+      "assets/sprites/anim/luffy_attack_1.png",
+      "assets/sprites/anim/luffy_attack_2.png",
+      "assets/sprites/anim/luffy_attack.png"
+    ],
+    "transform": "assets/sprites/anim/luffy_transform.png",
+    "rig": "biped"
+  },
+  "zoro": {
+    "idle": "assets/sprites/anim/zoro_idle.png",
+    "frames": [
+      "assets/sprites/anim/zoro_idle_0.png",
+      "assets/sprites/anim/zoro_idle_1.png",
+      "assets/sprites/anim/zoro_idle_2.png",
+      "assets/sprites/anim/zoro_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/zoro_attack_0.png",
+      "assets/sprites/anim/zoro_attack_1.png",
+      "assets/sprites/anim/zoro_attack_2.png",
+      "assets/sprites/anim/zoro_attack.png"
+    ],
+    "transform": "assets/sprites/anim/zoro_transform.png",
+    "rig": "biped"
+  },
+  "nami": {
+    "idle": "assets/sprites/anim/nami_idle.png",
+    "frames": [
+      "assets/sprites/anim/nami_idle_0.png",
+      "assets/sprites/anim/nami_idle_1.png",
+      "assets/sprites/anim/nami_idle_2.png",
+      "assets/sprites/anim/nami_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/nami_attack_0.png",
+      "assets/sprites/anim/nami_attack_1.png",
+      "assets/sprites/anim/nami_attack_2.png",
+      "assets/sprites/anim/nami_attack.png"
+    ],
+    "transform": "assets/sprites/anim/nami_transform.png",
+    "rig": "biped"
+  },
+  "sanji": {
+    "idle": "assets/sprites/anim/sanji_idle.png",
+    "frames": [
+      "assets/sprites/anim/sanji_idle_0.png",
+      "assets/sprites/anim/sanji_idle_1.png",
+      "assets/sprites/anim/sanji_idle_2.png",
+      "assets/sprites/anim/sanji_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/sanji_attack_0.png",
+      "assets/sprites/anim/sanji_attack_1.png",
+      "assets/sprites/anim/sanji_attack_2.png",
+      "assets/sprites/anim/sanji_attack.png"
+    ],
+    "transform": "assets/sprites/anim/sanji_transform.png",
+    "rig": "biped"
+  },
+  "robin": {
+    "idle": "assets/sprites/anim/robin_idle.png",
+    "frames": [
+      "assets/sprites/anim/robin_idle_0.png",
+      "assets/sprites/anim/robin_idle_1.png",
+      "assets/sprites/anim/robin_idle_2.png",
+      "assets/sprites/anim/robin_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/robin_attack_0.png",
+      "assets/sprites/anim/robin_attack_1.png",
+      "assets/sprites/anim/robin_attack_2.png",
+      "assets/sprites/anim/robin_attack.png"
+    ],
+    "transform": "assets/sprites/anim/robin_transform.png",
+    "rig": "biped"
+  },
+  "law": {
+    "idle": "assets/sprites/anim/law_idle.png",
+    "frames": [
+      "assets/sprites/anim/law_idle_0.png",
+      "assets/sprites/anim/law_idle_1.png",
+      "assets/sprites/anim/law_idle_2.png",
+      "assets/sprites/anim/law_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/law_attack_0.png",
+      "assets/sprites/anim/law_attack_1.png",
+      "assets/sprites/anim/law_attack_2.png",
+      "assets/sprites/anim/law_attack.png"
+    ],
+    "transform": "assets/sprites/anim/law_transform.png",
+    "rig": "biped"
+  },
+  "naruto": {
+    "idle": "assets/sprites/anim/naruto_idle.png",
+    "frames": [
+      "assets/sprites/anim/naruto_idle_0.png",
+      "assets/sprites/anim/naruto_idle_1.png",
+      "assets/sprites/anim/naruto_idle_2.png",
+      "assets/sprites/anim/naruto_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/naruto_attack_0.png",
+      "assets/sprites/anim/naruto_attack_1.png",
+      "assets/sprites/anim/naruto_attack_2.png",
+      "assets/sprites/anim/naruto_attack.png"
+    ],
+    "transform": "assets/sprites/anim/naruto_transform.png",
+    "rig": "chakra",
+    "transformStages": [
+      "assets/sprites/anim/naruto_transform_1.png",
+      "assets/sprites/anim/naruto_transform_2.png",
+      "assets/sprites/anim/naruto_transform_3.png",
+      "assets/sprites/anim/naruto_transform_4.png"
+    ]
+  },
+  "sasuke": {
+    "idle": "assets/sprites/anim/sasuke_idle.png",
+    "frames": [
+      "assets/sprites/anim/sasuke_idle_0.png",
+      "assets/sprites/anim/sasuke_idle_1.png",
+      "assets/sprites/anim/sasuke_idle_2.png",
+      "assets/sprites/anim/sasuke_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/sasuke_attack_0.png",
+      "assets/sprites/anim/sasuke_attack_1.png",
+      "assets/sprites/anim/sasuke_attack_2.png",
+      "assets/sprites/anim/sasuke_attack.png"
+    ],
+    "transform": "assets/sprites/anim/sasuke_transform.png",
+    "rig": "biped"
+  },
+  "sakura": {
+    "idle": "assets/sprites/anim/sakura_idle.png",
+    "frames": [
+      "assets/sprites/anim/sakura_idle_0.png",
+      "assets/sprites/anim/sakura_idle_1.png",
+      "assets/sprites/anim/sakura_idle_2.png",
+      "assets/sprites/anim/sakura_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/sakura_attack_0.png",
+      "assets/sprites/anim/sakura_attack_1.png",
+      "assets/sprites/anim/sakura_attack_2.png",
+      "assets/sprites/anim/sakura_attack.png"
+    ],
+    "transform": "assets/sprites/anim/sakura_transform.png",
+    "rig": "biped"
+  },
+  "kakashi": {
+    "idle": "assets/sprites/anim/kakashi_idle.png",
+    "frames": [
+      "assets/sprites/anim/kakashi_idle_0.png",
+      "assets/sprites/anim/kakashi_idle_1.png",
+      "assets/sprites/anim/kakashi_idle_2.png",
+      "assets/sprites/anim/kakashi_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/kakashi_attack_0.png",
+      "assets/sprites/anim/kakashi_attack_1.png",
+      "assets/sprites/anim/kakashi_attack_2.png",
+      "assets/sprites/anim/kakashi_attack.png"
+    ],
+    "transform": "assets/sprites/anim/kakashi_transform.png",
+    "rig": "biped"
+  },
+  "gaara": {
+    "idle": "assets/sprites/anim/gaara_idle.png",
+    "frames": [
+      "assets/sprites/anim/gaara_idle_0.png",
+      "assets/sprites/anim/gaara_idle_1.png",
+      "assets/sprites/anim/gaara_idle_2.png",
+      "assets/sprites/anim/gaara_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/gaara_attack_0.png",
+      "assets/sprites/anim/gaara_attack_1.png",
+      "assets/sprites/anim/gaara_attack_2.png",
+      "assets/sprites/anim/gaara_attack.png"
+    ],
+    "transform": "assets/sprites/anim/gaara_transform.png",
+    "rig": "biped"
+  },
+  "itachi": {
+    "idle": "assets/sprites/anim/itachi_idle.png",
+    "frames": [
+      "assets/sprites/anim/itachi_idle_0.png",
+      "assets/sprites/anim/itachi_idle_1.png",
+      "assets/sprites/anim/itachi_idle_2.png",
+      "assets/sprites/anim/itachi_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/itachi_attack_0.png",
+      "assets/sprites/anim/itachi_attack_1.png",
+      "assets/sprites/anim/itachi_attack_2.png",
+      "assets/sprites/anim/itachi_attack.png"
+    ],
+    "transform": "assets/sprites/anim/itachi_transform.png",
+    "rig": "biped"
+  },
+  "shikamaru": {
+    "idle": "assets/sprites/anim/shikamaru_idle.png",
+    "frames": [
+      "assets/sprites/anim/shikamaru_idle_0.png",
+      "assets/sprites/anim/shikamaru_idle_1.png",
+      "assets/sprites/anim/shikamaru_idle_2.png",
+      "assets/sprites/anim/shikamaru_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/shikamaru_attack_0.png",
+      "assets/sprites/anim/shikamaru_attack_1.png",
+      "assets/sprites/anim/shikamaru_attack_2.png",
+      "assets/sprites/anim/shikamaru_attack.png"
+    ],
+    "transform": "assets/sprites/anim/shikamaru_transform.png",
+    "rig": "biped"
+  },
+  "hinata": {
+    "idle": "assets/sprites/anim/hinata_idle.png",
+    "frames": [
+      "assets/sprites/anim/hinata_idle_0.png",
+      "assets/sprites/anim/hinata_idle_1.png",
+      "assets/sprites/anim/hinata_idle_2.png",
+      "assets/sprites/anim/hinata_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/hinata_attack_0.png",
+      "assets/sprites/anim/hinata_attack_1.png",
+      "assets/sprites/anim/hinata_attack_2.png",
+      "assets/sprites/anim/hinata_attack.png"
+    ],
+    "transform": "assets/sprites/anim/hinata_transform.png",
+    "rig": "biped"
+  },
+  "jotaro": {
+    "idle": "assets/sprites/anim/jotaro_idle.png",
+    "frames": [
+      "assets/sprites/anim/jotaro_idle_0.png",
+      "assets/sprites/anim/jotaro_idle_1.png",
+      "assets/sprites/anim/jotaro_idle_2.png",
+      "assets/sprites/anim/jotaro_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/jotaro_attack_0.png",
+      "assets/sprites/anim/jotaro_attack_1.png",
+      "assets/sprites/anim/jotaro_attack_2.png",
+      "assets/sprites/anim/jotaro_attack.png"
+    ],
+    "transform": "assets/sprites/anim/jotaro_transform.png",
+    "rig": "biped"
+  },
+  "josuke": {
+    "idle": "assets/sprites/anim/josuke_idle.png",
+    "frames": [
+      "assets/sprites/anim/josuke_idle_0.png",
+      "assets/sprites/anim/josuke_idle_1.png",
+      "assets/sprites/anim/josuke_idle_2.png",
+      "assets/sprites/anim/josuke_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/josuke_attack_0.png",
+      "assets/sprites/anim/josuke_attack_1.png",
+      "assets/sprites/anim/josuke_attack_2.png",
+      "assets/sprites/anim/josuke_attack.png"
+    ],
+    "transform": "assets/sprites/anim/josuke_transform.png",
+    "rig": "biped"
+  },
+  "jolyne": {
+    "idle": "assets/sprites/anim/jolyne_idle.png",
+    "frames": [
+      "assets/sprites/anim/jolyne_idle_0.png",
+      "assets/sprites/anim/jolyne_idle_1.png",
+      "assets/sprites/anim/jolyne_idle_2.png",
+      "assets/sprites/anim/jolyne_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/jolyne_attack_0.png",
+      "assets/sprites/anim/jolyne_attack_1.png",
+      "assets/sprites/anim/jolyne_attack_2.png",
+      "assets/sprites/anim/jolyne_attack.png"
+    ],
+    "transform": "assets/sprites/anim/jolyne_transform.png",
+    "rig": "biped"
+  },
+  "joseph": {
+    "idle": "assets/sprites/anim/joseph_idle.png",
+    "frames": [
+      "assets/sprites/anim/joseph_idle_0.png",
+      "assets/sprites/anim/joseph_idle_1.png",
+      "assets/sprites/anim/joseph_idle_2.png",
+      "assets/sprites/anim/joseph_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/joseph_attack_0.png",
+      "assets/sprites/anim/joseph_attack_1.png",
+      "assets/sprites/anim/joseph_attack_2.png",
+      "assets/sprites/anim/joseph_attack.png"
+    ],
+    "transform": "assets/sprites/anim/joseph_transform.png",
+    "rig": "biped"
+  },
+  "giorno": {
+    "idle": "assets/sprites/anim/giorno_idle.png",
+    "frames": [
+      "assets/sprites/anim/giorno_idle_0.png",
+      "assets/sprites/anim/giorno_idle_1.png",
+      "assets/sprites/anim/giorno_idle_2.png",
+      "assets/sprites/anim/giorno_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/giorno_attack_0.png",
+      "assets/sprites/anim/giorno_attack_1.png",
+      "assets/sprites/anim/giorno_attack_2.png",
+      "assets/sprites/anim/giorno_attack.png"
+    ],
+    "transform": "assets/sprites/anim/giorno_transform.png",
+    "rig": "biped"
+  },
+  "ichigo": {
+    "idle": "assets/sprites/anim/ichigo_idle.png",
+    "frames": [
+      "assets/sprites/anim/ichigo_idle_0.png",
+      "assets/sprites/anim/ichigo_idle_1.png",
+      "assets/sprites/anim/ichigo_idle_2.png",
+      "assets/sprites/anim/ichigo_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/ichigo_attack_0.png",
+      "assets/sprites/anim/ichigo_attack_1.png",
+      "assets/sprites/anim/ichigo_attack_2.png",
+      "assets/sprites/anim/ichigo_attack.png"
+    ],
+    "transform": "assets/sprites/anim/ichigo_transform.png",
+    "rig": "biped"
+  },
+  "rukia": {
+    "idle": "assets/sprites/anim/rukia_idle.png",
+    "frames": [
+      "assets/sprites/anim/rukia_idle_0.png",
+      "assets/sprites/anim/rukia_idle_1.png",
+      "assets/sprites/anim/rukia_idle_2.png",
+      "assets/sprites/anim/rukia_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/rukia_attack_0.png",
+      "assets/sprites/anim/rukia_attack_1.png",
+      "assets/sprites/anim/rukia_attack_2.png",
+      "assets/sprites/anim/rukia_attack.png"
+    ],
+    "transform": "assets/sprites/anim/rukia_transform.png",
+    "rig": "biped"
+  },
+  "orihime": {
+    "idle": "assets/sprites/anim/orihime_idle.png",
+    "frames": [
+      "assets/sprites/anim/orihime_idle_0.png",
+      "assets/sprites/anim/orihime_idle_1.png",
+      "assets/sprites/anim/orihime_idle_2.png",
+      "assets/sprites/anim/orihime_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/orihime_attack_0.png",
+      "assets/sprites/anim/orihime_attack_1.png",
+      "assets/sprites/anim/orihime_attack_2.png",
+      "assets/sprites/anim/orihime_attack.png"
+    ],
+    "transform": "assets/sprites/anim/orihime_transform.png",
+    "rig": "biped"
+  },
+  "byakuya": {
+    "idle": "assets/sprites/anim/byakuya_idle.png",
+    "frames": [
+      "assets/sprites/anim/byakuya_idle_0.png",
+      "assets/sprites/anim/byakuya_idle_1.png",
+      "assets/sprites/anim/byakuya_idle_2.png",
+      "assets/sprites/anim/byakuya_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/byakuya_attack_0.png",
+      "assets/sprites/anim/byakuya_attack_1.png",
+      "assets/sprites/anim/byakuya_attack_2.png",
+      "assets/sprites/anim/byakuya_attack.png"
+    ],
+    "transform": "assets/sprites/anim/byakuya_transform.png",
+    "rig": "biped"
+  },
+  "toshiro": {
+    "idle": "assets/sprites/anim/toshiro_idle.png",
+    "frames": [
+      "assets/sprites/anim/toshiro_idle_0.png",
+      "assets/sprites/anim/toshiro_idle_1.png",
+      "assets/sprites/anim/toshiro_idle_2.png",
+      "assets/sprites/anim/toshiro_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/toshiro_attack_0.png",
+      "assets/sprites/anim/toshiro_attack_1.png",
+      "assets/sprites/anim/toshiro_attack_2.png",
+      "assets/sprites/anim/toshiro_attack.png"
+    ],
+    "transform": "assets/sprites/anim/toshiro_transform.png",
+    "rig": "biped"
+  },
+  "renji": {
+    "idle": "assets/sprites/anim/renji_idle.png",
+    "frames": [
+      "assets/sprites/anim/renji_idle_0.png",
+      "assets/sprites/anim/renji_idle_1.png",
+      "assets/sprites/anim/renji_idle_2.png",
+      "assets/sprites/anim/renji_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/renji_attack_0.png",
+      "assets/sprites/anim/renji_attack_1.png",
+      "assets/sprites/anim/renji_attack_2.png",
+      "assets/sprites/anim/renji_attack.png"
+    ],
+    "transform": "assets/sprites/anim/renji_transform.png",
+    "rig": "biped"
+  },
+  "dummy": {
+    "idle": "assets/sprites/anim/dummy_idle.png",
+    "frames": [
+      "assets/sprites/anim/dummy_idle_0.png",
+      "assets/sprites/anim/dummy_idle_1.png",
+      "assets/sprites/anim/dummy_idle_2.png",
+      "assets/sprites/anim/dummy_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/dummy_attack_0.png",
+      "assets/sprites/anim/dummy_attack_1.png",
+      "assets/sprites/anim/dummy_attack_2.png",
+      "assets/sprites/anim/dummy_attack.png"
+    ],
+    "transform": "assets/sprites/anim/dummy_transform.png",
+    "rig": "root"
+  },
+  "crocodile": {
+    "idle": "assets/sprites/anim/crocodile_idle.png",
+    "frames": [
+      "assets/sprites/anim/crocodile_idle_0.png",
+      "assets/sprites/anim/crocodile_idle_1.png",
+      "assets/sprites/anim/crocodile_idle_2.png",
+      "assets/sprites/anim/crocodile_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/crocodile_attack_0.png",
+      "assets/sprites/anim/crocodile_attack_1.png",
+      "assets/sprites/anim/crocodile_attack_2.png",
+      "assets/sprites/anim/crocodile_attack.png"
+    ],
+    "transform": "assets/sprites/anim/crocodile_transform.png",
+    "rig": "biped"
+  },
+  "enel": {
+    "idle": "assets/sprites/anim/enel_idle.png",
+    "frames": [
+      "assets/sprites/anim/enel_idle_0.png",
+      "assets/sprites/anim/enel_idle_1.png",
+      "assets/sprites/anim/enel_idle_2.png",
+      "assets/sprites/anim/enel_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/enel_attack_0.png",
+      "assets/sprites/anim/enel_attack_1.png",
+      "assets/sprites/anim/enel_attack_2.png",
+      "assets/sprites/anim/enel_attack.png"
+    ],
+    "transform": "assets/sprites/anim/enel_transform.png",
+    "rig": "biped"
+  },
+  "zabuza": {
+    "idle": "assets/sprites/anim/zabuza_idle.png",
+    "frames": [
+      "assets/sprites/anim/zabuza_idle_0.png",
+      "assets/sprites/anim/zabuza_idle_1.png",
+      "assets/sprites/anim/zabuza_idle_2.png",
+      "assets/sprites/anim/zabuza_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/zabuza_attack_0.png",
+      "assets/sprites/anim/zabuza_attack_1.png",
+      "assets/sprites/anim/zabuza_attack_2.png",
+      "assets/sprites/anim/zabuza_attack.png"
+    ],
+    "transform": "assets/sprites/anim/zabuza_transform.png",
+    "rig": "biped"
+  },
+  "orochimaru": {
+    "idle": "assets/sprites/anim/orochimaru_idle.png",
+    "frames": [
+      "assets/sprites/anim/orochimaru_idle_0.png",
+      "assets/sprites/anim/orochimaru_idle_1.png",
+      "assets/sprites/anim/orochimaru_idle_2.png",
+      "assets/sprites/anim/orochimaru_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/orochimaru_attack_0.png",
+      "assets/sprites/anim/orochimaru_attack_1.png",
+      "assets/sprites/anim/orochimaru_attack_2.png",
+      "assets/sprites/anim/orochimaru_attack.png"
+    ],
+    "transform": "assets/sprites/anim/orochimaru_transform.png",
+    "rig": "biped"
+  },
+  "lucci": {
+    "idle": "assets/sprites/anim/lucci_idle.png",
+    "frames": [
+      "assets/sprites/anim/lucci_idle_0.png",
+      "assets/sprites/anim/lucci_idle_1.png",
+      "assets/sprites/anim/lucci_idle_2.png",
+      "assets/sprites/anim/lucci_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/lucci_attack_0.png",
+      "assets/sprites/anim/lucci_attack_1.png",
+      "assets/sprites/anim/lucci_attack_2.png",
+      "assets/sprites/anim/lucci_attack.png"
+    ],
+    "transform": "assets/sprites/anim/lucci_transform.png",
+    "rig": "biped"
+  },
+  "sasori": {
+    "idle": "assets/sprites/anim/sasori_idle.png",
+    "frames": [
+      "assets/sprites/anim/sasori_idle_0.png",
+      "assets/sprites/anim/sasori_idle_1.png",
+      "assets/sprites/anim/sasori_idle_2.png",
+      "assets/sprites/anim/sasori_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/sasori_attack_0.png",
+      "assets/sprites/anim/sasori_attack_1.png",
+      "assets/sprites/anim/sasori_attack_2.png",
+      "assets/sprites/anim/sasori_attack.png"
+    ],
+    "transform": "assets/sprites/anim/sasori_transform.png",
+    "rig": "biped"
+  },
+  "deidara": {
+    "idle": "assets/sprites/anim/deidara_idle.png",
+    "frames": [
+      "assets/sprites/anim/deidara_idle_0.png",
+      "assets/sprites/anim/deidara_idle_1.png",
+      "assets/sprites/anim/deidara_idle_2.png",
+      "assets/sprites/anim/deidara_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/deidara_attack_0.png",
+      "assets/sprites/anim/deidara_attack_1.png",
+      "assets/sprites/anim/deidara_attack_2.png",
+      "assets/sprites/anim/deidara_attack.png"
+    ],
+    "transform": "assets/sprites/anim/deidara_transform.png",
+    "rig": "biped"
+  },
+  "kira": {
+    "idle": "assets/sprites/anim/kira_idle.png",
+    "frames": [
+      "assets/sprites/anim/kira_idle_0.png",
+      "assets/sprites/anim/kira_idle_1.png",
+      "assets/sprites/anim/kira_idle_2.png",
+      "assets/sprites/anim/kira_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/kira_attack_0.png",
+      "assets/sprites/anim/kira_attack_1.png",
+      "assets/sprites/anim/kira_attack_2.png",
+      "assets/sprites/anim/kira_attack.png"
+    ],
+    "transform": "assets/sprites/anim/kira_transform.png",
+    "rig": "biped"
+  },
+  "grimmjow": {
+    "idle": "assets/sprites/anim/grimmjow_idle.png",
+    "frames": [
+      "assets/sprites/anim/grimmjow_idle_0.png",
+      "assets/sprites/anim/grimmjow_idle_1.png",
+      "assets/sprites/anim/grimmjow_idle_2.png",
+      "assets/sprites/anim/grimmjow_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/grimmjow_attack_0.png",
+      "assets/sprites/anim/grimmjow_attack_1.png",
+      "assets/sprites/anim/grimmjow_attack_2.png",
+      "assets/sprites/anim/grimmjow_attack.png"
+    ],
+    "transform": "assets/sprites/anim/grimmjow_transform.png",
+    "rig": "biped"
+  },
+  "ulquiorra": {
+    "idle": "assets/sprites/anim/ulquiorra_idle.png",
+    "frames": [
+      "assets/sprites/anim/ulquiorra_idle_0.png",
+      "assets/sprites/anim/ulquiorra_idle_1.png",
+      "assets/sprites/anim/ulquiorra_idle_2.png",
+      "assets/sprites/anim/ulquiorra_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/ulquiorra_attack_0.png",
+      "assets/sprites/anim/ulquiorra_attack_1.png",
+      "assets/sprites/anim/ulquiorra_attack_2.png",
+      "assets/sprites/anim/ulquiorra_attack.png"
+    ],
+    "transform": "assets/sprites/anim/ulquiorra_transform.png",
+    "rig": "biped"
+  },
+  "diavolo": {
+    "idle": "assets/sprites/anim/diavolo_idle.png",
+    "frames": [
+      "assets/sprites/anim/diavolo_idle_0.png",
+      "assets/sprites/anim/diavolo_idle_1.png",
+      "assets/sprites/anim/diavolo_idle_2.png",
+      "assets/sprites/anim/diavolo_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/diavolo_attack_0.png",
+      "assets/sprites/anim/diavolo_attack_1.png",
+      "assets/sprites/anim/diavolo_attack_2.png",
+      "assets/sprites/anim/diavolo_attack.png"
+    ],
+    "transform": "assets/sprites/anim/diavolo_transform.png",
+    "rig": "biped"
+  },
+  "dio": {
+    "idle": "assets/sprites/anim/dio_idle.png",
+    "frames": [
+      "assets/sprites/anim/dio_idle_0.png",
+      "assets/sprites/anim/dio_idle_1.png",
+      "assets/sprites/anim/dio_idle_2.png",
+      "assets/sprites/anim/dio_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/dio_attack_0.png",
+      "assets/sprites/anim/dio_attack_1.png",
+      "assets/sprites/anim/dio_attack_2.png",
+      "assets/sprites/anim/dio_attack.png"
+    ],
+    "transform": "assets/sprites/anim/dio_transform.png",
+    "rig": "biped"
+  },
+  "aizen": {
+    "idle": "assets/sprites/anim/aizen_idle.png",
+    "frames": [
+      "assets/sprites/anim/aizen_idle_0.png",
+      "assets/sprites/anim/aizen_idle_1.png",
+      "assets/sprites/anim/aizen_idle_2.png",
+      "assets/sprites/anim/aizen_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/aizen_attack_0.png",
+      "assets/sprites/anim/aizen_attack_1.png",
+      "assets/sprites/anim/aizen_attack_2.png",
+      "assets/sprites/anim/aizen_attack.png"
+    ],
+    "transform": "assets/sprites/anim/aizen_transform.png",
+    "rig": "biped"
+  },
+  "boss5050": {
+    "idle": "assets/sprites/anim/boss5050_idle.png",
+    "frames": [
+      "assets/sprites/anim/boss5050_idle_0.png",
+      "assets/sprites/anim/boss5050_idle_1.png",
+      "assets/sprites/anim/boss5050_idle_2.png",
+      "assets/sprites/anim/boss5050_idle_3.png"
+    ],
+    "attack": [
+      "assets/sprites/anim/boss5050_attack_0.png",
+      "assets/sprites/anim/boss5050_attack_1.png",
+      "assets/sprites/anim/boss5050_attack_2.png",
+      "assets/sprites/anim/boss5050_attack.png"
+    ],
+    "transform": "assets/sprites/anim/boss5050_transform.png",
+    "rig": "root"
+  }
+}

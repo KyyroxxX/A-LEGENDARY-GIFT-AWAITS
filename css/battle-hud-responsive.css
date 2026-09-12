@@ -1,0 +1,663 @@
+/* ============================================================
+   Classic storm HUD — responsive polish (no dock rewrite)
+   Goals: no scrollbars, no clipping, cmds beside actor info,
+   usable on any viewport.
+   ============================================================ */
+
+/* Kill scrollbars / overflow on all HUD chrome */
+.hud-p5,
+.hud-p5 .p5-stage,
+.hud-p5 .p5-party-strip,
+.hud-p5 .p5ui-bl,
+.hud-p5 .p5ui-cmds,
+.hud-p5 .p5ui-cmd-stack,
+.hud-p5 .p5ui-bc,
+.hud-p5 .p5ui-cards,
+.hud-p5 .p5ui-br,
+.hud-p5 .p5ui-log,
+.hud-p5 .p5ui-tr,
+.hud-p5 .p5ui-tl,
+.hud-p5 .p5ui-enemybars {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+.hud-p5 *::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+.hud-p5 .p5-party-strip,
+.hud-p5 .p5ui-cmd-stack,
+.hud-p5 .p5ui-br,
+.hud-p5 .p5ui-log,
+.hud-p5 .p5ui-cards {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* Soften clip-paths that were slicing panels */
+.hud-p5 .p5ui-portrait,
+.hud-p5 .p5ui-stats,
+.hud-p5 .p5-party-chip,
+.hud-p5 .p5ui-cmd,
+.hud-p5 .p5ui-card,
+.hud-p5 .p5ui-desc,
+.hud-p5 .p5ui-mission,
+.hud-p5 .p5ui-ebar {
+    clip-path: none !important;
+}
+
+/* ---------- Desktop bottom bar ----------
+   Party left · portrait+stats+cmds glued together (no gap) */
+.hud-p5 .p5-party-strip {
+    position: absolute !important;
+    left: 0.65rem !important;
+    bottom: 1.15rem !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 26 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.28rem !important;
+    width: min(188px, 18vw) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    pointer-events: none;
+    padding: 0 !important;
+}
+
+.hud-p5 .p5-party-chip {
+    min-width: 0 !important;
+    width: 100% !important;
+    padding: 0.28rem 0.4rem !important;
+    pointer-events: auto;
+    box-sizing: border-box;
+}
+
+.hud-p5 .p5-party-face {
+    width: 34px !important;
+    height: 42px !important;
+}
+
+.hud-p5 .p5-party-meta strong {
+    font-size: 0.68rem !important;
+}
+
+.hud-p5 .p5-party-meta .bar {
+    height: 7px !important;
+}
+
+.hud-p5 .p5-party-meta .nums {
+    font-size: 0.5rem !important;
+}
+
+.hud-p5 .p5ui-bl {
+    position: absolute !important;
+    left: calc(0.65rem + min(188px, 18vw) + 0.55rem) !important;
+    right: auto !important;
+    bottom: 1.15rem !important;
+    top: auto !important;
+    z-index: 26 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    gap: 0.45rem !important;
+    width: auto !important;
+    max-width: calc(100vw - min(188px, 18vw) - 1.8rem) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.hud-p5 .p5ui-bl > * {
+    pointer-events: auto;
+}
+
+.hud-p5 .p5ui-actor {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-end !important;
+    gap: 0.4rem !important;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.hud-p5 .p5ui-portrait {
+    width: 110px !important;
+    height: 146px !important;
+    margin: 0 !important;
+    transform: skewX(-5deg) !important;
+    flex-shrink: 0;
+    background-size: contain !important;
+    background-position: bottom center !important;
+    box-shadow: 5px 5px 0 var(--storm-crimson, #c41e3a) !important;
+}
+
+.hud-p5 .p5ui-stats {
+    min-width: 168px !important;
+    max-width: 240px;
+    margin: 0 !important;
+    padding: 0.45rem 0.65rem !important;
+    transform: skewX(-5deg) !important;
+    flex: 0 1 auto;
+}
+
+.hud-p5 .p5ui-stats > * {
+    transform: skewX(5deg) !important;
+}
+
+.hud-p5 .p5ui-stats > strong {
+    font-size: 0.92rem !important;
+    margin-bottom: 0.28rem !important;
+}
+
+.hud-p5 .p5ui-bar {
+    display: grid !important;
+    grid-template-columns: 26px minmax(0, 1fr) auto !important;
+    gap: 0.28rem !important;
+    width: 100% !important;
+    margin-top: 0.2rem !important;
+    box-sizing: border-box !important;
+}
+
+.hud-p5 .p5ui-bar .track {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 11px !important;
+}
+
+.hud-p5 .p5ui-bar em {
+    font-size: 0.62rem !important;
+    min-width: 0 !important;
+}
+
+/* Commands glued to the right of actor info — never far-right */
+.hud-p5 .p5ui-cmds {
+    position: relative !important;
+    margin: 0 !important;
+    margin-left: 0.15rem !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+.hud-p5 .p5ui-cmd-stack {
+    min-width: 148px !important;
+    width: max-content !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0.32rem 0.28rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.22rem !important;
+}
+
+.hud-p5 .p5ui-cmd {
+    font-size: 0.78rem !important;
+    padding: 0.36rem 0.55rem !important;
+    white-space: nowrap;
+}
+
+/* Skill cards sit just above the bottom bar */
+.hud-p5 .p5ui-bc {
+    position: absolute !important;
+    left: calc(0.65rem + min(188px, 18vw) + 0.55rem) !important;
+    right: auto !important;
+    bottom: calc(1.15rem + 158px) !important;
+    transform: none !important;
+    width: min(520px, calc(100vw - 220px)) !important;
+    z-index: 25 !important;
+}
+
+.hud-p5 .p5ui-bc:empty {
+    display: none !important;
+}
+
+.hud-p5 .p5ui-card {
+    width: 96px !important;
+    transform: skewX(-6deg) !important;
+}
+
+.hud-p5 .p5ui-card-art {
+    height: 52px !important;
+}
+
+/* Desc panel: compact, doesn't cover fighters mid-screen */
+.hud-p5 .p5ui-br {
+    position: absolute !important;
+    right: 0.65rem !important;
+    bottom: calc(1.15rem + 158px) !important;
+    top: auto !important;
+    width: min(200px, 22vw) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 24 !important;
+}
+
+.hud-p5 .p5ui-desc {
+    transform: none !important;
+    padding: 0.45rem 0.55rem !important;
+    font-size: 0.72rem;
+}
+
+.hud-p5 .p5ui-desc > * {
+    transform: none !important;
+}
+
+.hud-p5 .p5ui-log {
+    display: none !important; /* log was clutter; keep DOM for JS */
+}
+
+.hud-p5 .p5ui-foot {
+    position: absolute !important;
+    left: 0.65rem !important;
+    right: 0.65rem !important;
+    bottom: 0.15rem !important;
+    z-index: 22;
+    font-size: 0.52rem !important;
+    opacity: 0.55;
+    pointer-events: none;
+    display: flex !important;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+/* Arena: fighters stand on the stage floor above the command dock */
+.hud-p5 .p5-allies-field {
+    left: 8% !important;
+    right: 36% !important;
+    bottom: calc(var(--hud-cmd-h, 100px) * 0.45 + 0.5rem) !important;
+    top: auto !important;
+}
+
+.hud-p5 .p5-enemies {
+    right: 4% !important;
+    top: auto !important;
+    bottom: calc(var(--hud-cmd-h, 100px) * 0.45 + 0.65rem) !important;
+}
+
+.hud-p5 .p5-sprite,
+.hud-p5 .p5-rig {
+    width: clamp(220px, 28vw, 400px) !important;
+    height: clamp(280px, 48vh, 520px) !important;
+}
+
+.hud-p5 .p5ui-tr {
+    max-width: min(280px, 34vw);
+}
+
+.hud-p5 .p5ui-hint {
+    display: none !important;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1100px) {
+    .hud-p5 .p5ui-br {
+        display: none !important;
+    }
+    .hud-p5 .p5ui-portrait {
+        width: 92px !important;
+        height: 122px !important;
+    }
+    .hud-p5 .p5-party-strip {
+        width: min(168px, 20vw) !important;
+    }
+    .hud-p5 .p5ui-bl {
+        left: calc(0.55rem + min(168px, 20vw) + 0.45rem) !important;
+    }
+}
+
+/* ---------- Mobile / narrow ---------- */
+@media (max-width: 900px) {
+    .hud-p5 .p5ui-turnorder {
+        display: none !important;
+    }
+    .hud-p5 .p5ui-foot span {
+        display: none;
+    }
+
+    /* Party as compact horizontal row above commands */
+    .hud-p5 .p5-party-strip {
+        left: 0.4rem !important;
+        right: 0.4rem !important;
+        bottom: calc(1rem + 118px) !important;
+        width: auto !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 0.3rem !important;
+        overflow: visible !important;
+    }
+    .hud-p5 .p5-party-chip {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        grid-template-columns: 28px 1fr !important;
+        padding: 0.22rem 0.32rem !important;
+    }
+    .hud-p5 .p5-party-face {
+        width: 28px !important;
+        height: 34px !important;
+    }
+    .hud-p5 .p5-party-meta .nums {
+        display: none !important;
+    }
+
+    .hud-p5 .p5ui-bl {
+        left: 0.4rem !important;
+        right: 0.4rem !important;
+        bottom: 0.85rem !important;
+        max-width: none !important;
+        width: auto !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        gap: 0.35rem !important;
+    }
+
+    .hud-p5 .p5ui-portrait {
+        width: 58px !important;
+        height: 78px !important;
+    }
+    .hud-p5 .p5ui-stats {
+        min-width: 0 !important;
+        max-width: none;
+        flex: 1 1 auto;
+        padding: 0.35rem 0.45rem !important;
+    }
+    .hud-p5 .p5ui-stats > strong {
+        font-size: 0.72rem !important;
+    }
+    .hud-p5 .p5ui-bar em {
+        display: none !important;
+    }
+    .hud-p5 .p5ui-bar {
+        grid-template-columns: 22px 1fr !important;
+    }
+
+    .hud-p5 .p5ui-cmds {
+        margin-left: 0 !important;
+        flex: 0 0 auto !important;
+    }
+    .hud-p5 .p5ui-cmd-stack {
+        min-width: 0 !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.2rem !important;
+        padding: 0.22rem !important;
+    }
+    .hud-p5 .p5ui-cmd {
+        font-size: 0.65rem !important;
+        padding: 0.32rem 0.35rem !important;
+    }
+    .hud-p5 .p5ui-cmd.allout,
+    .hud-p5 .p5ui-cmd.back {
+        grid-column: 1 / -1;
+    }
+    .hud-p5 .p5ui-cmd[data-act="switch"] {
+        display: none !important;
+    }
+
+    .hud-p5 .p5ui-bc {
+        left: 0.4rem !important;
+        right: 0.4rem !important;
+        bottom: calc(1rem + 118px + 58px) !important;
+        width: auto !important;
+    }
+    .hud-p5 .p5ui-card {
+        width: 78px !important;
+    }
+    .hud-p5 .p5ui-card-art {
+        height: 40px !important;
+    }
+
+    .hud-p5 .p5-allies-field {
+        left: 2% !important;
+        right: 2% !important;
+        bottom: calc(var(--hud-cmd-h, 90px) * 0.5 + 0.35rem) !important;
+        justify-content: center !important;
+        gap: 0.35rem !important;
+    }
+    .hud-p5 .p5-enemies {
+        left: 2% !important;
+        right: 2% !important;
+        top: auto !important;
+        bottom: calc(var(--hud-cmd-h, 90px) * 0.5 + 0.5rem) !important;
+        justify-content: center !important;
+    }
+    .hud-p5 .p5-sprite,
+    .hud-p5 .p5-rig {
+        width: clamp(150px, 30vw, 260px) !important;
+        height: clamp(200px, 42vh, 340px) !important;
+    }
+    .hud-p5 .p5ui-tr {
+        max-width: min(46vw, 190px);
+        top: 0.35rem;
+        right: 0.3rem;
+    }
+    .hud-p5 .p5ui-tl {
+        left: 0.3rem;
+        top: 0.35rem;
+        max-width: 48vw;
+    }
+    .hud-p5 .p5-affinity-stack .p5-aff {
+        font-size: 0.42rem !important;
+        padding: 0.06rem 0.2rem !important;
+    }
+    .hud-p5 .p5-nameplate {
+        font-size: 0.5rem !important;
+        padding: 0.12rem 0.28rem !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .hud-p5 .p5ui-portrait {
+        display: none !important;
+    }
+    .hud-p5 .p5ui-status {
+        display: none !important;
+    }
+    .hud-p5 .p5-party-meta strong {
+        font-size: 0.58rem !important;
+    }
+    .hud-p5 .p5ui-foot {
+        display: none !important;
+    }
+    .hud-p5 .p5ui-flee {
+        font-size: 0.55rem;
+        padding: 0.25rem 0.4rem;
+    }
+}
+
+@media (max-height: 700px) {
+    .hud-p5 .p5ui-portrait {
+        width: 72px !important;
+        height: 96px !important;
+    }
+    .hud-p5 .p5-allies-field {
+        bottom: calc(var(--hud-cmd-h, 90px) * 0.45 + 0.35rem) !important;
+    }
+    .hud-p5 .p5ui-bc {
+        bottom: calc(1.15rem + 120px) !important;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+    .hud-p5 .p5ui-portrait {
+        display: none !important;
+    }
+    .hud-p5 .p5-party-strip {
+        bottom: 0.7rem !important;
+        width: min(150px, 22vw) !important;
+        flex-direction: column !important;
+        left: 0.4rem !important;
+        right: auto !important;
+    }
+    .hud-p5 .p5ui-bl {
+        left: calc(0.4rem + min(150px, 22vw) + 0.35rem) !important;
+        bottom: 0.7rem !important;
+        right: auto !important;
+        max-width: calc(100vw - 180px) !important;
+    }
+    .hud-p5 .p5-allies-field {
+        bottom: calc(var(--hud-cmd-h, 80px) * 0.4 + 0.25rem) !important;
+    }
+    .hud-p5 .p5ui-bc {
+        bottom: calc(0.7rem + 100px) !important;
+    }
+}
+
+@media (pointer: coarse) {
+    .hud-p5 .p5ui-cmd {
+        min-height: 40px;
+    }
+}
+
+
+/* ============================================================
+   Readability pass — larger HUD text & numbers
+   ============================================================ */
+.hud-p5 .p5-party-meta strong {
+    font-size: 0.92rem !important;
+    letter-spacing: 0.03em !important;
+}
+.hud-p5 .p5-party-meta .nums {
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    letter-spacing: 0.03em !important;
+    margin-top: 0.18rem !important;
+}
+.hud-p5 .p5-party-meta .bar {
+    height: 10px !important;
+}
+.hud-p5 .p5-party-strip {
+    width: min(220px, 22vw) !important;
+}
+.hud-p5 .p5ui-bl {
+    left: calc(0.65rem + min(220px, 22vw) + 0.55rem) !important;
+    max-width: calc(100vw - min(220px, 22vw) - 1.8rem) !important;
+}
+
+.hud-p5 .p5ui-stats > strong {
+    font-size: 1.35rem !important;
+}
+.hud-p5 .p5ui-bar span {
+    font-size: 0.95rem !important;
+}
+.hud-p5 .p5ui-bar em {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    min-width: 7.2rem !important;
+}
+.hud-p5 .p5ui-bar .track {
+    height: 18px !important;
+}
+.hud-p5 .p5ui-status {
+    font-size: 1.08rem !important;
+}
+
+.hud-p5 .p5ui-cmd {
+    font-size: 1.22rem !important;
+    padding: 0.78rem 1.05rem 0.78rem 0.95rem !important;
+}
+.hud-p5 .p5ui-cmd .ic {
+    width: 1.55rem !important;
+    font-size: 1.2rem !important;
+}
+.hud-p5 .p5ui-cmd b {
+    font-size: 1.22rem !important;
+}
+.hud-p5 .p5ui-cmd-stack {
+    min-width: 250px !important;
+}
+
+.hud-p5 .p5ui-turn-banner {
+    font-size: 0.98rem !important;
+    padding: 0.55rem 1.4rem 0.55rem 1.1rem !important;
+}
+.hud-p5 .p5ui-turn-banner span small {
+    font-size: 0.78rem !important;
+    margin-top: 0.18rem !important;
+    opacity: 0.95 !important;
+}
+.hud-p5 .p5ui-to b {
+    font-size: 0.78rem !important;
+    min-width: 3.1rem !important;
+    height: 1.55rem !important;
+    line-height: 1.55rem !important;
+}
+.hud-p5 .p5ui-to-meta em,
+.hud-p5 .p5ui-to-meta b {
+    font-size: 0.78rem !important;
+}
+.hud-p5 .p5ui-to-meta em {
+    letter-spacing: 0.04em !important;
+    opacity: 0.95 !important;
+}
+
+.hud-p5 .p5-nameplate,
+.hud-p5 .p5-enemies .p5-nameplate,
+.hud-p5 .p5-allies-field .p5-nameplate {
+    font-size: 0.88rem !important;
+    padding: 0.22rem 0.7rem !important;
+    letter-spacing: 0.06em !important;
+}
+.hud-p5 .p5-affinity-stack .p5-aff {
+    font-size: 0.72rem !important;
+    padding: 0.2rem 0.5rem !important;
+    gap: 0.35rem !important;
+}
+.hud-p5 .p5-affinity-stack .p5-aff b {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.06em !important;
+}
+.hud-p5 .p5-aff {
+    font-size: 0.72rem !important;
+}
+
+.hud-p5 .p5ui-ebar-body strong {
+    font-size: 0.88rem !important;
+}
+.hud-p5 .p5ui-ebar-body span {
+    font-size: 0.72rem !important;
+}
+.hud-p5 .p5ui-card strong {
+    font-size: 0.92rem !important;
+}
+.hud-p5 .p5ui-card-blurb {
+    font-size: 0.78rem !important;
+}
+.hud-p5 .p5ui-card-foot {
+    font-size: 0.78rem !important;
+}
+.hud-p5 .p5ui-desc h4 {
+    font-size: 1.05rem !important;
+}
+.hud-p5 .p5ui-desc p {
+    font-size: 0.98rem !important;
+}
+.hud-p5 .p5ui-log {
+    font-size: 0.88rem !important;
+}
+.hud-p5 .p5ui-foot {
+    font-size: 0.82rem !important;
+}
+.hud-p5 .p5ui-mission {
+    font-size: 0.85rem !important;
+}
+.hud-p5 .p5ui-flee {
+    font-size: 0.78rem !important;
+}
+
+@media (max-width: 900px) {
+    .hud-p5 .p5-party-meta strong { font-size: 0.82rem !important; }
+    .hud-p5 .p5-party-meta .nums { font-size: 0.7rem !important; }
+    .hud-p5 .p5ui-stats > strong { font-size: 1.15rem !important; }
+    .hud-p5 .p5ui-bar em { font-size: 0.95rem !important; }
+    .hud-p5 .p5ui-cmd { font-size: 1.08rem !important; }
+    .hud-p5 .p5-nameplate { font-size: 0.78rem !important; }
+    .hud-p5 .p5-affinity-stack .p5-aff { font-size: 0.64rem !important; }
+    .hud-p5 .p5-affinity-stack .p5-aff b { font-size: 0.62rem !important; }
+}

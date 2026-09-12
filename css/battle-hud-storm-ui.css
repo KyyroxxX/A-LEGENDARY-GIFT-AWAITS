@@ -1,0 +1,1120 @@
+/* ============================================================
+   Storm battle HUD layout — Naruto Storm × P5 reference
+   Load AFTER battle-hud-responsive.css
+   ============================================================ */
+
+.hud-p5.hud-storm.p5-root .p5-stage {
+    --hud-pad: clamp(0.45rem, 1vw, 0.85rem);
+    --hud-party-w: clamp(220px, 24vw, 300px);
+    --hud-dock-h: clamp(132px, 22vh, 168px);
+    --hud-cmd-h: clamp(92px, 14vh, 118px);
+    --hud-rail-h: clamp(72px, 12vh, 104px);
+    --hud-safe-bottom: calc(var(--hud-dock-h) + var(--hud-cmd-h) * 0.35 + var(--hud-pad));
+    --hud-top-safe: clamp(6rem, 16vh, 10rem);
+}
+
+/* Kill mid-screen gray band / heavy floor wash — ALL layers */
+.hud-p5.hud-storm.p5-root .p5-stage::before,
+.hud-p5.hud-storm.p5-root .p5-stage::after,
+.hud-p5.hud-storm .p5-stage-ink::before,
+.hud-p5.hud-storm .p5-stage-ink::after,
+.hud-p5.hud-storm .p5-stage.p5-stage-ink::before,
+.hud-p5.hud-storm .p5-stage.p5-stage-ink::after {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    background: none !important;
+    height: 0 !important;
+}
+
+.hud-p5.hud-storm .p5-stage-bg::before,
+.hud-p5.hud-storm .p5-stage-bg::after {
+    content: '' !important;
+    display: block !important;
+    height: auto !important;
+    opacity: 1 !important;
+    background: initial !important;
+}
+.hud-p5.hud-storm .p5-stage-bg::before {
+    background: linear-gradient(180deg, rgba(255,255,255,.06), transparent 24%, transparent 72%, rgba(0,0,0,.24)) !important;
+    mix-blend-mode: screen;
+    animation: stormStageAtmosphere 7s ease-in-out infinite alternate;
+}
+.hud-p5.hud-storm .p5-stage-bg::after {
+    background: radial-gradient(ellipse at 50% 52%, transparent 38%, rgba(0,0,0,.34) 100%), linear-gradient(180deg, transparent 54%, rgba(0,0,0,.5) 100%) !important;
+}
+@keyframes stormStageAtmosphere {
+    0% { opacity: .72; transform: translate3d(-.4%, 0, 0) scale(1.015); }
+    100% { opacity: 1; transform: translate3d(.4%, -.3%, 0) scale(1.025); }
+}
+
+.hud-p5.hud-storm .p5-stage-bg {
+    background-size: cover !important;
+    background-position: center center !important;
+    filter: none !important;
+}
+
+/* Soft edge vignette only (no horizontal seam) */
+.hud-p5.hud-storm.p5-root .p5-stage {
+    overflow: visible !important;
+}
+.hud-p5.hud-storm .p5-allies-field,
+.hud-p5.hud-storm .p5-enemies,
+.hud-p5.hud-storm .p5-fighter {
+    overflow: visible !important;
+}
+
+.hud-p5.hud-storm .p5-cam-vignette {
+    opacity: 0 !important;
+    background: none !important;
+}
+
+/* Hero-scale fighters — dominate the bridge (Storm close-up) */
+.hud-p5.hud-storm .p5-sprite,
+.hud-p5.hud-storm .p5-rig {
+    width: clamp(240px, 32vw, 460px) !important;
+    height: clamp(340px, 62vh, 620px) !important;
+}
+
+/* Even bigger when few bodies on a side */
+.hud-p5.hud-storm .p5-allies-field:not(:has(.p5-fighter:nth-child(3))) .p5-sprite,
+.hud-p5.hud-storm .p5-allies-field:not(:has(.p5-fighter:nth-child(3))) .p5-rig,
+.hud-p5.hud-storm .p5-enemies:not(:has(.p5-fighter:nth-child(2))) .p5-sprite,
+.hud-p5.hud-storm .p5-enemies:not(:has(.p5-fighter:nth-child(2))) .p5-rig {
+    width: clamp(280px, 36vw, 520px) !important;
+    height: clamp(380px, 68vh, 680px) !important;
+}
+
+/* Split the stage: allies left, enemies right — tighter center so scale reads */
+.hud-p5.hud-storm .p5-allies-field {
+    left: 0% !important;
+    right: 43% !important;
+    bottom: calc(var(--hud-cmd-h) + 0.55rem) !important;
+    gap: clamp(0.45rem, 1vw, 1rem) !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+}
+
+.hud-p5.hud-storm .p5-enemies {
+    left: 43% !important;
+    right: 0% !important;
+    bottom: calc(var(--hud-cmd-h) + 0.55rem) !important;
+    top: auto !important;
+    max-width: none !important;
+    width: auto !important;
+    gap: clamp(0.45rem, 1vw, 1rem) !important;
+    align-items: flex-end !important;
+    justify-content: flex-end !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Overlap OK — Storm packs fighters big; no 34% width choke */
+.hud-p5.hud-storm .p5-allies-field .p5-fighter {
+    flex: 0 0 auto;
+    max-width: none;
+    position: relative;
+    margin-right: 0;
+}
+.hud-p5.hud-storm .p5-enemies .p5-fighter {
+    flex: 0 0 auto;
+    max-width: none;
+    position: relative;
+    margin-left: 0;
+}
+.hud-p5.hud-storm .p5-allies-field .p5-fighter:nth-child(1) { z-index: 2; transform: translate(4%, 6%); }
+.hud-p5.hud-storm .p5-allies-field .p5-fighter:nth-child(2) { z-index: 3; transform: translate(0, 0); }
+.hud-p5.hud-storm .p5-allies-field .p5-fighter:nth-child(3) { z-index: 1; transform: translate(-6%, -8%); }
+.hud-p5.hud-storm .p5-enemies .p5-fighter:nth-child(1) { z-index: 1; transform: translate(6%, -8%); }
+.hud-p5.hud-storm .p5-enemies .p5-fighter:nth-child(2) { z-index: 3; transform: translate(0, 0); }
+.hud-p5.hud-storm .p5-enemies .p5-fighter:nth-child(3) { z-index: 2; transform: translate(-4%, 6%); }
+
+/* Field chrome lives in top HUD — kill labels under feet (3v3 clutter) */
+.hud-p5.hud-storm .p5-allies-field .p5-nameplate,
+.hud-p5.hud-storm .p5-allies-field .p5-aff,
+.hud-p5.hud-storm .p5-allies-field .p5-hpmini,
+.hud-p5.hud-storm .p5-allies-field .p5-spmini,
+.hud-p5.hud-storm .p5-allies-field .p5-affinity-stack,
+.hud-p5.hud-storm .p5-allies-field .p5-status-row,
+.hud-p5.hud-storm .p5-enemies .p5-nameplate,
+.hud-p5.hud-storm .p5-enemies .p5-aff,
+.hud-p5.hud-storm .p5-enemies .p5-hpmini,
+.hud-p5.hud-storm .p5-enemies .p5-spmini,
+.hud-p5.hud-storm .p5-enemies .p5-affinity-stack,
+.hud-p5.hud-storm .p5-enemies .p5-status-row {
+    display: none !important;
+}
+
+/* Enemies face the party (left). Flip lives in keyframes only —
+   a static `transform: … !important` blocks idle bob (CSS animation loses to !important).
+   Allies with .face-flip (left-facing art) reuse the enemy flipped keyframes. */
+.hud-p5.hud-storm .p5-fighter.enemy .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy .p5-rig,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip .p5-rig {
+    transform-origin: center bottom !important;
+    animation: p5StormEnemyIdle 2.5s ease-in-out infinite !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.face-native .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.face-native .p5-rig {
+    animation: p5StormAllyIdle 2.5s ease-in-out infinite !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.active .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.active .p5-rig,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.active .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.active .p5-rig {
+    animation: p5StormEnemyIdleActive 1.9s ease-in-out infinite !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.active .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.active .p5-rig {
+    animation: p5StormAllyIdleActive 1.9s ease-in-out infinite !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.attacking .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.attacking .p5-rig,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.attacking .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.attacking .p5-rig {
+    animation: stormAttackStableEnemy 0.58s cubic-bezier(.15,.85,.25,1) both !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.attacking .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.attacking .p5-rig {
+    animation: stormAttackStable 0.58s cubic-bezier(.15,.85,.25,1) both !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.casting .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.casting .p5-rig,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.casting .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.casting .p5-rig {
+    animation: p5CastE 0.7s ease-in-out both !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.casting .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.casting .p5-rig {
+    animation: p5Cast 0.7s ease-in-out both !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.hit-recoil .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.hit-recoil .p5-rig,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.hit-recoil .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.hit-recoil .p5-rig {
+    animation: p5RecoilE 0.55s ease-out !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.hit-recoil .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.face-native.hit-recoil .p5-rig {
+    animation: p5Recoil 0.55s ease-out !important;
+}
+.hud-p5.hud-storm .p5-fighter.enemy .p5-rig-fallback,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip .p5-rig-fallback {
+    animation: none !important; /* parent already flipped + breathes */
+}
+/* Dead: idle animation stopped — keep facing the party / enemies */
+.hud-p5.hud-storm .p5-fighter.enemy.dead:not(.face-native) .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.enemy.dead:not(.face-native) .p5-rig,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.dead .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.ally.face-flip.dead .p5-rig {
+    transform: scaleX(-1) !important;
+}
+@keyframes p5StormEnemyIdle {
+    0%, 100% { transform: scaleX(-1) translate3d(0, 0, 0); }
+    50% { transform: scaleX(-1) translate3d(0.4px, -3.5px, 0); }
+}
+@keyframes p5StormEnemyIdleActive {
+    0%, 100% { transform: scaleX(-1) translate3d(0, 0, 0); }
+    50% { transform: scaleX(-1) translate3d(0.5px, -4.5px, 0); }
+}
+@keyframes p5StormAllyIdle {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-0.3px, -3.5px, 0); }
+}
+@keyframes p5StormAllyIdleActive {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-0.4px, -4.5px, 0); }
+}
+
+.hud-p5.hud-storm .p5-sprite,
+.hud-p5.hud-storm .p5-rig {
+    background-position: bottom center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    transform-origin: center bottom !important;
+    overflow: visible !important;
+}
+
+/* Kyubi / wide transform cloaks — give tails room, stay above HUD */
+.hud-p5.hud-storm .p5-fighter[data-id="naruto"].transformed .p5-sprite,
+.hud-p5.hud-storm .p5-fighter[data-id="naruto"].transformed .p5-rig {
+    width: clamp(300px, 40vw, 560px) !important;
+    height: clamp(360px, 66vh, 700px) !important;
+    z-index: 4;
+}
+
+.hud-p5.hud-storm .p5-fighter[data-id="giyu"].transformed .p5-sprite,
+.hud-p5.hud-storm .p5-fighter[data-id="giyu"].transformed .p5-rig {
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+}
+
+.hud-p5.hud-storm .p5-nameplate {
+    clip-path: none !important;
+    border: 2px solid #fff !important;
+    box-shadow: 2px 2px 0 #000 !important;
+}
+
+/* Volume: above actor cut-in during Storm battle */
+body:has(.hud-p5) .vol-dock {
+    left: max(0.65rem, env(safe-area-inset-left, 0px)) !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px)) !important;
+    transform: none !important;
+    z-index: 50 !important;
+}
+body:has(.hud-p5.hud-storm) .vol-dock {
+    bottom: calc(var(--hud-dock-h, 148px) + 0.9rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* ---------- TOP LEFT: TU EQUIPO ---------- */
+.hud-p5.hud-storm .p5-party-strip {
+    position: absolute !important;
+    left: var(--hud-pad) !important;
+    top: var(--hud-pad) !important;
+    bottom: auto !important;
+    right: auto !important;
+    width: var(--hud-party-w) !important;
+    height: auto !important;
+    max-height: calc(100% - var(--hud-safe-bottom) - 1rem) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 0.35rem !important;
+    overflow: visible !important;
+    z-index: 32 !important;
+    pointer-events: none !important;
+    padding: 0 !important;
+}
+
+.hud-p5.hud-storm .p5ui-party-label {
+    pointer-events: none !important;
+    align-self: flex-start !important;
+    background: #c41e3a !important;
+    color: #fff !important;
+    font-family: 'Cinzel', Georgia, serif !important;
+    font-size: 0.72rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.18em !important;
+    padding: 0.28rem 0.75rem !important;
+    border: 2px solid #111 !important;
+    box-shadow: 0 0 0 2px #fff, 3px 3px 0 #000 !important;
+    transform: skewX(-10deg) !important;
+    margin-bottom: 0.15rem !important;
+}
+.hud-p5.hud-storm .p5ui-party-label span {
+    display: inline-block !important;
+    transform: skewX(10deg) !important;
+}
+
+.hud-p5.hud-storm .p5-party-chip {
+    pointer-events: auto !important;
+    display: grid !important;
+    grid-template-columns: 52px 1fr !important;
+    gap: 0.45rem !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 0.35rem 0.5rem !important;
+    background: linear-gradient(105deg, rgba(8, 6, 10, 0.95) 0%, rgba(20, 8, 12, 0.92) 100%) !important;
+    border: 2px solid #fff !important;
+    box-shadow: 3px 3px 0 #000 !important;
+    transform: skewX(-8deg) !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 8px 100%, 0 calc(100% - 8px)) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+.hud-p5.hud-storm .p5-party-chip > * {
+    transform: skewX(8deg) !important;
+    min-width: 0 !important;
+}
+.hud-p5.hud-storm .p5-party-chip.active {
+    border-color: #ffd24a !important;
+    box-shadow: 0 0 0 2px #c41e3a, 3px 3px 0 #000 !important;
+}
+.hud-p5.hud-storm .p5-party-face {
+    width: 48px !important;
+    height: 52px !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    background-color: #0a0a0e !important;
+    border: 2px solid #333 !important;
+}
+.hud-p5.hud-storm .p5-party-meta strong {
+    font-size: 0.78rem !important;
+    letter-spacing: 0.03em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.hud-p5.hud-storm .p5-party-meta .bars {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.18rem !important;
+    margin-top: 0.2rem !important;
+}
+.hud-p5.hud-storm .p5-party-meta .bar {
+    height: 8px !important;
+    background: #1a1a22 !important;
+    border: 1px solid #444 !important;
+    transform: skewX(-12deg) !important;
+    overflow: hidden !important;
+}
+.hud-p5.hud-storm .p5-party-meta .bar i {
+    display: block !important;
+    height: 100% !important;
+}
+.hud-p5.hud-storm .p5-party-meta .bar.hp i {
+    background: linear-gradient(90deg, #0a7a3e, #2ecc71) !important;
+}
+.hud-p5.hud-storm .p5-party-meta .bar.sp i {
+    background: linear-gradient(90deg, #0a6a8a, #3de0ff) !important;
+}
+.hud-p5.hud-storm .p5-party-meta .nums {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 0.58rem !important;
+    opacity: 0.85 !important;
+    margin-top: 0.12rem !important;
+}
+
+/* ---------- TOP RIGHT: enemy ---------- */
+.hud-p5.hud-storm .p5ui-tr {
+    position: absolute !important;
+    right: var(--hud-pad) !important;
+    top: var(--hud-pad) !important;
+    max-width: min(420px, 42vw) !important;
+    z-index: 32 !important;
+    align-items: stretch !important;
+    gap: 0.4rem !important;
+}
+.hud-p5.hud-storm .p5ui-mission {
+    align-self: flex-end !important;
+    clip-path: none !important;
+    transform: skewX(-8deg) !important;
+    border: 2px solid #fff !important;
+    background: #c41e3a !important;
+    color: #fff !important;
+    padding: 0.28rem 0.7rem !important;
+    box-shadow: 0 0 0 2px #111, 3px 3px 0 #000 !important;
+    font-family: 'Cinzel', Georgia, serif !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+}
+.hud-p5.hud-storm .p5ui-ebar {
+    display: grid !important;
+    grid-template-columns: auto 1fr 72px !important;
+    gap: 0.45rem !important;
+    align-items: center !important;
+    background: linear-gradient(105deg, rgba(8, 6, 10, 0.95) 0%, rgba(22, 8, 12, 0.92) 100%) !important;
+    border: 2px solid #fff !important;
+    padding: 0.4rem 0.5rem !important;
+    transform: skewX(-6deg) !important;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%) !important;
+    box-shadow: 4px 4px 0 #c41e3a !important;
+    overflow: visible !important;
+    min-width: min(380px, 42vw) !important;
+    min-height: 92px !important;
+}
+.hud-p5.hud-storm .p5ui-ebar > * {
+    transform: skewX(6deg) !important;
+}
+.hud-p5.hud-storm .p5ui-ebar-kanji {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+    display: grid !important;
+    place-items: center !important;
+    background: #c41e3a !important;
+    color: #fff !important;
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    border: 2px solid #fff !important;
+}
+.hud-p5.hud-storm .p5ui-ebar-face {
+    width: 64px !important;
+    height: 64px !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    background-color: #0a0a0e !important;
+    border: 2px solid #fff !important;
+}
+.hud-p5.hud-storm .p5ui-ebar-body strong {
+    display: block !important;
+    font-size: 0.92rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+.hud-p5.hud-storm .p5ui-ebar-track {
+    height: 14px !important;
+    margin: 0.25rem 0 !important;
+    background: #1a1a22 !important;
+    border: 2px solid #111 !important;
+    transform: skewX(-14deg) !important;
+    overflow: hidden !important;
+    clip-path: none !important;
+}
+.hud-p5.hud-storm .p5ui-ebar-track i {
+    display: block !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, #7a0f1f, #c41e3a, #ff2a4a) !important;
+}
+.hud-p5.hud-storm .p5ui-ebar-body > span {
+    display: block !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.06em !important;
+    opacity: 0.78 !important;
+    margin-top: 0.1rem !important;
+}
+.hud-p5.hud-storm .p5ui-ebar .aff-row,
+.hud-p5.hud-storm .p5ui-card .aff-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.22rem !important;
+    margin-top: 0.28rem !important;
+    justify-content: flex-start !important;
+    max-width: 100% !important;
+}
+.hud-p5.hud-storm .aff-chip {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 1.85rem !important;
+    padding: 0.12rem 0.28rem !important;
+    border: 1px solid #fff !important;
+    font: 800 0.48rem/1 'Cinzel', Georgia, serif !important;
+    letter-spacing: 0.06em !important;
+    transform: skewX(-8deg) !important;
+    box-shadow: 1px 1px 0 #000 !important;
+    font-style: normal !important;
+}
+.hud-p5.hud-storm .aff-chip.weak {
+    background: #c41e3a !important;
+    color: #fff !important;
+    border-color: #ff8a9a !important;
+}
+.hud-p5.hud-storm .aff-chip.resist {
+    background: #163a5c !important;
+    color: #9ad8ff !important;
+    border-color: #5dade2 !important;
+}
+.hud-p5.hud-storm .aff-chip.null {
+    background: #2a2410 !important;
+    color: #ffd24a !important;
+    border-color: #c9a227 !important;
+}
+.hud-p5.hud-storm .p5ui-card.target {
+    min-height: 168px !important;
+    width: 156px !important;
+}
+.hud-p5.hud-storm .p5ui-card.target .aff-row {
+    margin: 0.2rem 0 0.15rem !important;
+}
+.hud-p5.hud-storm .p5ui-flee {
+    align-self: flex-end !important;
+    clip-path: none !important;
+    transform: skewX(-10deg) !important;
+    border: 2px solid #fff !important;
+    background: #111 !important;
+    color: #fff !important;
+    box-shadow: 3px 3px 0 #000 !important;
+}
+.hud-p5.hud-storm .p5ui-flee span {
+    display: inline-block !important;
+    transform: skewX(10deg) !important;
+}
+
+/* ---------- BOTTOM LEFT: actor cut-in ---------- */
+.hud-p5.hud-storm .p5ui-bl {
+    position: absolute !important;
+    left: max(var(--hud-pad), env(safe-area-inset-left, 0px)) !important;
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0px)) !important;
+    right: auto !important;
+    width: min(520px, 56vw) !important;
+    height: var(--hud-dock-h) !important;
+    max-height: var(--hud-dock-h) !important;
+    z-index: 34 !important;
+    display: flex !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+}
+.hud-p5.hud-storm .p5ui-bl > * {
+    pointer-events: auto !important;
+}
+.hud-p5.hud-storm .p5ui-actor {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+}
+.hud-p5.hud-storm .p5ui-portrait {
+    width: clamp(140px, 16vw, 200px) !important;
+    height: calc(100% + 1.6rem) !important;
+    max-height: none !important;
+    margin: 0 0 -0.45rem !important;
+    flex-shrink: 0 !important;
+    transform: skewX(-6deg) !important;
+    clip-path: none !important;
+    border: 3px solid #111 !important;
+    box-shadow: 0 0 0 2px #fff, 5px 5px 0 #c41e3a !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    background-color: #0a0a0e !important;
+    overflow: hidden !important;
+    z-index: 2 !important;
+}
+.hud-p5.hud-storm .p5ui-stats {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 0 0.35rem -0.85rem !important;
+    padding: 0.65rem 1.1rem 0.7rem 1.25rem !important;
+    background: linear-gradient(105deg, #7a0f1f, #c41e3a 55%, #1a0508) !important;
+    border: 2px solid #fff !important;
+    box-shadow: 4px 4px 0 #000 !important;
+    transform: skewX(-8deg) !important;
+    clip-path: none !important;
+    overflow: visible !important;
+    z-index: 1 !important;
+}
+.hud-p5.hud-storm .p5ui-stats > * {
+    transform: skewX(8deg) !important;
+}
+.hud-p5.hud-storm .p5ui-cry-title {
+    display: block !important;
+    font-size: clamp(0.95rem, 1.85vw, 1.35rem) !important;
+    font-style: italic !important;
+    letter-spacing: 0.03em !important;
+    margin-bottom: 0.12rem !important;
+    text-shadow: 2px 2px 0 #000 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.2 !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+}
+.hud-p5.hud-storm .p5ui-cry-line {
+    display: block !important;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 0.9rem !important;
+    opacity: 0.95 !important;
+    margin-bottom: 0.4rem !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    word-break: break-word !important;
+}
+/* HP/CP tracks must eat remaining row width (minmax 0 fixes collapsed 1fr) */
+.hud-p5.hud-storm .p5ui-bar {
+    display: grid !important;
+    grid-template-columns: 2.1rem minmax(0, 1fr) auto !important;
+    gap: 0.45rem !important;
+    align-items: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 0.28rem !important;
+}
+.hud-p5.hud-storm .p5ui-bar span {
+    flex: 0 0 auto !important;
+}
+.hud-p5.hud-storm .p5ui-bar .track {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 12px !important;
+    background: #121216 !important;
+    transform: skewX(-12deg) !important;
+    border: 1px solid #111 !important;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.75) !important;
+    clip-path: none !important;
+    overflow: hidden !important;
+}
+.hud-p5.hud-storm .p5ui-bar .track > i {
+    display: block !important;
+    height: 100% !important;
+    min-width: 0 !important;
+}
+.hud-p5.hud-storm .p5ui-bar em {
+    min-width: 5.5rem !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+}
+
+/* ---------- BOTTOM CENTER: diamond commands ---------- */
+.hud-p5.hud-storm .p5ui-cmds {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: max(0.55rem, env(safe-area-inset-bottom, 0px)) !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    max-width: min(520px, 50vw) !important;
+    height: var(--hud-cmd-h) !important;
+    z-index: 36 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    pointer-events: none !important;
+}
+.hud-p5.hud-storm .p5ui-cmds > * {
+    pointer-events: auto !important;
+}
+.hud-p5.hud-storm .p5ui-cmd-stack {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 0.55rem !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0.35rem 0.5rem !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    clip-path: none !important;
+    transform: none !important;
+}
+.hud-p5.hud-storm .p5ui-cmd {
+    position: relative !important;
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.1rem !important;
+    background: #0a0a0e !important;
+    border: 3px solid #fff !important;
+    color: #fff !important;
+    transform: rotate(45deg) !important;
+    clip-path: none !important;
+    box-shadow: 3px 3px 0 #000 !important;
+    font-size: 0.55rem !important;
+    letter-spacing: 0.04em !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+}
+.hud-p5.hud-storm .p5ui-cmd > * {
+    transform: rotate(-45deg) !important;
+}
+.hud-p5.hud-storm .p5ui-cmd .ic {
+    width: auto !important;
+    font-size: 1.15rem !important;
+    line-height: 1 !important;
+}
+.hud-p5.hud-storm .p5ui-cmd span {
+    font-size: 0.52rem !important;
+    max-width: 4.5rem !important;
+    text-align: center !important;
+    line-height: 1.05 !important;
+}
+.hud-p5.hud-storm .p5ui-cmd b {
+    display: none !important;
+}
+.hud-p5.hud-storm .p5ui-cmd:hover,
+.hud-p5.hud-storm .p5ui-cmd:focus-visible {
+    border-color: #ffd24a !important;
+    box-shadow: 0 0 0 3px rgba(255, 210, 74, 0.55), 3px 3px 0 #c41e3a !important;
+    filter: brightness(1.08) !important;
+}
+.hud-p5.hud-storm .p5ui-cmd.allout {
+    border-color: #ffd24a !important;
+    background: #1a1000 !important;
+}
+.hud-p5.hud-storm .p5ui-cmd.back,
+.hud-p5.hud-storm .p5ui-cmd.ghost {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+}
+.hud-p5.hud-storm .p5ui-wait {
+    transform: skewX(-8deg) !important;
+    clip-path: none !important;
+    border: 2px solid #fff !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    padding: 0.55rem 1rem !important;
+    box-shadow: 3px 3px 0 #000 !important;
+}
+
+/* ---------- Skill rail + desc (bottom band, never over enemies) ---------- */
+.hud-p5.hud-storm .p5ui-bc {
+    position: absolute !important;
+    left: max(0.75rem, 10vw) !important;
+    right: calc(min(250px, 26vw) + 1.1rem) !important;
+    width: auto !important;
+    max-width: none !important;
+    bottom: calc(var(--hud-pad) + var(--hud-cmd-h) + 0.45rem) !important;
+    top: auto !important;
+    transform: none !important;
+    height: auto !important;
+    max-height: none !important;
+    z-index: 36 !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+}
+.hud-p5.hud-storm .p5ui-bc > * {
+    pointer-events: auto !important;
+}
+.hud-p5.hud-storm .p5ui-bc:empty,
+.hud-p5.hud-storm .p5ui-bc:not(:has(*)) {
+    display: none !important;
+}
+
+.hud-p5.hud-storm .p5ui-cards {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 0.55rem 0.35rem 0.35rem !important;
+}
+
+.hud-p5.hud-storm .p5ui-card {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    width: 148px !important;
+    min-height: 148px !important;
+    padding: 0.45rem 0.45rem 0.4rem !important;
+    margin: 0 !important;
+    background: #0a0a0e !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    box-shadow: 3px 3px 0 #000 !important;
+    transform: skewX(-6deg) !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    animation: none !important;
+}
+.hud-p5.hud-storm .p5ui-card > * {
+    transform: skewX(6deg) !important;
+    min-width: 0 !important;
+}
+.hud-p5.hud-storm .p5ui-card:hover:not(:disabled),
+.hud-p5.hud-storm .p5ui-card.selected:not(:disabled) {
+    transform: skewX(-6deg) translateY(-4px) !important;
+    border-color: #ffd24a !important;
+    box-shadow: 0 0 0 2px #c41e3a, 4px 4px 0 #000 !important;
+    filter: none !important;
+    z-index: 2 !important;
+}
+.hud-p5.hud-storm .p5ui-card-art,
+.hud-p5.hud-storm .p5ui-card-art.sk-art {
+    position: relative !important;
+    height: 54px !important;
+    margin-bottom: 0.35rem !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-sizing: border-box !important;
+}
+.hud-p5.hud-storm .sk-art-label {
+    position: absolute !important;
+    left: 0.28rem !important;
+    top: 0.22rem !important;
+    bottom: auto !important;
+    right: auto !important;
+    font-size: 0.5rem !important;
+    line-height: 1.1 !important;
+    padding: 0.12rem 0.28rem !important;
+    border: 1px solid #fff !important;
+    background: rgba(0, 0, 0, 0.75) !important;
+    max-width: calc(100% - 0.5rem) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    z-index: 2 !important;
+}
+.hud-p5.hud-storm .p5ui-card strong {
+    display: block !important;
+    font-size: 0.72rem !important;
+    line-height: 1.2 !important;
+    min-height: 0 !important;
+    margin: 0 0 0.15rem !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+.hud-p5.hud-storm .p5ui-card-blurb {
+    display: block !important;
+    font-size: 0.62rem !important;
+    line-height: 1.25 !important;
+    opacity: 0.8 !important;
+    overflow: hidden !important;
+    max-height: 2.6em !important;
+}
+.hud-p5.hud-storm .p5ui-card-foot {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 0.3rem !important;
+    font-size: 0.58rem !important;
+}
+
+/* Skill / technique desc — tucked above turn dock, not mid-stage */
+.hud-p5.hud-storm .p5ui-br {
+    position: absolute !important;
+    right: max(var(--hud-pad), 0.65rem) !important;
+    left: auto !important;
+    top: auto !important;
+    bottom: calc(var(--hud-pad) + 5.75rem) !important;
+    width: min(260px, 28vw) !important;
+    max-height: min(34vh, 220px) !important;
+    height: auto !important;
+    overflow: auto !important;
+    z-index: 35 !important;
+    display: block !important;
+}
+.hud-p5.hud-storm .p5ui-br:has(#p5-desc:empty),
+.hud-p5.hud-storm .p5ui-br:not(:has(#p5-desc:not(:empty))) {
+    display: none !important;
+}
+.hud-p5.hud-storm .p5ui-desc {
+    transform: skewX(-6deg) !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    overflow: visible !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    padding: 0.55rem 0.65rem 0.6rem !important;
+    background: rgba(4, 4, 8, 0.94) !important;
+    border: 2px solid #fff !important;
+    box-shadow: 3px 3px 0 #000 !important;
+    box-sizing: border-box !important;
+}
+.hud-p5.hud-storm .p5ui-desc > * {
+    transform: skewX(6deg) !important;
+}
+.hud-p5.hud-storm .p5ui-desc-art,
+.hud-p5.hud-storm .p5ui-desc-art.sk-art {
+    height: 42px !important;
+    margin: 0 0 0.4rem !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+.hud-p5.hud-storm .p5ui-desc h4 {
+    margin: 0 0 0.2rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.2 !important;
+}
+.hud-p5.hud-storm .p5ui-skill-cry {
+    margin: 0 0 0.3rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-family: 'Cinzel', serif !important;
+    font-size: 0.68rem !important;
+    font-style: italic !important;
+    letter-spacing: 0.02em !important;
+    color: #f5c97a !important;
+    text-shadow: 0 1px 0 #000 !important;
+}
+.hud-p5.hud-storm .p5ui-desc p {
+    margin: 0 0 0.25rem !important;
+    font-size: 0.72rem !important;
+    line-height: 1.3 !important;
+}
+.hud-p5.hud-storm .p5ui-facts {
+    margin: 0 0 0.35rem !important;
+    padding-left: 1rem !important;
+    font-size: 0.68rem !important;
+}
+.hud-p5.hud-storm .p5ui-desc-meta {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    margin-top: 0.25rem !important;
+    font-size: 0.62rem !important;
+}
+.hud-p5.hud-storm .p5ui-desc-meta em {
+    color: #ff6b81 !important;
+    font-style: normal !important;
+}
+.hud-p5.hud-storm .p5ui-log {
+    display: none !important;
+}
+
+/* Skill rail open: lift fighters above skill cards */
+.hud-p5.hud-storm:has(#p5-skill-rail > *) .p5-allies-field,
+.hud-p5.hud-storm:has(#p5-skill-rail > *) .p5-enemies {
+    bottom: calc(var(--hud-cmd-h) + var(--hud-rail-h) + 1.5rem) !important;
+}
+.hud-p5.hud-storm:has(#p5-skill-rail > *) .p5ui-br {
+    bottom: calc(var(--hud-pad) + var(--hud-cmd-h) + var(--hud-rail-h) + 0.35rem) !important;
+    display: block !important;
+}
+
+/* When skill cards are open, tuck turn chrome so desc doesn't collide */
+.hud-p5.hud-storm:has(#p5-skill-rail > *) .p5ui-quote,
+.hud-p5.hud-storm:has(#p5-skill-rail > *) .p5ui-turn-banner {
+    display: none !important;
+}
+.hud-p5.hud-storm:has(#p5-skill-rail > *) .p5ui-tl.p5ui-turn-dock {
+    bottom: max(0.55rem, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* ---------- BOTTOM RIGHT: turn diamonds (compact cluster) ---------- */
+.hud-p5.hud-storm .p5ui-tl.p5ui-turn-dock {
+    position: absolute !important;
+    left: auto !important;
+    right: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
+    top: auto !important;
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px)) !important;
+    max-width: min(280px, 30vw) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 34 !important;
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: flex-end !important;
+    gap: 0.3rem !important;
+    pointer-events: none !important;
+}
+.hud-p5.hud-storm .p5ui-tl.p5ui-turn-dock > * {
+    pointer-events: auto !important;
+}
+.hud-p5.hud-storm .p5ui-turn-banner {
+    clip-path: none !important;
+    transform: skewX(-10deg) !important;
+    border: 2px solid #fff !important;
+    box-shadow: 3px 3px 0 #000 !important;
+    font-size: 0.62rem !important;
+    padding: 0.22rem 0.55rem !important;
+    margin: 0 !important;
+}
+.hud-p5.hud-storm .p5ui-turn-banner span {
+    display: inline-block !important;
+    transform: skewX(10deg) !important;
+}
+.hud-p5.hud-storm .p5ui-turnorder {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.4rem !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0.28rem 0.3rem !important;
+    background: rgba(0, 0, 0, 0.72) !important;
+    border: 2px solid #fff !important;
+    box-shadow: 3px 3px 0 #c41e3a !important;
+    transform: skewX(-4deg) !important;
+}
+.hud-p5.hud-storm .p5ui-to {
+    position: relative !important;
+    width: 42px !important;
+    height: 42px !important;
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #0a0a0e !important;
+    border: 2px solid #fff !important;
+    transform: rotate(45deg) skewX(4deg) !important;
+    clip-path: none !important;
+    overflow: hidden !important;
+    box-shadow: 2px 2px 0 #000 !important;
+}
+.hud-p5.hud-storm .p5ui-to.now {
+    border-color: #ffd24a !important;
+    box-shadow: 0 0 0 2px #c41e3a, 2px 2px 0 #000 !important;
+}
+.hud-p5.hud-storm .p5ui-to-face {
+    position: absolute !important;
+    inset: 2px !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    transform: rotate(-45deg) scale(1.35) !important;
+}
+.hud-p5.hud-storm .p5ui-to-tag {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: -0.15rem !important;
+    transform: translateX(-50%) rotate(-45deg) !important;
+    font-size: 0.45rem !important;
+    background: #c41e3a !important;
+    color: #fff !important;
+    padding: 0.05rem 0.2rem !important;
+    z-index: 2 !important;
+    border: 1px solid #fff !important;
+}
+.hud-p5.hud-storm .p5ui-to-meta,
+.hud-p5.hud-storm .p5ui-to-bars {
+    display: none !important;
+}
+.hud-p5.hud-storm .p5ui-quote {
+    display: none !important;
+}
+
+@media (max-width: 980px) {
+    .hud-p5.hud-storm .p5ui-cmds {
+        max-width: 92vw !important;
+    }
+    .hud-p5.hud-storm .p5ui-cmd {
+        width: 58px !important;
+        height: 58px !important;
+        min-width: 58px !important;
+    }
+    .hud-p5.hud-storm .p5-party-strip {
+        width: min(200px, 34vw) !important;
+    }
+    .hud-p5.hud-storm .p5ui-bc {
+        left: 0.5rem !important;
+        right: 0.5rem !important;
+    }
+    .hud-p5.hud-storm .p5ui-br {
+        position: absolute !important;
+        left: 0.5rem !important;
+        right: 0.5rem !important;
+        width: auto !important;
+        bottom: calc(var(--hud-pad) + var(--hud-cmd-h) + 11.5rem) !important;
+        max-height: 22vh !important;
+        overflow: auto !important;
+    }
+    .hud-p5.hud-storm .p5ui-card {
+        width: 128px !important;
+        min-height: 132px !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .hud-p5.hud-storm .p5ui-tl.p5ui-turn-dock {
+        display: none !important;
+    }
+    .hud-p5.hud-storm .p5ui-bl {
+        width: min(100% - 1rem, 360px) !important;
+    }
+    .hud-p5.hud-storm .p5ui-br {
+        display: none !important;
+    }
+}
+
+.hud-p5.hud-storm .p5-fighter.motion-active .p5-sprite,
+.hud-p5.hud-storm .p5-fighter.motion-active .p5-rig,
+.p5-fighter.motion-active .p5-sprite,
+.p5-fighter.motion-active .p5-rig {
+    animation: none !important;
+}

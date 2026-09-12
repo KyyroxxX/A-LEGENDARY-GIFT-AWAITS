@@ -1,0 +1,1950 @@
+/* ============================================================
+   NARUTO ULTIMATE NINJA STORM × PERSONA 5 INK-BRUSH BATTLE HUD
+   Overrides .hud-p5 / .p5ui-* / .psel-* — load AFTER battle-hud-p5.css
+   ============================================================ */
+
+.hud-p5 {
+    --storm-black: #050508;
+    --storm-ink: #0a0a0c;
+    --storm-crimson: #c41e3a;
+    --storm-crimson-hot: #ff2a4a;
+    --storm-blood: #7a0f1f;
+    --storm-gold: #d4a017;
+    --storm-gold-soft: #c9a84c;
+    --storm-hp: #2ecc71;
+    --storm-hp-deep: #0a7a3e;
+    --storm-cp: #3de0ff;
+    --storm-cp-deep: #0a6a8a;
+    --storm-white: #f5f5f5;
+    --storm-panel: rgba(6, 6, 10, 0.94);
+    --storm-glow-red: 0 0 18px rgba(196, 30, 58, 0.55);
+    --storm-glow-hp: 0 0 10px rgba(46, 204, 113, 0.45);
+    --storm-glow-cp: 0 0 10px rgba(61, 224, 255, 0.45);
+}
+
+/* ---------- Stage: vignette + ink splatters ---------- */
+.hud-p5.p5-root .p5-stage {
+    background: #030306 !important;
+}
+.hud-p5.p5-root .p5-stage::before {
+    content: '' !important;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 1 !important;
+    background:
+        radial-gradient(ellipse 90% 70% at 50% 50%, transparent 42%, rgba(0, 0, 0, 0.72) 100%),
+        radial-gradient(circle at 8% 18%, rgba(196, 30, 58, 0.18), transparent 28%),
+        radial-gradient(circle at 92% 12%, rgba(0, 0, 0, 0.55), transparent 32%),
+        radial-gradient(circle at 78% 88%, rgba(196, 30, 58, 0.12), transparent 30%),
+        radial-gradient(ellipse at 14% 82%, rgba(0, 0, 0, 0.5), transparent 35%);
+    animation: stormVignetteBreathe 6.5s ease-in-out infinite;
+}
+.hud-p5.p5-root .p5-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.55;
+    background:
+        /* ink splatters */
+        radial-gradient(ellipse 18px 10px at 12% 22%, rgba(196, 30, 58, 0.55), transparent 70%),
+        radial-gradient(ellipse 8px 14px at 18% 28%, rgba(10, 10, 12, 0.9), transparent 70%),
+        radial-gradient(ellipse 22px 9px at 86% 16%, rgba(0, 0, 0, 0.75), transparent 70%),
+        radial-gradient(ellipse 11px 7px at 91% 22%, rgba(196, 30, 58, 0.4), transparent 70%),
+        radial-gradient(ellipse 16px 12px at 72% 78%, rgba(0, 0, 0, 0.65), transparent 70%),
+        radial-gradient(ellipse 9px 6px at 28% 74%, rgba(196, 30, 58, 0.35), transparent 70%),
+        radial-gradient(ellipse 14px 8px at 48% 8%, rgba(0, 0, 0, 0.5), transparent 70%),
+        linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.62) 100%);
+    mix-blend-mode: multiply;
+}
+@keyframes stormVignetteBreathe {
+    0%, 100% { opacity: 0.92; }
+    50% { opacity: 1; }
+}
+
+/* ---------- Top-left: turn banner + order ---------- */
+.hud-p5 .p5ui-tl {
+    left: 0.85rem;
+    top: 0.75rem;
+    padding-left: 0.35rem;
+    gap: 0.65rem;
+}
+.hud-p5 .p5ui-turn-banner {
+    background: linear-gradient(105deg, var(--storm-blood) 0%, var(--storm-crimson) 55%, var(--storm-crimson-hot) 100%);
+    color: var(--storm-white);
+    padding: 0.48rem 1.35rem 0.48rem 1.05rem;
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform: skewX(-20deg);
+    clip-path: polygon(
+        0% 18%, 4% 0%, 92% 4%, 100% 22%,
+        98% 78%, 88% 100%, 6% 96%, 0% 82%
+    );
+    box-shadow:
+        6px 6px 0 #000,
+        var(--storm-glow-red);
+    border: none;
+    animation: stormBannerIn 0.4s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+.hud-p5 .p5ui-turn-banner span {
+    display: inline-block;
+    transform: skewX(20deg);
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
+}
+.hud-p5 .p5ui-turn-banner span small {
+    display: block;
+    margin-top: 0.12rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    opacity: 0.88;
+}
+.hud-p5 .p5ui-turn-banner span .p5ui-round-label {
+    display: block;
+    margin-bottom: 0.12rem;
+    color: var(--storm-gold);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    line-height: 1;
+}
+.hud-p5 .p5-round-card {
+    position: absolute;
+    z-index: 28;
+    top: 1.05rem;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.42rem 0.85rem 0.46rem 1rem;
+    color: #fff8e8;
+    background: linear-gradient(105deg, #09090d 0%, #17131b 58%, #7b1022 100%);
+    border: 2px solid #f0d47d;
+    box-shadow: 5px 5px 0 #050509, 0 0 20px rgba(196, 30, 58, 0.48);
+    clip-path: polygon(3% 0, 100% 8%, 96% 100%, 0 88%);
+    transform: translateX(-50%) skewX(-14deg);
+    font-family: 'Cinzel', sans-serif;
+    text-transform: uppercase;
+}
+.hud-p5 .p5-round-card > * {
+    display: inline-block;
+    transform: skewX(14deg);
+}
+.hud-p5 .p5-round-card span {
+    color: #f0d47d;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+}
+.hud-p5 .p5-round-card strong {
+    color: #fff8e8;
+    font-size: clamp(1.05rem, 2vw, 1.5rem);
+    line-height: 1;
+    text-shadow: 2px 2px 0 #6d0d1d;
+}
+.hud-p5 .p5ui-turn-banner.enemy {
+    background: linear-gradient(105deg, #1a1a1e 0%, #2a2a32 60%, #3a1018 100%);
+    box-shadow: 6px 6px 0 #000, 0 0 14px rgba(255, 255, 255, 0.12);
+}
+@keyframes stormBannerIn {
+    from {
+        opacity: 0;
+        transform: skewX(-20deg) translateX(-36px);
+        filter: brightness(1.4);
+    }
+    to {
+        opacity: 1;
+        transform: skewX(-20deg) translateX(0);
+        filter: brightness(1);
+    }
+}
+
+.hud-p5 .p5ui-turnorder {
+    gap: 0.48rem;
+    padding-left: 0.2rem;
+}
+.hud-p5 .p5ui-to {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-template-rows: auto auto;
+    column-gap: 0.4rem;
+    row-gap: 0.15rem;
+    align-items: center;
+    animation: stormBannerIn 0.38s ease backwards;
+}
+.hud-p5 .p5ui-to:nth-child(1) { animation-delay: 40ms; }
+.hud-p5 .p5ui-to:nth-child(2) { animation-delay: 75ms; }
+.hud-p5 .p5ui-to:nth-child(3) { animation-delay: 110ms; }
+.hud-p5 .p5ui-to:nth-child(4) { animation-delay: 145ms; }
+.hud-p5 .p5ui-to:nth-child(5) { animation-delay: 180ms; }
+.hud-p5 .p5ui-to:nth-child(6) { animation-delay: 215ms; }
+
+.hud-p5 .p5ui-to-face {
+    grid-row: 1 / span 2;
+    width: 52px;
+    height: 58px;
+    background-color: var(--storm-ink);
+    background-position: center top;
+    background-size: cover;
+    border: 2px solid var(--storm-white);
+    border-radius: 0;
+    transform: skewY(-8deg);
+    clip-path: polygon(6% 0%, 100% 4%, 94% 100%, 0% 96%);
+    box-shadow: 4px 4px 0 var(--storm-crimson), 0 0 12px rgba(0, 0, 0, 0.6);
+    image-rendering: auto;
+}
+.hud-p5 .p5ui-to.now .p5ui-to-face {
+    border-color: var(--storm-gold);
+    box-shadow:
+        0 0 0 2px var(--storm-crimson),
+        5px 5px 0 #000,
+        0 0 16px rgba(196, 30, 58, 0.7);
+    filter: brightness(1.15);
+}
+.hud-p5 .p5ui-to.foe .p5ui-to-face {
+    box-shadow: 4px 4px 0 #444, 0 0 8px rgba(0, 0, 0, 0.5);
+}
+.hud-p5 .p5ui-to b {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 2.5rem;
+    height: 1.3rem;
+    background: var(--storm-ink);
+    color: var(--storm-white);
+    border: 1px solid var(--storm-white);
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.58rem;
+    transform: skewX(-14deg);
+    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+}
+.hud-p5 .p5ui-to.now b {
+    background: var(--storm-crimson);
+    border-color: var(--storm-gold);
+}
+.hud-p5 .p5ui-to.next b {
+    background: #1a1a1e;
+    border-color: var(--storm-gold-soft);
+    color: var(--storm-gold-soft);
+}
+.hud-p5 .p5ui-to.next .p5ui-to-face {
+    border-color: var(--storm-gold-soft);
+    box-shadow: 4px 4px 0 rgba(212, 160, 23, 0.55), 0 0 10px rgba(212, 160, 23, 0.22);
+}
+
+.hud-p5 .p5ui-turn-banner.phase-pulse {
+    animation: stormBannerPulse 0.34s ease-out both;
+}
+.hud-p5 .p5ui-turn-banner[data-phase="IMPACT"],
+.hud-p5 .p5ui-turn-banner[data-phase="DEATH_CHECK"] {
+    filter: brightness(1.15);
+}
+.hud-p5 .p5ui-turn-banner[data-phase="CASTING"] {
+    box-shadow: 6px 6px 0 #000, 0 0 18px rgba(93, 173, 226, 0.45);
+}
+@keyframes stormBannerPulse {
+    0% { filter: brightness(1.45); transform: skewX(-20deg) scale(1.04); }
+    100% { filter: brightness(1); transform: skewX(-20deg) scale(1); }
+}
+
+.hud-p5 .p5ui-to-meta {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.08rem;
+    min-width: 0;
+}
+.hud-p5 .p5ui-to-meta b {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.hud-p5 .p5ui-to-meta em {
+    font-style: normal;
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 78px;
+}
+.hud-p5 .p5ui-to.now .p5ui-to-meta em {
+    color: var(--storm-gold);
+}
+.hud-p5 .p5ui-to.next .p5ui-to-meta em {
+    color: var(--storm-gold-soft);
+}
+
+/* Optional mini bars (JS can inject .p5ui-to-bars) */
+.hud-p5 .p5ui-to-bars {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 56px;
+    transform: skewX(-10deg);
+}
+.hud-p5 .p5ui-to-ready,
+.hud-p5 .p5ui-to-hp {
+    height: 5px;
+    background: #1a1a1e;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    overflow: hidden;
+    clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%);
+}
+.hud-p5 .p5ui-to-ready > i,
+.hud-p5 .p5ui-to-hp > i {
+    display: block;
+    height: 100%;
+}
+.hud-p5 .p5ui-to-ready > i {
+    background: linear-gradient(90deg, var(--storm-gold), #f0e6a8);
+    box-shadow: 0 0 6px rgba(212, 160, 23, 0.6);
+}
+.hud-p5 .p5ui-to-hp > i {
+    background: linear-gradient(90deg, var(--storm-hp-deep), var(--storm-hp));
+    box-shadow: var(--storm-glow-hp);
+}
+
+/* ---------- Top-right: mission / enemy bars / flee ---------- */
+.hud-p5 .p5ui-tr {
+    right: 0.75rem;
+    top: 0.7rem;
+    max-width: min(42vw, 360px);
+    gap: 0.48rem;
+}
+.hud-p5 .p5ui-mission {
+    background: linear-gradient(100deg, var(--storm-crimson) 0%, var(--storm-blood) 100%);
+    color: var(--storm-white);
+    padding: 0.38rem 1.1rem 0.38rem 0.95rem;
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    font-weight: 800;
+    transform: skewX(-16deg);
+    clip-path: polygon(0 8%, 8% 0, 100% 10%, 96% 100%, 4% 92%);
+    box-shadow: 5px 5px 0 #000, var(--storm-glow-red);
+    text-shadow: 1px 1px 0 #000;
+}
+.hud-p5 .p5ui-flee {
+    background: rgba(0, 0, 0, 0.72);
+    border: 2px solid var(--storm-white);
+    color: var(--storm-white);
+    padding: 0.38rem 0.9rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    font-weight: 800;
+    transform: skewX(-14deg);
+    clip-path: polygon(4% 0, 100% 8%, 96% 100%, 0 90%);
+    transition: background 0.15s, box-shadow 0.15s;
+}
+.hud-p5 .p5ui-flee:hover {
+    background: var(--storm-crimson);
+    box-shadow: 0 0 14px rgba(196, 30, 58, 0.5);
+}
+
+/* Enemy HP: long slanted bar, circular portrait on the RIGHT */
+.hud-p5 .p5ui-enemybars {
+    gap: 0.4rem;
+    width: 100%;
+}
+.hud-p5 .p5ui-ebar {
+    display: grid;
+    grid-template-columns: 1fr 48px;
+    gap: 0.5rem;
+    align-items: center;
+    background: var(--storm-panel);
+    border: 2px solid var(--storm-white);
+    padding: 0.35rem 0.55rem 0.38rem 0.7rem;
+    transform: skewX(-14deg);
+    clip-path: polygon(
+        0% 22%, 3% 0%, 100% 8%, 100% 78%,
+        97% 100%, 0% 92%
+    );
+    box-shadow:
+        4px 4px 0 rgba(196, 30, 58, 0.65),
+        0 0 12px rgba(0, 0, 0, 0.45);
+}
+.hud-p5 .p5ui-ebar.dead {
+    opacity: 0.28;
+    filter: grayscale(0.75);
+}
+.hud-p5 .p5ui-ebar > * {
+    transform: skewX(14deg);
+}
+.hud-p5 .p5ui-ebar-face {
+    order: 2;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #1a1a1e;
+    background-position: center top;
+    background-size: cover;
+    border: 2px solid var(--storm-white);
+    box-shadow: 0 0 0 2px var(--storm-crimson), 0 0 10px rgba(196, 30, 58, 0.4);
+    image-rendering: auto;
+    clip-path: none;
+}
+.hud-p5 .p5ui-ebar-body {
+    order: 1;
+    min-width: 0;
+}
+.hud-p5 .p5ui-ebar-body strong {
+    display: block;
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 1px 1px 0 #000;
+}
+.hud-p5 .p5ui-ebar-track {
+    height: 12px;
+    background: #121216;
+    border: 1px solid var(--storm-white);
+    margin: 0.2rem 0;
+    transform: skewX(-16deg);
+    overflow: hidden;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+}
+.hud-p5 .p5ui-ebar-track > i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--storm-blood), var(--storm-crimson), #ff6b81);
+    box-shadow: 0 0 8px rgba(196, 30, 58, 0.55);
+    transition: width 0.35s ease;
+}
+.hud-p5 .p5ui-ebar-body span {
+    font-size: 0.52rem;
+    opacity: 0.8;
+    letter-spacing: 0.05em;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* ---------- Bottom-left: actor + commands ---------- */
+.hud-p5 .p5ui-bl {
+    left: 1.5rem;
+    right: auto;
+    bottom: 1.5rem;
+    padding: 0.45rem 1.1rem 0.5rem 1rem;
+    gap: 0.65rem;
+    max-width: calc(100vw - 2.5rem);
+    box-sizing: border-box;
+}
+.hud-p5 .p5ui-actor {
+    gap: 0.65rem;
+}
+.hud-p5 .p5ui-portrait {
+    width: 188px;
+    height: 236px;
+    background-color: var(--storm-ink);
+    background-position: bottom center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 3px solid var(--storm-white);
+    transform: skewX(-7deg);
+    margin-left: 0.35rem;
+    box-shadow:
+        10px 10px 0 var(--storm-crimson),
+        0 0 22px rgba(196, 30, 58, 0.35);
+    clip-path: polygon(
+        4% 0%, 100% 3%, 97% 96%, 0% 100%,
+        2% 48%
+    );
+    flex-shrink: 0;
+    image-rendering: auto;
+}
+.hud-p5 .p5ui-stats {
+    background: var(--storm-panel);
+    border: 3px solid var(--storm-white);
+    padding: 0.78rem 1.15rem 0.82rem 1.25rem;
+    min-width: 268px;
+    transform: skewX(-8deg);
+    margin-bottom: 0.55rem;
+    margin-left: 0.25rem;
+    clip-path: polygon(
+        0% 10%, 5% 0%, 100% 4%, 98% 92%,
+        94% 100%, 2% 96%
+    );
+    box-shadow:
+        6px 6px 0 rgba(0, 0, 0, 0.85),
+        0 0 16px rgba(0, 0, 0, 0.4);
+}
+.hud-p5 .p5ui-stats > * {
+    transform: skewX(8deg);
+}
+.hud-p5 .p5ui-stats > strong {
+    display: block;
+    font-family: 'Cinzel', sans-serif;
+    font-size: 1.14rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    text-shadow: 2px 2px 0 rgba(196, 30, 58, 0.55);
+}
+.hud-p5 .p5ui-bar {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    gap: 0.45rem;
+    align-items: center;
+    margin-top: 0.38rem;
+}
+.hud-p5 .p5ui-bar span {
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+}
+.hud-p5 .p5ui-bar .track {
+    height: 16px;
+    background: #121216;
+    border: 2px solid var(--storm-white);
+    transform: skewX(-18deg);
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.85);
+}
+.hud-p5 .p5ui-bar .track > i {
+    display: block;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+.hud-p5 .p5ui-bar.hp .track > i {
+    background: linear-gradient(90deg, var(--storm-hp-deep), var(--storm-hp) 70%, #7dffb0);
+    box-shadow: var(--storm-glow-hp);
+}
+.hud-p5 .p5ui-bar.sp .track > i,
+.hud-p5 .p5ui-bar.cp .track > i {
+    background: linear-gradient(90deg, var(--storm-cp-deep), var(--storm-cp) 70%, #a8f4ff);
+    box-shadow: var(--storm-glow-cp);
+}
+.hud-p5 .p5ui-bar em {
+    font-style: normal;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    min-width: 6rem;
+    text-align: right;
+}
+.hud-p5 .p5ui-status {
+    margin-top: 0.45rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+/* Vertical command menu */
+.hud-p5 .p5ui-cmds {
+    margin-left: 0.35rem;
+    margin-bottom: 2.4rem;
+    padding-left: 0.55rem;
+}
+.hud-p5 .p5ui-cmd-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    background: rgba(4, 4, 8, 0.96);
+    border: 3px solid var(--storm-white);
+    padding: 0.7rem 0.55rem 0.7rem 0.65rem;
+    transform: skewY(-2deg) skewX(-6deg);
+    clip-path: polygon(
+        0% 6%, 4% 0%, 100% 2%, 97% 100%,
+        3% 96%
+    );
+    box-shadow:
+        7px 7px 0 var(--storm-crimson),
+        0 0 20px rgba(196, 30, 58, 0.25);
+    min-width: 228px;
+}
+.hud-p5 .p5ui-cmd {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: transparent;
+    border: none;
+    color: var(--storm-white);
+    padding: 0.68rem 1rem 0.68rem 0.85rem;
+    cursor: pointer;
+    font-family: 'Cinzel', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-align: left;
+    text-transform: uppercase;
+    transform: skewX(-6deg);
+    clip-path: polygon(0 8%, 100% 0, 100% 92%, 0 100%);
+    transition: background 0.12s, transform 0.12s, box-shadow 0.12s;
+}
+.hud-p5 .p5ui-cmd > * {
+    transform: skewX(6deg);
+}
+.hud-p5 .p5ui-cmd .ic {
+    width: 1.4rem;
+    text-align: center;
+    font-style: normal;
+    opacity: 0.95;
+    font-size: 1.08rem;
+}
+.hud-p5 .p5ui-cmd b {
+    margin-left: auto;
+    font-size: 0.78rem;
+    opacity: 0.55;
+    font-weight: 600;
+    color: var(--storm-gold-soft);
+}
+.hud-p5 .p5ui-cmd:hover,
+.hud-p5 .p5ui-cmd.active {
+    background: linear-gradient(90deg, var(--storm-crimson), var(--storm-blood));
+    box-shadow: inset 0 0 0 1px #fff, 0 0 14px rgba(196, 30, 58, 0.45);
+}
+.hud-p5 .p5ui-cmd:hover::before,
+.hud-p5 .p5ui-cmd.active::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-left-color: var(--storm-crimson-hot);
+    filter: drop-shadow(2px 2px 0 #000);
+}
+.hud-p5 .p5ui-cmd:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+}
+.hud-p5 .p5ui-cmd.allout {
+    background: linear-gradient(90deg, var(--storm-crimson-hot), var(--storm-crimson));
+    animation: stormCmdPulse 1s ease infinite;
+    box-shadow: 0 0 16px rgba(255, 42, 74, 0.55);
+}
+.hud-p5 .p5ui-cmd.back {
+    opacity: 0.88;
+    font-size: 0.74rem;
+}
+.hud-p5 .p5ui-cmd.ghost {
+    pointer-events: none;
+    background: rgba(196, 30, 58, 0.42);
+}
+@keyframes stormCmdPulse {
+    0%, 100% { filter: brightness(1); box-shadow: 0 0 12px rgba(255, 42, 74, 0.4); }
+    50% { filter: brightness(1.32); box-shadow: 0 0 22px rgba(255, 42, 74, 0.7); }
+}
+
+.hud-p5 .p5ui-wait {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid var(--storm-white);
+    padding: 0.6rem 1rem;
+    color: var(--storm-white);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    transform: skewX(-12deg);
+    clip-path: polygon(0 12%, 100% 0, 98% 100%, 2% 88%);
+    box-shadow: 5px 5px 0 var(--storm-crimson);
+}
+.hud-p5 .p5ui-wait span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--storm-crimson);
+    animation: stormCmdPulse 0.8s ease infinite;
+}
+
+/* ---------- Bottom-center: skill cards ---------- */
+.hud-p5 .p5ui-bc {
+    left: 50%;
+    bottom: 2.5rem;
+    transform: translateX(-42%);
+    z-index: 21;
+    width: min(56vw, 560px);
+}
+.hud-p5 .p5ui-cards {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.35rem 0.45rem 0.45rem;
+    scrollbar-width: none;
+}
+.hud-p5 .p5ui-card {
+    flex: 0 0 auto;
+    width: 124px;
+    background: linear-gradient(180deg, #141418 0%, #08080c 100%);
+    color: var(--storm-white);
+    border: 2px solid var(--storm-white);
+    padding: 0.42rem;
+    cursor: pointer;
+    font-family: 'Cinzel', sans-serif;
+    text-align: left;
+    transform: skewX(-10deg) rotate(calc((var(--i, 0) - 1.5) * 1.5deg));
+    clip-path: polygon(
+        3% 0%, 100% 4%, 97% 100%, 0% 96%
+    );
+    box-shadow:
+        6px 6px 0 var(--storm-crimson),
+        0 0 0 transparent;
+    transition: transform 0.16s, border-color 0.16s, box-shadow 0.16s, filter 0.16s;
+    animation: stormCardRise 0.34s cubic-bezier(0.2, 0.85, 0.2, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 48ms);
+}
+.hud-p5 .p5ui-card > * {
+    transform: skewX(10deg);
+}
+@keyframes stormCardRise {
+    from {
+        opacity: 0;
+        transform: skewX(-10deg) translateY(28px) scale(0.86);
+    }
+    to {
+        opacity: 1;
+        transform: skewX(-10deg) rotate(calc((var(--i, 0) - 1.5) * 1.5deg));
+    }
+}
+.hud-p5 .p5ui-card:hover:not(:disabled),
+.hud-p5 .p5ui-card.selected:not(:disabled) {
+    transform: skewX(-10deg) translateY(-12px) scale(1.08);
+    border-color: var(--storm-gold);
+    box-shadow:
+        0 0 0 2px var(--storm-crimson),
+        0 0 22px rgba(196, 30, 58, 0.65),
+        8px 8px 0 #000;
+    z-index: 3;
+    filter: brightness(1.08);
+}
+.hud-p5 .p5ui-card.locked,
+.hud-p5 .p5ui-card:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+.hud-p5 .p5ui-card-art {
+    height: 82px;
+    background-color: #060608;
+    background-position: center bottom;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.32rem;
+    image-rendering: auto;
+}
+.hud-p5 .p5ui-card strong {
+    display: block;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    min-height: 2.1em;
+}
+.hud-p5 .p5ui-card-blurb {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.62rem;
+    opacity: 0.75;
+}
+.hud-p5 .p5ui-card-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.28rem;
+    font-size: 0.55rem;
+}
+.hud-p5 .p5ui-card-foot em {
+    font-style: normal;
+    color: var(--storm-crimson-hot);
+    letter-spacing: 0.06em;
+}
+.hud-p5 .p5ui-card-foot span {
+    color: var(--storm-cp);
+}
+.hud-p5 .p5ui-card.foe {
+    box-shadow: 6px 6px 0 #7a1020;
+}
+.hud-p5 .p5ui-card.ally {
+    box-shadow: 6px 6px 0 #1a7a3e;
+}
+
+/* Type-colored top accents */
+.hud-p5 .p5ui-card.type-fire { border-top: 4px solid #e74c3c; box-shadow: 6px 6px 0 #7a1020, 0 -2px 12px rgba(231, 76, 60, 0.35); }
+.hud-p5 .p5ui-card.type-ice { border-top: 4px solid #5dade2; box-shadow: 6px 6px 0 #1a4a6a, 0 -2px 12px rgba(93, 173, 226, 0.35); }
+.hud-p5 .p5ui-card.type-elec { border-top: 4px solid #f4d03f; box-shadow: 6px 6px 0 #6a5a10, 0 -2px 12px rgba(244, 208, 63, 0.35); }
+.hud-p5 .p5ui-card.type-wind { border-top: 4px solid #2ecc71; box-shadow: 6px 6px 0 #1a5a3e, 0 -2px 12px rgba(46, 204, 113, 0.35); }
+.hud-p5 .p5ui-card.type-water { border-top: 4px solid #3498db; box-shadow: 6px 6px 0 #1a4a6a, 0 -2px 12px rgba(52, 152, 219, 0.35); }
+.hud-p5 .p5ui-card.type-bless { border-top: 4px solid #f9e79f; box-shadow: 6px 6px 0 #6a5a20, 0 -2px 12px rgba(249, 231, 159, 0.4); }
+.hud-p5 .p5ui-card.type-curse { border-top: 4px solid #8b2942; box-shadow: 6px 6px 0 #4a1020, 0 -2px 12px rgba(139, 41, 66, 0.4); }
+.hud-p5 .p5ui-card.type-support { border-top: 4px solid #58d68d; box-shadow: 6px 6px 0 #1a5a3e, 0 -2px 12px rgba(88, 214, 141, 0.35); }
+.hud-p5 .p5ui-card.type-phys,
+.hud-p5 .p5ui-card.type-slash,
+.hud-p5 .p5ui-card.type-strike { border-top: 4px solid #c0c0c0; }
+
+.hud-p5 .p5ui-hint,
+.hud-p5 .p5ui-banner-om,
+.hud-p5 .p5ui-empty {
+    background: rgba(0, 0, 0, 0.88);
+    border: 2px solid var(--storm-white);
+    padding: 0.5rem 0.85rem;
+    color: var(--storm-white);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    transform: skewX(-12deg);
+    clip-path: polygon(0 10%, 100% 0, 98% 100%, 2% 90%);
+    text-align: center;
+    box-shadow: 4px 4px 0 rgba(196, 30, 58, 0.5);
+}
+.hud-p5 .p5ui-banner-om {
+    background: var(--storm-crimson);
+    font-family: 'Cinzel', sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    animation: stormCmdPulse 1s ease infinite;
+}
+
+/* ---------- Bottom-right: description + log ---------- */
+.hud-p5 .p5ui-br {
+    right: 0.75rem;
+    bottom: 2.2rem;
+    width: min(28vw, 268px);
+    gap: 0.42rem;
+}
+.hud-p5 .p5ui-desc {
+    background: rgba(4, 8, 18, 0.94);
+    border: 2px solid rgba(93, 173, 226, 0.55);
+    border-top: 4px solid #5dade2;
+    padding: 0.65rem 0.8rem;
+    transform: skewX(-9deg);
+    clip-path: polygon(0 8%, 100% 0, 98% 100%, 2% 92%);
+    min-height: 84px;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.55), 0 -2px 14px rgba(93, 173, 226, 0.2);
+}
+.hud-p5 .p5ui-desc > * {
+    transform: skewX(9deg);
+}
+.hud-p5 .p5ui-desc h4 {
+    margin: 0 0 0.28rem;
+    font-family: 'Cinzel', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.07em;
+    color: var(--storm-white);
+}
+.hud-p5 .p5ui-desc p {
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    opacity: 0.9;
+    line-height: 1.35;
+}
+.hud-p5 .p5ui-desc-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+}
+.hud-p5 .p5ui-desc-meta em {
+    color: var(--storm-crimson-hot);
+    font-style: normal;
+}
+.hud-p5 .p5ui-desc-meta span {
+    color: var(--storm-cp);
+}
+.hud-p5 .p5ui-log {
+    max-height: 64px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.78);
+    border-left: 4px solid var(--storm-crimson);
+    padding: 0.4rem 0.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.78rem;
+    opacity: 0.88;
+}
+
+/* ---------- Footer strip ---------- */
+.hud-p5 .p5ui-foot {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 25;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.38rem 1.1rem;
+    background: linear-gradient(90deg, #000 0%, #12060a 40%, #000 100%);
+    border-top: 2px solid var(--storm-white);
+    box-shadow: 0 -4px 18px rgba(196, 30, 58, 0.2);
+    font-size: 0.62rem;
+    letter-spacing: 0.07em;
+    clip-path: polygon(0 18%, 2% 0, 100% 0, 100% 100%, 0 100%);
+}
+.hud-p5 .p5ui-foot em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    opacity: 0.8;
+    color: var(--storm-gold-soft);
+}
+.hud-p5 .p5ui-foot span {
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-family: 'Cinzel', sans-serif;
+}
+
+/* ---------- Chain + total damage flash ---------- */
+.hud-p5 .p5ui-chain,
+.hud-p5 #p5-chain {
+    position: absolute;
+    left: 50%;
+    top: 22%;
+    z-index: 30;
+    pointer-events: none;
+    transform: translateX(-50%) skewX(-18deg);
+    font-family: 'Cinzel', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.8rem, 5.5vw, 3.4rem);
+    letter-spacing: 0.08em;
+    color: var(--storm-crimson-hot);
+    text-transform: uppercase;
+    text-shadow:
+        4px 4px 0 #000,
+        -2px 0 0 #fff,
+        0 0 24px rgba(196, 30, 58, 0.85);
+    animation: stormChainPop 0.55s cubic-bezier(0.15, 0.9, 0.25, 1) both;
+}
+@keyframes stormChainPop {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) skewX(-18deg) scale(0.4) translateY(20px);
+    }
+    35% {
+        opacity: 1;
+        transform: translateX(-50%) skewX(-18deg) scale(1.22) translateY(0);
+    }
+    70% {
+        transform: translateX(-50%) skewX(-18deg) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) skewX(-18deg) scale(1);
+    }
+}
+
+.hud-p5 .p5ui-dmg-total,
+.hud-p5 #p5-dmg-total {
+    position: absolute;
+    left: 50%;
+    top: 34%;
+    z-index: 31;
+    pointer-events: none;
+    transform: translateX(-50%) skewX(-12deg);
+    font-family: 'Cinzel', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 3.8rem);
+    color: var(--storm-white);
+    letter-spacing: 0.04em;
+    text-shadow:
+        3px 3px 0 var(--storm-crimson),
+        -2px -1px 0 #000,
+        0 0 28px rgba(255, 255, 255, 0.45);
+    animation: stormDmgTotal 1.05s ease forwards;
+}
+@keyframes stormDmgTotal {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) skewX(-12deg) scale(0.5) translateY(16px);
+        filter: brightness(2);
+    }
+    18% {
+        opacity: 1;
+        transform: translateX(-50%) skewX(-12deg) scale(1.28) translateY(0);
+        filter: brightness(1.4);
+    }
+    55% {
+        opacity: 1;
+        transform: translateX(-50%) skewX(-12deg) scale(1);
+        filter: brightness(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) skewX(-12deg) scale(1.05) translateY(-28px);
+    }
+}
+
+/* Party strip (left) — thicker slanted bars */
+.hud-p5 .p5-party-strip {
+    left: 1rem;
+    bottom: 15rem;
+    padding-left: 0.35rem;
+}
+.hud-p5 .p5-party-chip {
+    min-width: 220px;
+    padding: 0.48rem 0.7rem;
+    background: rgba(4, 4, 8, 0.92);
+    border: 2px solid var(--storm-white);
+    transform: skewX(-8deg);
+    clip-path: polygon(0 12%, 4% 0, 100% 4%, 98% 88%, 94% 100%, 0 96%);
+    box-shadow: 5px 5px 0 var(--storm-crimson);
+}
+.hud-p5 .p5-party-chip.active {
+    border-color: var(--storm-gold);
+    box-shadow: 0 0 0 2px var(--storm-crimson), 5px 5px 0 #000, var(--storm-glow-red);
+}
+.hud-p5 .p5-party-chip.low {
+    border-color: #fb7185;
+    box-shadow: 5px 5px 0 #7a1020, 0 0 12px rgba(251, 113, 133, 0.35);
+}
+.hud-p5 .p5-party-chip.critical {
+    animation: stormChipCrit 1s ease-in-out infinite;
+    border-color: #ff4d6d;
+}
+.hud-p5 .p5-party-chip.critical .bar.hp > i,
+.hud-p5 .p5-party-meta .bar.hp.danger > i {
+    background: linear-gradient(90deg, #7a0f1f, #ff4d6d);
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.55);
+}
+.hud-p5 .p5-party-meta .bar.hp.warn > i {
+    background: linear-gradient(90deg, #9a3412, #fb7185);
+}
+@keyframes stormChipCrit {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.18); }
+}
+.hud-p5 .p5ui-ebar.low .p5ui-ebar-track > i {
+    background: linear-gradient(90deg, #9a3412, #fb7185);
+}
+.hud-p5 .p5-party-meta .bar {
+    height: 10px;
+    transform: skewX(-14deg);
+    border: 1px solid var(--storm-white);
+}
+.hud-p5 .p5-party-meta .bar.hp > i {
+    background: linear-gradient(90deg, var(--storm-hp-deep), var(--storm-hp));
+    box-shadow: var(--storm-glow-hp);
+}
+.hud-p5 .p5-party-meta .bar.sp > i {
+    background: linear-gradient(90deg, var(--storm-cp-deep), var(--storm-cp));
+    box-shadow: var(--storm-glow-cp);
+}
+
+.hud-p5 .p5-onemore {
+    left: 24%;
+    top: 18%;
+    text-shadow: 5px 5px 0 var(--storm-crimson), 0 0 20px rgba(196, 30, 58, 0.6);
+}
+.hud-p5 .p5-cry {
+    top: 28%;
+}
+
+/* ============================================================
+   PARTY SELECT — richer ink / Storm treatment
+   ============================================================ */
+.psel {
+    background: #030306;
+}
+.psel .psel-bg {
+    background:
+        radial-gradient(ellipse at 16% 18%, rgba(196, 30, 58, 0.42), transparent 44%),
+        radial-gradient(ellipse at 88% 72%, rgba(20, 40, 80, 0.22), transparent 46%),
+        radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.7), transparent 50%),
+        linear-gradient(165deg, #100508 0%, #050508 48%, #0a0810 100%);
+}
+.psel .psel-bg::after {
+    opacity: 0.22;
+    background:
+        repeating-linear-gradient(-22deg, transparent, transparent 34px, rgba(255, 255, 255, 0.035) 35px),
+        repeating-linear-gradient(14deg, transparent, transparent 50px, rgba(196, 30, 58, 0.08) 51px),
+        radial-gradient(ellipse 20px 10px at 10% 30%, rgba(196, 30, 58, 0.5), transparent 70%),
+        radial-gradient(ellipse 14px 8px at 90% 20%, rgba(0, 0, 0, 0.8), transparent 70%);
+}
+.psel .psel-head {
+    padding: 0.85rem 1.15rem 0.55rem 1.35rem;
+}
+.psel .psel-kicker {
+    background: linear-gradient(100deg, var(--storm-blood, #7a0f1f), #c41e3a);
+    padding: 0.28rem 0.85rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    transform: skewX(-16deg);
+    clip-path: polygon(0 15%, 6% 0, 100% 8%, 96% 100%, 4% 92%);
+    box-shadow: 4px 4px 0 #000, 0 0 14px rgba(196, 30, 58, 0.4);
+}
+.psel .psel-title {
+    text-shadow: 3px 3px 0 rgba(196, 30, 58, 0.65), 0 0 18px rgba(0, 0, 0, 0.5);
+}
+.psel .psel-diff {
+    background: #0a0a0e;
+    border: 2px solid #fff;
+    color: #ff6b81;
+    transform: skewX(-12deg);
+    clip-path: polygon(0 12%, 100% 0, 100% 88%, 0 100%);
+    box-shadow: 3px 3px 0 rgba(196, 30, 58, 0.45);
+}
+.psel .psel-body {
+    padding: 0 0.95rem 0.85rem 1.35rem;
+}
+
+.psel .psel-tabs {
+    gap: 0.42rem;
+    padding-left: 0.25rem;
+}
+.psel .psel-tab {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #fff;
+    padding: 0.48rem 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    transform: skewX(-14deg);
+    clip-path: polygon(0 10%, 8% 0, 100% 6%, 96% 100%, 4% 94%);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+    transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+.psel .psel-tab:hover {
+    background: rgba(196, 30, 58, 0.4);
+    box-shadow: 3px 3px 0 #c41e3a;
+}
+.psel .psel-tab.on {
+    background: linear-gradient(105deg, #c41e3a, #7a0f1f);
+    border-color: #d4a017;
+    box-shadow: 4px 4px 0 #000, 0 0 12px rgba(196, 30, 58, 0.45);
+}
+
+.psel .psel-grid {
+    padding: 0.3rem 0.2rem 0.4rem 0.55rem;
+    gap: 0.6rem 0.7rem;
+}
+.psel .psel-chip {
+    position: relative;
+    background: linear-gradient(180deg, #121218 0%, #060608 100%);
+    border: 2px solid #fff;
+    transform: skewX(-6deg);
+    clip-path: polygon(3% 0%, 100% 3%, 97% 100%, 0% 97%);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+    animation: pselChipIn 0.38s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+}
+@keyframes pselChipIn {
+    from { opacity: 0; transform: skewX(-6deg) translateY(12px) scale(0.96); }
+    to { opacity: 1; transform: skewX(-6deg) translateY(0) scale(1); }
+}
+.psel .psel-chip:hover {
+    transform: skewX(-6deg) translateY(-4px);
+    border-color: #ff2a4a;
+    box-shadow: 6px 6px 0 #c41e3a, 0 0 16px rgba(196, 30, 58, 0.35);
+}
+.psel .psel-chip.selected {
+    background: linear-gradient(180deg, #1e0810 0%, #0a0408 100%);
+    border-color: #c41e3a;
+    box-shadow: 0 0 0 2px #fff, 6px 6px 0 #c41e3a, 0 0 18px rgba(196, 30, 58, 0.4);
+}
+.psel .psel-chip.rarity-epic {
+    border-color: #ffd76a;
+}
+.psel .psel-chip.rarity-mythic {
+    border-color: #ff2a4a;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.65), 0 0 16px rgba(255, 42, 74, 0.45);
+}
+.psel .psel-chip.rarity-mythic .psel-rarity { color: #ff6b81; }
+.psel .psel-chip.rarity-celestial {
+    border-color: #c084fc;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.65), 0 0 16px rgba(168, 85, 247, 0.45);
+}
+.psel .psel-chip.rarity-legendary {
+    border-color: #ffe9a0;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.65), 0 0 14px rgba(255, 220, 120, 0.35);
+}
+.psel .psel-chip.rarity-rare {
+    border-color: #c9a0ff;
+}
+.psel .psel-chip.is-dual {
+    border-color: rgba(154, 212, 255, 0.75);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.65), 0 0 12px rgba(126, 200, 255, 0.28);
+}
+.psel .psel-chip.is-dual .psel-rarity {
+    color: #9ad4ff;
+    letter-spacing: 0.02em;
+}
+.psel .psel-rarity {
+    position: absolute;
+    top: 0.35rem;
+    left: 0.4rem;
+    z-index: 2;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    color: #ffd76a;
+    text-shadow: 0 1px 0 #000, 0 0 8px rgba(255, 200, 80, 0.45);
+    transform: skewX(6deg);
+}
+.psel .psel-chip.rarity-rare .psel-rarity { color: #d4b0ff; }
+.psel .psel-chip.rarity-common .psel-rarity { color: #9ec9ff; }
+.psel .psel-const {
+    position: absolute;
+    top: 0.35rem;
+    right: 0.4rem;
+    z-index: 2;
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.1rem 0.28rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    color: #ffe9a0;
+    transform: skewX(6deg);
+}
+.psel .psel-chip-art::before {
+    background:
+        radial-gradient(ellipse at 50% 85%, rgba(196, 30, 58, 0.28), transparent 55%),
+        linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.45));
+}
+.psel .psel-chip-info {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), #000);
+    border-top: 1px solid rgba(212, 160, 23, 0.25);
+}
+.psel .psel-check {
+    background: #c41e3a;
+    border: 1px solid #fff;
+    box-shadow: 2px 2px 0 #000, 0 0 8px rgba(196, 30, 58, 0.5);
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+}
+
+.psel .psel-squad {
+    background: rgba(4, 4, 8, 0.78);
+    border: 2px solid #fff;
+    padding: 0.65rem;
+    transform: skewX(-5deg);
+    clip-path: polygon(0 4%, 4% 0, 100% 2%, 98% 100%, 2% 96%);
+    box-shadow: 7px 7px 0 #c41e3a, 0 0 20px rgba(0, 0, 0, 0.4);
+}
+.psel .psel-squad-label b {
+    color: #ff6b81;
+    text-shadow: 0 0 8px rgba(196, 30, 58, 0.4);
+}
+.psel .psel-slot {
+    background: rgba(14, 14, 18, 0.95);
+    border: 2px dashed #555;
+    clip-path: polygon(0 8%, 100% 0, 100% 92%, 0 100%);
+}
+.psel .psel-slot.filled {
+    border-style: solid;
+    border-color: #fff;
+    background: linear-gradient(120deg, rgba(196, 30, 58, 0.35), rgba(8, 8, 12, 0.96));
+    box-shadow: inset 0 0 0 1px rgba(212, 160, 23, 0.15);
+}
+.psel .psel-slot.filled:hover {
+    border-color: #ff2a4a;
+    box-shadow: 0 0 12px rgba(196, 30, 58, 0.35);
+}
+.psel .psel-go {
+    background: linear-gradient(105deg, #c41e3a, #7a0f1f);
+    border: 2px solid #fff;
+    box-shadow: 5px 5px 0 #000, 0 0 14px rgba(196, 30, 58, 0.35);
+    clip-path: polygon(0 12%, 6% 0, 100% 6%, 96% 100%, 4% 94%);
+}
+.psel .psel-go:hover:not(:disabled) {
+    filter: brightness(1.12);
+    box-shadow: 5px 5px 0 #000, 0 0 20px rgba(196, 30, 58, 0.55);
+}
+.psel .psel-back {
+    border: 2px solid #fff;
+    clip-path: polygon(0 10%, 100% 0, 98% 100%, 2% 90%);
+}
+.psel .psel-back:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+.psel .psel-tip {
+    opacity: 0.78;
+    color: rgba(245, 245, 245, 0.85);
+}
+
+/* ============================================================
+   RESPONSIVE — stack gracefully under 900px
+   ============================================================ */
+@media (max-width: 900px) {
+    .hud-p5 .p5ui-bl {
+        left: 0.65rem;
+        bottom: 1.15rem;
+        padding: 0.3rem 0.65rem 0.35rem 0.7rem;
+        flex-wrap: wrap;
+        max-width: calc(100vw - 1.2rem);
+    }
+    .hud-p5 .p5ui-portrait {
+        width: 118px;
+        height: 148px;
+        margin-left: 0.2rem;
+    }
+    .hud-p5 .p5ui-stats {
+        min-width: 170px;
+        padding: 0.55rem 0.75rem;
+    }
+    .hud-p5 .p5ui-stats > strong {
+        font-size: 0.92rem;
+    }
+    .hud-p5 .p5ui-bar .track {
+        height: 12px;
+    }
+    .hud-p5 .p5ui-cmd-stack {
+        min-width: 158px;
+        padding: 0.5rem 0.4rem;
+    }
+    .hud-p5 .p5ui-cmd {
+        font-size: 0.86rem;
+        padding: 0.48rem 0.65rem;
+    }
+    .hud-p5 .p5ui-cmd:hover::before,
+    .hud-p5 .p5ui-cmd.active::before {
+        left: -11px;
+        border-width: 6px;
+    }
+    .hud-p5 .p5ui-card {
+        width: 96px;
+    }
+    .hud-p5 .p5ui-br {
+        width: min(40vw, 188px);
+        bottom: 11.5rem;
+    }
+    .hud-p5 .p5ui-bc {
+        width: min(78vw, 440px);
+        transform: translateX(-50%);
+        bottom: 11.2rem;
+        left: 50%;
+    }
+    .hud-p5 .p5ui-tr {
+        max-width: min(48vw, 260px);
+    }
+    .hud-p5 .p5ui-ebar {
+        padding: 0.25rem 0.4rem;
+        gap: 0.35rem;
+        grid-template-columns: 1fr 38px;
+    }
+    .hud-p5 .p5ui-ebar-face {
+        width: 34px;
+        height: 34px;
+    }
+    .hud-p5 .p5ui-ebar-track {
+        height: 9px;
+    }
+    .hud-p5 .p5ui-tl {
+        left: 0.5rem;
+        padding-left: 0.25rem;
+    }
+    .hud-p5 .p5ui-to-face {
+        width: 42px;
+        height: 46px;
+    }
+    .hud-p5 .p5-party-strip {
+        left: 0.5rem;
+        bottom: 13.2rem;
+        flex-direction: row;
+        max-width: 96vw;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    .hud-p5 .p5-party-chip {
+        min-width: 148px;
+    }
+    .hud-p5 .p5-allies-field {
+        left: 8%;
+        bottom: 8%;
+    }
+    .hud-p5 .p5-enemies {
+        right: 4%;
+        top: auto;
+        bottom: 9%;
+    }
+    .hud-p5 .p5ui-chain,
+    .hud-p5 #p5-chain {
+        font-size: clamp(1.4rem, 6vw, 2.4rem);
+        top: 18%;
+    }
+    .hud-p5 .p5ui-dmg-total,
+    .hud-p5 #p5-dmg-total {
+        font-size: clamp(1.6rem, 7vw, 2.8rem);
+        top: 30%;
+    }
+
+    .psel .psel-body {
+        grid-template-columns: 1fr minmax(170px, 210px);
+        gap: 0.5rem;
+        padding-left: 1rem;
+    }
+    .psel .psel-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .psel .psel-meta {
+        max-width: 100%;
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .hud-p5 .p5ui-br {
+        display: none;
+    }
+    .hud-p5 .p5ui-cmds {
+        margin-bottom: 0.4rem;
+        padding-left: 0.35rem;
+    }
+    .hud-p5 .p5ui-bl {
+        bottom: 1rem;
+        flex-wrap: wrap;
+        max-width: 96vw;
+        padding: 0.25rem 0.5rem 0.25rem 0.65rem;
+    }
+    .hud-p5 .p5ui-portrait {
+        width: 96px;
+        height: 122px;
+    }
+    .hud-p5 .p5ui-bc {
+        bottom: 9.5rem;
+    }
+    .hud-p5 .p5ui-turn-banner {
+        font-size: 0.62rem;
+        padding: 0.35rem 0.9rem 0.35rem 0.7rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .psel .psel-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+    }
+    .psel .psel-squad {
+        max-height: 36vh;
+        transform: none;
+        clip-path: none;
+    }
+    .psel .psel-squad > * {
+        transform: none;
+    }
+    .psel .psel-slots {
+        flex-direction: row;
+    }
+    .psel .psel-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .psel .psel-actions {
+        flex-direction: row;
+    }
+    .psel .psel-go,
+    .psel .psel-back {
+        flex: 1;
+    }
+}
+
+/* ---------- Storm polish pass (markup hooks) ---------- */
+.hud-p5 .p5ui-chain[hidden],
+.hud-p5 .p5ui-dmg-total[hidden],
+.hud-p5 #p5-chain[hidden],
+.hud-p5 #p5-dmg-total[hidden] {
+    display: none !important;
+}
+.hud-p5 .p5ui-chain,
+.hud-p5 #p5-chain {
+    animation: none;
+}
+.hud-p5 .p5ui-chain.pop,
+.hud-p5 #p5-chain.pop {
+    animation: stormChainPop 0.55s cubic-bezier(0.15, 0.9, 0.25, 1) both;
+}
+.hud-p5 .p5ui-dmg-total,
+.hud-p5 #p5-dmg-total {
+    animation: none;
+}
+.hud-p5 .p5ui-dmg-total.pop,
+.hud-p5 #p5-dmg-total.pop {
+    animation: stormDmgTotal 1.05s ease forwards;
+}
+
+/* Clear center stage: hide ally clutter; HUD strip owns party info */
+.hud-p5 .p5-allies-field .p5-nameplate,
+.hud-p5 .p5-allies-field .p5-aff,
+.hud-p5 .p5-allies-field .p5-hpmini,
+.hud-p5 .p5-allies-field .p5-spmini {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+.hud-p5 .p5-allies-field .p5-fighter.active .p5-nameplate,
+.hud-p5 .p5-allies-field .p5-fighter.active .p5-aff {
+    opacity: 0.85;
+}
+.hud-p5 .p5-enemies .p5-nameplate {
+    transform: skewX(10deg);
+    background: rgba(0, 0, 0, 0.82);
+    border: 2px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 3px 3px 0 #000;
+}
+
+/* Action cut-in banner — ink slash */
+.hud-p5 .p5-action-banner {
+    left: 50%;
+    top: 12%;
+    transform: translateX(-50%) skewX(-14deg);
+    background: linear-gradient(90deg, transparent, rgba(196, 30, 58, 0.92) 18%, rgba(8, 8, 12, 0.95) 55%, rgba(8, 8, 12, 0.9));
+    border: none;
+    clip-path: polygon(2% 8%, 98% 0%, 100% 88%, 4% 100%);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(196, 30, 58, 0.35);
+    padding: 0.55rem 1.4rem 0.55rem 0.7rem;
+    min-width: min(72vw, 520px);
+    z-index: 28;
+}
+.hud-p5 .p5-action-banner > * {
+    transform: skewX(14deg);
+}
+.hud-p5 .p5-action-banner.foe {
+    background: linear-gradient(90deg, transparent, rgba(40, 40, 48, 0.95) 18%, rgba(90, 12, 24, 0.92) 70%);
+}
+.hud-p5 .p5-action-banner.is-ultimate {
+    background: linear-gradient(90deg, transparent, rgba(120, 70, 10, 0.95) 14%, rgba(196, 30, 58, 0.95) 48%, rgba(8, 8, 12, 0.95));
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55), 0 0 34px rgba(244, 208, 63, 0.45);
+}
+.hud-p5 .p5-action-banner .p5-action-tag {
+    background: rgba(0, 0, 0, 0.35);
+}
+.hud-p5 .p5-action-face {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #c41e3a, 3px 3px 0 #000;
+}
+
+/* Cmd pointer triangle like Storm/P5 */
+.hud-p5 .p5ui-cmd:hover:not(:disabled)::before,
+.hud-p5 .p5ui-cmd:focus-visible:not(:disabled)::before,
+.hud-p5 .p5ui-cmd.active::before {
+    content: '';
+    position: absolute;
+    left: -0.55rem;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px 0 7px 10px;
+    border-color: transparent transparent transparent #ff4d6d;
+    transform: translateY(-50%);
+    filter: drop-shadow(1px 1px 0 #000);
+}
+.hud-p5 .p5ui-cmd {
+    position: relative;
+}
+.hud-p5 .p5ui-cmd[disabled] {
+    opacity: 0.35;
+    filter: grayscale(0.4);
+}
+
+/* Bigger active portrait presence */
+.hud-p5 .p5ui-portrait {
+    width: clamp(110px, 16vw, 168px);
+    height: clamp(130px, 20vw, 200px);
+    box-shadow:
+        6px 6px 0 #000,
+        0 0 0 2px rgba(255, 255, 255, 0.85),
+        0 0 28px rgba(196, 30, 58, 0.35);
+}
+
+/* ---------- Fighter integrity pass ---------- */
+.hud-p5 .p5-fighter[data-id="naruto"] .p5-sprite,
+.hud-p5 .p5-fighter[data-id="sasuke"] .p5-sprite,
+.hud-p5 .p5-fighter[data-id="sakura"] .p5-sprite,
+.hud-p5 .p5-fighter[data-id="ichigo"] .p5-sprite,
+.hud-p5 .p5-fighter[data-id="kakashi"] .p5-sprite,
+.hud-p5 .p5-fighter[data-id="pain"] .p5-sprite,
+.hud-p5 .p5-fighter[data-id="konan"] .p5-sprite {
+    image-rendering: pixelated;
+}
+.hud-p5 .p5-fighter.transformed .p5-sprite {
+    image-rendering: auto;
+}
+
+/* Ulquiorra's Segunda Etapa art has a very wide wing canvas. Fit the body
+   first so the fighter does not become visually tiny just to keep the wings. */
+.hud-p5 .p5-fighter[data-id="ulquiorra"].transformed .p5-sprite {
+    width: clamp(190px, 21vw, 330px) !important;
+    height: clamp(250px, 45vh, 420px) !important;
+    background-size: auto 126% !important;
+    background-position: 100% bottom !important;
+}
+
+.hud-p5 .p5-fighter[data-id="kisame"].transformed .p5-rig,
+.hud-p5 .p5-fighter[data-id="kisame"].transformed .p5-rig-fallback,
+.hud-p5 .p5-fighter[data-id="kisame"].transformed .p5-sprite {
+    width: clamp(360px, 34vw, 540px) !important;
+    height: clamp(300px, 48vh, 440px) !important;
+}
+.hud-p5 .p5-fighter[data-id="kisame"].transformed .p5-rig-fallback,
+.hud-p5 .p5-fighter[data-id="kisame"].transformed .p5-sprite {
+    background-size: contain !important;
+    background-position: bottom center !important;
+}
+
+/* Both classes are applied together; this must beat the old flash-only
+   animation so hits actually push the victim back. */
+.hud-p5 .p5-fighter.hit-flash.hit-recoil .p5-sprite {
+    animation: stormHitRecoil 0.48s cubic-bezier(.2,.8,.25,1) both !important;
+}
+.hud-p5 .p5-fighter.enemy.hit-flash.hit-recoil .p5-sprite {
+    animation-name: stormHitRecoilEnemy !important;
+}
+@keyframes stormHitRecoil {
+    0%, 100% { transform: translate(0, 0) rotate(0); filter: brightness(1); }
+    18% { transform: translate(12px, -3px) rotate(2deg); filter: brightness(2.6) saturate(0.25); }
+    45% { transform: translate(22px, 4px) rotate(5deg); filter: brightness(1.35); }
+    72% { transform: translate(5px, 0) rotate(-1deg); filter: brightness(1); }
+}
+@keyframes stormHitRecoilEnemy {
+    0%, 100% { transform: scaleX(-1) translate(0, 0) rotate(0); filter: brightness(1); }
+    18% { transform: scaleX(-1) translate(12px, -3px) rotate(2deg); filter: brightness(2.6) saturate(0.25); }
+    45% { transform: scaleX(-1) translate(22px, 4px) rotate(5deg); filter: brightness(1.35); }
+    72% { transform: scaleX(-1) translate(5px, 0) rotate(-1deg); filter: brightness(1); }
+}
+
+/* DOWN is a physical fall, never baked text or a giant placeholder glyph. */
+.hud-p5 .p5-fighter.down .p5-sprite {
+    animation: stormDown 0.4s ease-out both !important;
+    transform-origin: 50% 88%;
+    filter: brightness(0.72) saturate(0.7) drop-shadow(0 0 12px #f1c40f);
+}
+.hud-p5 .p5-fighter.enemy.down .p5-sprite {
+    animation-name: stormDownEnemy !important;
+}
+.hud-p5 .p5-fighter.down::after {
+    content: 'DOWN';
+    position: absolute;
+    left: 50%;
+    bottom: 4.2rem;
+    z-index: 15;
+    transform: translateX(-50%) skewX(-12deg);
+    padding: 0.12rem 0.55rem;
+    color: #111;
+    background: #f4d03f;
+    border: 2px solid #fff;
+    box-shadow: 3px 3px 0 #000;
+    font: 900 0.62rem/1 'Cinzel', sans-serif;
+    letter-spacing: 0.12em;
+}
+@keyframes stormDown {
+    from { transform: rotate(0) translateY(0); }
+    to { transform: rotate(-68deg) translate(-12px, 18px) scale(0.92); }
+}
+@keyframes stormDownEnemy {
+    from { transform: scaleX(-1) rotate(0) translateY(0); }
+    to { transform: scaleX(-1) rotate(-68deg) translate(-12px, 18px) scale(0.92); }
+}
+
+/* Keep damage numbers readable and local to the fighter. */
+.hud-p5 .p5-dmg {
+    top: 12%;
+    min-width: 3ch;
+    max-width: 8rem;
+    font-size: clamp(1rem, 2.3vw, 1.65rem);
+    white-space: nowrap;
+    text-align: center;
+}
+.hud-p5 .p5-dmg b {
+    display: block;
+    font-size: 0.62em;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.08rem;
+}
+.hud-p5 .p5-dmg span {
+    display: block;
+    font-size: 1em;
+}
+.hud-p5 .p5-dmg {
+    padding: .12rem .38rem .18rem;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: .35rem;
+    background: linear-gradient(180deg, rgba(8,10,18,.88), rgba(8,10,18,.42));
+    filter: drop-shadow(0 4px 0 rgba(0,0,0,.55));
+}
+.hud-p5 .p5-dmg.crit {
+    z-index: 18;
+    color: #fff6b0;
+    border-color: #ffd34d;
+    background: linear-gradient(180deg, rgba(119,35,15,.96), rgba(31,10,12,.72));
+    text-shadow: 0 0 5px #ffae22, 2px 2px 0 #56120d;
+    animation: stormDamageCrit 1.02s cubic-bezier(.12,.82,.18,1) forwards;
+}
+.hud-p5 .p5-dmg.crit span {
+    font-size: 1.42em;
+    letter-spacing: .04em;
+}
+.hud-p5 .p5-dmg.weak {
+    color: #dfffb3;
+    border-color: #9ee85d;
+    background: linear-gradient(180deg, rgba(29,91,49,.9), rgba(8,26,20,.72));
+}
+.hud-p5 .p5-dmg.crit.weak {
+    border-color: #fff06a;
+    box-shadow: 0 0 18px rgba(255,208,54,.8), inset 0 0 12px rgba(93,220,91,.3);
+}
+.hud-p5 .p5-dmg.resist {
+    color: #c8d2df;
+    border-color: #738093;
+    background: linear-gradient(180deg, rgba(35,43,55,.9), rgba(9,13,20,.72));
+}
+@keyframes stormDamageCrit {
+    0% { opacity: 0; transform: translate(-50%, 18px) scale(.35) rotate(-5deg); }
+    18% { opacity: 1; transform: translate(-50%, -12px) scale(1.35) rotate(3deg); }
+    36% { transform: translate(-50%, -4px) scale(.96) rotate(-1deg); }
+    100% { opacity: 0; transform: translate(-50%, -66px) scale(1.05) rotate(0); }
+}
+
+/* Kage Bunshin gets an actual split animation; it never touches Kyubi art. */
+.hud-p5 .p5-bunshin {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 168px;
+    height: 260px;
+    margin-left: -84px;
+    z-index: 1;
+    pointer-events: none;
+    background: bottom center / contain no-repeat;
+    image-rendering: pixelated;
+    opacity: 0;
+    filter: drop-shadow(0 0 12px rgba(230, 240, 255, 0.8));
+}
+.hud-p5 .p5-bunshin.left {
+    animation: stormBunshinLeft 0.62s cubic-bezier(.2,.8,.25,1) both;
+}
+.hud-p5 .p5-bunshin.right {
+    animation: stormBunshinRight 0.62s cubic-bezier(.2,.8,.25,1) both;
+}
+@keyframes stormBunshinLeft {
+    0% { opacity: 0; transform: translateX(0) scale(0.8); filter: brightness(3); }
+    25% { opacity: 0.9; transform: translateX(-16px) scale(1); }
+    100% { opacity: 0; transform: translateX(-78px) scale(0.94); }
+}
+@keyframes stormBunshinRight {
+    0% { opacity: 0; transform: translateX(0) scale(0.8); filter: brightness(3); }
+    25% { opacity: 0.9; transform: translateX(16px) scale(1); }
+    100% { opacity: 0; transform: translateX(78px) scale(0.94); }
+}
+
+/* ---------- Stable attack scale + field information ---------- */
+/* Wide attack sheets: fit by height so the body doesn't collapse. Never use
+   non-uniform scale() — that is what made fighters look "squashed". */
+.hud-p5 .p5-fighter.attacking .p5-sprite,
+.hud-p5 .p5-fighter.attacking .p5-rig-fallback,
+.hud-p5 .p5-fighter.casting .p5-sprite,
+.hud-p5 .p5-fighter.casting .p5-rig-fallback {
+    background-size: auto 100% !important;
+    background-position: bottom center !important;
+    background-repeat: no-repeat !important;
+}
+.hud-p5 .p5-fighter.attacking .p5-sprite,
+.hud-p5 .p5-fighter.attacking .p5-rig {
+    animation: stormAttackStable 0.58s cubic-bezier(.15,.85,.25,1) both !important;
+}
+.hud-p5 .p5-fighter.enemy.attacking .p5-sprite,
+.hud-p5 .p5-fighter.enemy.attacking .p5-rig,
+.hud-p5 .p5-fighter.ally.face-flip.attacking .p5-sprite,
+.hud-p5 .p5-fighter.ally.face-flip.attacking .p5-rig {
+    animation-name: stormAttackStableEnemy !important;
+}
+.hud-p5 .p5-fighter.enemy.face-native.attacking .p5-sprite,
+.hud-p5 .p5-fighter.enemy.face-native.attacking .p5-rig {
+    animation-name: stormAttackStable !important;
+}
+@keyframes stormAttackStable {
+    0% { transform: translate(0,0) scale(1) rotate(0); filter: brightness(1); }
+    14% { transform: translate(-12px,4px) scale(1.02) rotate(-3deg); filter: brightness(1.06); }
+    32% { transform: translate(14px,-6px) scale(1.05) rotate(-1deg); filter: brightness(1.2) drop-shadow(0 0 12px #fff); }
+    48% { transform: translate(72px,-14px) scale(1.08) rotate(2deg); filter: brightness(1.35) drop-shadow(0 0 20px #fff) drop-shadow(0 0 14px #ff6644); }
+    70% { transform: translate(28px,-4px) scale(1.03) rotate(0.5deg); filter: brightness(1.12); }
+    100% { transform: translate(0,0) scale(1) rotate(0); filter: brightness(1); }
+}
+@keyframes stormAttackStableEnemy {
+    0% { transform: scaleX(-1) translate(0,0) rotate(0); filter: brightness(1); }
+    14% { transform: scaleX(-1) translate(-12px,4px) rotate(-3deg); filter: brightness(1.06); }
+    32% { transform: scaleX(-1) translate(14px,-6px) rotate(-1deg); filter: brightness(1.2) drop-shadow(0 0 12px #fff); }
+    48% { transform: scaleX(-1) translate(72px,-14px) rotate(2deg); filter: brightness(1.35) drop-shadow(0 0 20px #fff) drop-shadow(0 0 14px #ff6644); }
+    70% { transform: scaleX(-1) translate(28px,-4px) rotate(0.5deg); filter: brightness(1.12); }
+    100% { transform: scaleX(-1) translate(0,0) rotate(0); filter: brightness(1); }
+}
+
+/* Ally HP/CP already lives in the left HUD. Keep only identity + weakness in
+   the arena; enemy labels additionally expose defensive strengths. */
+.hud-p5 .p5-allies-field .p5-nameplate,
+.hud-p5 .p5-allies-field .p5-aff,
+.hud-p5 .p5-enemies .p5-nameplate,
+.hud-p5 .p5-enemies .p5-aff {
+    opacity: 1 !important;
+    pointer-events: none;
+}
+.hud-p5 .p5-allies-field .p5-hpmini,
+.hud-p5 .p5-allies-field .p5-spmini {
+    display: none !important;
+}
+.hud-p5 .p5-affinity-stack {
+    display: grid;
+    justify-items: center;
+    gap: 0.13rem;
+    margin-top: 0.24rem;
+}
+.hud-p5 .p5-affinity-stack .p5-aff {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    margin: 0;
+    padding: 0.12rem 0.35rem;
+    border: 1px solid rgba(255,255,255,0.36);
+    background: rgba(5,4,8,0.82);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.68);
+    color: rgba(255,255,255,0.92);
+    font: 700 0.5rem/1.1 'Cinzel', sans-serif;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.hud-p5 .p5-affinity-stack .p5-aff b {
+    font-size: 0.44rem;
+    letter-spacing: 0.09em;
+}
+.hud-p5 .p5-affinity-stack .weak b { color: #ff6077; }
+.hud-p5 .p5-affinity-stack .strong b { color: #64d8ff; }
+.hud-p5 .p5-affinity-stack .null b { color: #f4d03f; }
+.hud-p5 .p5-allies-field .p5-nameplate {
+    margin-top: 0.18rem;
+    max-width: 200px;
+}
+.hud-p5 .p5-allies-field .p5-nameplate span {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    max-width: 188px;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+/* ---- Anti-crop: full body visible in portrait squares / chips ---- */
+.hud-p5 .p5ui-portrait {
+    width: 200px;
+    height: 268px;
+    background-size: contain !important;
+    background-position: bottom center !important;
+    background-repeat: no-repeat !important;
+    clip-path: none !important;
+    overflow: visible;
+    border-radius: 4px;
+}
+.hud-p5 .p5ui-to-face {
+    width: 56px;
+    height: 68px;
+    background-size: contain !important;
+    background-position: bottom center !important;
+    background-repeat: no-repeat !important;
+    clip-path: none !important;
+    border-radius: 3px;
+}
+.hud-p5 .p5ui-ebar-face {
+    width: 48px;
+    height: 56px;
+    border-radius: 6px;
+    background-size: contain !important;
+    background-position: bottom center !important;
+    background-repeat: no-repeat !important;
+}
+.hud-p5 .p5-party-face {
+    width: 56px;
+    height: 72px;
+    background-size: contain !important;
+    background-position: bottom center !important;
+}
+.hud-p5 .p5ui-card-art {
+    background-size: contain !important;
+    background-position: bottom center !important;
+    background-repeat: no-repeat !important;
+}
+.psel .psel-chip,
+.psel-chip {
+    overflow: visible !important;
+}
+.psel .psel-chip-art,
+.psel-chip-art {
+    /* HQ portrait crop — use portraits/ when available */
+    background-size: cover !important;
+    background-position: center 12% !important;
+    background-repeat: no-repeat !important;
+    image-rendering: auto !important;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    overflow: hidden;
+    min-height: 132px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+}
+.psel .psel-chip.rarity-mythic .psel-chip-art {
+    box-shadow: inset 0 0 28px rgba(255, 42, 74, 0.35), 0 0 12px rgba(255, 42, 74, 0.25);
+}
+.psel .psel-slot-art,
+.psel-slot-art {
+    background-size: cover !important;
+    background-position: center 10% !important;
+    background-repeat: no-repeat !important;
+    image-rendering: auto !important;
+    overflow: hidden;
+}
+.hud-p5 .p5-stage,
+.hud-p5 .p5-enemies,
+.hud-p5 .p5-allies-field {
+    overflow: visible !important;
+}
+.hud-p5 .p5-fighter,
+.hud-p5 .p5-sprite {
+    overflow: visible !important;
+}
+.hud-p5 .p5-sprite {
+    width: clamp(160px, 18vw, 280px) !important;
+    height: clamp(200px, 38vh, 360px) !important;
+    background-size: contain !important;
+    background-position: bottom center !important;
+    filter: drop-shadow(0 14px 0 rgba(0, 0, 0, 0.55)) !important;
+}
+.hud-p5 .p5-allies-field {
+    bottom: 6% !important;
+    align-items: flex-end !important;
+}
+.hud-p5 .p5-enemies {
+    bottom: 7% !important;
+    top: auto !important;
+    align-items: flex-end !important;
+}
+.p5-to-face {
+    background-size: contain !important;
+    background-position: bottom center !important;
+}
+.party-avatar.img {
+    overflow: visible;
+    background: #111;
+}
+.party-avatar.img img {
+    object-fit: contain !important;
+    object-position: bottom center !important;
+    image-rendering: auto !important;
+}
+.battler-portrait {
+    overflow: visible !important;
+}
+.battler-portrait img {
+    object-fit: contain !important;
+    object-position: bottom center !important;
+}
+
+

@@ -1,0 +1,1823 @@
+{
+  "version": 2,
+  "clips": {
+    "aizen__fragor": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 424290,
+      "file": "aizen__fragor.gif",
+      "valid": true
+    },
+    "aizen__hadou": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 424290,
+      "file": "aizen__hadou.gif",
+      "valid": true
+    },
+    "aizen__kyoka": {
+      "width": 498,
+      "height": 360,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4458461,
+      "file": "aizen__kyoka.gif",
+      "valid": true
+    },
+    "boss5050__coin_true": {
+      "width": 498,
+      "height": 498,
+      "frames": 36,
+      "duration": 2.0,
+      "bytes": 2026971,
+      "file": "boss5050__coin_true.gif",
+      "valid": true
+    },
+    "boss5050__guaranteed": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3339272,
+      "file": "boss5050__guaranteed.gif",
+      "valid": true
+    },
+    "boss5050__hard": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3335515,
+      "file": "boss5050__hard.gif",
+      "valid": true
+    },
+    "boss5050__heal_phase": {
+      "width": 220,
+      "height": 220,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 670487,
+      "file": "boss5050__heal_phase.gif",
+      "valid": true
+    },
+    "boss5050__lost": {
+      "width": 480,
+      "height": 270,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2296666,
+      "file": "boss5050__lost.gif",
+      "valid": true
+    },
+    "boss5050__rate": {
+      "width": 498,
+      "height": 282,
+      "frames": 44,
+      "duration": 2.45,
+      "bytes": 3715614,
+      "file": "boss5050__rate.gif",
+      "valid": true
+    },
+    "byakuya__byakurai": {
+      "width": 190,
+      "height": 144,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 751364,
+      "file": "byakuya__byakurai.gif",
+      "valid": true
+    },
+    "byakuya__gokei": {
+      "width": 560,
+      "height": 312,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2890701,
+      "file": "byakuya__gokei.gif",
+      "valid": true
+    },
+    "byakuya__hakuteiken": {
+      "width": 560,
+      "height": 312,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2890701,
+      "file": "byakuya__hakuteiken.gif",
+      "valid": true
+    },
+    "byakuya__pride": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 783288,
+      "file": "byakuya__pride.gif",
+      "valid": true
+    },
+    "byakuya__senbon": {
+      "width": 640,
+      "height": 336,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7172369,
+      "file": "byakuya__senbon.gif",
+      "valid": true
+    },
+    "byakuya__senbon_guard": {
+      "width": 560,
+      "height": 312,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2890701,
+      "file": "byakuya__senbon_guard.gif",
+      "valid": true
+    },
+    "byakuya__senkei": {
+      "width": 560,
+      "height": 312,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2890701,
+      "file": "byakuya__senkei.gif",
+      "valid": true
+    },
+    "byakuya__senkei_blade": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3702844,
+      "file": "byakuya__senkei_blade.gif",
+      "valid": true
+    },
+    "dio__bloodsuck": {
+      "width": 498,
+      "height": 416,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4952399,
+      "file": "dio__bloodsuck.gif",
+      "valid": true
+    },
+    "dio__charisma": {
+      "width": 367,
+      "height": 498,
+      "frames": 26,
+      "duration": 1.45,
+      "bytes": 2342591,
+      "file": "dio__charisma.gif",
+      "valid": true
+    },
+    "dio__muda": {
+      "width": 720,
+      "height": 446,
+      "frames": 24,
+      "duration": 1.34,
+      "bytes": 4074632,
+      "file": "dio__muda.gif",
+      "valid": true
+    },
+    "dio__muda_max": {
+      "width": 220,
+      "height": 124,
+      "frames": 25,
+      "duration": 1.39,
+      "bytes": 354396,
+      "file": "dio__muda_max.gif",
+      "valid": true
+    },
+    "dio__road_roller": {
+      "width": 498,
+      "height": 280,
+      "frames": 41,
+      "duration": 2.28,
+      "bytes": 2909258,
+      "file": "dio__road_roller.gif",
+      "valid": true
+    },
+    "dio__space_ripper": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 449339,
+      "file": "dio__space_ripper.gif",
+      "valid": true
+    },
+    "dio__time_stop_dio": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3916878,
+      "file": "dio__time_stop_dio.gif",
+      "valid": true
+    },
+    "dio__tw_awaken": {
+      "width": 220,
+      "height": 122,
+      "frames": 25,
+      "duration": 1.39,
+      "bytes": 412678,
+      "file": "dio__tw_awaken.gif",
+      "valid": true
+    },
+    "doflamingo__birdcage": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 676626,
+      "file": "doflamingo__birdcage.gif",
+      "valid": true
+    },
+    "doflamingo__five_thousand": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 420590,
+      "file": "doflamingo__five_thousand.gif",
+      "valid": true
+    },
+    "doflamingo__god_thread": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 676626,
+      "file": "doflamingo__god_thread.gif",
+      "valid": true
+    },
+    "doflamingo__ito_awaken": {
+      "width": 220,
+      "height": 120,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 706803,
+      "file": "doflamingo__ito_awaken.gif",
+      "valid": true
+    },
+    "doflamingo__off_white": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 384761,
+      "file": "doflamingo__off_white.gif",
+      "valid": true
+    },
+    "doflamingo__overheat": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 709010,
+      "file": "doflamingo__overheat.gif",
+      "valid": true
+    },
+    "doflamingo__parasite": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 384761,
+      "file": "doflamingo__parasite.gif",
+      "valid": true
+    },
+    "doflamingo__parasite_e": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 384761,
+      "file": "doflamingo__parasite_e.gif",
+      "valid": true
+    },
+    "doflamingo__string_bullet": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 709010,
+      "file": "doflamingo__string_bullet.gif",
+      "valid": true
+    },
+    "doflamingo__string_throne": {
+      "width": 220,
+      "height": 120,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 706803,
+      "file": "doflamingo__string_throne.gif",
+      "valid": true
+    },
+    "enel__el_thor": {
+      "width": 479,
+      "height": 366,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4767685,
+      "file": "enel__el_thor.gif",
+      "valid": true
+    },
+    "enel__god": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3541297,
+      "file": "enel__god.gif",
+      "valid": true
+    },
+    "enel__mani": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3541297,
+      "file": "enel__mani.gif",
+      "valid": true
+    },
+    "enel__raigo": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3541297,
+      "file": "enel__raigo.gif",
+      "valid": true
+    },
+    "enel__vari": {
+      "width": 479,
+      "height": 366,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4767685,
+      "file": "enel__vari.gif",
+      "valid": true
+    },
+    "gaara__desert_wave": {
+      "width": 498,
+      "height": 370,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4320227,
+      "file": "gaara__desert_wave.gif",
+      "valid": true
+    },
+    "gaara__ryuusa": {
+      "width": 720,
+      "height": 360,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7026299,
+      "file": "gaara__ryuusa.gif",
+      "valid": true
+    },
+    "gaara__sabaku": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3479177,
+      "file": "gaara__sabaku.gif",
+      "valid": true
+    },
+    "gaara__sand_armor_max": {
+      "width": 498,
+      "height": 368,
+      "frames": 20,
+      "duration": 1.12,
+      "bytes": 1833911,
+      "file": "gaara__sand_armor_max.gif",
+      "valid": true
+    },
+    "gaara__sand_tails": {
+      "width": 498,
+      "height": 370,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4320227,
+      "file": "gaara__sand_tails.gif",
+      "valid": true
+    },
+    "gaara__shukaku": {
+      "width": 720,
+      "height": 402,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7868861,
+      "file": "gaara__shukaku.gif",
+      "valid": true
+    },
+    "gaara__shukaku_roar": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 401562,
+      "file": "gaara__shukaku_roar.gif",
+      "valid": true
+    },
+    "gaara__sunashield": {
+      "width": 480,
+      "height": 338,
+      "frames": 40,
+      "duration": 2.23,
+      "bytes": 3295602,
+      "file": "gaara__sunashield.gif",
+      "valid": true
+    },
+    "gojo__blue": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 608487,
+      "file": "gojo__blue.gif",
+      "valid": true
+    },
+    "gojo__blue_crush": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 608487,
+      "file": "gojo__blue_crush.gif",
+      "valid": true
+    },
+    "gojo__domain_gojo": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3599138,
+      "file": "gojo__domain_gojo.gif",
+      "valid": true
+    },
+    "gojo__hollow_purple": {
+      "width": 720,
+      "height": 414,
+      "frames": 21,
+      "duration": 1.17,
+      "bytes": 3166664,
+      "file": "gojo__hollow_purple.gif",
+      "valid": true
+    },
+    "gojo__infinity_guard": {
+      "width": 220,
+      "height": 128,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 732168,
+      "file": "gojo__infinity_guard.gif",
+      "valid": true
+    },
+    "gojo__infinity_wall": {
+      "width": 220,
+      "height": 128,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 732168,
+      "file": "gojo__infinity_wall.gif",
+      "valid": true
+    },
+    "gojo__red": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 604275,
+      "file": "gojo__red.gif",
+      "valid": true
+    },
+    "gojo__red_blast": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 604275,
+      "file": "gojo__red_blast.gif",
+      "valid": true
+    },
+    "ichigo__bankai": {
+      "width": 720,
+      "height": 480,
+      "frames": 19,
+      "duration": 1.06,
+      "bytes": 3080635,
+      "file": "ichigo__bankai.gif",
+      "valid": true
+    },
+    "ichigo__bankai_shunpo": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 800660,
+      "file": "ichigo__bankai_shunpo.gif",
+      "valid": true
+    },
+    "ichigo__dangai_rise": {
+      "width": 720,
+      "height": 480,
+      "frames": 19,
+      "duration": 1.06,
+      "bytes": 3080635,
+      "file": "ichigo__dangai_rise.gif",
+      "valid": true
+    },
+    "ichigo__dangai_slash": {
+      "width": 720,
+      "height": 386,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6490641,
+      "file": "ichigo__dangai_slash.gif",
+      "valid": true
+    },
+    "ichigo__getsuga": {
+      "width": 720,
+      "height": 386,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6490641,
+      "file": "ichigo__getsuga.gif",
+      "valid": true
+    },
+    "ichigo__getsuga_barrage": {
+      "width": 720,
+      "height": 404,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6519879,
+      "file": "ichigo__getsuga_barrage.gif",
+      "valid": true
+    },
+    "ichigo__hollow_claw": {
+      "width": 220,
+      "height": 124,
+      "frames": 41,
+      "duration": 2.28,
+      "bytes": 522902,
+      "file": "ichigo__hollow_claw.gif",
+      "valid": true
+    },
+    "ichigo__hollow_getsuga": {
+      "width": 720,
+      "height": 386,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6490641,
+      "file": "ichigo__hollow_getsuga.gif",
+      "valid": true
+    },
+    "ichigo__hollow_mask": {
+      "width": 720,
+      "height": 404,
+      "frames": 20,
+      "duration": 1.12,
+      "bytes": 2981123,
+      "file": "ichigo__hollow_mask.gif",
+      "valid": true
+    },
+    "ichigo__kuroi_getsuga": {
+      "width": 720,
+      "height": 386,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6490641,
+      "file": "ichigo__kuroi_getsuga.gif",
+      "valid": true
+    },
+    "ichigo__mugetsu": {
+      "width": 720,
+      "height": 386,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6490641,
+      "file": "ichigo__mugetsu.gif",
+      "valid": true
+    },
+    "ichigo__shunpo_slash": {
+      "width": 498,
+      "height": 334,
+      "frames": 10,
+      "duration": 0.56,
+      "bytes": 715942,
+      "file": "ichigo__shunpo_slash.gif",
+      "valid": true
+    },
+    "itachi__amaterasu": {
+      "width": 720,
+      "height": 330,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6181511,
+      "file": "itachi__amaterasu.gif",
+      "valid": true
+    },
+    "itachi__amaterasu_x": {
+      "width": 720,
+      "height": 330,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6181511,
+      "file": "itachi__amaterasu_x.gif",
+      "valid": true
+    },
+    "itachi__feint_x": {
+      "width": 220,
+      "height": 126,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 686422,
+      "file": "itachi__feint_x.gif",
+      "valid": true
+    },
+    "itachi__genjutsu_x": {
+      "width": 720,
+      "height": 402,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6058888,
+      "file": "itachi__genjutsu_x.gif",
+      "valid": true
+    },
+    "itachi__katon_i": {
+      "width": 441,
+      "height": 498,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 5083921,
+      "file": "itachi__katon_i.gif",
+      "valid": true
+    },
+    "itachi__katon_x": {
+      "width": 441,
+      "height": 498,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 5083921,
+      "file": "itachi__katon_x.gif",
+      "valid": true
+    },
+    "itachi__sharingan_i": {
+      "width": 720,
+      "height": 402,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6058888,
+      "file": "itachi__sharingan_i.gif",
+      "valid": true
+    },
+    "itachi__tsukuyomi": {
+      "width": 720,
+      "height": 402,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6058888,
+      "file": "itachi__tsukuyomi.gif",
+      "valid": true
+    },
+    "itachi__yasaka": {
+      "width": 220,
+      "height": 126,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 686422,
+      "file": "itachi__yasaka.gif",
+      "valid": true
+    },
+    "jiraiya__cho_odama_j": {
+      "width": 498,
+      "height": 398,
+      "frames": 21,
+      "duration": 1.17,
+      "bytes": 2234946,
+      "file": "jiraiya__cho_odama_j.gif",
+      "valid": true
+    },
+    "jiraiya__frog_kata": {
+      "width": 498,
+      "height": 272,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2110065,
+      "file": "jiraiya__frog_kata.gif",
+      "valid": true
+    },
+    "jiraiya__genjutsu_toad": {
+      "width": 165,
+      "height": 126,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 529972,
+      "file": "jiraiya__genjutsu_toad.gif",
+      "valid": true
+    },
+    "jiraiya__katon_j": {
+      "width": 498,
+      "height": 398,
+      "frames": 21,
+      "duration": 1.17,
+      "bytes": 2234946,
+      "file": "jiraiya__katon_j.gif",
+      "valid": true
+    },
+    "jiraiya__oil_trap": {
+      "width": 498,
+      "height": 278,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3492775,
+      "file": "jiraiya__oil_trap.gif",
+      "valid": true
+    },
+    "jiraiya__rasengan_j": {
+      "width": 498,
+      "height": 398,
+      "frames": 21,
+      "duration": 1.17,
+      "bytes": 2234946,
+      "file": "jiraiya__rasengan_j.gif",
+      "valid": true
+    },
+    "jiraiya__sage_j": {
+      "width": 498,
+      "height": 272,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2110065,
+      "file": "jiraiya__sage_j.gif",
+      "valid": true
+    },
+    "jiraiya__senpo_rasengan": {
+      "width": 498,
+      "height": 398,
+      "frames": 21,
+      "duration": 1.17,
+      "bytes": 2234946,
+      "file": "jiraiya__senpo_rasengan.gif",
+      "valid": true
+    },
+    "jolyne__mobius": {
+      "width": 220,
+      "height": 124,
+      "frames": 32,
+      "duration": 1.78,
+      "bytes": 527552,
+      "file": "jolyne__mobius.gif",
+      "valid": true
+    },
+    "jolyne__ora_jolyne": {
+      "width": 220,
+      "height": 100,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 580888,
+      "file": "jolyne__ora_jolyne.gif",
+      "valid": true
+    },
+    "jolyne__sf_awaken": {
+      "width": 220,
+      "height": 124,
+      "frames": 32,
+      "duration": 1.78,
+      "bytes": 527552,
+      "file": "jolyne__sf_awaken.gif",
+      "valid": true
+    },
+    "jolyne__sf_beatdown": {
+      "width": 220,
+      "height": 100,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 580888,
+      "file": "jolyne__sf_beatdown.gif",
+      "valid": true
+    },
+    "jolyne__string": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4184729,
+      "file": "jolyne__string.gif",
+      "valid": true
+    },
+    "jolyne__string_guard": {
+      "width": 220,
+      "height": 124,
+      "frames": 32,
+      "duration": 1.78,
+      "bytes": 527552,
+      "file": "jolyne__string_guard.gif",
+      "valid": true
+    },
+    "jolyne__string_storm": {
+      "width": 220,
+      "height": 124,
+      "frames": 32,
+      "duration": 1.78,
+      "bytes": 527552,
+      "file": "jolyne__string_storm.gif",
+      "valid": true
+    },
+    "jolyne__web": {
+      "width": 220,
+      "height": 124,
+      "frames": 32,
+      "duration": 1.78,
+      "bytes": 527552,
+      "file": "jolyne__web.gif",
+      "valid": true
+    },
+    "joseph__clacker": {
+      "width": 220,
+      "height": 124,
+      "frames": 25,
+      "duration": 1.39,
+      "bytes": 404431,
+      "file": "joseph__clacker.gif",
+      "valid": true
+    },
+    "joseph__hamon_conduct": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4388105,
+      "file": "joseph__hamon_conduct.gif",
+      "valid": true
+    },
+    "joseph__hamon_punch": {
+      "width": 500,
+      "height": 630,
+      "frames": 24,
+      "duration": 1.34,
+      "bytes": 4136497,
+      "file": "joseph__hamon_punch.gif",
+      "valid": true
+    },
+    "joseph__hp_awaken": {
+      "width": 220,
+      "height": 122,
+      "frames": 29,
+      "duration": 1.62,
+      "bytes": 497168,
+      "file": "joseph__hp_awaken.gif",
+      "valid": true
+    },
+    "joseph__psychic_photo": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 747524,
+      "file": "joseph__psychic_photo.gif",
+      "valid": true
+    },
+    "joseph__trick_master": {
+      "width": 498,
+      "height": 282,
+      "frames": 50,
+      "duration": 2.78,
+      "bytes": 3284684,
+      "file": "joseph__trick_master.gif",
+      "valid": true
+    },
+    "joseph__vine_lash": {
+      "width": 220,
+      "height": 122,
+      "frames": 29,
+      "duration": 1.62,
+      "bytes": 497168,
+      "file": "joseph__vine_lash.gif",
+      "valid": true
+    },
+    "joseph__your_next": {
+      "width": 220,
+      "height": 124,
+      "frames": 40,
+      "duration": 2.23,
+      "bytes": 612388,
+      "file": "joseph__your_next.gif",
+      "valid": true
+    },
+    "jotaro__ora": {
+      "width": 720,
+      "height": 402,
+      "frames": 14,
+      "duration": 0.78,
+      "bytes": 2226860,
+      "file": "jotaro__ora.gif",
+      "valid": true
+    },
+    "jotaro__ora_overdrive": {
+      "width": 220,
+      "height": 124,
+      "frames": 22,
+      "duration": 1.23,
+      "bytes": 348522,
+      "file": "jotaro__ora_overdrive.gif",
+      "valid": true
+    },
+    "jotaro__precision_guard": {
+      "width": 640,
+      "height": 360,
+      "frames": 47,
+      "duration": 2.62,
+      "bytes": 4591833,
+      "file": "jotaro__precision_guard.gif",
+      "valid": true
+    },
+    "jotaro__sp_transform": {
+      "width": 165,
+      "height": 94,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 425014,
+      "file": "jotaro__sp_transform.gif",
+      "valid": true
+    },
+    "jotaro__star_breaker": {
+      "width": 220,
+      "height": 124,
+      "frames": 18,
+      "duration": 1.0,
+      "bytes": 273376,
+      "file": "jotaro__star_breaker.gif",
+      "valid": true
+    },
+    "jotaro__star_finger": {
+      "width": 498,
+      "height": 332,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4348483,
+      "file": "jotaro__star_finger.gif",
+      "valid": true
+    },
+    "jotaro__star_platinum": {
+      "width": 480,
+      "height": 270,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4374483,
+      "file": "jotaro__star_platinum.gif",
+      "valid": true
+    },
+    "jotaro__time_stop": {
+      "width": 480,
+      "height": 270,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4374483,
+      "file": "jotaro__time_stop.gif",
+      "valid": true
+    },
+    "kakashi__copy_jutsu": {
+      "width": 640,
+      "height": 480,
+      "frames": 31,
+      "duration": 1.73,
+      "bytes": 4021726,
+      "file": "kakashi__copy_jutsu.gif",
+      "valid": true
+    },
+    "kakashi__doton": {
+      "width": 498,
+      "height": 278,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3341654,
+      "file": "kakashi__doton.gif",
+      "valid": true
+    },
+    "kakashi__kamui": {
+      "width": 720,
+      "height": 404,
+      "frames": 30,
+      "duration": 1.67,
+      "bytes": 4034948,
+      "file": "kakashi__kamui.gif",
+      "valid": true
+    },
+    "kakashi__lightning_hound": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 716766,
+      "file": "kakashi__lightning_hound.gif",
+      "valid": true
+    },
+    "kakashi__raikiri_twin": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 584508,
+      "file": "kakashi__raikiri_twin.gif",
+      "valid": true
+    },
+    "kakashi__raiton": {
+      "width": 720,
+      "height": 404,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 5431096,
+      "file": "kakashi__raiton.gif",
+      "valid": true
+    },
+    "kakashi__share_info": {
+      "width": 640,
+      "height": 480,
+      "frames": 31,
+      "duration": 1.73,
+      "bytes": 4021726,
+      "file": "kakashi__share_info.gif",
+      "valid": true
+    },
+    "kakashi__sharingan_k": {
+      "width": 440,
+      "height": 498,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 4940501,
+      "file": "kakashi__sharingan_k.gif",
+      "valid": true
+    },
+    "luffy__gear_second": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 744492,
+      "file": "luffy__gear_second.gif",
+      "valid": true
+    },
+    "luffy__gum_gatling": {
+      "width": 720,
+      "height": 414,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7061905,
+      "file": "luffy__gum_gatling.gif",
+      "valid": true
+    },
+    "luffy__gum_pistol": {
+      "width": 220,
+      "height": 124,
+      "frames": 45,
+      "duration": 2.5,
+      "bytes": 617560,
+      "file": "luffy__gum_pistol.gif",
+      "valid": true
+    },
+    "luffy__jet_gatling": {
+      "width": 720,
+      "height": 414,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7061905,
+      "file": "luffy__jet_gatling.gif",
+      "valid": true
+    },
+    "luffy__jet_pistol": {
+      "width": 220,
+      "height": 124,
+      "frames": 45,
+      "duration": 2.5,
+      "bytes": 617560,
+      "file": "luffy__jet_pistol.gif",
+      "valid": true
+    },
+    "luffy__king_kong": {
+      "width": 720,
+      "height": 414,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7061905,
+      "file": "luffy__king_kong.gif",
+      "valid": true
+    },
+    "luffy__red_hawk": {
+      "width": 220,
+      "height": 124,
+      "frames": 45,
+      "duration": 2.5,
+      "bytes": 617560,
+      "file": "luffy__red_hawk.gif",
+      "valid": true
+    },
+    "luffy__soru": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 744492,
+      "file": "luffy__soru.gif",
+      "valid": true
+    },
+    "megumi__divine_dogs": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 617101,
+      "file": "megumi__divine_dogs.gif",
+      "valid": true
+    },
+    "megumi__dogs_totality": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 595080,
+      "file": "megumi__dogs_totality.gif",
+      "valid": true
+    },
+    "megumi__extermination": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 595080,
+      "file": "megumi__extermination.gif",
+      "valid": true
+    },
+    "megumi__mahoraga": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2485328,
+      "file": "megumi__mahoraga.gif",
+      "valid": true
+    },
+    "megumi__mahoraga_call": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2485328,
+      "file": "megumi__mahoraga_call.gif",
+      "valid": true
+    },
+    "megumi__nue": {
+      "width": 480,
+      "height": 532,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6529301,
+      "file": "megumi__nue.gif",
+      "valid": true
+    },
+    "megumi__nue_max": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 824282,
+      "file": "megumi__nue_max.gif",
+      "valid": true
+    },
+    "megumi__shadow_bind": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3183348,
+      "file": "megumi__shadow_bind.gif",
+      "valid": true
+    },
+    "megumi__shadow_garden": {
+      "width": 498,
+      "height": 280,
+      "frames": 34,
+      "duration": 1.89,
+      "bytes": 2177178,
+      "file": "megumi__shadow_garden.gif",
+      "valid": true
+    },
+    "megumi__toad": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 599200,
+      "file": "megumi__toad.gif",
+      "valid": true
+    },
+    "megumi__wheel_adapt": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3183348,
+      "file": "megumi__wheel_adapt.gif",
+      "valid": true
+    },
+    "nami__cyclone": {
+      "width": 498,
+      "height": 278,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3882030,
+      "file": "nami__cyclone.gif",
+      "valid": true
+    },
+    "nami__mirage": {
+      "width": 498,
+      "height": 234,
+      "frames": 47,
+      "duration": 2.62,
+      "bytes": 2626099,
+      "file": "nami__mirage.gif",
+      "valid": true
+    },
+    "nami__thunderbolt": {
+      "width": 498,
+      "height": 278,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3882030,
+      "file": "nami__thunderbolt.gif",
+      "valid": true
+    },
+    "nami__water_shot": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 514028,
+      "file": "nami__water_shot.gif",
+      "valid": true
+    },
+    "naruto__bijuu_roar": {
+      "width": 498,
+      "height": 276,
+      "frames": 35,
+      "duration": 1.95,
+      "bytes": 2307438,
+      "file": "naruto__bijuu_roar.gif",
+      "valid": true
+    },
+    "naruto__kage_bunshin": {
+      "width": 498,
+      "height": 278,
+      "frames": 32,
+      "duration": 1.78,
+      "bytes": 1947998,
+      "file": "naruto__kage_bunshin.gif",
+      "valid": true
+    },
+    "naruto__kyubi": {
+      "width": 720,
+      "height": 402,
+      "frames": 14,
+      "duration": 0.78,
+      "bytes": 1891004,
+      "file": "naruto__kyubi.gif",
+      "valid": true
+    },
+    "naruto__kyubi_claw": {
+      "width": 220,
+      "height": 126,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 667353,
+      "file": "naruto__kyubi_claw.gif",
+      "valid": true
+    },
+    "naruto__kyubi_regen": {
+      "width": 220,
+      "height": 276,
+      "frames": 20,
+      "duration": 1.12,
+      "bytes": 631993,
+      "file": "naruto__kyubi_regen.gif",
+      "valid": true
+    },
+    "naruto__menacing_ball": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3921828,
+      "file": "naruto__menacing_ball.gif",
+      "valid": true
+    },
+    "naruto__odama": {
+      "width": 720,
+      "height": 404,
+      "frames": 18,
+      "duration": 1.0,
+      "bytes": 2532614,
+      "file": "naruto__odama.gif",
+      "valid": true
+    },
+    "naruto__rasengan": {
+      "width": 668,
+      "height": 500,
+      "frames": 22,
+      "duration": 1.23,
+      "bytes": 3874488,
+      "file": "naruto__rasengan.gif",
+      "valid": true
+    },
+    "renji__bone_guard": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 597513,
+      "file": "renji__bone_guard.gif",
+      "valid": true
+    },
+    "renji__higa": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 597513,
+      "file": "renji__higa.gif",
+      "valid": true
+    },
+    "renji__hihio_rush": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 597513,
+      "file": "renji__hihio_rush.gif",
+      "valid": true
+    },
+    "renji__hikotsu": {
+      "width": 400,
+      "height": 226,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2554877,
+      "file": "renji__hikotsu.gif",
+      "valid": true
+    },
+    "renji__hikotsu_bankai": {
+      "width": 400,
+      "height": 226,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2554877,
+      "file": "renji__hikotsu_bankai.gif",
+      "valid": true
+    },
+    "renji__orochio": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 597513,
+      "file": "renji__orochio.gif",
+      "valid": true
+    },
+    "renji__rally": {
+      "width": 220,
+      "height": 88,
+      "frames": 52,
+      "duration": 2.89,
+      "bytes": 454244,
+      "file": "renji__rally.gif",
+      "valid": true
+    },
+    "renji__soo_awaken": {
+      "width": 400,
+      "height": 226,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2554877,
+      "file": "renji__soo_awaken.gif",
+      "valid": true
+    },
+    "renji__zabimaru_roar": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 597513,
+      "file": "renji__zabimaru_roar.gif",
+      "valid": true
+    },
+    "renji__zaga_teppo": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 597513,
+      "file": "renji__zaga_teppo.gif",
+      "valid": true
+    },
+    "sakura__cherry_punch": {
+      "width": 720,
+      "height": 402,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 7462303,
+      "file": "sakura__cherry_punch.gif",
+      "valid": true
+    },
+    "sakura__heal_all": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 622969,
+      "file": "sakura__heal_all.gif",
+      "valid": true
+    },
+    "sakura__heal_sakura": {
+      "width": 220,
+      "height": 118,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 622969,
+      "file": "sakura__heal_sakura.gif",
+      "valid": true
+    },
+    "sakura__strength_buff": {
+      "width": 220,
+      "height": 110,
+      "frames": 34,
+      "duration": 1.89,
+      "bytes": 351040,
+      "file": "sakura__strength_buff.gif",
+      "valid": true
+    },
+    "sanji__concasse": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3863040,
+      "file": "sanji__concasse.gif",
+      "valid": true
+    },
+    "sanji__diable": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3863040,
+      "file": "sanji__diable.gif",
+      "valid": true
+    },
+    "sanji__diable_max": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3863040,
+      "file": "sanji__diable_max.gif",
+      "valid": true
+    },
+    "sanji__ifrit_kick": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3863040,
+      "file": "sanji__ifrit_kick.gif",
+      "valid": true
+    },
+    "sanji__party_food": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3716772,
+      "file": "sanji__party_food.gif",
+      "valid": true
+    },
+    "sanji__sky_walk": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 753889,
+      "file": "sanji__sky_walk.gif",
+      "valid": true
+    },
+    "sanji__sky_walk_max": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 753889,
+      "file": "sanji__sky_walk_max.gif",
+      "valid": true
+    },
+    "sanji__spectre": {
+      "width": 498,
+      "height": 268,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3527055,
+      "file": "sanji__spectre.gif",
+      "valid": true
+    },
+    "sasuke__amaterasu": {
+      "width": 640,
+      "height": 342,
+      "frames": 41,
+      "duration": 2.28,
+      "bytes": 3632517,
+      "file": "sasuke__amaterasu.gif",
+      "valid": true
+    },
+    "sasuke__chidori": {
+      "width": 720,
+      "height": 402,
+      "frames": 20,
+      "duration": 1.12,
+      "bytes": 2654901,
+      "file": "sasuke__chidori.gif",
+      "valid": true
+    },
+    "sasuke__chidori_nagashi": {
+      "width": 498,
+      "height": 282,
+      "frames": 33,
+      "duration": 1.84,
+      "bytes": 2130755,
+      "file": "sasuke__chidori_nagashi.gif",
+      "valid": true
+    },
+    "sasuke__chidori_spear": {
+      "width": 360,
+      "height": 640,
+      "frames": 1,
+      "duration": 0.1,
+      "bytes": 97871,
+      "file": "sasuke__chidori_spear.gif",
+      "valid": false
+    },
+    "sasuke__genjutsu_s": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 657761,
+      "file": "sasuke__genjutsu_s.gif",
+      "valid": true
+    },
+    "sasuke__katon": {
+      "width": 498,
+      "height": 278,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3318031,
+      "file": "sasuke__katon.gif",
+      "valid": true
+    },
+    "sasuke__kirin": {
+      "width": 498,
+      "height": 282,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 3683778,
+      "file": "sasuke__kirin.gif",
+      "valid": true
+    },
+    "sasuke__sharingan_counter": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 689079,
+      "file": "sasuke__sharingan_counter.gif",
+      "valid": true
+    },
+    "sasuke__sharingan_s": {
+      "width": 720,
+      "height": 404,
+      "frames": 47,
+      "duration": 2.62,
+      "bytes": 6489423,
+      "file": "sasuke__sharingan_s.gif",
+      "valid": true
+    },
+    "sukuna__cleave": {
+      "width": 500,
+      "height": 500,
+      "frames": 30,
+      "duration": 1.67,
+      "bytes": 3715449,
+      "file": "sukuna__cleave.gif",
+      "valid": true
+    },
+    "sukuna__dismantle": {
+      "width": 500,
+      "height": 500,
+      "frames": 30,
+      "duration": 1.67,
+      "bytes": 3715449,
+      "file": "sukuna__dismantle.gif",
+      "valid": true
+    },
+    "sukuna__furnace": {
+      "width": 220,
+      "height": 462,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2018785,
+      "file": "sukuna__furnace.gif",
+      "valid": true
+    },
+    "sukuna__malevolent": {
+      "width": 500,
+      "height": 500,
+      "frames": 30,
+      "duration": 1.67,
+      "bytes": 3715449,
+      "file": "sukuna__malevolent.gif",
+      "valid": true
+    },
+    "ulquiorra__cero": {
+      "width": 720,
+      "height": 404,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6194276,
+      "file": "ulquiorra__cero.gif",
+      "valid": true
+    },
+    "ulquiorra__lanza": {
+      "width": 720,
+      "height": 404,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 6194276,
+      "file": "ulquiorra__lanza.gif",
+      "valid": true
+    },
+    "ulquiorra__solita": {
+      "width": 498,
+      "height": 278,
+      "frames": 48,
+      "duration": 2.67,
+      "bytes": 1765918,
+      "file": "ulquiorra__solita.gif",
+      "valid": true
+    },
+    "yuji__black_flash_y": {
+      "width": 165,
+      "height": 78,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 322536,
+      "file": "yuji__black_flash_y.gif",
+      "valid": true
+    },
+    "yuji__blood_burst": {
+      "width": 220,
+      "height": 124,
+      "frames": 52,
+      "duration": 2.89,
+      "bytes": 735331,
+      "file": "yuji__blood_burst.gif",
+      "valid": true
+    },
+    "yuji__ce_surge": {
+      "width": 498,
+      "height": 280,
+      "frames": 46,
+      "duration": 2.56,
+      "bytes": 3359807,
+      "file": "yuji__ce_surge.gif",
+      "valid": true
+    },
+    "yuji__divergent_fist": {
+      "width": 498,
+      "height": 280,
+      "frames": 46,
+      "duration": 2.56,
+      "bytes": 3359807,
+      "file": "yuji__divergent_fist.gif",
+      "valid": true
+    },
+    "yuji__divergent_max": {
+      "width": 498,
+      "height": 280,
+      "frames": 46,
+      "duration": 2.56,
+      "bytes": 3359807,
+      "file": "yuji__divergent_max.gif",
+      "valid": true
+    },
+    "yuji__manji_kick": {
+      "width": 165,
+      "height": 78,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 322536,
+      "file": "yuji__manji_kick.gif",
+      "valid": true
+    },
+    "yuji__manji_storm": {
+      "width": 165,
+      "height": 78,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 322536,
+      "file": "yuji__manji_storm.gif",
+      "valid": true
+    },
+    "yuji__vessel_rush": {
+      "width": 220,
+      "height": 124,
+      "frames": 52,
+      "duration": 2.89,
+      "bytes": 735331,
+      "file": "yuji__vessel_rush.gif",
+      "valid": true
+    },
+    "zoro__ashura": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2552642,
+      "file": "zoro__ashura.gif",
+      "valid": true
+    },
+    "zoro__ashura_ichibugin": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2552642,
+      "file": "zoro__ashura_ichibugin.gif",
+      "valid": true
+    },
+    "zoro__hyakuhachi": {
+      "width": 498,
+      "height": 280,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 2552642,
+      "file": "zoro__hyakuhachi.gif",
+      "valid": true
+    },
+    "zoro__iron_body": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 655405,
+      "file": "zoro__iron_body.gif",
+      "valid": true
+    },
+    "zoro__kiki_kyu_ten": {
+      "width": 220,
+      "height": 124,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 655405,
+      "file": "zoro__kiki_kyu_ten.gif",
+      "valid": true
+    },
+    "zoro__oni_giri": {
+      "width": 320,
+      "height": 180,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 1531942,
+      "file": "zoro__oni_giri.gif",
+      "valid": true
+    },
+    "zoro__tatsumaki": {
+      "width": 320,
+      "height": 180,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 1531942,
+      "file": "zoro__tatsumaki.gif",
+      "valid": true
+    },
+    "zoro__ul_tora_gari": {
+      "width": 320,
+      "height": 180,
+      "frames": 54,
+      "duration": 3.0,
+      "bytes": 1531942,
+      "file": "zoro__ul_tora_gari.gif",
+      "valid": true
+    }
+  }
+}

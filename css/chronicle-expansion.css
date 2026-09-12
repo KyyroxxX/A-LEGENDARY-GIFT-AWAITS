@@ -1,0 +1,8 @@
+.p5-stage-bg.stage-lightning{background-image:url('../assets/stages/stage_storm.png?v=1');filter:saturate(1.3) hue-rotate(18deg)}
+.p5-stage-bg.stage-prison{background-image:url('../assets/stages/stage_jojo_prison.png?v=2');filter:sepia(.25) hue-rotate(175deg) saturate(.85)}
+.p5-stage-bg.stage-waterfall{background-image:url('../assets/stages/stage_giyu_waterfall.png?v=2');filter:hue-rotate(155deg) saturate(1.2)}
+.p5-stage-bg.stage-office{background-image:url('../assets/stages/stage_mansion.png?v=2');filter:contrast(1.08) saturate(.7)}
+.p5-stage-bg.stage-school{background-image:url('../assets/stages/stage_jjk_school.png?v=2');filter:hue-rotate(12deg) saturate(.9)}
+.p5-stage-bg.stage-dojo{background-image:url('../assets/stages/stage_tower.png?v=1');filter:sepia(.2) saturate(1.1)}
+.p5-stage-bg.stage-galley{background-image:url('../assets/stages/stage_sanji_galley.png?v=2');filter:hue-rotate(330deg) saturate(1.2)}
+.p5-stage-bg.stage-room{background-image:url('../assets/stages/stage_law_room.png?v=2');filter:hue-rotate(250deg) saturate(1.15)}

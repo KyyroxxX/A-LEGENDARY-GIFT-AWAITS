@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PHANTOM DESTINY · OPERATION CHIKITRISKIS</title>
+    <link rel="icon" type="image/png" href="assets/branding/app-logo.png?v=1">
+    <link rel="apple-touch-icon" href="assets/branding/app-logo.png?v=1">
+    <meta name="description" content="Convocatoria del destino. Combates por turnos, gacha y un regalo legendario.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css?v=arena217">
+    <link rel="stylesheet" href="css/letter-stardew.css?v=arena70">
+    <link rel="stylesheet" href="css/hub-persona.css?v=arena89">
+    <link rel="stylesheet" href="css/battle-persona.css?v=orientation-v2">
+    <link rel="stylesheet" href="css/battle-hud-p5.css?v=arena186">
+    <link rel="stylesheet" href="css/battle-hud-storm.css?v=arena247">
+    <link rel="stylesheet" href="css/psel-layout.css?v=arena245">
+    <link rel="stylesheet" href="css/battle-fx.css?v=arena250">
+    <link rel="stylesheet" href="css/chronicle-expansion.css?v=chronicle1">
+    <link rel="stylesheet" href="css/dupes-polish.css?v=dupes2">
+    <link rel="stylesheet" href="css/battle-rig.css?v=arena244">
+    <link rel="stylesheet" href="css/battle-skel.css?v=arena178">
+    <link rel="stylesheet" href="css/battle-skill-fx.css?v=arena190">
+    <link rel="stylesheet" href="css/battle-hud-responsive.css?v=arena190">
+    <link rel="stylesheet" href="css/battle-hud-storm-ui.css?v=arena260">
+<link rel="stylesheet" href="css/battle-vfx-pro.css?v=vfx21">
+    <link rel="stylesheet" href="css/gacha-wuwa.css?v=arena245">
+    <link rel="stylesheet" href="css/gacha-egg-rail.css?v=arena219">
+    <link rel="stylesheet" href="css/gacha-pull-cinematic.css?v=arena225">
+    <link rel="stylesheet" href="css/theme-metaphor.css?v=arena80">
+    <link rel="stylesheet" href="css/motion-wuwa.css?v=arena104">
+    <link rel="stylesheet" href="css/arena-persona.css?v=arena156">
+    <link rel="stylesheet" href="css/tutorial-spotlight.css?v=arena173">
+    <link rel="stylesheet" href="css/site-polish.css?v=arena1">
+    <link rel="stylesheet" href="css/equipment.css?v=equipment1">
+    <!-- Gacha banner: animated webp + convene key art static -->
+    <link rel="preload" as="image" href="assets/gacha/banner-legendary.webp?v=arena78" type="image/webp">
+    <link rel="preload" as="image" href="assets/gacha/convene-bg.webp?v=arena78" type="image/webp">
+    <link rel="prefetch" as="image" href="assets/gacha/banner-legendary.gif?v=arena78">
+</head>
+<body>
+    <div id="app">
+        <canvas id="particle-canvas"></canvas>
+
+        <div id="vol-dock" class="vol-dock" title="Volumen">
+            <button type="button" id="vol-mute-btn" class="vol-mute-btn" aria-label="Silenciar" aria-pressed="false" title="Silenciar / Activar">
+                <svg class="vol-ico-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                    <path class="vol-ico-body" d="M4 9.5v5h3.2L12 18.2V5.8L7.2 9.5H4z" fill="currentColor"/>
+                    <path class="vol-ico-wave vol-ico-wave-1" d="M14.2 9.2a3.2 3.2 0 0 1 0 5.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                    <path class="vol-ico-wave vol-ico-wave-2" d="M16.6 7a5.6 5.6 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                    <path class="vol-ico-slash" d="M5 5l14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="vol-mute-ring" aria-hidden="true"></span>
+            </button>
+            <input id="vol-slider" class="vol-slider" type="range" min="0" max="100" value="55" aria-label="Volumen">
+            <span id="vol-pct" class="vol-pct">55</span>
+        </div>
+
+        <div id="achievement-container"></div>
+        <main id="scene-container"></main>
+
+        <div id="pull-overlay" class="pull-overlay hidden">
+            <div class="pull-stage">
+                <div class="pull-portal"></div>
+                <div class="pull-lines" id="pull-lines"></div>
+                <div class="pull-chroma" id="pull-chroma"></div>
+                <div class="pull-flash"></div>
+                <div class="pull-text"></div>
+                <button type="button" class="pull-skip hidden" id="pull-skip">SALTAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-container" class="hidden"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="config.js?v=economy1"></script>
+    <script src="js/state.js?v=arena257"></script>
+    <script src="js/audio.js?v=audio-v17"></script>
+    <script src="js/achievements.js?v=arena122"></script>
+    <script src="js/particles.js?v=arena101"></script>
+    <script src="js/motion.js?v=arena104"></script>
+    <script src="js/scene-manager.js?v=arena94"></script>
+    <script src="js/scenes/intro.js?v=arena119"></script>
+    <script src="js/scenes/letter.js?v=arena119"></script>
+    <script src="js/scenes/prologue.js?v=arena34"></script>
+    <script src="js/scenes/dialogue.js?v=arena119"></script>
+    <script src="js/scenes/arena.js?v=arena242"></script>
+    <script src="js/scenes/dupes-shop.js?v=arena142"></script>
+    <script src="js/scenes/destiny-system.js?v=arena119"></script>
+    <script src="js/scenes/gacha.js?v=arena274"></script>
+    <script src="js/scenes/legendary-pull.js?v=arena167"></script>
+    <script src="js/scenes/reveal.js?v=arena255"></script>
+    <script src="js/scenes/final.js?v=arena121"></script>
+    <script src="js/game/story-data.js?v=arena240"></script>
+    <script src="js/game/battle-data.js?v=arena260"></script>
+    <script src="js/game/jjk-data.js?v=arena241"></script>
+    <script src="js/game/kimetsu-data.js?v=arena240"></script>
+    <script src="js/game/chainsaw-data.js?v=arena240"></script>
+    <script src="js/game/chronicle-data.js?v=chronicle4"></script>
+    <script src="js/game/roster-expansion.js?v=arena243"></script>
+    <script src="js/game/staged-sprites.js?v=arena271"></script>
+    <script src="js/game/fighter-kits.js?v=arena252"></script>
+    <script src="js/game/gacha-rates.js?v=arena167"></script>
+    <script src="js/game/char-progress.js?v=arena240"></script>
+    <script src="js/game/gacha-roster.js?v=arena253"></script>
+    <script src="js/game/equipment.js?v=equipment1"></script>
+    <script src="js/game/character-registry.js?v=arena167"></script>
+    <script src="js/game/battle-flavor.js?v=arena241"></script>
+    <script src="js/game/egg-gacha.js?v=arena219"></script>
+    <script src="js/game/battle-ai.js?v=arena252"></script>
+<script src="js/game/battle-engine.js?v=arena260"></script>
+    <script src="js/game/battle-rig-data.js?v=arena61"></script>
+    <script src="js/game/battle-rig-skills.js?v=arena49"></script>
+    <script src="js/game/battle-rig.js?v=combat-v17"></script>
+<script src="js/game/skelform-runtime.js?v=arena178"></script>
+    <script src="js/game/skel-animator.js?v=arena178"></script>
+    <script src="js/game/characters/naruto-skel-anims.js?v=arena179"></script>
+    <script src="js/game/skel-character-registry.js?v=arena178"></script>
+    <script src="js/game/attack-sprites.js?v=arena226"></script>
+<script src="js/game/technique-designs.js?v=designs14"></script>
+<script src="js/game/effect-manager.js?v=vfx20"></script>
+    <script src="js/game/battle-motion.js?v=motion13"></script>
+<script src="js/game/battle-ui.js?v=combat-v32"></script>
+    <script src="js/game/game-manager.js?v=economy4"></script>
+    <script src="js/game/tutorial-spotlight.js?v=arena173"></script>
+    <script src="js/app.js?v=arena101"></script>
+</body>
+</html>

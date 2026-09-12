@@ -1,0 +1,49 @@
+node_modules/
+package-lock.json
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+*.pyc
+
+# Editor / OS junk
+*~
+*.bak
+*.bak2
+*.bak_*
+*.bak_do_not_use
+* - copia.*
+*_tmp_*
+_img_candidates.txt
+
+# One-off probe / scratch scripts
+scripts/_*.py
+scripts/_*.log
+
+# Temp reference dumps at repo root
+/tmp_*/
+/tmp_*
+
+# Cut-in working inbox (duplicates / sources) — ship only tech/ + fx/
+assets/sprites/cutin/inbox/
+
+# Sprite pipeline cache (regenerable)
+assets/sprites/source-cache/
+assets/sprites/_src/_bak_*/
+assets/sprites/_src/*.bak*
+
+# Gacha working plates / previews (never ship; final plates live in banners/ or sourced/)
+assets/gacha/_*
+assets/gacha/banner-candidate*
+assets/gacha/banner-metaphor-hq-candidate*
+assets/gacha/banner-metaphor-original*
+assets/gacha/banner-metaphor-src*
+assets/gacha/banner-key-art*
+assets/gacha/*(1).*
+assets/gacha/sourced/*-stage-src.png
+assets/gacha/sourced/*-bg-src.png
+
+# Experimental SkelForm extracts (rebuild via scripts if needed)
+assets/characters/**/_skf_extract/
+assets/characters/**/*.skf~
+assets/gacha/cutin-videos-source-original/

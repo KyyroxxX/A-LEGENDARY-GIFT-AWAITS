@@ -1,0 +1,201 @@
+/* ===== STARDEW VALLEY INTRO — image-aligned hotspots ===== */
+
+.scene.letter-scene {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #111 !important;
+    overflow: hidden !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    image-rendering: pixelated;
+    cursor: url('../assets/ui/sdv/cursor.png') 4 2, auto;
+}
+
+.scene.letter-scene * {
+    cursor: url('../assets/ui/sdv/cursor.png') 4 2, auto;
+}
+
+.scene.letter-scene .sdv-hotspot,
+.scene.letter-scene .sdv-next {
+    cursor: url('../assets/ui/sdv/cursor.png') 4 2, pointer;
+}
+
+.sdv-office {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: #ececec;
+    z-index: 1;
+}
+
+/* Stage = exact rendered image rectangle (JS sets left/top/width/height) */
+.sdv-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.sdv-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* stage already matches aspect */
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    user-select: none;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+}
+
+.sdv-frame-closed { opacity: 1; z-index: 1; }
+.sdv-frame-open { opacity: 0; z-index: 2; }
+
+.sdv-office.is-opening .sdv-frame-closed { opacity: 0; }
+.sdv-office.is-opening .sdv-frame-open { opacity: 1; }
+
+.sdv-office.is-lift .sdv-stage {
+    transform-origin: 68% 62%;
+    animation: sdv-zoom-letter 0.55s ease forwards;
+}
+
+@keyframes sdv-zoom-letter {
+    0% { transform: scale(1); filter: brightness(1); }
+    100% { transform: scale(1.28); filter: brightness(0.35); }
+}
+
+.sdv-office.is-gone {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.sdv-hotspot {
+    position: absolute;
+    z-index: 5;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    /* subtle hint — not a huge displaced box */
+    box-shadow: inset 0 0 0 0 rgba(230, 126, 34, 0);
+    animation: sdv-hot-pulse 1.6s ease-in-out infinite;
+}
+
+.sdv-hotspot[hidden] {
+    display: none !important;
+}
+
+@keyframes sdv-hot-pulse {
+    0%, 100% { box-shadow: inset 0 0 0 2px rgba(230, 126, 34, 0.15); }
+    50% { box-shadow: inset 0 0 0 2px rgba(230, 126, 34, 0.85); }
+}
+
+.sdv-prompt {
+    position: absolute;
+    left: 50%;
+    bottom: 2.5%;
+    transform: translateX(-50%);
+    z-index: 8;
+    margin: 0;
+    max-width: 92%;
+    padding: 0.65rem 0.9rem;
+    font-family: 'Press Start 2P', 'Pixelify Sans', monospace;
+    font-size: clamp(8px, 1.5vw, 12px);
+    line-height: 1.5;
+    color: #1a1a1a;
+    background: rgba(255, 255, 255, 0.92);
+    border: 3px solid #222;
+    text-align: center;
+    pointer-events: none;
+    animation: sdv-prompt-blink 1.6s ease-in-out infinite;
+}
+
+@keyframes sdv-prompt-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+
+.sdv-letter {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(15, 15, 15, 0.78);
+}
+
+.sdv-letter-paper {
+    position: relative;
+    width: min(92vw, 560px);
+    max-height: 86vh;
+    overflow-y: auto;
+    background: #fff5e1;
+    border: 3px solid #c4a882;
+    box-shadow: 0 0 0 2px #8b7355, 10px 12px 0 rgba(0, 0, 0, 0.4);
+    padding: clamp(1.5rem, 4vw, 2.4rem) clamp(1.4rem, 4vw, 2.2rem) clamp(2.6rem, 5vw, 3.2rem);
+    scrollbar-width: thin;
+    scrollbar-color: #c4a882 #fff5e1;
+}
+
+.sdv-letter-paper::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(225deg, transparent 50%, #e8d5b5 50%);
+    border-left: 2px solid #c4a882;
+    border-top: 2px solid #c4a882;
+    pointer-events: none;
+}
+
+.sdv-greeting,
+.sdv-p,
+.sdv-closing p {
+    font-family: 'Pixelify Sans', monospace;
+    color: #a0522d;
+    text-align: left;
+    line-height: 1.55;
+    margin: 0 0 0.85rem;
+    font-size: clamp(1.05rem, 2.5vw, 1.28rem);
+}
+
+.sdv-greeting {
+    font-size: clamp(1.15rem, 2.7vw, 1.4rem);
+    margin-bottom: 1.15rem;
+}
+
+.sdv-closing { margin-top: 1.25rem; }
+.sdv-closing p { margin-bottom: 0.35rem; font-weight: 600; }
+
+.sdv-next {
+    position: absolute;
+    right: 54px;
+    bottom: 16px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 16px;
+    border-color: transparent transparent transparent #f1c40f;
+    background: transparent;
+    padding: 0;
+    filter: drop-shadow(2px 2px 0 #8a6e00);
+    animation: sdv-arrow 0.9s steps(2) infinite;
+    z-index: 2;
+}
+
+@keyframes sdv-arrow {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+}
+
+.sdv-next:hover {
+    border-left-color: #ffe566;
+}

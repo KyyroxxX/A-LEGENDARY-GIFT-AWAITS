@@ -1,0 +1,566 @@
+/* ============================================================
+   THEME — Metaphor / Atlus convene aesthetic (site-wide)
+   Load LAST so it overrides Persona skew / Storm chrome.
+   ============================================================ */
+
+:root {
+    --meta-gold: #e8c76a;
+    --meta-gold-bright: #ffe9a0;
+    --meta-gold-dim: #c9a227;
+    --meta-crimson: #9b1028;
+    --meta-crimson-hot: #c41e3a;
+    --meta-ink: #0a0508;
+    --meta-ink-soft: #120810;
+    --meta-panel: rgba(8, 4, 10, 0.92);
+    --meta-panel-edge: rgba(232, 199, 106, 0.38);
+    --meta-fog: rgba(245, 240, 232, 0.88);
+    --gold: #e8c76a;
+    --gold-light: #ffe9a0;
+    --gold-dark: #a88a2a;
+    --crimson: #7a1020;
+    --crimson-light: #c41e3a;
+    --midnight: #050308;
+    --ink: #0a0508;
+    --white: #f5f0e8;
+    --parchment: #e8dcc8;
+}
+
+/* Shared panel chrome */
+.meta-panel,
+.system-panel,
+.steam-code-box,
+.achievement-toast {
+    background: linear-gradient(160deg, rgba(18, 8, 14, 0.96), rgba(6, 4, 10, 0.98)) !important;
+    border: 1px solid var(--meta-panel-edge) !important;
+    box-shadow:
+        0 0 0 1px rgba(155, 16, 40, 0.25),
+        0 18px 48px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(14px);
+}
+
+.vol-dock {
+    background: rgba(8, 4, 10, 0.72) !important;
+    border-color: rgba(232, 199, 106, 0.35) !important;
+    border-radius: 2px;
+}
+
+#achievement-container {
+    top: auto !important;
+    right: 1.25rem !important;
+    bottom: 1.25rem !important;
+    left: auto !important;
+    width: min(31rem, calc(100vw - 2.5rem));
+    gap: 0.7rem;
+}
+.persona-achievement {
+    display: grid;
+    grid-template-columns: 3.8rem 1fr;
+    gap: 0.9rem;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.85rem 1rem 0.85rem 0.75rem;
+    overflow: hidden;
+    border: 2px solid var(--meta-gold) !important;
+    border-left: 7px solid var(--meta-crimson-hot) !important;
+    clip-path: polygon(0 0, 98% 0, 100% 16%, 100% 86%, 96% 100%, 0 100%);
+    background:
+        linear-gradient(105deg, rgba(92, 7, 24, 0.98), rgba(14, 7, 14, 0.98) 43%, rgba(5, 4, 9, 0.98)) !important;
+    transform: translateX(120%);
+    animation: personaAchievementIn 0.55s cubic-bezier(.18,.88,.2,1) forwards;
+    box-shadow: 7px 7px 0 #030307, 0 0 28px rgba(196, 30, 58, 0.42), inset 0 0 0 1px rgba(255, 233, 160, 0.14) !important;
+}
+.persona-achievement.hide { animation: personaAchievementOut 0.55s ease forwards; }
+.persona-achievement::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 0 45%, rgba(255, 255, 255, 0.13) 50%, transparent 55%);
+    transform: translateX(-120%);
+    animation: personaAchievementSheen 1.1s 0.25s ease-out forwards;
+}
+.persona-achievement-mark {
+    display: grid;
+    place-items: center;
+    width: 3.15rem;
+    height: 3.15rem;
+    color: var(--meta-gold-bright);
+    background: linear-gradient(145deg, #a50e2b, #260611);
+    border: 1px solid var(--meta-gold);
+    transform: rotate(45deg);
+    box-shadow: 0 0 18px rgba(232, 199, 106, 0.24), 3px 3px 0 #030307;
+}
+.persona-achievement-mark img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: rotate(-45deg) scale(0.82);
+    border: 1px solid var(--meta-gold);
+    box-shadow: 0 0 12px rgba(232, 199, 106, 0.3);
+}
+.persona-achievement-copy { min-width: 0; position: relative; z-index: 1; }
+.persona-achievement .achievement-label {
+    color: var(--meta-gold-bright);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    font-weight: 800;
+}
+.persona-achievement .achievement-title {
+    margin-top: 0.14rem;
+    color: var(--meta-fog);
+    font-size: 1.08rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+.persona-achievement .achievement-desc { margin-top: 0.1rem; color: #d9cdbd; font-size: 0.78rem; }
+.persona-achievement-foot {
+    margin-top: 0.38rem;
+    color: var(--meta-crimson-hot);
+    font-size: 0.5rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+@keyframes personaAchievementIn { from { opacity: 0; transform: translateX(120%) skewX(-8deg); } to { opacity: 1; transform: translateX(0) skewX(-8deg); } }
+@keyframes personaAchievementOut { from { opacity: 1; transform: translateX(0) skewX(-8deg); } to { opacity: 0; transform: translateX(120%) skewX(-8deg); } }
+@keyframes personaAchievementSheen { to { transform: translateX(120%); } }
+.vol-slider { accent-color: var(--meta-gold) !important; }
+
+.btn-destiny {
+    background: linear-gradient(160deg, #6a1018 0%, #9b1028 42%, #c9a227 100%) !important;
+    color: #fff8e8 !important;
+    border: 1px solid var(--meta-gold-bright) !important;
+    clip-path: none !important;
+    border-radius: 2px;
+    box-shadow: 0 0 24px rgba(232, 199, 106, 0.22), 0 10px 28px rgba(0, 0, 0, 0.4) !important;
+    letter-spacing: 0.16em;
+}
+.btn-destiny:hover {
+    box-shadow: 0 0 36px rgba(232, 199, 106, 0.4), 0 12px 32px rgba(0, 0, 0, 0.45) !important;
+}
+
+.btn-secondary {
+    background: rgba(8, 4, 10, 0.65) !important;
+    border: 1px solid rgba(232, 199, 106, 0.4) !important;
+    color: var(--meta-gold-bright) !important;
+    border-radius: 2px;
+}
+.btn-secondary:hover {
+    background: rgba(155, 16, 40, 0.35) !important;
+    border-color: var(--meta-gold) !important;
+}
+
+/* Intro */
+.intro-scene {
+    background:
+        radial-gradient(ellipse at 50% 30%, rgba(155, 16, 40, 0.28), transparent 48%),
+        radial-gradient(ellipse at 70% 70%, rgba(232, 199, 106, 0.08), transparent 45%),
+        linear-gradient(180deg, #0a0508 0%, #050308 55%, #030206 100%) !important;
+}
+.intro-kicker { color: var(--meta-gold) !important; letter-spacing: 0.38em; }
+.intro-orb-a {
+    background: radial-gradient(circle, rgba(155, 16, 40, 0.5), transparent 70%) !important;
+}
+.intro-orb-b {
+    background: radial-gradient(circle, rgba(232, 199, 106, 0.22), transparent 70%) !important;
+}
+.intro-ring {
+    border-color: rgba(232, 199, 106, 0.16) !important;
+    box-shadow: inset 0 0 80px rgba(232, 199, 106, 0.06) !important;
+}
+
+/* Destiny / reveal / final */
+.destiny-scene,
+.reveal-scene,
+.final-scene {
+    background:
+        radial-gradient(ellipse at 50% 20%, rgba(155, 16, 40, 0.22), transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(232, 199, 106, 0.06), transparent 45%),
+        #050308 !important;
+}
+.system-title,
+.final-title {
+    font-family: var(--font-display) !important;
+    color: var(--meta-gold-bright) !important;
+    background: linear-gradient(90deg, #ffe9a0, #e8c76a, #c9a227);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Letter: keep Stardew art, Metaphor vignette frame */
+.scene.letter-scene {
+    background: #050308 !important;
+}
+.scene.letter-scene::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    box-shadow:
+        inset 0 0 80px rgba(5, 3, 8, 0.85),
+        inset 0 0 0 1px rgba(232, 199, 106, 0.2);
+    background:
+        linear-gradient(90deg, rgba(5, 3, 8, 0.55) 0%, transparent 12%, transparent 88%, rgba(5, 3, 8, 0.55) 100%),
+        linear-gradient(0deg, rgba(155, 16, 40, 0.18) 0%, transparent 18%, transparent 82%, rgba(5, 3, 8, 0.45) 100%);
+}
+.sdv-prompt {
+    background: rgba(8, 4, 10, 0.88) !important;
+    border: 1px solid rgba(232, 199, 106, 0.45) !important;
+    color: var(--meta-gold-bright) !important;
+    font-family: var(--font-display) !important;
+    letter-spacing: 0.12em;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- HUB ---------- */
+.prologue-scene,
+.hub-scene {
+    background:
+        radial-gradient(ellipse at 15% 0%, rgba(155, 16, 40, 0.22), transparent 42%),
+        radial-gradient(ellipse at 90% 100%, rgba(232, 199, 106, 0.06), transparent 40%),
+        #050308 !important;
+}
+
+.hub-hud {
+    background: linear-gradient(180deg, rgba(8, 4, 10, 0.96), rgba(8, 4, 10, 0.55)) !important;
+    border-bottom: 1px solid rgba(232, 199, 106, 0.22);
+}
+
+#konoha-canvas {
+    background:
+        radial-gradient(ellipse at 50% 18%, rgba(60, 90, 50, 0.55) 0%, transparent 55%),
+        linear-gradient(180deg, #1a2818 0%, #0c140e 100%) !important;
+    box-shadow: inset 0 0 100px rgba(5, 3, 8, 0.65) !important;
+}
+
+.konoha-map-label,
+.konoha-prompt,
+.hub-ap,
+.p5-cal,
+.hub-date-block,
+.hub-stat,
+.hub-clock-btn,
+.hub-alert,
+.hub-card,
+.vn-lazo,
+.vn-panel,
+.vn-choice {
+    transform: none !important;
+    clip-path: none !important;
+}
+
+.konoha-map-label {
+    background: rgba(8, 4, 10, 0.9) !important;
+    color: var(--meta-gold-bright) !important;
+    border: 1px solid var(--meta-panel-edge) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    letter-spacing: 0.14em;
+}
+
+.konoha-prompt {
+    background: linear-gradient(90deg, rgba(8, 4, 10, 0.95), rgba(18, 8, 14, 0.85)) !important;
+    border-left: 3px solid var(--meta-gold) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+}
+.konoha-prompt-key {
+    background: linear-gradient(180deg, #ffe9a0, #c9a227) !important;
+    color: #1a0a08 !important;
+    border: 1px solid #fff8e8 !important;
+}
+
+.hub-ap {
+    background: rgba(8, 4, 10, 0.75) !important;
+    border: 1px solid rgba(232, 199, 106, 0.4) !important;
+}
+.hub-ap > * { transform: none !important; }
+.hub-ap-pip.on {
+    background: var(--meta-gold) !important;
+    border-color: var(--meta-gold-bright) !important;
+    box-shadow: 0 0 8px rgba(232, 199, 106, 0.55) !important;
+}
+
+.p5-cal,
+.hub-date-block {
+    background: linear-gradient(145deg, #6a1018, #9b1028 60%, #4a0c14) !important;
+    color: #fff8e8 !important;
+    border: 1px solid rgba(232, 199, 106, 0.45);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+.p5-cal > *,
+.hub-date-block > * { transform: none !important; }
+
+.hub-you-face {
+    border: 1px solid var(--meta-gold) !important;
+    box-shadow: 0 0 0 1px rgba(155, 16, 40, 0.5), 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.hub-clock-btn {
+    background: rgba(8, 4, 10, 0.85) !important;
+    color: var(--meta-gold) !important;
+    border: 1px solid rgba(232, 199, 106, 0.5) !important;
+}
+.hub-clock-btn:not(:disabled):hover {
+    background: rgba(155, 16, 40, 0.45) !important;
+    color: var(--meta-gold-bright) !important;
+}
+
+.hub-kicker { color: var(--meta-gold) !important; }
+.hub-splash-title {
+    color: var(--meta-gold-bright) !important;
+    text-shadow: 0 0 40px rgba(232, 199, 106, 0.25);
+}
+
+.hub-stat {
+    background: rgba(8, 4, 10, 0.85) !important;
+    border: 1px solid rgba(232, 199, 106, 0.35) !important;
+}
+.hub-stat > * { transform: none !important; }
+.hub-stat strong { color: var(--meta-gold) !important; }
+
+.hub-alert {
+    background: linear-gradient(90deg, #6a1018, #9b1028) !important;
+    border: 1px solid rgba(232, 199, 106, 0.35);
+}
+.hub-alert.soft {
+    background: rgba(8, 4, 10, 0.9) !important;
+    border: 1px solid var(--meta-crimson) !important;
+    color: var(--meta-fog);
+}
+
+.hub-card {
+    background: linear-gradient(160deg, rgba(18, 8, 14, 0.94), rgba(6, 4, 10, 0.96)) !important;
+    border: 1px solid var(--meta-panel-edge) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45) !important;
+}
+.hub-card > * { transform: none !important; }
+.hub-card h2 { color: var(--meta-gold) !important; }
+.hub-card.danger { border-color: rgba(196, 30, 58, 0.65) !important; }
+
+.hub-loc, .hub-bond, .hub-mission, .hub-action {
+    background: rgba(12, 8, 14, 0.88) !important;
+    border: 1px solid rgba(232, 199, 106, 0.22) !important;
+}
+.hub-loc:hover, .hub-bond:hover, .hub-mission:hover, .hub-action:hover {
+    background: rgba(40, 12, 20, 0.9) !important;
+    border-color: var(--meta-gold) !important;
+}
+.hub-loc .tag, .hub-mission .tag { color: var(--meta-gold) !important; }
+.hub-mission.story {
+    border-color: rgba(232, 199, 106, 0.55) !important;
+    background: linear-gradient(120deg, rgba(80, 16, 28, 0.55), rgba(12, 8, 14, 0.95)) !important;
+}
+.hub-bond-face {
+    border: 1px solid var(--meta-gold) !important;
+}
+
+.konoha-pad button, .konoha-act {
+    background: rgba(12, 8, 14, 0.9) !important;
+    border: 1px solid rgba(232, 199, 106, 0.4) !important;
+    color: var(--meta-fog) !important;
+}
+.konoha-controls,
+.konoha-help {
+    background: rgba(5, 3, 8, 0.92) !important;
+}
+
+/* ---------- VN ---------- */
+.vn-lazo {
+    background: rgba(8, 4, 10, 0.92) !important;
+    color: var(--meta-gold-bright) !important;
+    border: 1px solid var(--meta-gold) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 20px rgba(232, 199, 106, 0.15) !important;
+}
+.vn-heart { color: var(--meta-crimson-hot) !important; }
+
+.vn-panel {
+    background: linear-gradient(160deg, rgba(12, 6, 12, 0.96), rgba(6, 4, 10, 0.98)) !important;
+    border: 1px solid var(--meta-panel-edge) !important;
+    box-shadow:
+        0 0 0 1px rgba(155, 16, 40, 0.3),
+        0 16px 48px rgba(0, 0, 0, 0.55) !important;
+}
+.vn-panel > * { transform: none !important; }
+.vn-title,
+.vn-speaker { color: var(--meta-gold) !important; }
+.vn-bond {
+    background: linear-gradient(90deg, #6a1018, #9b1028) !important;
+    border: 1px solid rgba(232, 199, 106, 0.35);
+}
+.vn-choice {
+    background: rgba(18, 10, 14, 0.95) !important;
+    color: var(--meta-fog) !important;
+    border: 1px solid rgba(232, 199, 106, 0.35) !important;
+}
+.vn-choice:hover {
+    background: rgba(155, 16, 40, 0.55) !important;
+    border-color: var(--meta-gold) !important;
+    color: #fff !important;
+}
+
+/* ---------- ARENA ----------
+   Owned by css/arena-persona.css (god-tier hub). Do not override backgrounds here. */
+.arena-toast {
+    background: linear-gradient(90deg, #6a1018, #9b1028) !important;
+    border: 1px solid rgba(232, 199, 106, 0.45);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- BATTLE HUD — Metaphor chrome over Storm/P5 ---------- */
+.hud-p5 {
+    --storm-crimson: #9b1028;
+    --storm-crimson-hot: #c41e3a;
+    --storm-blood: #5a0c18;
+    --storm-gold: #e8c76a;
+    --storm-gold-soft: #ffe9a0;
+    --storm-panel: rgba(8, 4, 10, 0.94);
+    --storm-glow-red: 0 0 18px rgba(155, 16, 40, 0.45);
+}
+
+.hud-p5 .p5ui-turn-banner,
+.hud-p5 .p5ui-turn-banner.enemy,
+.p5-panel,
+.p5-cmd,
+.p5-title,
+.p5-flee,
+.p5-nameplate,
+.bh-cmd,
+.psel-card {
+    transform: none !important;
+    clip-path: none !important;
+}
+.hud-p5 .p5ui-turn-banner span,
+.p5-panel > *,
+.p5-cmd span,
+.p5-title span,
+.p5-flee span,
+.p5-nameplate span {
+    transform: none !important;
+}
+
+.hud-p5 .p5ui-turn-banner {
+    background: linear-gradient(105deg, #5a0c18 0%, #9b1028 55%, #c9a227 100%) !important;
+    border: 1px solid rgba(232, 199, 106, 0.45) !important;
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(232, 199, 106, 0.2), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    letter-spacing: 0.16em;
+}
+.hud-p5 .p5ui-turn-banner.enemy {
+    background: linear-gradient(105deg, #121018 0%, #1a1218 60%, #2a1018 100%) !important;
+    border-color: rgba(245, 240, 232, 0.35) !important;
+}
+
+.p5-panel {
+    background: linear-gradient(160deg, rgba(14, 8, 14, 0.96), rgba(6, 4, 10, 0.98)) !important;
+    border: 1px solid rgba(232, 199, 106, 0.35) !important;
+    border-top: 2px solid var(--meta-gold) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55) !important;
+}
+.p5-cmd {
+    background: rgba(12, 8, 14, 0.9) !important;
+    border: 1px solid rgba(232, 199, 106, 0.28) !important;
+}
+.p5-cmd:hover {
+    background: rgba(155, 16, 40, 0.45) !important;
+    border-color: var(--meta-gold) !important;
+}
+.p5-cmd.active,
+.p5-cmd.is-active {
+    background: linear-gradient(160deg, #6a1018, #9b1028) !important;
+    border-color: var(--meta-gold-bright) !important;
+}
+
+.p5-skill:hover,
+.bh-skill:hover {
+    border-color: var(--meta-gold) !important;
+    background: rgba(40, 12, 20, 0.85) !important;
+}
+
+.p5-title {
+    background: linear-gradient(90deg, #6a1018, #9b1028) !important;
+    border: 1px solid rgba(232, 199, 106, 0.4);
+    color: #fff;
+}
+.p5-nameplate {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85), 0 0 18px rgba(232, 199, 106, 0.25) !important;
+}
+.p5-to-item.now {
+    border-color: var(--meta-gold) !important;
+    background: #1a0a10 !important;
+    box-shadow: 0 0 12px rgba(232, 199, 106, 0.35) !important;
+}
+
+.party-card.selected {
+    border-color: var(--meta-gold) !important;
+    box-shadow: 0 0 0 1px var(--meta-gold), 0 0 20px rgba(232, 199, 106, 0.25) !important;
+}
+
+/* Soften remaining skew on responsive battle overrides */
+.bh-panel,
+.bh-cmd-row .bh-cmd {
+    transform: none !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Damage popups / ALL-OUT — gold ink instead of Persona offset shadows */
+.p5-dmg,
+.p5-allout,
+.p5-crit-flash {
+    transform: none !important;
+    text-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.85),
+        0 0 18px rgba(232, 199, 106, 0.35) !important;
+}
+
+.hub-ap,
+.hub-date-block,
+.hub-stat,
+.hub-clock-btn,
+.hub-alert,
+.hub-card,
+.hub-kicker,
+.hub-splash-title {
+    transform: none !important;
+}
+.hub-ap > *,
+.hub-date-block > *,
+.hub-stat > *,
+.hub-card > * {
+    transform: none !important;
+}
+
+.hub-date-block {
+    background: linear-gradient(145deg, #6a1018, #9b1028 60%, #4a0c14) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(232, 199, 106, 0.4);
+}
+
+.hub-stat {
+    background: rgba(8, 4, 10, 0.85) !important;
+    border: 1px solid rgba(232, 199, 106, 0.35) !important;
+}
+.hub-stat strong { color: #e8c76a !important; }
+
+.hub-clock-btn {
+    background: rgba(8, 4, 10, 0.85) !important;
+    color: #e8c76a !important;
+    border: 1px solid rgba(232, 199, 106, 0.5) !important;
+}
+
+.hub-card {
+    background: linear-gradient(160deg, rgba(18, 8, 14, 0.94), rgba(6, 4, 10, 0.96)) !important;
+    border: 1px solid rgba(232, 199, 106, 0.38) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45) !important;
+}
+.hub-card h2 { color: #e8c76a !important; }
+
+/* Game result overlay */
+.game-result {
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(155, 16, 40, 0.25), transparent 50%),
+        rgba(5, 3, 8, 0.92) !important;
+}
