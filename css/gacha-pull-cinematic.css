@@ -3,7 +3,7 @@
 /* ── Overlay + tier backgrounds ─────────────────────────────── */
 .pull-overlay {
     background: #02040c !important;
-    transition: background 0.55s ease;
+    transition: background 0.9s cubic-bezier(.22, 1, .36, 1);
 }
 .pull-wuwa-video {
     position: absolute;
@@ -17,7 +17,7 @@
     opacity: 0;
     z-index: 40;
     pointer-events: none;
-    transition: opacity 0.16s ease-out;
+    transition: opacity 0.55s cubic-bezier(.22, 1, .36, 1);
 }
 .pull-wuwa-video.is-ready { opacity: 1; }
 .pull-cutin-bridge {
@@ -30,7 +30,7 @@
     background: #02040c;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.18s ease-out;
+    transition: opacity 0.58s cubic-bezier(.22, 1, .36, 1);
 }
 .pull-cutin-bridge.is-on { opacity: 1; }
 .pull-cutin-bridge.is-loading {
@@ -46,7 +46,7 @@
     object-fit: cover;
     object-position: center;
     opacity: 0;
-    transition: opacity 0.12s ease-out;
+    transition: opacity 0.48s cubic-bezier(.22, 1, .36, 1);
 }
 .pull-cutin-bridge.is-ready video { opacity: 1; }
 .pull-overlay.is-wuwa-video .pull-stage > *:not(.pull-wuwa-video):not(#pull-skip) {
@@ -1375,7 +1375,7 @@
     opacity: 0;
     pointer-events: none;
     background: #05060c;
-    transition: opacity 0.28s ease;
+    transition: opacity 0.48s cubic-bezier(.22, 1, .36, 1);
 }
 .pull-solo.is-cutin-host-hidden {
     visibility: hidden !important;
@@ -1549,7 +1549,7 @@
     z-index: 1;
     background: #05060c;
     opacity: 1;
-    transition: opacity 0.24s ease;
+    transition: opacity 0.6s cubic-bezier(.22, 1, .36, 1);
 }
 .pull-character-cutin.is-loading .pull-character-cutin-video { opacity: 0; }
 .pull-character-cutin.is-ready .pull-character-cutin-video { opacity: 1; }

@@ -659,31 +659,33 @@ const GachaScene = {
         let settled = false;
         let timer = null;
         let endHold = null;
+        const bridgeHandoffHold = 560;
         const normalMusic = Number.isFinite(AudioManager?._conveneMusicNorm)
             ? AudioManager._conveneMusicNorm
             : 1;
         try { AudioManager._fadeMusicTo?.(0.03, 180); } catch (_) { /* */ }
 
         return new Promise((resolve) => {
-            const finish = () => {
+            const finish = async () => {
                 if (settled) return;
                 settled = true;
                 if (timer) clearTimeout(timer);
                 if (endHold) clearTimeout(endHold);
                 video?.pause();
+                video?.classList.remove('is-ready');
                 bridge.classList.remove('is-on');
                 const removeTimer = setTimeout(() => {
                     video?.removeAttribute('src');
                     video?.load();
                     bridge.remove();
-                }, 180);
+                }, 460);
                 this._timers.push(removeTimer);
                 try { AudioManager._fadeMusicTo?.(Math.max(0.12, normalMusic * 0.18), 180); } catch (_) { /* */ }
                 resolve(true);
             };
             video.onended = () => {
                 if (settled || endHold) return;
-                endHold = setTimeout(finish, 220);
+                endHold = setTimeout(finish, bridgeHandoffHold);
             };
             video.onerror = finish;
             video.oncanplay = () => {
@@ -2079,7 +2081,7 @@ const GachaScene = {
         return '';
     },
 
-    async playWuwaPullVideo(overlay, source) {
+    async playWuwaPullVideo(overlay, source, tier = '') {
         const video = overlay.querySelector('#pull-wuwa-video');
         const skipBtn = overlay.querySelector('#pull-skip');
         if (!video || !source) return false;
@@ -2100,7 +2102,7 @@ const GachaScene = {
         try { AudioManager._fadeMusicTo?.(0.03, 220); } catch (_) { /* */ }
 
         return new Promise((resolve) => {
-            const finish = () => {
+            const finish = async () => {
                 if (settled) return;
                 settled = true;
                 if (timeout) clearTimeout(timeout);
@@ -2117,6 +2119,10 @@ const GachaScene = {
                     skipBtn.onclick = null;
                 }
                 overlay.classList.remove('is-wuwa-video');
+                await new Promise((resolve) => {
+                    const id = setTimeout(resolve, 240);
+                    this._timers.push(id);
+                });
                 try { AudioManager._fadeMusicTo?.(Math.max(0.28, normalMusic), 260); } catch (_) { /* */ }
                 this.resetPullOverlay();
                 resolve(true);
@@ -2196,7 +2202,7 @@ const GachaScene = {
 
         const pullVideo = this.pullAnimationVideo(peak, opts);
         if (pullVideo) {
-            return this.playWuwaPullVideo(overlay, pullVideo);
+            return this.playWuwaPullVideo(overlay, pullVideo, mythicForce ? 'mythic' : peak);
         }
 
         overlay.classList.add('active', 'cinematic', 'phase-open');
@@ -3252,14 +3258,6 @@ const GachaScene = {
 
         if (!instant || celebrate) {
             const cards = [...modal.querySelectorAll('[data-cascade-card]')];
-            // Celebrate: filler first, jackpots last with a beat.
-            if (celebrate && multi) {
-                cards.sort((a, b) => {
-                    const aj = a.hasAttribute('data-jackpot') ? 1 : 0;
-                    const bj = b.hasAttribute('data-jackpot') ? 1 : 0;
-                    return aj - bj;
-                });
-            }
             for (let i = 0; i < cards.length; i++) {
                 const card = cards[i];
                 const isJack = card.hasAttribute('data-jackpot');

@@ -1014,8 +1014,8 @@ img.arena-chip-ico {
     .arena-missions-grid { grid-template-columns: 1fr; }
     .arena-portal-stars { display: none; }
     .arena-dupes-panel {
-        width: min(100vw - 0.75rem, 520px);
-        max-height: min(92vh, 720px);
+        width: min(calc(100vw - 0.75rem), 900px);
+        max-height: min(96vh, 900px);
         padding: 0.85rem 0.8rem 1rem;
         gap: 0.4rem;
     }
@@ -1056,8 +1056,8 @@ img.arena-chip-ico {
 .arena-dupes-overlay[hidden] { display: none !important; }
 body.arena-dupes-open { overflow: hidden; }
 .arena-dupes-panel {
-    width: min(520px, 94vw);
-    max-height: min(88vh, 720px);
+    width: min(900px, calc(100vw - 2rem));
+    max-height: min(94vh, 900px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -1212,8 +1212,8 @@ body.arena-dupes-open { overflow: hidden; }
     gap: 0.55rem;
     align-items: center;
     flex-shrink: 0;
-    min-height: 3.6rem;
-    padding: 0.55rem 0.65rem;
+    min-height: 5.6rem;
+    padding: 0.7rem 0.8rem;
     border: 1px solid rgba(232, 199, 106, 0.38);
     background:
         linear-gradient(100deg, rgba(60, 42, 12, 0.35), rgba(8, 4, 10, 0.85) 55%);
@@ -1223,8 +1223,8 @@ body.arena-dupes-open { overflow: hidden; }
     border-color: rgba(154, 212, 255, 0.45);
 }
 .arena-shop-art {
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 4.6rem;
+    height: 4.6rem;
     background-size: cover;
     background-position: center top;
     border: 1px solid rgba(255, 233, 160, 0.45);
@@ -1238,14 +1238,14 @@ body.arena-dupes-open { overflow: hidden; }
 }
 .arena-shop-copy strong {
     font-family: 'Cinzel', serif;
-    font-size: 0.78rem;
+    font-size: 0.92rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #ffe9a0;
 }
 .arena-shop-copy span {
-    font-size: 0.68rem;
+    font-size: 0.76rem;
     color: rgba(232, 199, 106, 0.85);
     opacity: 0.95;
 }
