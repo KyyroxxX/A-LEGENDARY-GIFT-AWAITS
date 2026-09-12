@@ -1610,6 +1610,26 @@ const BattleUI = {
     },
 
     /** Thematic FX profile so every skill reads as its technique. */
+    supportEffectKind(sk, action) {
+        if (action?.type === 'guard') return 'guard';
+        if (sk?.transform) return 'transform';
+        if (sk?.heal || sk?.aoeHeal || sk?.revive != null) return 'heal';
+        if (sk?.debuff) return 'debuff';
+        if (sk?.buff || sk?.allyBuff || sk?.partyBuff || sk?.charge || sk?.cover) return 'buff';
+        return 'support';
+    },
+
+    applySupportFx(target, profile, mode = 'support') {
+        if (!target) return;
+        target.classList.remove('support-pulse', 'support-heal', 'support-buff', 'support-guard', 'support-transform', 'support-debuff');
+        void target.offsetWidth;
+        target.classList.add('support-pulse', `support-${mode}`);
+        setTimeout(() => target.classList.remove('support-pulse', `support-${mode}`), 900);
+        if (typeof EffectManager !== 'undefined') {
+            EffectManager.supportImpact(target, profile, mode);
+        }
+    },
+
     skillFxProfile(sk, action, actor = null) {
         const id = String(sk?.id || action?.skillId || '');
         const design = typeof BattleTechniqueDesigns !== 'undefined'
@@ -1637,13 +1657,14 @@ const BattleUI = {
             ? EffectManager.transformationElement[characterId] || '' : '';
         const element = elementFromType || elementFromName || (transformed ? transformElement : '');
         const isSupport = action?.type === 'guard' || (action?.type === 'skill' && sk && !sk.power);
+        const supportMode = this.supportEffectKind(sk, action);
         const fxType = isSupport
             ? ((sk?.heal || sk?.aoeHeal || sk?.revive != null) ? 'heal' : 'support')
             : type;
         const slug = id ? `sig-${id.replace(/_/g, '-')}` : '';
 
         let family = 'melee';
-        if (isSupport) family = fxType === 'heal' ? 'heal' : (sk?.transform ? 'transform' : 'support');
+        if (isSupport) family = supportMode === 'heal' ? 'heal' : (supportMode === 'debuff' ? 'hex' : (sk?.transform ? 'transform' : 'support'));
         else if (/rasengan|odama|bijuu|menacing|hadou|cero|getsuga|kuroi|yasaka|bomb|menacing_ball/i.test(id)) family = 'spiral';
         else if (/chidori|raiton|kirin|thunder|el_thor|lightning|raigeki|raikiri|byakurai/i.test(id)) family = 'lightning';
         else if (/katon|red_hawk|diable|amaterasu|fragor|fire|hikotsu/i.test(id)) family = 'inferno';
@@ -1666,7 +1687,7 @@ const BattleUI = {
             : Math.min(18, 4 + Math.floor(power / 18) + (hits > 3 ? 3 : 0) + (sk?.aoe ? 2 : 0));
 
         return {
-            characterId, element, transformed, transformElement,
+            characterId, element, transformed, transformElement, supportMode,
             fxType, slug, family, projectile, hits,
             style: design?.style || `${family}-signature`,
             bladeVariant: design?.bladeVariant || null,
@@ -1757,6 +1778,8 @@ const BattleUI = {
             BattleEngine.living(foes).forEach((t) => targets.push(t.id));
         } else if (action.targetId) {
             targets.push(action.targetId);
+        } else if (isSupport && (sk?.aoeHeal || sk?.partyBuff)) {
+            BattleEngine.living(this.state.party).forEach((t) => targets.push(t.id));
         } else if (isSupport && actor) {
             targets.push(actor.id);
         }
@@ -1765,6 +1788,17 @@ const BattleUI = {
         const onImpact = async () => {
             if (impactDone) return;
             impactDone = true;
+            if (isSupport) {
+                targets.forEach((tid, i) => {
+                    const tgt = this.fighterEl(tid, actor.side === 'enemy' ? 'ally' : 'enemy');
+                    if (!tgt) return;
+                    setTimeout(() => {
+                        this.applySupportFx(tgt, profile, profile.supportMode);
+                        AudioManager.combat.skill(profile.fxType || profile.supportMode || 'support', sk?.id || '');
+                    }, i * 80);
+                });
+                return;
+            }
             this.focusCamera(actor, profile, 'impact');
             const shake = cfg.shake?.[clipName] ?? profile.shake ?? 8;
             this.shakeStage(shake, isUlt ? 520 : 320);
@@ -2049,8 +2083,12 @@ const BattleUI = {
         );
         await this.wait(impactAt);
 
-        this.focusCamera(actor, profile, 'impact');
-        this.shakeStage(profile.shake, profile.family === 'finisher' ? 480 : 300);
+        if (isSupport) {
+            this.focusCamera(actor, profile, 'cast');
+        } else {
+            this.focusCamera(actor, profile, 'impact');
+            this.shakeStage(profile.shake, profile.family === 'finisher' ? 480 : 300);
+        }
 
         const hitCount = profile.hits;
         const applyHitFx = (tgt, tid, wave = 0) => {
@@ -2058,7 +2096,6 @@ const BattleUI = {
             tgt.classList.remove('hit-flash', 'hit-recoil', 'hit-stagger');
             void tgt.offsetWidth;
             tgt.classList.add('hit-flash', 'hit-recoil', 'hit-stagger');
-            if (fx) fx.impact(tgt, profile, hitCount > 2);
             const targetSprite = tgt.querySelector('.p5-sprite');
             if (targetSprite) {
                 targetSprite.classList.remove('is-idle');
@@ -2106,6 +2143,10 @@ const BattleUI = {
 
         targets.forEach(tid => {
             const tgt = this.fighterEl(tid, this.targetSide(actor, isSupport, sk));
+            if (isSupport) {
+                this.applySupportFx(tgt, profile, profile.supportMode);
+                return;
+            }
             applyHitFx(tgt, tid, 0);
             if (hitCount > 2) {
                 for (let i = 1; i < Math.min(hitCount, 6); i++) {
@@ -2114,7 +2155,9 @@ const BattleUI = {
             }
         });
 
-        if (profile.aoePulse) {
+        if (isSupport) {
+            if (fx) fx.supportImpact(this.root.querySelector('#battle-fx') || this.root, profile, profile.supportMode, 700);
+        } else if (profile.aoePulse) {
             if (fx) fx.aoePulse(this.root, profile);
             else {
                 const layer = this.root.querySelector('#battle-fx');

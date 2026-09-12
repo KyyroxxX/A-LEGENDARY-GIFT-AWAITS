@@ -56,10 +56,41 @@
 .vfx-pro--finisher .vfx-pro__core { width: 43%; height: 43%; background: radial-gradient(circle,var(--vfx-primary) 0 5%,#fff 6% 10%,var(--vfx-secondary) 20%,transparent 64%); clip-path: polygon(50% 0,57% 36%,100% 50%,57% 64%,50% 100%,43% 64%,0 50%,43% 36%); }
 .vfx-pro--finisher .vfx-pro__accent { inset: 8%; border-width: 2px; border-radius: 50%; transform: scaleX(1.35); box-shadow: 0 0 30px var(--vfx-secondary); }
 .vfx-pro--heal .vfx-pro__core { width: 28%; height: 28%; background: radial-gradient(circle,var(--vfx-primary) 0 8%,transparent 9%),conic-gradient(var(--vfx-secondary),transparent 20%,var(--vfx-primary),transparent 60%); clip-path: polygon(50% 0,61% 35%,100% 50%,61% 65%,50% 100%,39% 65%,0 50%,39% 35%); }
+.vfx-pro--support { animation: vfx-support-life .72s ease-out both; }
+.vfx-pro--support .vfx-pro__core { width: 20%; height: 20%; border-radius: 50%; background: radial-gradient(circle, #fff 0 8%, var(--vfx-primary) 9% 22%, transparent 23%), conic-gradient(var(--vfx-secondary), transparent 22%, var(--vfx-primary), transparent 66%); animation: vfx-support-core .72s ease-out both; }
+.vfx-pro--support .vfx-pro__trail { left: 29%; right: 29%; top: 22%; height: 52%; border-radius: 50%; background: repeating-conic-gradient(from var(--vfx-orbit), transparent 0 22deg, var(--vfx-secondary) 24deg 28deg, transparent 30deg 54deg); animation: vfx-support-orbit .72s ease-out both; }
+.vfx-pro--support.vfx-support-guard .vfx-pro__core { width: 26%; height: 34%; border: 2px solid var(--vfx-primary); background: color-mix(in srgb, var(--vfx-secondary), transparent 72%); clip-path: polygon(50% 0, 90% 18%, 82% 72%, 50% 100%, 18% 72%, 10% 18%); }
+.vfx-pro--support.vfx-support-transform .vfx-pro__core { width: 18%; height: 64%; border-radius: 12%; background: repeating-linear-gradient(90deg, transparent 0 16%, var(--vfx-primary) 17% 23%, transparent 24% 34%), radial-gradient(ellipse, #fff 0 5%, var(--vfx-secondary) 25%, transparent 70%); }
 
 .vfx-pro--impact { animation-duration: .72s; }
 .vfx-pro--impact .vfx-pro__halo { inset: 0; background: radial-gradient(circle,color-mix(in srgb, var(--vfx-primary), transparent 25%) 0 4%,color-mix(in srgb, var(--vfx-secondary), transparent 48%) 18%,transparent 70%); animation: vfx-pro-impact-halo .72s cubic-bezier(.1,.7,.12,1) both; }
 .vfx-pro--impact .vfx-pro__core { width: 46%; height: 46%; background: conic-gradient(from 10deg,transparent 0 7%,var(--vfx-primary) 8% 12%,transparent 13% 26%,var(--vfx-secondary) 27% 31%,transparent 32% 55%,var(--vfx-primary) 56% 60%,transparent 61%); clip-path: polygon(50% 0,58% 34%,100% 50%,58% 66%,50% 100%,42% 66%,0 50%,42% 34%); animation: vfx-pro-impact-core .72s cubic-bezier(.1,.8,.1,1) both; }
+.vfx-pro--support-impact { z-index: 20; animation: vfx-support-life .86s ease-out both; filter: drop-shadow(0 0 14px color-mix(in srgb, var(--vfx-primary), transparent 35%)); }
+.vfx-pro--support-impact .vfx-pro__halo { inset: 8%; background: radial-gradient(circle, color-mix(in srgb, var(--vfx-primary), transparent 20%) 0 4%, color-mix(in srgb, var(--vfx-secondary), transparent 50%) 24%, transparent 72%); animation: vfx-support-halo .86s ease-out both; }
+.vfx-pro--support-impact .vfx-pro__trail { left: 25%; right: 25%; top: 20%; height: 60%; border-radius: 50%; opacity: .48; background: repeating-conic-gradient(from var(--vfx-orbit), transparent 0 18deg, var(--vfx-secondary) 20deg 24deg, transparent 26deg 46deg); animation: vfx-support-orbit .86s ease-out both; }
+.vfx-pro--support-impact .vfx-pro__core { width: 24%; height: 24%; top: 42%; border-radius: 50%; background: radial-gradient(circle, #fff 0 7%, var(--vfx-primary) 8% 18%, transparent 19%), conic-gradient(from 45deg, transparent, var(--vfx-secondary), transparent 28%, var(--vfx-primary), transparent 66%); animation: vfx-support-core .86s cubic-bezier(.1,.85,.15,1) both; }
+.vfx-pro--support-impact .vfx-pro__accent { inset: 20%; border-radius: 50%; border: 2px solid var(--vfx-primary); opacity: .7; animation: vfx-support-ring .86s ease-out both; }
+.vfx-pro--support-impact .vfx-pro__shard { display: none; }
+.vfx-support-heal .vfx-pro__core { background: radial-gradient(circle, #fff 0 8%, #baffd0 9% 20%, transparent 21%), conic-gradient(#68e09b, transparent 24%, #efffef 25% 31%, transparent 32% 60%, #68e09b 61%); }
+.vfx-support-heal .vfx-pro__accent { border-color: #68e09b; }
+.vfx-support-buff .vfx-pro__core { clip-path: polygon(50% 0, 68% 30%, 100% 50%, 68% 70%, 50% 100%, 32% 70%, 0 50%, 32% 30%); }
+.vfx-support-guard .vfx-pro__core { width: 30%; height: 36%; border: 3px solid var(--vfx-primary); background: linear-gradient(135deg, transparent 35%, color-mix(in srgb, var(--vfx-secondary), transparent 35%)); clip-path: polygon(50% 0, 90% 18%, 82% 72%, 50% 100%, 18% 72%, 10% 18%); }
+.vfx-support-guard .vfx-pro__accent { inset: 14% 28%; border-radius: 12%; border-color: var(--vfx-secondary); }
+.vfx-support-transform .vfx-pro__core { width: 18%; height: 62%; background: repeating-linear-gradient(90deg, transparent 0 16%, var(--vfx-primary) 17% 23%, transparent 24% 34%), radial-gradient(ellipse, #fff 0 5%, var(--vfx-secondary) 25%, transparent 70%); }
+.vfx-support-transform .vfx-pro__trail { animation-duration: 1.05s; }
+.vfx-support-debuff .vfx-pro__core { clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); background: conic-gradient(from 30deg, var(--vfx-secondary), transparent 12%, var(--vfx-primary) 25%, transparent 38%, var(--vfx-secondary) 52%, transparent 67%); }
+@keyframes vfx-support-life { 0% { opacity: 0; transform: scale(.72); } 18% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.14); } }
+@keyframes vfx-support-halo { 0% { opacity: 0; transform: scale(.55); } 35% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.18); } }
+@keyframes vfx-support-core { 0% { opacity: 0; transform: translate(-50%,-50%) scale(.35) rotate(-30deg); } 28% { opacity: 1; transform: translate(-50%,-50%) scale(1.1) rotate(25deg); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(.72) rotate(140deg); } }
+@keyframes vfx-support-ring { 0% { opacity: 0; transform: scale(.55) rotate(-20deg); } 30% { opacity: .9; transform: scale(1) rotate(35deg); } 100% { opacity: 0; transform: scale(1.24) rotate(160deg); } }
+@keyframes vfx-support-orbit { 0% { opacity: 0; transform: rotate(0) scale(.7); } 30% { opacity: .7; } 100% { opacity: 0; transform: rotate(180deg) scale(1.15); } }
+.p5-fighter.support-pulse .p5-sprite { animation: support-pulse-body .86s ease-out both !important; }
+.p5-fighter.support-heal .p5-sprite { filter: drop-shadow(0 0 20px #68e09b) brightness(1.14) !important; }
+.p5-fighter.support-buff .p5-sprite { filter: drop-shadow(0 0 20px #ffd45b) brightness(1.16) !important; }
+.p5-fighter.support-guard .p5-sprite { filter: drop-shadow(0 0 20px #7ba8e9) brightness(1.1) !important; }
+.p5-fighter.support-transform .p5-sprite { filter: drop-shadow(0 0 24px #e1a84c) brightness(1.2) !important; }
+.p5-fighter.support-debuff .p5-sprite { filter: drop-shadow(0 0 20px #a96dff) saturate(1.2) !important; }
+@keyframes support-pulse-body { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 30% { transform: translate3d(0, -5px, 0) scale(1.025); } 58% { transform: translate3d(0, -2px, 0) scale(1.01); } }
 .vfx-pro--ring .vfx-pro__core { width: 48%; height: 48%; border: 3px solid var(--vfx-primary); border-radius: 50%; background: transparent; animation: vfx-pro-ring .62s cubic-bezier(.1,.8,.1,1) both; }
 .vfx-pro--projectile { left: calc(50% + var(--vfx-dx, 0px)); right: auto; width: 100%; top: calc(42% + var(--vfx-dy, 0px)); }
 .vfx-pro--projectile .vfx-pro__core { animation: vfx-pro-projectile .68s cubic-bezier(.1,.85,.12,1) both; }

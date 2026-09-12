@@ -130,7 +130,8 @@ const EffectManager = {
         const impactClass = String(profile.impactStyle || '').replace(/[^a-z0-9-]/gi, '');
         const bladeClass = profile.bladeVariant ? `vfx-blade-${String(profile.bladeVariant).replace(/[^a-z0-9-]/gi, '')}` : '';
         const energyClass = profile.energyVariant ? `vfx-energy-${String(profile.energyVariant).replace(/[^a-z0-9-]/gi, '')}` : '';
-        node.className = ['vfx-pro', `vfx-pro--${meta.family}`, `vfx-pro--${phase}`, profile.slug || '', styleClass ? `vfx-style-${styleClass}` : '', bladeClass, energyClass, impactClass ? `vfx-impact-${impactClass}` : '', options.trail ? 'vfx-pro--trail' : '', options.multi ? 'vfx-pro--multi' : ''].filter(Boolean).join(' ');
+        const supportMode = String(profile.supportMode || '').replace(/[^a-z0-9-]/gi, '');
+        node.className = ['vfx-pro', `vfx-pro--${meta.family}`, `vfx-pro--${phase}`, supportMode ? `vfx-support-${supportMode}` : '', profile.slug || '', styleClass ? `vfx-style-${styleClass}` : '', bladeClass, energyClass, impactClass ? `vfx-impact-${impactClass}` : '', options.trail ? 'vfx-pro--trail' : '', options.multi ? 'vfx-pro--multi' : ''].filter(Boolean).join(' ');
         node.style.setProperty('--vfx-primary', meta.primary);
         node.style.setProperty('--vfx-secondary', meta.secondary);
         const variant = this.hash(`${profile.slug}:${phase}`);
@@ -182,6 +183,9 @@ const EffectManager = {
     cast(parent, profile, isSupport = false, ttl = 620) { return this.make(parent, isSupport ? 'support' : 'emit', profile, { ttl }); },
     arc(parent, profile, ttl = 600) { return this.make(parent, profile?.family === 'blade' ? 'slash' : 'trail', profile, { ttl, trail: true }); },
     impact(parent, profile, multi = false, ttl = 720) { return this.make(parent, 'impact', profile, { ttl, multi }); },
+    supportImpact(parent, profile, mode = 'support', ttl = 860) {
+        return this.make(parent, 'support-impact', { ...profile, supportMode: mode }, { ttl });
+    },
     ring(parent, profile, ttl = 620) { return this.make(parent, 'ring', profile, { ttl }); },
     spark(parent, profile, sx = 0, sy = 0, ttl = 420) { return this.make(parent, 'spark', profile, { ttl, dx: sx, dy: sy }); },
     cut(parent, profile, ttl = 480) { return this.make(parent, 'cut', { ...profile, family: 'blade' }, { ttl, trail: true }); },
