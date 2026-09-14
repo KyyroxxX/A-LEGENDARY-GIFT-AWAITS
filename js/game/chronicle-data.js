@@ -123,8 +123,9 @@ const ChronicleData = {
 
         { mid: 'gate_final', enc: 'boss', enemy: 'boss5050', name: 'THE 50/50', stage: 'destiny', inv: 60,
             title: 'FINAL · THE 50/50',
-            blurb: 'El Joker del destino. Sin DIO reciclado. Sin Aizen de propina. Solo la moneda… y tú.',
-            sealed: '✦ THE 50/50 · SELLADO',
+            blurb: 'El Joker del destino. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3), da igual la historia. Victoria = +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
+            sealed: '✦ THE 50/50 · SELLADO — COLECCIÓN INCOMPLETA',
+            sealedBlurb: 'Sellado: consigue TODOS los personajes con TODOS sus dupes (4★ C6 · 5★/6★ C3). La historia no importa. Gojo no abre nada.',
             isFinal: true }
     ],
 
@@ -177,7 +178,235 @@ const ChronicleData = {
         { mid: 'arc_law', enc: 'ch_law_rival', enemy: 'law', name: 'Trafalgar Law', stage: 'room', inv: 70,
             title: 'Archivo · ROOM cerrada', blurb: 'El espacio deja de obedecer. Law ha convertido el mapa entero en su quirófano.' },
         { mid: 'arc_jotaro', enc: 'ch_jotaro_rival', enemy: 'jotaro', name: 'Jotaro Kujo', stage: 'street', inv: 74,
-            title: 'Archivo · Cinco segundos', blurb: 'El reloj se detiene durante un instante. Jotaro ya ha decidido dónde terminará el combate.' }
+            title: 'Archivo · Cinco segundos', blurb: 'El reloj se detiene durante un instante. Jotaro ya ha decidido dónde terminará el combate.' },
+        { mid: 'arc_tobi', enc: 'ch_tobi_rival', enemy: 'tobi', name: 'Tobi', stage: 'akatsuki', inv: 76,
+            title: 'Archivo · El enmascarado', blurb: 'Kamui te traga el primer turno si parpadeas. Rompe su intangibilidad con presión constante.' },
+        { mid: 'arc_marshall', enc: 'ch_marshall_rival', enemy: 'marshall', name: 'Marshall D. Teach', stage: 'deep', inv: 78,
+            title: 'Archivo · Terremoto oscuro', blurb: 'La oscuridad atrae y el terremoto remata. Barbanegra juega con dos frutas y cero piedad.' },
+        { mid: 'arc_kashimo', enc: 'ch_kashimo_rival', enemy: 'kashimo', name: 'Hajime Kashimo', stage: 'lightning', inv: 76,
+            title: 'Archivo · Bestia ámbar', blurb: 'Electricidad de un solo uso: Kashimo apuesta todo a un estallido. Sobrevívelo y es tuyo.' },
+        { mid: 'arc_muzan', enc: 'ch_muzan_rival', enemy: 'muzan', name: 'Muzan Kibutsuji', stage: 'fear', inv: 85,
+            title: 'Archivo · Progenitor demoníaco', blurb: 'Tres formas, cero piedad. Muzan muta dos veces: guarda CP para cada escalón.' },
+        { mid: 'arc_yourichi', enc: 'ch_yourichi_rival', enemy: 'yourichi', name: 'Yoriichi Tsugikuni', stage: 'moon', inv: 82,
+            title: 'Archivo · Respiración del origen', blurb: 'El espadachín más fuerte de la historia no necesita transformarse… pero puede. Reza.' },
+        { mid: 'arc_quanxi', enc: 'ch_quanxi_rival', enemy: 'quanxi', name: 'Quanxi', stage: 'control', inv: 76,
+            title: 'Archivo · Primera cazadora', blurb: 'Cuatro brazos, cuatro ballestas, cero fallos. La híbrida no negocia: ejecuta.' },
+        { mid: 'arc_kimimaro', enc: 'ch_kimimaro_rival', enemy: 'kimimaro', name: 'Kimimaro', stage: 'pot', inv: 70,
+            title: 'Archivo · Huesos malditos', blurb: 'El clan Kaguya baila por última vez. Huesos más duros que tu defensa: rompe el ritmo.' },
+        { mid: 'arc_ren', enc: 'ch_ren_rival', enemy: 'ren', name: 'Ren Amamiya', stage: 'crimson', inv: 74,
+            title: 'Archivo · Comodín rebelde', blurb: 'Un aviso de los Phantom Thieves en tu puerta. Joker roba turnos y corazones por igual.' },
+        { mid: 'arc_hualkenberg', enc: 'ch_hualkenberg_rival', enemy: 'hualkenberg', name: 'Hulkenberg', stage: 'room', inv: 70,
+            title: 'Archivo · Juramento del caballero', blurb: 'La guardia real no retrocede. Hulkenberg cubre cada hueco: desgasta su guardia.' },
+        { mid: 'arc2_luffy', enc: 'ch2_luffy', enemy: 'luffy', name: 'Monkey D. Luffy', stage: 'marineford', inv: 42,
+            title: 'Archivo · El rey sin corona', blurb: 'Un Monkey D. Luffy distinto al de los carteles. Aquí los puños hablan antes que el bounty.' },
+        { mid: 'arc2_naruto', enc: 'ch2_naruto', enemy: 'naruto', name: 'Naruto Uzumaki', stage: 'valley_end', inv: 49,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Naruto Uzumaki cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_katakuri', enc: 'ch2_katakuri', enemy: 'katakuri', name: 'Charlotte Katakuri', stage: 'wano', inv: 42,
+            title: 'Archivo · Nuevo mundo', blurb: 'Dicen que Charlotte Katakuri ya vio el final del Grand Line. Compruébalo.' },
+        { mid: 'arc2_shanks', enc: 'ch2_shanks', enemy: 'shanks', name: 'Shanks', stage: 'dressrosa', inv: 49,
+            title: 'Archivo · El rey sin corona', blurb: 'Un Shanks distinto al de los carteles. Aquí los puños hablan antes que el bounty.' },
+        { mid: 'arc2_mihawk', enc: 'ch2_mihawk', enemy: 'mihawk', name: 'Dracule Mihawk', stage: 'enies_lobby', inv: 42,
+            title: 'Archivo · Marea alta', blurb: 'Dracule Mihawk corta la retirada. El mar no perdona a quien duda.' },
+        { mid: 'arc2_marco', enc: 'ch2_marco', enemy: 'marco', name: 'Marco', stage: 'alabasta', inv: 49,
+            title: 'Archivo · Nuevo mundo', blurb: 'Dicen que Marco ya vio el final del Grand Line. Compruébalo.' },
+        { mid: 'arc2_jinbe', enc: 'ch2_jinbe', enemy: 'jinbe', name: 'Jinbe', stage: 'op-onepiece_port-v1', inv: 42,
+            title: 'Archivo · El rey sin corona', blurb: 'Un Jinbe distinto al de los carteles. Aquí los puños hablan antes que el bounty.' },
+        { mid: 'arc2_nami', enc: 'ch2_nami', enemy: 'nami', name: 'Nami', stage: 'op-sea-v1', inv: 49,
+            title: 'Archivo · Marea alta', blurb: 'Nami corta la retirada. El mar no perdona a quien duda.' },
+        { mid: 'arc2_brook', enc: 'ch2_brook', enemy: 'brook', name: 'Brook', stage: 'op-sanji_galley-v1', inv: 42,
+            title: 'Archivo · Nuevo mundo', blurb: 'Dicen que Brook ya vio el final del Grand Line. Compruébalo.' },
+        { mid: 'arc2_franky', enc: 'ch2_franky', enemy: 'franky', name: 'Franky', stage: 'op-law_room-v1', inv: 49,
+            title: 'Archivo · El rey sin corona', blurb: 'Un Franky distinto al de los carteles. Aquí los puños hablan antes que el bounty.' },
+        { mid: 'arc2_chopper', enc: 'ch2_chopper', enemy: 'chopper', name: 'Tony Tony Chopper', stage: 'op-onepiece_marineford-v1', inv: 42,
+            title: 'Archivo · Marea alta', blurb: 'Tony Tony Chopper corta la retirada. El mar no perdona a quien duda.' },
+        { mid: 'arc2_usopp', enc: 'ch2_usopp', enemy: 'usopp', name: 'Usopp', stage: 'op-onepiece_wano-v1', inv: 49,
+            title: 'Archivo · Nuevo mundo', blurb: 'Dicen que Usopp ya vio el final del Grand Line. Compruébalo.' },
+        { mid: 'arc2_jiraiya', enc: 'ch2_jiraiya', enemy: 'jiraiya', name: 'Jiraiya', stage: 'training_ground', inv: 42,
+            title: 'Archivo · Voluntad probada', blurb: 'Jiraiya te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_itachi', enc: 'ch2_itachi', enemy: 'itachi', name: 'Itachi Uchiha', stage: 'rain_village', inv: 49,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Itachi Uchiha cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_hidan', enc: 'ch2_hidan', enemy: 'hidan', name: 'Hidan', stage: 'sand_village', inv: 42,
+            title: 'Archivo · Examen final', blurb: 'Hidan no hace prisioneros. Lee su ritmo o muere en el intento.' },
+        { mid: 'arc2_pain', enc: 'ch2_pain', enemy: 'pain', name: 'Pain (Tendo)', stage: 'nar-snake-v1', inv: 49,
+            title: 'Archivo · Voluntad probada', blurb: 'Pain (Tendo) te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_gai', enc: 'ch2_gai', enemy: 'gai', name: 'Might Guy', stage: 'nar-tower-v1', inv: 42,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Might Guy cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_minato', enc: 'ch2_minato', enemy: 'minato', name: 'Minato Namikaze', stage: 'nar-giyu_waterfall-v1', inv: 49,
+            title: 'Archivo · Examen final', blurb: 'Minato Namikaze no hace prisioneros. Lee su ritmo o muere en el intento.' },
+        { mid: 'arc2_tsunade', enc: 'ch2_tsunade', enemy: 'tsunade', name: 'Tsunade', stage: 'nar-konoha-v1', inv: 42,
+            title: 'Archivo · Voluntad probada', blurb: 'Tsunade te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_tobirama', enc: 'ch2_tobirama', enemy: 'tobirama', name: 'Tobirama Senju', stage: 'nar-mist-v1', inv: 49,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Tobirama Senju cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_konan', enc: 'ch2_konan', enemy: 'konan', name: 'Konan', stage: 'nar-ninja_forest-v1', inv: 42,
+            title: 'Archivo · Examen final', blurb: 'Konan no hace prisioneros. Lee su ritmo o muere en el intento.' },
+        { mid: 'arc2_kakuzu', enc: 'ch2_kakuzu', enemy: 'kakuzu', name: 'Kakuzu', stage: 'nar-snake-v2', inv: 49,
+            title: 'Archivo · Voluntad probada', blurb: 'Kakuzu te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_gaara', enc: 'ch2_gaara', enemy: 'gaara', name: 'Gaara', stage: 'nar-tower-v2', inv: 42,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Gaara cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_sakura', enc: 'ch2_sakura', enemy: 'sakura', name: 'Sakura Haruno', stage: 'nar-giyu_waterfall-v2', inv: 49,
+            title: 'Archivo · Examen final', blurb: 'Sakura Haruno no hace prisioneros. Lee su ritmo o muere en el intento.' },
+        { mid: 'arc2_jugo', enc: 'ch2_jugo', enemy: 'jugo', name: 'Jūgo', stage: 'nar-konoha-v2', inv: 42,
+            title: 'Archivo · Voluntad probada', blurb: 'Jūgo te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_karin', enc: 'ch2_karin', enemy: 'karin', name: 'Karin Uzumaki', stage: 'nar-mist-v2', inv: 49,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Karin Uzumaki cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_suigetsu', enc: 'ch2_suigetsu', enemy: 'suigetsu', name: 'Suigetsu Hozuki', stage: 'nar-ninja_forest-v2', inv: 42,
+            title: 'Archivo · Examen final', blurb: 'Suigetsu Hozuki no hace prisioneros. Lee su ritmo o muere en el intento.' },
+        { mid: 'arc2_shikamaru', enc: 'ch2_shikamaru', enemy: 'shikamaru', name: 'Shikamaru Nara', stage: 'nar-snake-v3', inv: 49,
+            title: 'Archivo · Voluntad probada', blurb: 'Shikamaru Nara te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_hinata', enc: 'ch2_hinata', enemy: 'hinata', name: 'Hinata Hyuga', stage: 'nar-tower-v3', inv: 42,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Hinata Hyuga cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_sai', enc: 'ch2_sai', enemy: 'sai', name: 'Sai', stage: 'nar-giyu_waterfall-v3', inv: 49,
+            title: 'Archivo · Examen final', blurb: 'Sai no hace prisioneros. Lee su ritmo o muere en el intento.' },
+        { mid: 'arc2_neji', enc: 'ch2_neji', enemy: 'neji', name: 'Neji Hyuga', stage: 'nar-konoha-v3', inv: 42,
+            title: 'Archivo · Voluntad probada', blurb: 'Neji Hyuga te mide con la mirada. Un error y el jutsu no perdona.' },
+        { mid: 'arc2_lee', enc: 'ch2_lee', enemy: 'lee', name: 'Rock Lee', stage: 'nar-mist-v3', inv: 49,
+            title: 'Archivo · Sombra de Konoha', blurb: 'Ni el sharingan alcanza a Rock Lee cuando va en serio. Cúbrete.' },
+        { mid: 'arc2_pucci', enc: 'ch2_pucci', enemy: 'pucci', name: 'Enrico Pucci', stage: 'egypt', inv: 42,
+            title: 'Archivo · Flecha rota', blurb: 'Un fragmento de Enrico Pucci basta para doblar la realidad. No pestañees.' },
+        { mid: 'arc2_weather', enc: 'ch2_weather', enemy: 'weather', name: 'Weather Report', stage: 'morioh', inv: 49,
+            title: 'Archivo · Stand en pie', blurb: 'El aire vibra: Weather Report ya activó su stand. Encuentra el hueco.' },
+        { mid: 'arc2_giorno', enc: 'ch2_giorno', enemy: 'giorno', name: 'Giorno Giovanna', stage: 'rome', inv: 42,
+            title: 'Archivo · Destino absurdo', blurb: 'Giorno Giovanna sonríe. Eso nunca es buena señal. Golpea primero.' },
+        { mid: 'arc2_polnareff', enc: 'ch2_polnareff', enemy: 'polnareff', name: 'Jean Pierre Polnareff', stage: 'jojo-mansion-v1', inv: 49,
+            title: 'Archivo · Flecha rota', blurb: 'Un fragmento de Jean Pierre Polnareff basta para doblar la realidad. No pestañees.' },
+        { mid: 'arc2_kakyoin', enc: 'ch2_kakyoin', enemy: 'kakyoin', name: 'Noriaki Kakyoin', stage: 'jojo-jojo_time-v1', inv: 42,
+            title: 'Archivo · Stand en pie', blurb: 'El aire vibra: Noriaki Kakyoin ya activó su stand. Encuentra el hueco.' },
+        { mid: 'arc2_mista', enc: 'ch2_mista', enemy: 'mista', name: 'Guido Mista', stage: 'jojo-jojo_prison-v1', inv: 49,
+            title: 'Archivo · Destino absurdo', blurb: 'Guido Mista sonríe. Eso nunca es buena señal. Golpea primero.' },
+        { mid: 'arc2_bucciarati', enc: 'ch2_bucciarati', enemy: 'bucciarati', name: 'Bruno Bucciarati', stage: 'jojo-jojo_egypt-v1', inv: 42,
+            title: 'Archivo · Flecha rota', blurb: 'Un fragmento de Bruno Bucciarati basta para doblar la realidad. No pestañees.' },
+        { mid: 'arc2_anasui', enc: 'ch2_anasui', enemy: 'anasui', name: 'Narciso Anasui', stage: 'jojo-jojo_morioh-v1', inv: 49,
+            title: 'Archivo · Stand en pie', blurb: 'El aire vibra: Narciso Anasui ya activó su stand. Encuentra el hueco.' },
+        { mid: 'arc2_risotto', enc: 'ch2_risotto', enemy: 'risotto', name: 'Risotto Nero', stage: 'jojo-mansion-v2', inv: 42,
+            title: 'Archivo · Destino absurdo', blurb: 'Risotto Nero sonríe. Eso nunca es buena señal. Golpea primero.' },
+        { mid: 'arc2_caesar', enc: 'ch2_caesar', enemy: 'caesar', name: 'Caesar Anthonio Zeppeli', stage: 'jojo-jojo_time-v2', inv: 49,
+            title: 'Archivo · Flecha rota', blurb: 'Un fragmento de Caesar Anthonio Zeppeli basta para doblar la realidad. No pestañees.' },
+        { mid: 'arc2_rohan', enc: 'ch2_rohan', enemy: 'rohan', name: 'Rohan Kishibe', stage: 'jojo-jojo_prison-v2', inv: 42,
+            title: 'Archivo · Stand en pie', blurb: 'El aire vibra: Rohan Kishibe ya activó su stand. Encuentra el hueco.' },
+        { mid: 'arc2_josuke', enc: 'ch2_josuke', enemy: 'josuke', name: 'Josuke Higashikata', stage: 'jojo-jojo_egypt-v2', inv: 49,
+            title: 'Archivo · Destino absurdo', blurb: 'Josuke Higashikata sonríe. Eso nunca es buena señal. Golpea primero.' },
+        { mid: 'arc2_joseph', enc: 'ch2_joseph', enemy: 'joseph', name: 'Joseph Joestar', stage: 'jojo-jojo_morioh-v2', inv: 42,
+            title: 'Archivo · Flecha rota', blurb: 'Un fragmento de Joseph Joestar basta para doblar la realidad. No pestañees.' },
+        { mid: 'arc2_narancia', enc: 'ch2_narancia', enemy: 'narancia', name: 'Narancia Ghirga', stage: 'jojo-mansion-v3', inv: 49,
+            title: 'Archivo · Stand en pie', blurb: 'El aire vibra: Narancia Ghirga ya activó su stand. Encuentra el hueco.' },
+        { mid: 'arc2_abbacchio', enc: 'ch2_abbacchio', enemy: 'abbacchio', name: 'Leone Abbacchio', stage: 'jojo-jojo_time-v3', inv: 42,
+            title: 'Archivo · Destino absurdo', blurb: 'Leone Abbacchio sonríe. Eso nunca es buena señal. Golpea primero.' },
+        { mid: 'arc2_okuyasu', enc: 'ch2_okuyasu', enemy: 'okuyasu', name: 'Okuyasu Nijimura', stage: 'jojo-jojo_prison-v3', inv: 49,
+            title: 'Archivo · Flecha rota', blurb: 'Un fragmento de Okuyasu Nijimura basta para doblar la realidad. No pestañees.' },
+        { mid: 'arc2_trish', enc: 'ch2_trish', enemy: 'trish', name: 'Trish Una', stage: 'jojo-jojo_egypt-v3', inv: 42,
+            title: 'Archivo · Stand en pie', blurb: 'El aire vibra: Trish Una ya activó su stand. Encuentra el hueco.' },
+        { mid: 'arc2_ff', enc: 'ch2_ff', enemy: 'ff', name: 'Foo Fighters', stage: 'jojo-jojo_morioh-v3', inv: 49,
+            title: 'Archivo · Destino absurdo', blurb: 'Foo Fighters sonríe. Eso nunca es buena señal. Golpea primero.' },
+        { mid: 'arc2_shunsui', enc: 'ch2_shunsui', enemy: 'shunsui', name: 'Shunsui Kyōraku', stage: 'karakura', inv: 42,
+            title: 'Archivo · Hueco hambriento', blurb: 'Shunsui Kyōraku huele tu miedo. Demuéstrale que se equivoca.' },
+        { mid: 'arc2_byakuya', enc: 'ch2_byakuya', enemy: 'byakuya', name: 'Byakuya Kuchiki', stage: 'las_noches', inv: 49,
+            title: 'Archivo · Bankai en el aire', blurb: 'Byakuya Kuchiki libera presión espiritual. El suelo tiembla.' },
+        { mid: 'arc2_rukia', enc: 'ch2_rukia', enemy: 'rukia', name: 'Rukia Kuchiki', stage: 'sokyoku', inv: 42,
+            title: 'Archivo · Deuda del Seireitei', blurb: 'Rukia Kuchiki cobra en reiatsu. Paga con acero.' },
+        { mid: 'arc2_toshiro', enc: 'ch2_toshiro', enemy: 'toshiro', name: 'Toshiro Hitsugaya', stage: 'soul', inv: 49,
+            title: 'Archivo · Hueco hambriento', blurb: 'Toshiro Hitsugaya huele tu miedo. Demuéstrale que se equivoca.' },
+        { mid: 'arc2_yoruichi', enc: 'ch2_yoruichi', enemy: 'yoruichi', name: 'Yoruichi Shihoin', stage: 'ble-bleach_senbon-v1', inv: 42,
+            title: 'Archivo · Bankai en el aire', blurb: 'Yoruichi Shihoin libera presión espiritual. El suelo tiembla.' },
+        { mid: 'arc2_urahara', enc: 'ch2_urahara', enemy: 'urahara', name: 'Kisuke Urahara', stage: 'ble-hueco-v1', inv: 49,
+            title: 'Archivo · Deuda del Seireitei', blurb: 'Kisuke Urahara cobra en reiatsu. Paga con acero.' },
+        { mid: 'arc2_kenpachi', enc: 'ch2_kenpachi', enemy: 'kenpachi', name: 'Kenpachi Zaraki', stage: 'ble-bleach_karakura-v1', inv: 42,
+            title: 'Archivo · Hueco hambriento', blurb: 'Kenpachi Zaraki huele tu miedo. Demuéstrale que se equivoca.' },
+        { mid: 'arc2_renji', enc: 'ch2_renji', enemy: 'renji', name: 'Renji Abarai', stage: 'ble-bleach_senbon-v2', inv: 49,
+            title: 'Archivo · Bankai en el aire', blurb: 'Renji Abarai libera presión espiritual. El suelo tiembla.' },
+        { mid: 'arc2_orihime', enc: 'ch2_orihime', enemy: 'orihime', name: 'Orihime Inoue', stage: 'ble-hueco-v2', inv: 42,
+            title: 'Archivo · Deuda del Seireitei', blurb: 'Orihime Inoue cobra en reiatsu. Paga con acero.' },
+        { mid: 'arc2_ginjo', enc: 'ch2_ginjo', enemy: 'ginjo', name: 'Kūgo Ginjō', stage: 'ble-bleach_karakura-v2', inv: 49,
+            title: 'Archivo · Hueco hambriento', blurb: 'Kūgo Ginjō huele tu miedo. Demuéstrale que se equivoca.' },
+        { mid: 'arc2_gantenbainne', enc: 'ch2_gantenbainne', enemy: 'gantenbainne', name: 'Gantenbainne Mosqueda', stage: 'ble-bleach_senbon-v3', inv: 42,
+            title: 'Archivo · Bankai en el aire', blurb: 'Gantenbainne Mosqueda libera presión espiritual. El suelo tiembla.' },
+        { mid: 'arc2_gojo', enc: 'ch2_gojo', enemy: 'gojo', name: 'Satoru Gojo', stage: 'shibuya', inv: 49,
+            title: 'Archivo · Maldición de grado alto', blurb: 'Satoru Gojo no sigue reglas. Improvisa o muere.' },
+        { mid: 'arc2_hakari', enc: 'ch2_hakari', enemy: 'hakari', name: 'Kinji Hakari', stage: 'culling_game', inv: 42,
+            title: 'Archivo · Energía torcida', blurb: 'Cada golpe de Kinji Hakari deja residuo. No le des tres seguidos.' },
+        { mid: 'arc2_yuki', enc: 'ch2_yuki', enemy: 'yuki', name: 'Yuki Tsukumo', stage: 'domain', inv: 49,
+            title: 'Archivo · Expansión cercana', blurb: 'Yuki Tsukumo calienta su dominio. Sal del radio o cae.' },
+        { mid: 'arc2_higuruma', enc: 'ch2_higuruma', enemy: 'higuruma', name: 'Hiromi Higuruma', stage: 'hidden_inventory', inv: 42,
+            title: 'Archivo · Maldición de grado alto', blurb: 'Hiromi Higuruma no sigue reglas. Improvisa o muere.' },
+        { mid: 'arc2_choso', enc: 'ch2_choso', enemy: 'choso', name: 'Choso', stage: 'jjk-jjk_school-v1', inv: 49,
+            title: 'Archivo · Energía torcida', blurb: 'Cada golpe de Choso deja residuo. No le des tres seguidos.' },
+        { mid: 'arc2_meimei', enc: 'ch2_meimei', enemy: 'meimei', name: 'Mei Mei', stage: 'jjk-jjk_volcano-v1', inv: 42,
+            title: 'Archivo · Expansión cercana', blurb: 'Mei Mei calienta su dominio. Sal del radio o cae.' },
+        { mid: 'arc2_yuji', enc: 'ch2_yuji', enemy: 'yuji', name: 'Yuji Itadori', stage: 'jjk-jjk_shibuya-v1', inv: 49,
+            title: 'Archivo · Maldición de grado alto', blurb: 'Yuji Itadori no sigue reglas. Improvisa o muere.' },
+        { mid: 'arc2_megumi', enc: 'ch2_megumi', enemy: 'megumi', name: 'Megumi Fushiguro', stage: 'jjk-jjk_city-v1', inv: 42,
+            title: 'Archivo · Energía torcida', blurb: 'Cada golpe de Megumi Fushiguro deja residuo. No le des tres seguidos.' },
+        { mid: 'arc2_maki', enc: 'ch2_maki', enemy: 'maki', name: 'Maki Zenin', stage: 'jjk-jjk_school-v2', inv: 49,
+            title: 'Archivo · Expansión cercana', blurb: 'Maki Zenin calienta su dominio. Sal del radio o cae.' },
+        { mid: 'arc2_nobara', enc: 'ch2_nobara', enemy: 'nobara', name: 'Nobara Kugisaki', stage: 'jjk-jjk_volcano-v2', inv: 42,
+            title: 'Archivo · Maldición de grado alto', blurb: 'Nobara Kugisaki no sigue reglas. Improvisa o muere.' },
+        { mid: 'arc2_uro', enc: 'ch2_uro', enemy: 'uro', name: 'Takako Uro', stage: 'jjk-jjk_shibuya-v2', inv: 49,
+            title: 'Archivo · Energía torcida', blurb: 'Cada golpe de Takako Uro deja residuo. No le des tres seguidos.' },
+        { mid: 'arc2_ryu', enc: 'ch2_ryu', enemy: 'ryu', name: 'Ryu Ishigori', stage: 'jjk-jjk_city-v2', inv: 42,
+            title: 'Archivo · Expansión cercana', blurb: 'Ryu Ishigori calienta su dominio. Sal del radio o cae.' },
+        { mid: 'arc2_todo', enc: 'ch2_todo', enemy: 'todo', name: 'Aoi Todo', stage: 'jjk-jjk_school-v3', inv: 49,
+            title: 'Archivo · Maldición de grado alto', blurb: 'Aoi Todo no sigue reglas. Improvisa o muere.' },
+        { mid: 'arc2_basilio', enc: 'ch2_basilio', enemy: 'basilio', name: 'Basilio', stage: 'met-bleach_sokyoku-v1', inv: 42,
+            title: 'Archivo · Juramento roto', blurb: 'Basilio no se rinde. Ríndele tú.' },
+        { mid: 'arc2_eupha', enc: 'ch2_eupha', enemy: 'eupha', name: 'Eupha', stage: 'met-tower-v1', inv: 49,
+            title: 'Archivo · Archetype despierto', blurb: 'Eupha invoca su ideal. Supera al ideal.' },
+        { mid: 'arc2_strohl', enc: 'ch2_strohl', enemy: 'strohl', name: 'Strohl', stage: 'met-destiny-v1', inv: 42,
+            title: 'Archivo · Crónica real', blurb: 'Strohl escribe tu final. Arranca la página.' },
+        { mid: 'arc2_heismay', enc: 'ch2_heismay', enemy: 'heismay', name: 'Heismay', stage: 'met-bleach_sokyoku-v2', inv: 49,
+            title: 'Archivo · Juramento roto', blurb: 'Heismay no se rinde. Ríndele tú.' },
+        { mid: 'arc2_junah', enc: 'ch2_junah', enemy: 'junah', name: 'Junah', stage: 'met-tower-v2', inv: 42,
+            title: 'Archivo · Archetype despierto', blurb: 'Junah invoca su ideal. Supera al ideal.' },
+        { mid: 'arc2_goro', enc: 'ch2_goro', enemy: 'goro', name: 'Goro Akechi', stage: 'p5r-jojo_prison-v1', inv: 49,
+            title: 'Archivo · Cambio de corazón', blurb: 'Goro Akechi apunta a tu sombra. Que no te robe el turno.' },
+        { mid: 'arc2_sumire', enc: 'ch2_sumire', enemy: 'sumire', name: 'Kasumi Yoshizawa', stage: 'p5r-jojo_time-v1', inv: 42,
+            title: 'Archivo · Showtime', blurb: 'Kasumi Yoshizawa entra con estilo. Responde con más estilo.' },
+        { mid: 'arc2_ann', enc: 'ch2_ann', enemy: 'ann', name: 'Ann Takamaki', stage: 'p5r-mansion-v1', inv: 49,
+            title: 'Archivo · Aviso cumplido', blurb: 'Ann Takamaki ya envió la carta. El palacio arde.' },
+        { mid: 'arc2_makoto', enc: 'ch2_makoto', enemy: 'makoto', name: 'Makoto Niijima', stage: 'p5r-jojo_prison-v2', inv: 42,
+            title: 'Archivo · Cambio de corazón', blurb: 'Makoto Niijima apunta a tu sombra. Que no te robe el turno.' },
+        { mid: 'arc2_tae', enc: 'ch2_tae', enemy: 'tae', name: 'Tae Takemi', stage: 'p5r-jojo_time-v2', inv: 49,
+            title: 'Archivo · Showtime', blurb: 'Tae Takemi entra con estilo. Responde con más estilo.' },
+        { mid: 'arc2_futaba', enc: 'ch2_futaba', enemy: 'futaba', name: 'Futaba Sakura', stage: 'p5r-mansion-v2', inv: 42,
+            title: 'Archivo · Aviso cumplido', blurb: 'Futaba Sakura ya envió la carta. El palacio arde.' },
+        { mid: 'arc2_gyomei', enc: 'ch2_gyomei', enemy: 'gyomei', name: 'Gyomei Himejima', stage: 'infinity_castle', inv: 49,
+            title: 'Archivo · Noche de luna', blurb: 'Gyomei Himejima caza bajo la luna. Sé tú el cazador.' },
+        { mid: 'arc2_rengoku', enc: 'ch2_rengoku', enemy: 'rengoku', name: 'Kyojuro Rengoku', stage: 'district', inv: 42,
+            title: 'Archivo · Nichirin al rojo', blurb: 'La hoja de Kyojuro Rengoku ya arde. Apágala a golpes.' },
+        { mid: 'arc2_tengen', enc: 'ch2_tengen', enemy: 'tengen', name: 'Tengen Uzui', stage: 'mugen_train', inv: 49,
+            title: 'Archivo · Respiración ajena', blurb: 'Tengen Uzui inhala. El aire pesa. Rompe su cadencia.' },
+        { mid: 'arc2_sanemi', enc: 'ch2_sanemi', enemy: 'sanemi', name: 'Sanemi Shinazugawa', stage: 'swordsmith', inv: 42,
+            title: 'Archivo · Noche de luna', blurb: 'Sanemi Shinazugawa caza bajo la luna. Sé tú el cazador.' },
+        { mid: 'arc2_mitsuri', enc: 'ch2_mitsuri', enemy: 'mitsuri', name: 'Mitsuri Kanroji', stage: 'wisteria', inv: 49,
+            title: 'Archivo · Nichirin al rojo', blurb: 'La hoja de Mitsuri Kanroji ya arde. Apágala a golpes.' },
+        { mid: 'arc2_muichiro', enc: 'ch2_muichiro', enemy: 'muichiro', name: 'Muichiro Tokito', stage: 'kim-kimetsu_district-v1', inv: 42,
+            title: 'Archivo · Respiración ajena', blurb: 'Muichiro Tokito inhala. El aire pesa. Rompe su cadencia.' },
+        { mid: 'arc2_obanai', enc: 'ch2_obanai', enemy: 'obanai', name: 'Obanai Iguro', stage: 'kim-kimetsu_infinity_castle-v1', inv: 49,
+            title: 'Archivo · Noche de luna', blurb: 'Obanai Iguro caza bajo la luna. Sé tú el cazador.' },
+        { mid: 'arc2_nezuko', enc: 'ch2_nezuko', enemy: 'nezuko', name: 'Nezuko Kamado', stage: 'kim-kimetsu_mugen_train-v1', inv: 42,
+            title: 'Archivo · Nichirin al rojo', blurb: 'La hoja de Nezuko Kamado ya arde. Apágala a golpes.' },
+        { mid: 'arc2_shinobu', enc: 'ch2_shinobu', enemy: 'shinobu', name: 'Shinobu Kocho', stage: 'kim-kimetsu_swordsmith-v1', inv: 49,
+            title: 'Archivo · Respiración ajena', blurb: 'Shinobu Kocho inhala. El aire pesa. Rompe su cadencia.' },
+        { mid: 'arc2_genya', enc: 'ch2_genya', enemy: 'genya', name: 'Genya Shinazugawa', stage: 'kim-kimetsu_wisteria-v1', inv: 42,
+            title: 'Archivo · Noche de luna', blurb: 'Genya Shinazugawa caza bajo la luna. Sé tú el cazador.' },
+        { mid: 'arc2_zenitsu', enc: 'ch2_zenitsu', enemy: 'zenitsu', name: 'Zenitsu Agatsuma', stage: 'kim-kimetsu_district-v2', inv: 49,
+            title: 'Archivo · Nichirin al rojo', blurb: 'La hoja de Zenitsu Agatsuma ya arde. Apágala a golpes.' },
+        { mid: 'arc2_inosuke', enc: 'ch2_inosuke', enemy: 'inosuke', name: 'Inosuke Hashibira', stage: 'kim-kimetsu_infinity_castle-v2', inv: 42,
+            title: 'Archivo · Respiración ajena', blurb: 'Inosuke Hashibira inhala. El aire pesa. Rompe su cadencia.' },
+        { mid: 'arc2_sabito', enc: 'ch2_sabito', enemy: 'sabito', name: 'Sabito', stage: 'kim-kimetsu_mugen_train-v2', inv: 49,
+            title: 'Archivo · Noche de luna', blurb: 'Sabito caza bajo la luna. Sé tú el cazador.' },
+        { mid: 'arc2_urokodaki', enc: 'ch2_urokodaki', enemy: 'urokodaki', name: 'Sakonji Urokodaki', stage: 'kim-kimetsu_swordsmith-v2', inv: 42,
+            title: 'Archivo · Nichirin al rojo', blurb: 'La hoja de Sakonji Urokodaki ya arde. Apágala a golpes.' },
+        { mid: 'arc2_asa', enc: 'ch2_asa', enemy: 'asa', name: 'Asa Mitaka', stage: 'apartment', inv: 49,
+            title: 'Archivo · Contrato sucio', blurb: 'Asa Mitaka firmó con algo que no entiende. Tú tampoco lo entenderás.' },
+        { mid: 'arc2_aki', enc: 'ch2_aki', enemy: 'aki', name: 'Aki Hayakawa', stage: 'city', inv: 42,
+            title: 'Archivo · Gasolina y sangre', blurb: 'Aki Hayakawa huele a motor caliente. Mantén la distancia.' },
+        { mid: 'arc2_angel', enc: 'ch2_angel', enemy: 'angel', name: 'Angel', stage: 'hell', inv: 49,
+            title: 'Archivo · Cláusula final', blurb: 'Angel ejecuta el contrato. Rompe las letras pequeñas.' },
+        { mid: 'arc2_katana', enc: 'ch2_katana', enemy: 'katana', name: 'Katana Man', stage: 'csm-chainsaw_apartment-v1', inv: 42,
+            title: 'Archivo · Contrato sucio', blurb: 'Katana Man firmó con algo que no entiende. Tú tampoco lo entenderás.' },
+        { mid: 'arc2_kishibe', enc: 'ch2_kishibe', enemy: 'kishibe', name: 'Kishibe', stage: 'csm-chainsaw_city-v1', inv: 49,
+            title: 'Archivo · Gasolina y sangre', blurb: 'Kishibe huele a motor caliente. Mantén la distancia.' },
+        { mid: 'arc2_kobeni', enc: 'ch2_kobeni', enemy: 'kobeni', name: 'Kobeni Higashiyama', stage: 'csm-chainsaw_hell-v1', inv: 42,
+            title: 'Archivo · Cláusula final', blurb: 'Kobeni Higashiyama ejecuta el contrato. Rompe las letras pequeñas.' },
     ],
 
     /** Stats por fase (escalado suave). */
@@ -273,14 +502,14 @@ const ChronicleData = {
                 id: row.mid,
                 title: row.title,
                 sealedTitle: row.sealed,
-                sealedBlurb: 'El sello aún no revela este frente.',
+                sealedBlurb: row.sealedBlurb || 'El sello aún no revela este frente.',
                 blurb: row.blurb,
                 encounter: row.enc,
                 flagClear: `${row.mid}_cleared`,
                 isFinal: !!row.isFinal,
                     rewardText: row.metaphor
-                    ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +14 Metaphor`
-                    : (row.isFinal ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +10 Metaphor (cierre)` : `+${this.pullRewardFor(row.inv)} equivalentes de tirada (primer clear)`)
+                    ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +200 Metaphor`
+                    : (row.isFinal ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +200 Metaphor (cierre)` : `+${this.pullRewardFor(row.inv)} equivalentes de tirada (primer clear)`)
             };
         });
         this.ARCHIVES.forEach((row) => {
@@ -294,7 +523,7 @@ const ChronicleData = {
                 optional: true,
                 flagClear: `${row.mid}_cleared`,
                 rewardText: row.metaphor
-                    ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +14 Metaphor`
+                    ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +200 Metaphor`
                     : `+${this.pullRewardFor(row.inv)} equivalentes de tirada (primer clear)`
             };
         });
@@ -318,6 +547,56 @@ const ChronicleData = {
 
     totalFirstClearInv() {
         return [...this.STORY, ...this.ARCHIVES].reduce((s, r) => s + this.pullRewardFor(r.inv), 0);
+    },
+
+    /** Day system: story mission N = day N. Moving to the next day needs
+     *  the previous story front cleared + 3 unique archive clears per day
+     *  passed (day 2 → 3 archives, day 3 → 6, …). Repeats don't count. */
+    SIDES_PER_DAY: 3,
+
+    storyClears() {
+        if (typeof GameState === 'undefined') return 0;
+        return this.STORY.filter((r) => !r.isFinal && GameState.flag(`${r.mid}_cleared`)).length;
+    },
+
+    sideClears() {
+        if (typeof GameState === 'undefined') return 0;
+        let n = 0;
+        this.ARCHIVES.forEach((r) => {
+            if (GameState.flag(`${r.mid}_cleared`)) n += 1;
+        });
+        return n;
+    },
+
+    /** Current day = next unopened story front (1-based). */
+    currentDay() {
+        return Math.min(this.STORY.length, this.storyClears() + 1);
+    },
+
+    /** Archives required to open story index i (0-based). */
+    sidesRequiredFor(i) {
+        return Math.max(0, i * this.SIDES_PER_DAY);
+    },
+
+    /** Lock state for a story mission: chain + 3-archives-per-day (+collection for final). */
+    storyLockAt(index) {
+        const row = this.STORY[index];
+        if (!row) return { locked: true, reason: 'day' };
+        if (index <= 0 && !row.isFinal) return { locked: false };
+        const prev = this.STORY[index - 1];
+        const prevCleared = prev
+            ? !!((typeof GameState !== 'undefined') && GameState.flag(`${prev.mid}_cleared`))
+            : true;
+        const need = this.sidesRequiredFor(index);
+        const have = this.sideClears();
+        if (!prevCleared) return { locked: true, reason: 'prev', need, have };
+        if (have < need) return { locked: true, reason: 'sides', need, have };
+        if (row.isFinal) {
+            const collectionOk = (typeof GachaRoster !== 'undefined' && GachaRoster.bossUnlockedByCollection)
+                ? GachaRoster.bossUnlockedByCollection() : true;
+            if (!collectionOk) return { locked: true, reason: 'collection', need, have };
+        }
+        return { locked: false, need, have };
     },
 
     storyMissionList() {
@@ -347,7 +626,7 @@ const ChronicleData = {
             { speaker: 'Sistema', text: 'OPERATION CHIKITRISKIS — CRÓNICA DEL DESTINO.' },
             { speaker: 'Narrador', text: 'Grietas entre mundos. Cada frente es único: un enemigo, un mapa, sin refritos.' },
             { speaker: 'Narrador', text: '22 sellos de historia + archivos opcionales. Las primeras recompensas son escasas: repetir frentes difíciles y farmear Chiki es parte del viaje.' },
-            { speaker: 'Sistema', text: 'Cierra THE 50/50 → Metaphor → el regalo. Gojo abre el sello final antes de tiempo.' }
+            { speaker: 'Sistema', text: 'THE 50/50 exige TODA la colección al máximo (dupes). Solo entonces sale el regalo del banner.' }
         ];
     }
 

@@ -138,7 +138,12 @@
 .p5ui-to {
     display: flex; align-items: center; gap: 0.35rem;
     pointer-events: auto;
-    animation: p5BannerIn 0.35s ease backwards;
+    animation: none;
+}
+.p5ui-to.is-entering { animation: p5TurnIn 0.42s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes p5TurnIn {
+    from { opacity: 0; filter: brightness(1.8) blur(3px); }
+    to { opacity: 1; filter: brightness(1) blur(0); }
 }
 .p5ui-to:nth-child(1) { animation-delay: 40ms; }
 .p5ui-to:nth-child(2) { animation-delay: 70ms; }

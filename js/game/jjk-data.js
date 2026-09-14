@@ -145,7 +145,7 @@ const JJKData = {
                 { id: 'jackpot_fists', name: 'Jackpot Fists', cry: 'Come on!', cost: 32, power: 145, type: 'strike', hits: 4, desc: 'Puños en racha.' },
                 { id: 'infinite_mode', name: 'Infinite Mode', cry: 'Can\'t kill me.', cost: 36, power: 0, type: 'support', heal: 90, buff: { def: 1.4 }, turns: 2, desc: 'Regen Jackpot · cura + DEF ↑' },
                 { id: 'train_crash', name: 'Metro Crash', cry: 'All aboard!', cost: 48, power: 170, type: 'strike', aoe: true, desc: 'Impacto AoE del dominio.' },
-                { id: 'bonus_round', name: 'Bonus Round', cry: 'Another roll!', cost: 40, power: 0, type: 'support', partyBuff: { atk: 1.3, luk: 1.4 }, turns: 3, restoreSp: 20, desc: 'Buff equipo + CP.' }
+                { id: 'bonus_round', name: 'Bonus Round', cry: 'Another roll!', cost: 40, power: 0, type: 'support', partyBuff: { atk: 1.3, luk: 1.4 }, turns: 3, restoreSp: 60, desc: 'Buff equipo + 60 CP (Jackpot = energía infinita).' }
             ],
             gachaLegendary: true
         }

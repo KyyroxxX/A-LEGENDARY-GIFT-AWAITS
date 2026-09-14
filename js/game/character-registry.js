@@ -90,13 +90,15 @@ const CharacterRegistry = {
         };
         const banners = (typeof GachaRoster !== 'undefined' && GachaRoster.BANNERS) || {};
         Object.values(banners).forEach((b) => {
-            if (!b || b.isMetaphor) return;
+            if (!b) return;
+            const sealed = (typeof GachaRoster !== 'undefined' && GachaRoster.isUnitSealed) || null;
+            const open = (id) => id && !(sealed && sealed.call(GachaRoster, id));
             const featStars = b.featuredStars || 5;
-            if (b.featuredId) bump(b.featuredId, featStars);
-            (b.pool6 || []).forEach((id) => bump(id, 6));
-            (b.pool5Std || []).forEach((id) => bump(id, 5));
-            (b.pool4 || []).forEach((id) => bump(id, 4));
-            (b.pool3 || []).forEach((id) => bump(id, 3));
+            if (open(b.featuredId)) bump(b.featuredId, featStars);
+            (b.pool6 || []).forEach((id) => { if (open(id)) bump(id, 6); });
+            (b.pool5Std || []).forEach((id) => { if (open(id)) bump(id, 5); });
+            (b.pool4 || []).forEach((id) => { if (open(id)) bump(id, 4); });
+            (b.pool3 || []).forEach((id) => { if (open(id)) bump(id, 3); });
         });
         if (typeof GachaRoster !== 'undefined') {
             (GachaRoster.enemyIds?.() || []).forEach((id) => {

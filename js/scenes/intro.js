@@ -9,8 +9,9 @@ const IntroScene = {
                 <div class="intro-ring"></div>
             </div>
             <div class="intro-content">
+                <div class="p5-burst intro-burst" aria-hidden="true"><span>★<br>GO!</span></div>
                 <p class="intro-kicker">OPERATION CHIKITRISKIS</p>
-                <div class="intro-ornament" aria-hidden="true">✦</div>
+                <div class="p5-slash" aria-hidden="true"></div>
                 <h1 class="intro-title">
                     <span class="intro-title-line">Para mi</span>
                     <span class="intro-title-name">Chikiwitina Chikitriskis</span>
@@ -35,7 +36,7 @@ const IntroScene = {
 
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
         tl.from(el.querySelector('.intro-kicker'), { y: 16, opacity: 0, duration: 0.8 })
-          .from(el.querySelector('.intro-ornament'), { scale: 0.6, opacity: 0, duration: 0.6 }, '-=0.3')
+          .from(el.querySelector('.intro-burst'), { scale: 0, rotation: -40, opacity: 0, duration: 0.6, ease: 'back.out(1.6)' }, '-=0.3')
           .from(el.querySelector('.intro-title-line'), { y: 24, opacity: 0, duration: 0.9 }, '-=0.2')
           .from(el.querySelector('.intro-title-name'), { y: 28, opacity: 0, duration: 1 }, '-=0.55')
           .from(el.querySelector('.intro-heart-wrap'), { scale: 0.5, opacity: 0, duration: 0.7 }, '-=0.4')

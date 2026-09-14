@@ -118,19 +118,72 @@ const DialogueScene = {
 
         const line = this.queue.shift();
         speaker.textContent = line.speaker || '';
-        text.textContent = line.text || '';
         if (line.portrait) this.setPortrait(line.portrait);
         nextBtn.classList.remove('hidden');
+        nextBtn.classList.remove('await');
         choicesEl.classList.add('hidden');
+        this._typeLine(text, line.text || '', nextBtn);
         if (window.gsap) {
             gsap.fromTo(speaker, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.24, ease: 'expo.out', force3D: true });
-            gsap.fromTo(text, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, ease: 'expo.out', force3D: true });
+        }
+    },
+
+    /** Persona-style typewriter: click completes, click again advances. */
+    _typeLine(el, full, nextBtn) {
+        if (this._typeTimer) {
+            clearInterval(this._typeTimer);
+            this._typeTimer = null;
+        }
+        this._typing = false;
+        this._fullText = full;
+        if (!full || this.reducedMotion()) {
+            el.textContent = full;
+            el.classList.remove('typing');
+            nextBtn.classList.add('await');
+            return;
+        }
+        this._typing = true;
+        el.classList.add('typing');
+        let i = 0;
+        el.textContent = '';
+        this._typeTimer = setInterval(() => {
+            i += 2;
+            el.textContent = full.slice(0, i);
+            if (i >= full.length) this._finishTyping(el, nextBtn);
+        }, 18);
+    },
+
+    _finishTyping(el, nextBtn) {
+        if (this._typeTimer) {
+            clearInterval(this._typeTimer);
+            this._typeTimer = null;
+        }
+        if (this._fullText != null && el) el.textContent = this._fullText;
+        this._typing = false;
+        el?.classList.remove('typing');
+        nextBtn?.classList.add('await');
+    },
+
+    reducedMotion() {
+        try {
+            return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        } catch (_) {
+            return false;
         }
     },
 
     advance() {
         if (!this.root) return;
         if (!this.root.querySelector('#vn-choices')?.classList.contains('hidden')) return;
+        // Typing? Complete the line first — Persona style.
+        if (this._typing) {
+            this._finishTyping(
+                this.root.querySelector('#vn-text'),
+                this.root.querySelector('#vn-next')
+            );
+            try { AudioManager.ui.click(); } catch (_) { /* ignore */ }
+            return;
+        }
         AudioManager.ui.click();
         this.showNext();
     },
@@ -142,6 +195,11 @@ const DialogueScene = {
     },
 
     close() {
+        if (this._typeTimer) {
+            clearInterval(this._typeTimer);
+            this._typeTimer = null;
+        }
+        this._typing = false;
         if (this.root) {
             this.root.remove();
             this.root = null;

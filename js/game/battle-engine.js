@@ -21,8 +21,8 @@ const BattleEngine = {
         const enemies = encounter.enemies.map(e => {
             const enriched = (typeof FighterKits !== 'undefined')
                 ? FighterKits.enrichEnemy(e, {
-                    // Softer kits early — handwritten encounter power + kits was double-buffing AoE.
-                    powerMul: Math.min(0.7, 0.4 + ((encounter.difficulty || 1) * 0.03))
+                    // Keep the opening tactical without cutting enemy skills in half.
+                    powerMul: Math.min(0.95, 0.68 + ((encounter.difficulty || 1) * 0.035))
                 })
                 : e;
             return this.unitFromTemplate(enriched, 'enemy');
@@ -36,8 +36,9 @@ const BattleEngine = {
                 || skills.some((skill) => skill.heal || skill.aoeHeal || skill.cover || skill.partyBuff || skill.allyBuff);
         });
         // Support composition is deliberately part of the difficulty curve.
-        const partyHpMul = (partyHasSupport ? 2.45 : 2.18) * (encounter.partyHpScale ?? 1);
-        const healScale = (partyHasSupport ? 1.7 : 1.25) * (encounter.partyHealScale ?? 1);
+        // Your team is squishier now — sustain must be earned every fight.
+        const partyHpMul = (partyHasSupport ? 2.1 : 1.9) * (encounter.partyHpScale ?? 1);
+        const healScale = (partyHasSupport ? 1.5 : 1.1) * (encounter.partyHealScale ?? 1);
         party.forEach(u => {
             u.maxHp = Math.round(u.maxHp * partyHpMul);
             u.hp = u.maxHp;
@@ -73,16 +74,19 @@ const BattleEngine = {
                 u.ai = 'dummy';
                 return;
             }
+            // BRUTAL but fair: enemies hit like trucks, scale hard per
+            // difficulty and soak a lot — raw attacks bounce off, so buffs,
+            // debuffs, weaknesses, guards and team comp are mandatory.
             const standardTuning = encounter.isBoss
-                ? { hp: 3.05, hpStep: 0.4, scale: 1.14, atk: 1.1, def: 1.08, skill: 1.1, heal: 1.1 }
-                : { hp: 3.15, hpStep: 0.42, scale: 1.18, atk: 1.13, def: 1.1, skill: 1.12, heal: 1.12 };
+                ? { hp: 4.2, hpStep: 0.5, scale: 1.25, atk: 1.45, def: 1.35, skill: 1.35, heal: 1.25 }
+                : { hp: 4.3, hpStep: 0.52, scale: 1.28, atk: 1.5, def: 1.38, skill: 1.38, heal: 1.28 };
             const globalHard = encounter.enemyGlobalScale ?? standardTuning.scale;
             const hpM = (standardTuning.hp + (diff - 1) * standardTuning.hpStep) * globalHard * (encounter.enemyHpScale ?? 1);
-            const atkM = (1.12 + (diff - 1) * 0.11)
-                * (partyHasSupport ? 1 : 1.12)
+            const atkM = (1.5 + (diff - 1) * 0.15)
+                * (partyHasSupport ? 1 : 1.2)
                 * (encounter.enemyGlobalAtkScale ?? standardTuning.atk)
                 * (encounter.enemyAtkScale ?? 1);
-            const defM = (1.18 + (diff - 1) * 0.1)
+            const defM = (1.4 + (diff - 1) * 0.12)
                 * (encounter.enemyGlobalDefScale ?? standardTuning.def)
                 * (encounter.enemyDefScale ?? 1);
             u.maxHp = Math.round(u.maxHp * hpM);
@@ -94,10 +98,10 @@ const BattleEngine = {
             u.ai = u.ai || (u.transform ? 'bosslet' : 'tactical');
             const scaleSkill = (sk) => {
                 if (sk.heal) sk.heal = Math.round(
-                    sk.heal * (1.5 + diff * 0.12) * (encounter.enemyGlobalHealScale ?? standardTuning.heal) * (encounter.enemyHealScale ?? 1)
+                    sk.heal * (1.8 + diff * 0.16) * (encounter.enemyGlobalHealScale ?? standardTuning.heal) * (encounter.enemyHealScale ?? 1)
                 );
                 if (sk.power) sk.power = Math.round(
-                    sk.power * (1.02 + (diff - 1) * 0.06) * (encounter.enemyGlobalSkillScale ?? standardTuning.skill) * (encounter.enemySkillScale ?? 1)
+                    sk.power * (1.15 + (diff - 1) * 0.10) * (encounter.enemyGlobalSkillScale ?? standardTuning.skill) * (encounter.enemySkillScale ?? 1)
                 );
             };
             (u.skills || []).forEach(scaleSkill);
@@ -273,7 +277,9 @@ const BattleEngine = {
         units.sort((a, b) => {
             const agiA = a.agi * (a.buffs.agi || 1);
             const agiB = b.agi * (b.buffs.agi || 1);
-            return agiB - agiA || Math.random() - 0.5;
+            if (agiB !== agiA) return agiB - agiA;
+            // Speed ties break by instinct (LUK), barely by luck — agility builds stay consistent.
+            return ((b.luk || 0) - (a.luk || 0)) || (Math.random() - 0.5) * 0.4;
         });
         state.turnQueue = units.map(u => ({ id: u.id, side: u.side }));
         state.turnIndex = 0;
@@ -602,7 +608,8 @@ const BattleEngine = {
     affinityMult(target, type) {
         if ((target.null || []).includes(type)) return { mult: 0, tag: 'NULL' };
         if ((target.weak || []).includes(type)) return { mult: 1.75, tag: 'WEAK' };
-        if ((target.resist || []).includes(type)) return { mult: 0.4, tag: 'RESIST' };
+        // Resisted hits tickle — spamming the wrong type is throwing turns away.
+        if ((target.resist || []).includes(type)) return { mult: 0.3, tag: 'RESIST' };
         return { mult: 1, tag: 'HIT' };
     },
 
@@ -611,12 +618,22 @@ const BattleEngine = {
 
         const atkBuff = attacker.buffs.atk || 1;
         const defBuff = target.buffs.def || 1;
-        // DEF buffs are amplified so shields feel tactical (1.5 DEF ≈ ~40% less taken).
-        const defBuffEff = defBuff <= 1 ? defBuff : Math.pow(defBuff, 1.35);
-        const atk = attacker.atk * (atkBuff <= 1 ? atkBuff : Math.pow(atkBuff, 1.12));
+        // DEF buffs are amplified so shields feel tactical (1.5 DEF ≈ ~50% less taken).
+        const defBuffEff = defBuff <= 1 ? defBuff : Math.pow(defBuff, 1.5);
+        const atk = attacker.atk * (atkBuff <= 1 ? atkBuff : Math.pow(atkBuff, 1.22));
         const def = target.def * defBuffEff * (target.guard ? 1.9 : 1);
         const aff = this.affinityMult(target, skill.type);
         if (aff.mult === 0) return { damage: 0, tag: 'NULL', crit: false, down: false };
+
+        const attackerAgi = Math.max(1, attacker.agi * (attacker.buffs.agi || 1));
+        const targetAgi = Math.max(1, target.agi * (target.buffs.agi || 1));
+        const agilityGap = (targetAgi - attackerAgi) / Math.max(targetAgi, attackerAgi);
+        const accuracyBonus = (attacker.accuracyBonus || 0) + (skill.accuracyBonus || 0);
+        // Fast units actually dodge: up to 30% evasion when clearly faster.
+        const evasionChance = Math.max(0.02, Math.min(0.30, 0.06 + agilityGap * 0.24 - accuracyBonus));
+        if (Math.random() < evasionChance) {
+            return { damage: 0, tag: 'MISS', crit: false, down: false, evasionChance, affinity: 'MISS' };
+        }
 
         let base = (skill.power * 0.32 + atk * 0.95) * (atk / Math.max(12, def + 28));
         if (attacker.skillPowerMul) base *= attacker.skillPowerMul;
@@ -628,8 +645,10 @@ const BattleEngine = {
             attacker.charged = false;
         }
         base *= aff.mult;
-        if (aff.tag === 'HIT' && state?.difficulty >= 2) {
-            base *= state.difficulty >= 4 ? 0.84 : 0.92;
+        // Neutral hits fall off hard with difficulty — hunt weaknesses or buff up.
+        if (aff.tag === 'HIT') {
+            const diff = state?.difficulty || 1;
+            base *= diff >= 4 ? 0.78 : diff >= 2 ? 0.88 : 0.94;
         }
         if (state?.difficulty >= 4 && aff.tag === 'WEAK' && state.weaknessChain > 0) {
             base *= 1 + Math.min(0.18, state.weaknessChain * 0.06);
@@ -643,8 +662,11 @@ const BattleEngine = {
         const hits = skill.hits || 1;
         let total = 0;
         let crit = false;
+        // Speed edge: a clearly faster attacker finds openings (+0–18% crit).
+        const speedEdge = Math.max(0, (attackerAgi - targetAgi) / Math.max(targetAgi, attackerAgi));
         const critChance = Math.max(0.02, Math.min(0.72,
             0.08 + (attacker.luk || 0) * 0.002
+            + speedEdge * 0.18
             + (skill.critBonus || 0) + (skill.critChance || 0)
             + (attacker.critBonus || 0) + (attacker.buffs.critBonus || 0) + (attacker.buffs.critChance || 0)
         ));
@@ -715,14 +737,15 @@ const BattleEngine = {
     cappedDamage(state, attacker, target, damage, crit = false) {
         if (state.encounter?.training) return damage;
         if (attacker.side === 'enemy' && target.side === 'ally') {
-            // Leave a real response window — chunk, don't delete.
-            const supportGap = state.partyHasSupport ? 0 : 0.08;
-            const ratio = (crit ? 0.38 : 0.32) + supportGap;
+            // Two clean hits can kill — guard, debuff their ATK or erase them first.
+            const supportGap = state.partyHasSupport ? 0 : 0.12;
+            const ratio = (crit ? 0.62 : 0.52) + supportGap;
             return Math.min(damage, Math.max(1, Math.floor(target.maxHp * ratio)));
         }
         if (attacker.side === 'ally' && target.side === 'enemy') {
+            // Bosses are damage sponges: setup (buffs + weakness + DOWN) or nothing.
             const boss = /boss|final/i.test(target.ai || '');
-            return Math.min(damage, Math.max(1, Math.floor(target.maxHp * (boss ? 0.34 : 0.52))));
+            return Math.min(damage, Math.max(1, Math.floor(target.maxHp * (boss ? 0.22 : 0.38))));
         }
         return damage;
     },
@@ -756,16 +779,16 @@ const BattleEngine = {
     scaleBuffValue(stat, value) {
         if (typeof value !== 'number') return value;
         if (value >= 1) {
-            if (stat === 'def') return Math.min(2.55, 1 + (value - 1) * 1.45);
-            if (stat === 'atk') return Math.min(2.15, 1 + (value - 1) * 1.2);
-            if (stat === 'agi') return Math.min(2.0, 1 + (value - 1) * 1.15);
-            if (stat === 'damage') return Math.min(1.7, value);
-            if (stat === 'damageTaken') return Math.max(0.35, value);
+            if (stat === 'def') return Math.min(3.0, 1 + (value - 1) * 1.6);
+            if (stat === 'atk') return Math.min(2.6, 1 + (value - 1) * 1.35);
+            if (stat === 'agi') return Math.min(2.4, 1 + (value - 1) * 1.3);
+            if (stat === 'damage') return Math.min(2.0, value);
+            if (stat === 'damageTaken') return Math.max(0.28, value);
             return value;
         }
-        // Debuffs: slightly stronger
+        // Debuffs bite hard: crippling one stat can decide a fight.
         if (stat === 'atk' || stat === 'def' || stat === 'agi') {
-            return Math.max(0.4, value - (1 - value) * 0.15);
+            return Math.max(0.32, value - (1 - value) * 0.3);
         }
         return value;
     },
@@ -773,7 +796,10 @@ const BattleEngine = {
     applyBuffMap(unit, map, turns) {
         Object.entries(map || {}).forEach(([k, v]) => {
             unit.buffs[k] = this.scaleBuffValue(k, v);
-            unit.buffs[k + '_turns'] = turns;
+            // Positive stat buffs hold one extra round: setting up pays off (and
+            // rivals' buffs must be answered with cleanse/debuffs, not ignored).
+            const extra = (typeof v === 'number' && v > 1 && ['atk', 'def', 'agi', 'damage'].includes(k)) ? 1 : 0;
+            unit.buffs[k + '_turns'] = turns + extra;
         });
     },
 
@@ -1073,6 +1099,12 @@ const BattleEngine = {
         const hits = [];
         targets.forEach(t => {
             const dmg = this.calcDamage(user, t, skill, state);
+            if (dmg.tag === 'MISS') {
+                result.logs.push(`${t.name} esquiva el ataque (${Math.round((dmg.evasionChance || 0) * 100)}% AGI).`);
+                if (!state._sfxFromUi) AudioManager.combat.dodge();
+                hits.push({ id: t.id, side: t.side, damage: 0, tag: 'MISS', crit: false });
+                return;
+            }
             if (dmg.tag === 'NULL') {
                 result.logs.push(`${t.name} anula el ataque!`);
                 if (!state._sfxFromUi) AudioManager.combat.impact("null");

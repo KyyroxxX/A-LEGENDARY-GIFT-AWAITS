@@ -358,26 +358,22 @@ if (typeof window !== 'undefined') {
             console.log(`[QA] unlocked ${ids.length} characters`);
             return ids.length;
         },
-        /** Fill INV + Chiki + Metaphor tickets (full test bank). Opens convene. */
+        /** Fill INV + Chiki + Metaphor tickets (immense test bank). Opens convene. */
         fillPulls() {
-            const budget = (typeof GachaRoster !== 'undefined')
-                ? GachaRoster.totalPullsRequired()
-                : ((typeof CONFIG !== 'undefined' && CONFIG.invocationCap) || 2800);
-            const metaBank = (typeof GachaRoster !== 'undefined' && GachaRoster.METAPHOR_TOTAL)
-                ? GachaRoster.METAPHOR_TOTAL
-                : 80;
+            const immensek = 99999;
+            const metaBank = 9999;
             const rate = (typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160;
             GameState.update({
-                invocations: budget,
-                invocationsEarned: budget,
-                chikistrites: budget * rate,
+                invocations: immensek,
+                invocationsEarned: immensek,
+                chikistrites: immensek * rate,
                 metaphorTickets: metaBank,
                 metaphorTicketsEarned: metaBank,
                 prologueDone: true,
                 storyComplete: true
             });
-            console.log(`[QA] INV ${budget} · Metaphor ${metaBank} · Chiki ${budget * rate}`);
-            return { invocations: budget, metaphorTickets: metaBank, chikistrites: budget * rate };
+            console.log(`[QA] INV ${immensek} · Metaphor ${metaBank} · Chiki ${immensek * rate}`);
+            return { invocations: immensek, metaphorTickets: metaBank, chikistrites: immensek * rate };
         },
 
         /**

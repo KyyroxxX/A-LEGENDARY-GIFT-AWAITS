@@ -1,0 +1,485 @@
+/* ============================================================
+   BATTLE PERSONA OVERHAUL — the fight looks like Persona 5.
+   Black / white / crimson, italic display type, hard shadows.
+   ============================================================ */
+
+/* ── Command menu: P5 diamond list ────────────────────────── */
+.p5ui-cmd-stack { gap: 0.45rem !important; }
+.p5ui-cmd {
+    background: #0b0b10 !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    color: #fff !important;
+    transform: skewX(-10deg);
+    box-shadow: 4px 4px 0 #000 !important;
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    padding: 0.55rem 1.1rem !important;
+    transition: transform 0.14s cubic-bezier(0.34, 1.4, 0.64, 1), background 0.18s, box-shadow 0.18s !important;
+}
+.p5ui-cmd > * { transform: skewX(10deg); display: inline-block; }
+.p5ui-cmd .ic {
+    background: var(--p5-red, #c41e3a);
+    color: #fff;
+    width: 1.7rem;
+    height: 1.7rem;
+    display: inline-grid !important;
+    place-items: center;
+    margin-right: 0.6rem;
+    font-style: normal;
+    box-shadow: 2px 2px 0 #000;
+}
+.p5ui-cmd span { font-style: italic; letter-spacing: 0.04em; }
+.p5ui-cmd b { color: var(--p5-gold, #e8c76a); margin-left: 0.5rem; }
+.p5ui-cmd:hover:not(:disabled) {
+    background: var(--p5-red, #c41e3a) !important;
+    transform: skewX(-10deg) translateX(6px) !important;
+    box-shadow: 4px 4px 0 #000, 0 0 22px rgba(196, 30, 58, 0.55) !important;
+}
+.p5ui-cmd:hover:not(:disabled) .ic { background: #111; }
+.p5ui-cmd:active:not(:disabled) { transform: skewX(-10deg) scale(0.96) !important; }
+.p5ui-cmd:disabled { opacity: 0.38; filter: grayscale(0.7); }
+.p5ui-cmd.allout {
+    background: var(--p5-red, #c41e3a) !important;
+    animation: aniPulseGlow 1.6s ease-out infinite;
+}
+.p5ui-cmd.back { opacity: 0.85; }
+
+/* ── Skill / target cards ─────────────────────────────────── */
+.p5ui-cards { gap: 0.55rem !important; }
+.p5ui-card {
+    background: #0b0b10 !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    color: #fff !important;
+    box-shadow: 4px 4px 0 #000 !important;
+    transition: transform 0.14s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.18s, box-shadow 0.18s !important;
+}
+.p5ui-card:hover:not(:disabled) {
+    transform: translateY(-4px) !important;
+    border-color: var(--p5-gold, #e8c76a) !important;
+    box-shadow: 4px 8px 0 #000, 0 0 20px rgba(232, 199, 106, 0.4) !important;
+}
+.p5ui-card.selected {
+    border-color: var(--p5-gold, #e8c76a) !important;
+    box-shadow: 4px 4px 0 var(--p5-red, #c41e3a), 0 0 24px rgba(232, 199, 106, 0.5) !important;
+}
+.p5ui-card.locked, .p5ui-card:disabled { opacity: 0.42; filter: grayscale(0.7); }
+.p5ui-card > strong {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+    color: #fff !important;
+}
+.p5ui-card-blurb { color: rgba(255, 255, 255, 0.72) !important; }
+.p5ui-card-foot em {
+    background: var(--p5-red, #c41e3a) !important;
+    color: #fff !important;
+    transform: skewX(-8deg);
+    display: inline-block;
+    padding: 0.05rem 0.5rem;
+    font-size: 0.62rem;
+    font-style: normal;
+}
+.p5ui-card-foot span { color: var(--p5-gold, #e8c76a) !important; font-size: 0.68rem; }
+.p5ui-card.target.foe:hover:not(:disabled) { border-color: var(--p5-red, #c41e3a) !important; }
+.p5ui-target-hint { color: var(--p5-gold, #e8c76a) !important; letter-spacing: 0.1em; }
+
+/* ── Party strip (allies) ─────────────────────────────────── */
+.p5ui-party-label span {
+    background: var(--p5-red, #c41e3a) !important;
+    color: #fff !important;
+    font-style: italic;
+    transform: skewX(-10deg);
+    display: inline-block;
+    padding: 0.12rem 0.8rem;
+    box-shadow: 3px 3px 0 #000;
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+}
+.p5-party-chip {
+    background: rgba(6, 4, 9, 0.92) !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    box-shadow: 4px 4px 0 #000 !important;
+}
+.p5-party-chip.active {
+    border-color: var(--p5-gold, #e8c76a) !important;
+    box-shadow: 4px 4px 0 var(--p5-red, #c41e3a), 0 0 18px rgba(232, 199, 106, 0.55) !important;
+}
+.p5-party-chip.downed { filter: grayscale(1) brightness(0.6); }
+.p5-party-face { border: 2px solid #fff; background-color: #000; }
+.p5-party-meta strong {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+    color: #fff !important;
+    font-size: 0.74rem;
+}
+.p5-party-meta .bar { border: 1px solid #fff; background: #111 !important; }
+.p5-party-meta .bar.hp > i { background: linear-gradient(90deg, #0a7a3e, #37e08b) !important; box-shadow: 0 0 8px rgba(55, 224, 139, 0.8); }
+.p5-party-meta .bar.sp > i, .p5-party-meta .bar.cp > i { background: linear-gradient(90deg, #1a4a8a, #5aa9ff) !important; box-shadow: 0 0 8px rgba(90, 169, 255, 0.8); }
+.p5-party-meta .nums { color: #fff !important; font-size: 0.66rem; }
+
+/* ── Enemy HUD (top-right) ────────────────────────────────── */
+.p5ui-tr { filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.8)); }
+.p5ui-mission {
+    background: var(--p5-red, #c41e3a) !important;
+    color: #fff !important;
+    font-style: italic;
+    transform: skewX(-10deg);
+    display: inline-block;
+    padding: 0.15rem 0.9rem;
+    box-shadow: 3px 3px 0 #000;
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-size: 0.78rem;
+}
+.p5ui-ebar {
+    background: rgba(6, 4, 9, 0.92) !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    box-shadow: 4px 4px 0 var(--p5-red, #c41e3a) !important;
+}
+.p5ui-ebar-kanji {
+    background: var(--p5-red, #c41e3a) !important;
+    color: #fff !important;
+    font-style: italic;
+}
+.p5ui-ebar-body strong {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+    color: #fff !important;
+}
+.p5ui-ebar-track { border: 1px solid #fff !important; background: #1a0d12 !important; }
+.p5ui-ebar-track > i { background: linear-gradient(90deg, #7a0e20, #ff2a4a) !important; box-shadow: 0 0 10px rgba(255, 42, 74, 0.8); }
+.p5ui-ebar-face { border: 2px solid #fff; background-color: #000; }
+.p5ui-flee {
+    background: #0b0b10 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    transform: skewX(-8deg);
+}
+
+/* ── Round card + banners + cry ───────────────────────────── */
+#p5-round-card, .p5-round-card {
+    background: var(--p5-red, #c41e3a) !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    transform: skewX(-10deg);
+    box-shadow: 4px 4px 0 #000 !important;
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+}
+.p5ui-round-label { color: #fff !important; }
+.p5-action-banner {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+    color: #fff !important;
+    text-shadow: 3px 3px 0 var(--p5-red, #c41e3a), 6px 6px 0 #000 !important;
+}
+.p5-cry {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+    color: #fff !important;
+    text-shadow: 2px 2px 0 #000, 0 0 24px rgba(196, 30, 58, 0.8) !important;
+}
+.p5ui-banner-om {
+    background: var(--p5-gold, #e8c76a) !important;
+    color: #111 !important;
+    transform: skewX(-10deg);
+    font-style: italic;
+    box-shadow: 4px 4px 0 #000;
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+}
+
+/* ── Actor HUD (bottom-left) ──────────────────────────────── */
+.p5ui-actor {
+    background: rgba(6, 4, 9, 0.92) !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    box-shadow: 5px 5px 0 var(--p5-red, #c41e3a) !important;
+}
+.p5ui-portrait { border: 2px solid #fff !important; background-color: #000; }
+.p5ui-cry-title {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic;
+    color: #fff !important;
+    text-shadow: 2px 2px 0 var(--p5-red, #c41e3a) !important;
+}
+.p5ui-cry-line { color: var(--p5-gold, #e8c76a) !important; }
+.p5ui-bar .track { border: 1px solid #fff !important; background: #111 !important; }
+.p5ui-bar.hp .track > i { background: linear-gradient(90deg, #0a7a3e, #37e08b) !important; }
+.p5ui-bar.cp .track > i, .p5ui-bar.sp .track > i { background: linear-gradient(90deg, #1a4a8a, #5aa9ff) !important; }
+
+/* ── Turn dock + log ──────────────────────────────────────── */
+.p5ui-turn-banner {
+    background: #0b0b10 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    transform: skewX(-8deg);
+    font-style: italic;
+}
+.p5ui-turnorder .p5-party-face { border: 2px solid #fff; }
+.p5ui-turnorder .active .p5-party-face, .p5ui-turnorder .is-active .p5-party-face {
+    border-color: var(--p5-gold, #e8c76a) !important;
+    box-shadow: 0 0 12px rgba(232, 199, 106, 0.7);
+}
+.p5ui-quote { color: var(--p5-gold, #e8c76a) !important; font-style: italic; }
+.p5ui-log, .p5ui-desc {
+    background: rgba(6, 4, 9, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    color: #fff !important;
+}
+.p5ui-wait { color: #fff !important; font-style: italic; }
+
+/* ── Targeting: red P5 brackets ───────────────────────────── */
+.p5-stage.target-foes .p5-fighter.is-targetable { cursor: pointer; }
+.p5-stage.target-foes .p5-fighter.is-targetable::before {
+    border: 3px solid var(--p5-red, #c41e3a) !important;
+    box-shadow: 0 0 18px rgba(196, 30, 58, 0.7) !important;
+}
+.p5-stage.target-foes .p5-fighter.is-target-hover::after {
+    content: '▼';
+    color: var(--p5-red, #c41e3a);
+    text-shadow: 2px 2px 0 #000;
+}
+
+/* ── Fighters: nameplates P5 ──────────────────────────────── */
+.p5-nameplate span {
+    background: #060409 !important;
+    color: #fff !important;
+    border: 1px solid #fff;
+    transform: skewX(-8deg);
+    display: inline-block;
+    padding: 0.05rem 0.5rem;
+    font-style: italic;
+    font-size: 0.7rem;
+}
+.p5-fighter.enemy .p5-nameplate span { border-color: var(--p5-red, #c41e3a); }
+.p5-hpmini { border: 1px solid #fff !important; background: #111 !important; }
+.p5-hpmini > i { background: linear-gradient(90deg, #7a0e20, #ff2a4a) !important; }
+
+/* ============================================================
+   P5R BATTLE LAYOUT — positions, scale, encounter, damage
+   ============================================================ */
+
+/* Stage: P5 red corner frame + vignette */
+.p5-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+    background:
+        linear-gradient(105deg, transparent 92%, rgba(196, 30, 58, 0.5) 92.5%, transparent 93%),
+        radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* Encounter splash */
+.p5-action-banner.is-encounter {
+    position: absolute;
+    left: 0; right: 0;
+    top: 30%;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(100deg, transparent 8%, rgba(196, 30, 58, 0.92) 20%, rgba(10, 4, 8, 0.95) 80%, transparent 92%);
+    border-top: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    padding: 0.9rem 1rem;
+    animation: p5EncIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.p5-action-banner.is-encounter .p5-action-text { text-align: center; }
+.p5-action-banner.is-encounter strong {
+    font-size: clamp(1.4rem, 4vw, 2.6rem);
+    display: block;
+}
+@keyframes p5EncIn {
+    from { opacity: 0; transform: scaleX(0.6); }
+    to { opacity: 1; transform: scaleX(1); }
+}
+
+/* Action banner: bigger P5 splash */
+.p5-action-banner.show:not(.is-encounter) {
+    animation: aniRiseIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.p5-action-banner .p5-action-face {
+    border: 3px solid #fff !important;
+    box-shadow: 5px 5px 0 var(--p5-red, #c41e3a) !important;
+}
+.p5-action-banner strong {
+    font-size: 1.35rem !important;
+}
+.p5-action-banner .p5-action-tag {
+    background: var(--p5-red, #c41e3a) !important;
+    color: #fff !important;
+    transform: skewX(-10deg);
+    display: inline-block;
+    padding: 0.1rem 0.7rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+}
+
+/* 1 MORE: huge flashing banner */
+.p5-onemore {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic !important;
+    font-size: clamp(1.6rem, 5vw, 3rem) !important;
+    color: #fff !important;
+    text-shadow: 3px 3px 0 var(--p5-red, #c41e3a), 7px 7px 0 #000 !important;
+    background: linear-gradient(100deg, transparent 10%, rgba(196, 30, 58, 0.85) 30%, rgba(196, 30, 58, 0.85) 70%, transparent 90%) !important;
+    border-top: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+}
+
+/* Cry: character shout */
+.p5-cry.show, .p5-cry {
+    font-size: clamp(1.1rem, 3vw, 1.9rem) !important;
+}
+
+/* Fighters: bigger presence + P5 nameplates */
+.p5-fighter .p5-sprite, .p5-fighter .p5-rig { filter: drop-shadow(0 14px 10px rgba(0, 0, 0, 0.6)); }
+.p5-nameplate { margin-top: 0.35rem; }
+.p5-affinity-stack { display: flex; gap: 0.25rem; justify-content: center; margin-top: 0.25rem; }
+.p5-aff {
+    font-size: 0.58rem;
+    padding: 0.08rem 0.4rem;
+    transform: skewX(-10deg);
+    background: #0b0b10;
+    border: 1px solid #fff;
+}
+.p5-aff b { color: var(--p5-gold, #e8c76a); margin-right: 0.25rem; }
+.p5-aff.weak { border-color: #ff2a4a; box-shadow: 0 0 10px rgba(255, 42, 74, 0.6); }
+.p5-aff.weak b { color: #ff2a4a; }
+.p5-hpmini { height: 8px !important; }
+
+/* Damage floats: P5 numbers */
+.p5-dmg {
+    font-family: 'Archivo Black', 'Cinzel', sans-serif !important;
+    font-style: italic !important;
+    font-size: 2rem !important;
+    color: #fff !important;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 0 0 18px rgba(0, 0, 0, 0.8) !important;
+    animation-duration: 0.9s !important;
+}
+.p5-dmg.weak { color: #ffd76a !important; font-size: 2.4rem !important; }
+.p5-dmg.crit { color: #ff2a4a !important; font-size: 2.8rem !important; animation: p5CritPop 0.9s cubic-bezier(0.22, 1, 0.36, 1) both !important; }
+.p5-dmg b {
+    display: block;
+    font-size: 0.85rem !important;
+    color: var(--p5-gold, #e8c76a) !important;
+    text-shadow: 2px 2px 0 #000 !important;
+}
+.p5-dmg.weak b { color: #ffd76a !important; }
+.p5-dmg.crit b { color: #ff2a4a !important; }
+.p5-dmg.resist { color: #9ec9ff !important; font-size: 1.5rem !important; }
+.p5-dmg.null b, .p5-dmg.miss b { font-size: 1.4rem !important; }
+@keyframes p5CritPop {
+    0% { opacity: 0; transform: scale(2.1) rotate(-4deg); }
+    35% { opacity: 1; transform: scale(0.95) rotate(1deg); }
+    60% { transform: scale(1.08); }
+    100% { opacity: 0; transform: translateY(-46px) scale(1); }
+}
+
+/* Commands: bigger P5 presence */
+.p5ui-cmd-stack { min-width: 240px !important; }
+.p5ui-cmd {
+    font-size: 1.05rem !important;
+    padding: 0.7rem 1.15rem !important;
+}
+.p5ui-cmd .ic { width: 1.9rem !important; height: 1.9rem !important; font-size: 1.15rem !important; }
+
+/* Skill rail: bigger cards, red CP */
+.p5ui-card { width: 138px !important; }
+.p5ui-card-art { height: 92px !important; }
+.p5ui-card strong { font-size: 0.7rem !important; }
+
+/* Party + enemy panels: presence */
+.p5-party-chip { min-width: 236px !important; }
+.p5-party-face { width: 60px !important; height: 72px !important; }
+.p5ui-ebar { min-width: 250px; }
+.p5ui-ebar-face { width: 44px !important; height: 44px !important; }
+.p5ui-actor .p5ui-portrait { width: 190px !important; height: 238px !important; }
+
+/* Target cursor */
+.p5ui-card.target.foe { cursor: crosshair; }
+
+/* ── Shared ground line: allies + enemies plant feet at the same height ── */
+.hud-p5 .p5-allies-field { bottom: 7% !important; }
+.hud-p5 .p5-enemies { bottom: 7% !important; }
+.hud-p5 .p5-fighter.ally { margin-bottom: 0 !important; }
+.hud-p5 .p5-fighter { align-self: flex-end !important; }
+
+/* ── Effectiveness preview (explicit per-enemy lines + target verdict) ── */
+.eff-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.3rem;
+    padding-top: 0.3rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.25);
+}
+.eff-list-title {
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.6);
+}
+.eff-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.1rem 0.3rem;
+    font-size: 0.62rem;
+    line-height: 1.3;
+    min-width: 0;
+}
+.eff-line i {
+    flex: 0 0 auto;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: #888;
+}
+/* Name always gets its own full line — never squeezed into initials. */
+.eff-line b {
+    flex: 1 1 calc(100% - 0.85rem);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
+    font-weight: 700;
+}
+.eff-line em {
+    flex: 0 0 auto;
+    margin-left: 0.85rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+.eff-line.eff-weak i { background: #ff2a4a; box-shadow: 0 0 6px #ff2a4a; }
+.eff-line.eff-weak em { color: #ffe98a; }
+.eff-line.eff-hit i { background: #9a9aa5; }
+.eff-line.eff-hit em { color: #d6d6dc; }
+.eff-line.eff-resist i { background: #4d8dff; box-shadow: 0 0 6px rgba(77, 141, 255, 0.7); }
+.eff-line.eff-resist em { color: #9dc0ff; }
+.eff-line.eff-null i { background: #000; border: 1px solid #ff5b5b; }
+.eff-line.eff-null em { color: #ff5b5b; }
+.eff-line.eff-null b { text-decoration: line-through; opacity: 0.75; }
+.eff-verdict {
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    padding: 0.15rem 0.5rem;
+    margin: 0.2rem auto 0;
+    border: 1px solid #fff;
+    transform: skewX(-8deg);
+}
+.eff-verdict.eff-weak { background: #c41e3a; color: #ffe98a; box-shadow: 2px 2px 0 #000; }
+.eff-verdict.eff-hit { background: #2b2b33; color: #d6d6dc; }
+.eff-verdict.eff-resist { background: #1d4ed8; color: #fff; }
+.eff-verdict.eff-null { background: #000; color: #ff5b5b; border-color: #ff5b5b; }
+
+@media (prefers-reduced-motion: reduce) {
+    .p5ui-cmd.allout { animation: none !important; }
+}

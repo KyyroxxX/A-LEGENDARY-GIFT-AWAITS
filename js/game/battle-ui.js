@@ -49,6 +49,48 @@ const BattleUI = {
         return `${round}${map[phase] || base}`;
     },
 
+    renderTurnOrder(orderEl, list, actor) {
+        const visible = list.slice(0, 6);
+        const previous = new Map([...orderEl.children].map((el) => [el.dataset.turnKey, el.getBoundingClientRect()]));
+        const currentKeys = new Set();
+        visible.forEach((unit, index) => {
+            const key = `${unit.side}:${unit.id}`;
+            currentKeys.add(key);
+            let item = orderEl.querySelector(`[data-turn-key="${key}"]`);
+            const isNow = !!(actor && actor.id === unit.id && actor.side === unit.side);
+            const tag = isNow ? 'NOW' : (index === 0 ? '1' : String(index + 1));
+            if (!item) {
+                item = document.createElement('div');
+                item.dataset.turnKey = key;
+                item.innerHTML = '<div class="p5ui-to-face"></div><b class="p5ui-to-tag"></b>';
+                item.classList.add('is-entering');
+                setTimeout(() => item.classList.remove('is-entering'), 460);
+            }
+            item.className = `p5ui-to ${isNow ? 'now' : ''} ${index === 1 ? 'next' : ''} ${unit.side === 'enemy' ? 'foe' : ''}`.trim();
+            item.title = unit.name;
+            item.querySelector('.p5ui-to-face').style.backgroundImage = this.spriteBg(unit.id, this.formKind(unit));
+            item.querySelector('.p5ui-to-tag').textContent = tag;
+            orderEl.appendChild(item);
+        });
+        [...orderEl.children].forEach((item) => {
+            if (!currentKeys.has(item.dataset.turnKey)) item.remove();
+        });
+        visible.forEach((unit) => {
+            const item = orderEl.querySelector(`[data-turn-key="${unit.side}:${unit.id}"]`);
+            const before = previous.get(`${unit.side}:${unit.id}`);
+            if (!item || !before || item.classList.contains('is-entering')) return;
+            const after = item.getBoundingClientRect();
+            const dx = before.left - after.left;
+            const dy = before.top - after.top;
+            if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+            const baseTransform = getComputedStyle(item).transform;
+            item.animate([
+                { transform: `${baseTransform === 'none' ? '' : `${baseTransform} `}translate(${dx}px, ${dy}px)` },
+                { transform: baseTransform === 'none' ? 'none' : baseTransform }
+            ], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        });
+    },
+
     captureVitals() {
         const snap = {};
         [...(this.state?.party || []), ...(this.state?.enemies || [])].forEach((u) => {
@@ -209,6 +251,52 @@ const BattleUI = {
         return `<div class="aff-row">${weak}${resist}${nulls}</div>`;
     },
 
+    /** NULO / POCO EFECTIVO / NORMAL / MUY EFECTIVO of a skill vs one enemy. */
+    effVerdict(skill, target) {
+        if (!skill || !skill.power || !target) return null;
+        let tag = 'HIT';
+        try {
+            const aff = (typeof BattleEngine !== 'undefined' && BattleEngine.affinityMult)
+                ? BattleEngine.affinityMult(target, skill.type)
+                : { tag: 'HIT' };
+            tag = aff?.tag || 'HIT';
+        } catch (_) {
+            tag = 'HIT';
+        }
+        if (tag === 'NULL') return { tag, cls: 'eff-null', label: 'NULO' };
+        if (tag === 'WEAK') return { tag, cls: 'eff-weak', label: 'MUY EFECTIVO' };
+        if (tag === 'RESIST') return { tag, cls: 'eff-resist', label: 'POCO EFECTIVO' };
+        return { tag: 'HIT', cls: 'eff-hit', label: 'NORMAL' };
+    },
+
+    /** Explicit per-enemy effectiveness lines for a skill card (AoE-safe). */
+    effPipsHtml(skill) {
+        if (!skill || !skill.power || !this.state) return '';
+        let foes = [];
+        try {
+            foes = (typeof BattleEngine !== 'undefined' && BattleEngine.living)
+                ? BattleEngine.living(this.state.enemies)
+                : [];
+        } catch (_) {
+            foes = [];
+        }
+        if (!foes.length) return '';
+        const lines = foes.map((f) => {
+            const v = this.effVerdict(skill, f);
+            return `<span class="eff-line ${v.cls}" title="${f.name}: ${v.label}"><i aria-hidden="true"></i><b>${f.name}</b><em>${v.label}</em></span>`;
+            // NOTE: .eff-line wraps by design — name always gets its own full
+            // line (see CSS), so it can never be squeezed into initials.
+        }).join('');
+        return `<div class="eff-list"><span class="eff-list-title">Contra cada enemigo:</span>${lines}</div>`;
+    },
+
+    /** Big verdict badge for the target list once a damaging skill is picked. */
+    effVerdictHtml(skill, target) {
+        const v = this.effVerdict(skill, target);
+        if (!v) return '';
+        return `<div class="eff-verdict ${v.cls}">${v.label}</div>`;
+    },
+
     /** Attack specialty badges (what they hit with). */
     specialtyChipsHtml(u, limit = 2) {
         if (!u || typeof BattleData === 'undefined' || !BattleData.specialtyTypes) return '';
@@ -335,6 +423,8 @@ const BattleUI = {
             || series.find(s => playable.some(p => p.series === s))
             || series[0];
         let typeFilter = ''; // '' = all; otherwise BattleData type id
+        let page = 0;
+        const PER_PAGE = 12;
 
         const charById = (id) => playable.find(p => p.id === id) || (typeof GachaRoster !== 'undefined' ? GachaRoster.getTemplate(id) : null);
         const starsForCharacter = (character) => (typeof GachaRoster !== 'undefined' && GachaRoster.primaryStars)
@@ -348,6 +438,10 @@ const BattleUI = {
             const roster = typeFilter
                 ? rosterAll.filter(p => BattleData.dealsType(p, typeFilter))
                 : rosterAll;
+            const totalPages = Math.max(1, Math.ceil(roster.length / PER_PAGE));
+            page = Math.min(Math.max(0, page), totalPages - 1);
+            const start = page * PER_PAGE;
+            const pageItems = roster.slice(start, start + PER_PAGE);
             const slots = [...selected].map(charById).filter(Boolean);
             while (slots.length < maxParty) slots.push(null);
             const prog = (typeof GachaRoster !== 'undefined') ? GachaRoster.collectionProgress() : null;
@@ -418,7 +512,8 @@ const BattleUI = {
                             </div>
                             <p class="psel-typelegend"><b>ESP</b> ataca con · <i class="aff-chip weak">DÉB</i> débil · <i class="aff-chip resist">RES</i> resiste · <i class="aff-chip null">NUL</i> anula</p>
                             <div class="psel-grid">
-                                ${roster.length ? roster.map((p, i) => {
+                                ${pageItems.length ? pageItems.map((p, k) => {
+                                    const i = start + k;
                                     const rarity = (typeof GachaRoster !== 'undefined' && GachaRoster.rarityFor)
                                         ? GachaRoster.rarityFor(p.id)
                                         : 'common';
@@ -448,6 +543,12 @@ const BattleUI = {
                                     </button>`;
                                 }).join('') : `<p class="psel-tip">${typeFilter ? `Nadie de ${activeSeries} ataca con ${BattleData.typeLabel(typeFilter)}. Prueba otro filtro.` : 'Aún no tienes personajes de esta serie. Invócalos en el Convenio.'}</p>`}
                             </div>
+                            ${totalPages > 1 ? `
+                            <div class="p5-pager psel-pager" role="navigation" aria-label="Páginas">
+                                <button type="button" class="p5-pager-btn" data-psel-pg="-1" ${page <= 0 ? 'disabled' : ''} aria-label="Anterior">◀</button>
+                                <span class="p5-pager-info">${page + 1} / ${totalPages}</span>
+                                <button type="button" class="p5-pager-btn" data-psel-pg="1" ${page >= totalPages - 1 ? 'disabled' : ''} aria-label="Siguiente">▶</button>
+                            </div>` : ''}
                             ${playable.length < minParty ? `
                                 <div class="psel-need-roster">
                                     <p>Necesitas al menos <strong>${minParty}</strong> personajes. Tienes <strong>${playable.length}</strong>.</p>
@@ -479,6 +580,7 @@ const BattleUI = {
                     AudioManager.ui.click();
                     activeSeries = tab.dataset.series;
                     typeFilter = '';
+                    page = 0;
                     render();
                 };
             });
@@ -487,6 +589,14 @@ const BattleUI = {
                     if (pill.disabled) return;
                     AudioManager.ui.click();
                     typeFilter = pill.dataset.type || '';
+                    page = 0;
+                    render();
+                };
+            });
+            container.querySelectorAll('[data-psel-pg]').forEach(btn => {
+                btn.onclick = () => {
+                    AudioManager.ui.click();
+                    page += parseInt(btn.dataset.pselPg || '1', 10) || 0;
                     render();
                 };
             });
@@ -581,6 +691,26 @@ const BattleUI = {
         }, 500);
         this.resetCameraPose(1);
         this.render();
+        // P5 encounter splash: foe names over the stage, then out of the way.
+        try {
+            const banner = this.root?.querySelector('#p5-action-banner');
+            const foes = (this.state?.enemies || []).filter(e => (e.hp ?? 1) > 0);
+            const encTitle = (typeof BattleData !== 'undefined' && BattleData.encounters?.[runKey]?.title) || '';
+            if (banner && foes.length) {
+                banner.className = 'p5-action-banner show is-encounter';
+                banner.innerHTML = `
+                    <div class="p5-action-text">
+                        <em class="p5-action-tag">ENEMIGO</em>
+                        <strong>${foes.map(f => this.fighterName(f)).join(' · ')}</strong>
+                        <span>${encTitle}</span>
+                    </div>`;
+                setTimeout(() => {
+                    if (banner.classList.contains('is-encounter')) {
+                        banner.classList.remove('show', 'is-encounter');
+                    }
+                }, 1600);
+            }
+        } catch (_) { /* ignore */ }
         this.startSpriteLoops();
         this.continueFlow();
     },
@@ -798,6 +928,14 @@ const BattleUI = {
             scale += 0.02;
             darken += 0.05;
         }
+        // Signature camera grammar (unique per skill role).
+        const cam = profile?.cameraStyle || '';
+        if (cam === 'heavy-dolly') { scale += 0.03; darken += 0.08; x *= 1.2; }
+        else if (cam === 'reveal-rise') { y -= 10; scale += 0.02; darken += 0.06; }
+        else if (cam === 'locked-frame') { x *= 0.3; scale = Math.max(scale, 1.02); darken = Math.max(darken - 0.03, 0); }
+        else if (cam === 'soft-pull') { x *= 0.4; y -= 6; scale += 0.005; }
+        else if (cam === 'dutch-drift') { x *= 1.1; darken += 0.1; }
+        else if (cam === 'micro-lunge') { x *= 1.05; }
         this.setCameraPose({
             x, y, scale, darken,
             ms: impact ? (barrage ? 90 : 120) : (casting ? 220 : 200)
@@ -1044,14 +1182,7 @@ const BattleUI = {
             const queue = s.turnQueue || [];
             const resolved = queue.map(slot => this.state && BattleEngine.findUnit(s, slot.id, slot.side)).filter(u => u && u.hp > 0);
             const list = resolved.length ? resolved : [...s.party, ...s.enemies].filter(u => u.hp > 0);
-            orderEl.innerHTML = list.slice(0, 6).map((u, i) => {
-                const tag = actor && actor.id === u.id ? 'NOW' : (i === 0 ? '1' : String(i + 1));
-                return `
-                <div class="p5ui-to ${actor && actor.id === u.id ? 'now' : ''} ${i === 1 ? 'next' : ''} ${u.side === 'enemy' ? 'foe' : ''}" title="${u.name}">
-                    <div class="p5ui-to-face" style="background-image:${this.spriteBg(u.id, this.formKind(u))}"></div>
-                    <b class="p5ui-to-tag">${tag}</b>
-                </div>`;
-            }).join('');
+            this.renderTurnOrder(orderEl, list, actor);
         }
 
         const enemyHud = this.root.querySelector('#p5-enemy-hud');
@@ -1132,6 +1263,103 @@ const BattleUI = {
         this.renderCommands();
         this.startSpriteLoops();
         this.syncTargetHighlights();
+        this.normalizeFighterHeights();
+    },
+
+    /**
+     * Ground every fighter on the same line WITHOUT resizing anyone.
+     * PNGs carry different transparent footroom, so `contain` bottom-anchored
+     * leaves some fighters floating. We measure each art's transparent rows
+     * at the bottom (alpha scan, cached per URL) and lift the fighter by
+     * exactly that displayed gap via negative margin. Sizes, boxes and
+     * backgrounds stay 100% as authored — only the baseline is equalized.
+     * No transforms involved (enemy flip + idle use transform — untouched).
+     */
+    normalizeFighterHeights() {
+        if (!this.root) return;
+        try {
+            this._artPadCache = this._artPadCache || {};
+            this.root.querySelectorAll('.p5-fighter').forEach((fel) => {
+                const spr = fel.querySelector('.p5-sprite');
+                if (!spr) return;
+                const bg = spr.style.backgroundImage || '';
+                const m = /url\(['"]?([^'")]+)['"]?\)/.exec(bg);
+                if (!m) return;
+                const key = m[1];
+                const cached = this._artPadCache[key];
+                if (cached) {
+                    this.applyGrounding(fel, spr, cached);
+                    return;
+                }
+                if (cached === null) return; // measuring already
+                this._artPadCache[key] = null;
+                const img = new Image();
+                img.onload = () => {
+                    let pad = null;
+                    try {
+                        pad = this.measureFootPad(img);
+                    } catch (_) {
+                        pad = null;
+                    }
+                    this._artPadCache[key] = pad || false;
+                    if (pad && spr.isConnected) this.applyGrounding(fel, spr, pad);
+                };
+                img.onerror = () => {
+                    this._artPadCache[key] = false;
+                };
+                img.src = key;
+            });
+        } catch (_) { /* never break the battle render */ }
+    },
+
+    /** Alpha-scan ONLY the bottom: transparent footroom rows in natural px. */
+    measureFootPad(img) {
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+        if (!w || !h) return null;
+        const cw = Math.min(w, 420);
+        const ch = Math.min(h, 420);
+        const cv = document.createElement('canvas');
+        cv.width = cw;
+        cv.height = ch;
+        const ctx = cv.getContext('2d', { willReadFrequently: true });
+        if (!ctx) return null;
+        ctx.drawImage(img, 0, 0, cw, ch);
+        let data = null;
+        try {
+            data = ctx.getImageData(0, 0, cw, ch).data;
+        } catch (_) {
+            return null;
+        }
+        const rowHasInk = (y) => {
+            for (let x = 0; x < cw; x += 3) {
+                if (data[(y * cw + x) * 4 + 3] > 10) return true;
+            }
+            return false;
+        };
+        let bottom = -1;
+        for (let y = ch - 1; y >= 0; y -= 2) {
+            if (rowHasInk(y)) {
+                bottom = y;
+                break;
+            }
+        }
+        if (bottom < 0) return null;
+        const padRows = Math.max(0, (ch - 1 - bottom) * (h / ch));
+        return { w, h, padB: padRows };
+    },
+
+    /** Lift the whole fighter by its displayed footroom gap — sizes untouched. */
+    applyGrounding(fel, spr, pad) {
+        if (!fel || !spr || !pad || !pad.w || !pad.h) return;
+        try {
+            const bw = spr.offsetWidth;
+            const bh = spr.offsetHeight;
+            if (!bw || !bh) return;
+            const s = Math.min(bw / pad.w, bh / pad.h);
+            const gap = Math.max(0, Math.round(pad.padB * s));
+            fel.style.setProperty('margin-bottom', `${-gap}px`, 'important');
+        } catch (_) { /* ignore */ }
     },
 
     syncTargetHighlights() {
@@ -1345,6 +1573,7 @@ const BattleUI = {
                             </div>
                             <strong>${sk.name}</strong>
                             <small class="p5ui-card-blurb">${facts}</small>
+                            ${this.effPipsHtml(sk)}
                             <div class="p5ui-card-foot">
                                 <em>${sk.once || sk.transform ? 'Único' : (sk.cooldown ? `CD ${sk.cooldown}` : (sk.aoe ? 'AoE' : (sk.hits > 1 ? sk.hits + '×' : 'Single')))}</em>
                                 <span>${why}</span>
@@ -1375,6 +1604,7 @@ const BattleUI = {
                         <button class="p5ui-card target ${foe ? 'foe' : 'ally'}" data-target="${t.id}" type="button" style="--i:${i}">
                             <div class="p5ui-card-art" style="background-image:${this.spriteBg(t.id, this.formKind(t))}"></div>
                             <strong>${t.name}</strong>
+                            ${foe && this.selectedSkill?.power ? this.effVerdictHtml(this.selectedSkill, t) : ''}
                             ${foe ? this.affinityChipsHtml(t, { showResist: true, showNull: false }) : ''}
                             <div class="p5ui-card-foot"><span>HP ${Math.max(0, t.hp)}/${t.maxHp}</span></div>
                         </button>
@@ -1635,6 +1865,18 @@ const BattleUI = {
         }
     },
 
+    supportGroup(actor) {
+        return actor?.side === 'enemy' ? this.state.enemies : this.state.party;
+    },
+
+    supportTargetIds(actor, sk, action) {
+        if (sk?.aoeHeal || sk?.partyBuff) {
+            return BattleEngine.living(this.supportGroup(actor)).map((unit) => unit.id);
+        }
+        if (action?.targetId) return [action.targetId];
+        return actor?.id ? [actor.id] : [];
+    },
+
     skillFxProfile(sk, action, actor = null) {
         const id = String(sk?.id || action?.skillId || '');
         const design = typeof BattleTechniqueDesigns !== 'undefined'
@@ -1672,12 +1914,12 @@ const BattleUI = {
 
         let family = 'melee';
         if (isSupport) family = supportMode === 'heal' ? 'heal' : (supportMode === 'debuff' ? 'hex' : (sk?.transform ? 'transform' : 'support'));
-        else if (/rasengan|odama|bijuu|menacing|hadou|cero|getsuga|kuroi|yasaka|bomb|menacing_ball/i.test(id)) family = 'spiral';
+        else if (design?.bladeVariant || /oni_giri|ashura|getsuga|shunpo|senkei|slash|string|web|zabimaru|kubikiri|kusanagi|senkei_blade/i.test(id) || type === 'slash') family = 'blade';
+        else if (/rasengan|odama|bijuu|menacing|hadou|cero|kuroi|yasaka|bomb|menacing_ball/i.test(id)) family = 'spiral';
         else if (/chidori|raiton|kirin|thunder|el_thor|lightning|raigeki|raikiri|byakurai/i.test(id)) family = 'lightning';
         else if (/katon|red_hawk|diable|amaterasu|fragor|fire|hikotsu/i.test(id)) family = 'inferno';
         else if (/hyorin|ice|frost|san_no_mai|sode|water_shot|water|sables|desert|sand|sabaku|sunashield/i.test(id)) family = 'element';
         else if (/ora|dona|muda|gatling|gum_|jet_|kyubi_claw|hihio|stone_free|star_breaker/i.test(id) || hits >= 4) family = 'barrage';
-        else if (/oni_giri|ashura|getsuga|shunpo|senkei|slash|string|web|zabimaru|kubikiri|kusanagi|senkei_blade/i.test(id) || type === 'slash') family = 'blade';
         else if (/pierce|star_finger|shigan|senbon|injection|air_palm|hakke/i.test(id) || type === 'pierce') family = 'pierce';
         else if (/curse|tsukuyomi|kyoka|genjutsu|shadow|kage_|kamui|king_crimson|the_world|time_stop|erase/i.test(id) || type === 'curse' || type === 'psy') family = 'hex';
         else if (/almighty|bankai|senkei|god|lanza|king_kong|ashura|kirin|space/i.test(id) || power >= 160) family = 'finisher';
@@ -1696,6 +1938,7 @@ const BattleUI = {
         return {
             characterId, element, transformed, transformElement, supportMode,
             fxType, slug, family, projectile, hits,
+            colors: Array.isArray(design?.colors) && design.colors.length >= 2 ? design.colors : null,
             style: design?.style || `${family}-signature`,
             bladeVariant: design?.bladeVariant || null,
             energyVariant: design?.energyVariant || null,
@@ -1783,10 +2026,10 @@ const BattleUI = {
         if (sk?.aoe && sk.power) {
             const foes = el.classList.contains('enemy') ? this.state.party : this.state.enemies;
             BattleEngine.living(foes).forEach((t) => targets.push(t.id));
+        } else if (isSupport && (sk?.aoeHeal || sk?.partyBuff)) {
+            this.supportTargetIds(actor, sk, action).forEach((id) => targets.push(id));
         } else if (action.targetId) {
             targets.push(action.targetId);
-        } else if (isSupport && (sk?.aoeHeal || sk?.partyBuff)) {
-            BattleEngine.living(this.state.party).forEach((t) => targets.push(t.id));
         } else if (isSupport && actor) {
             targets.push(actor.id);
         }
@@ -1797,7 +2040,7 @@ const BattleUI = {
             impactDone = true;
             if (isSupport) {
                 targets.forEach((tid, i) => {
-                    const tgt = this.fighterEl(tid, actor.side === 'enemy' ? 'ally' : 'enemy');
+                    const tgt = this.fighterEl(tid, this.targetSide(actor, true, sk));
                     if (!tgt) return;
                     setTimeout(() => {
                         this.applySupportFx(tgt, profile, profile.supportMode);
@@ -1805,6 +2048,10 @@ const BattleUI = {
                     }, i * 80);
                 });
                 return;
+            }
+            if (sk?.heal || sk?.aoeHeal || sk?.revive != null || sk?.buff || sk?.allyBuff
+                || sk?.partyBuff || sk?.charge || sk?.cover || sk?.transform) {
+                this.applySupportFx(el, profile, this.supportEffectKind(sk, action));
             }
             this.focusCamera(actor, profile, 'impact');
             const shake = cfg.shake?.[clipName] ?? profile.shake ?? 8;
@@ -2033,11 +2280,9 @@ const BattleUI = {
         if (sk?.aoe && sk.power) {
             const foes = actor?.side === 'enemy' ? this.state.party : this.state.enemies;
             BattleEngine.living(foes).forEach(t => targets.push(t.id));
-        } else if (action.targetId) {
-            targets.push(action.targetId);
         } else if (isSupport && (sk?.aoeHeal || sk?.partyBuff)) {
-            BattleEngine.living(this.state.party).forEach(t => targets.push(t.id));
-        } else if (isSupport && action.targetId) {
+            this.supportTargetIds(actor, sk, action).forEach(id => targets.push(id));
+        } else if (action.targetId) {
             targets.push(action.targetId);
         } else if (isSupport && actor) {
             targets.push(actor.id);
@@ -2162,6 +2407,13 @@ const BattleUI = {
             }
         });
 
+        const secondaryMode = this.supportEffectKind(sk, action);
+        const hasSecondaryEffect = !isSupport && (
+            sk?.heal || sk?.aoeHeal || sk?.revive != null || sk?.buff || sk?.allyBuff
+            || sk?.partyBuff || sk?.charge || sk?.cover || sk?.transform
+        );
+        if (hasSecondaryEffect) this.applySupportFx(el, profile, secondaryMode);
+
         if (isSupport) {
             if (fx) fx.supportImpact(this.root.querySelector('#battle-fx') || this.root, profile, profile.supportMode, 700);
         } else if (profile.aoePulse) {
@@ -2230,10 +2482,12 @@ const BattleUI = {
             if (!fighter) return;
             const n = document.createElement('div');
             const affinity = h.affinity || h.tag;
-            n.className = `p5-dmg ${affinity === 'WEAK' ? 'weak' : ''} ${affinity === 'RESIST' ? 'resist' : ''} ${h.crit ? 'crit' : ''} ${h.tag === 'NULL' ? 'null' : ''}`;
+            n.className = `p5-dmg ${affinity === 'WEAK' ? 'weak' : ''} ${affinity === 'RESIST' ? 'resist' : ''} ${h.crit ? 'crit' : ''} ${h.tag === 'NULL' ? 'null' : ''} ${h.tag === 'MISS' ? 'miss' : ''}`;
             n.innerHTML = h.tag === 'NULL'
                 ? '<b>NULO</b>'
-                : `${h.crit ? '<b>¡CRÍTICO!</b>' : ''}${affinity === 'WEAK' ? '<b>¡DÉBIL!</b>' : ''}${affinity === 'RESIST' ? '<b>RESISTE</b>' : ''}<span>${Number(h.damage || 0).toLocaleString('es-ES')}</span>`;
+                : h.tag === 'MISS'
+                    ? '<b>ESQUIVA</b>'
+                    : `${h.crit ? '<b>¡CRÍTICO!</b>' : ''}${affinity === 'WEAK' ? '<b>¡DÉBIL!</b>' : ''}${affinity === 'RESIST' ? '<b>RESISTE</b>' : ''}<span>${Number(h.damage || 0).toLocaleString('es-ES')}</span>`;
             fighter.appendChild(n);
             setTimeout(() => n.remove(), 900 + i * 40);
             if (h.tag !== 'NULL' && h.damage > 0) {
@@ -2254,6 +2508,10 @@ const BattleUI = {
         hits.forEach((h, i) => {
             const delay = i * 55;
             setTimeout(() => {
+                if (h.tag === 'MISS') {
+                    AudioManager.combat.dodge();
+                    return;
+                }
                 if (h.tag === 'NULL') {
                     AudioManager.combat.impact('null');
                     return;
@@ -2344,8 +2602,12 @@ const BattleUI = {
             title = sk.name || 'Técnica';
             detail = `${this.fighterName(actor)} · ${sk.desc || BattleData.skillFacts(sk).slice(0, 1)[0] || BattleData.typeLabel(sk.type)}`;
             tag = profile.family === 'finisher' ? 'ULTIMATE'
-                : (profile.family === 'heal' || profile.family === 'support' ? 'SUPPORT'
-                    : (BattleData.typeLabel?.(sk.type) || sk.type || 'SKILL').toUpperCase());
+                : profile.supportMode === 'transform' ? 'TRANSFORM'
+                    : profile.supportMode === 'heal' ? 'HEAL'
+                        : profile.supportMode === 'buff' ? 'BUFF'
+                            : profile.supportMode === 'debuff' ? 'DEBUFF'
+                                : (profile.family === 'support' ? 'SUPPORT'
+                                    : (BattleData.typeLabel?.(sk.type) || sk.type || 'SKILL').toUpperCase());
         } else if (action.type === 'attack') {
             title = 'Ataque';
             detail = `${actor.name} · golpe básico`;

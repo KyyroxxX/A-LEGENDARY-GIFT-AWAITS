@@ -7,7 +7,7 @@ const ArenaScene = {
 
     render() {
         const el = document.createElement('div');
-        el.className = 'arena-scene';
+        el.className = 'arena-scene p5-hub';
         el.innerHTML = `
             <div class="arena-bg" aria-hidden="true">
                 <img class="arena-bg-art" src="${this.ART}" alt=""
@@ -17,18 +17,22 @@ const ArenaScene = {
                 <div class="arena-bg-grain"></div>
             </div>
 
-            <div class="arena-shell">
-                <header class="arena-topbar">
+            <div class="arena-shell p5-shell">
+                <header class="arena-topbar p5-topbar">
                     <div class="arena-brand">
                         <img class="arena-brand-logo" src="assets/branding/app-logo.png?v=2" alt="Phantom Destiny" width="42" height="42" decoding="async">
                         <div>
-                            <p class="arena-brand-kicker">PHANTOM DESTINY</p>
+                            <p class="arena-brand-kicker">PHANTOM DESTINY<span class="build-tag">P5·v3</span></p>
                             <h1 class="arena-brand-title">OPERATION CHIKITRISKIS</h1>
                         </div>
                     </div>
+                    <div class="p5-date" aria-label="Fecha">
+                        <span class="p5-date-day" id="arena-date">DÍA 1</span>
+                        <span class="p5-date-sub">CRÓNICA</span>
+                    </div>
                     <div class="arena-currencies" aria-label="Recursos">
                         <div class="arena-chip arena-chip-inv">
-                            <span class="arena-chip-ico arena-chip-inv-ico" aria-hidden="true"></span>
+                            <img class="arena-chip-ico" src="assets/gacha/invocation-persona5.png?v=1" alt="" width="28" height="28" decoding="async">
                             <div>
                                 <em>INVOCACIONES</em>
                                 <strong id="arena-inv">0</strong>
@@ -42,28 +46,28 @@ const ArenaScene = {
                             </div>
                         </div>
                         <div class="arena-chip">
-                            <span class="arena-chip-ico arena-chip-chiki" aria-hidden="true"></span>
+                            <img class="arena-chip-ico" src="assets/gacha/chikistrites-mask.png?v=1" alt="" width="28" height="28" decoding="async">
                             <div>
                                 <em>CHIKISTRITES</em>
                                 <strong id="arena-chiki">0</strong>
                             </div>
                         </div>
                         <div class="arena-chip arena-chip-seal">
-                            <span class="arena-chip-ico arena-chip-seal-ico" aria-hidden="true">✦</span>
+                            <img class="arena-chip-ico" src="assets/gacha/dupe-seal.png?v=1" alt="" width="28" height="28" decoding="async">
                             <div>
                                 <em>SELLOS 4★</em>
                                 <strong id="arena-seals">0</strong>
                             </div>
                         </div>
                         <div class="arena-chip arena-chip-seal-5">
-                            <span class="arena-chip-ico arena-chip-seal-5-ico" aria-hidden="true"></span>
+                            <img class="arena-chip-ico" src="assets/gacha/star-seal-5.png?v=1" alt="" width="28" height="28" decoding="async">
                             <div>
                                 <em>SELLOS 5★</em>
                                 <strong id="arena-seals-5">0</strong>
                             </div>
                         </div>
                         <div class="arena-chip arena-chip-seal-6">
-                            <span class="arena-chip-ico arena-chip-seal-6-ico" aria-hidden="true"></span>
+                            <img class="arena-chip-ico" src="assets/gacha/star-seal-6.png?v=1" alt="" width="28" height="28" decoding="async">
                             <div>
                                 <em>SELLOS 6★</em>
                                 <strong id="arena-seals-6">0</strong>
@@ -84,76 +88,90 @@ const ArenaScene = {
                     </div>
                 </header>
 
-                <div class="arena-hero">
-                    <div class="arena-hero-copy">
-                        <span class="arena-ribbon">CAMPAÑA LIMITADA</span>
-                        <h2 class="arena-hero-title">
-                            <span>LA CRÓNICA</span>
-                            <span class="arena-hero-gold">DE LOS ELEGIDOS</span>
-                        </h2>
-                        <p class="arena-hero-sub">Combates por turnos · One Piece · Naruto · JoJo · Bleach · JJK</p>
-                        <p class="arena-hero-hint">Combates → Chikistrites. En el Convenio: <strong>${(typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160} Chiki = 1 INV</strong> (botón +). Repetir frentes da menos, pero permite farmear. Tiradas Metaphor (rojas): +14 al cerrar cada apartado · +10 al vencer THE 50/50 (80 = hard pity). No se compran.</p>
-                        <div class="arena-train-line">
-                            <span>CONSTELACIÓN</span>
-                            <b id="arena-train-stats">C0 · 0/0</b>
-                            <span class="arena-train-sep">4★ C6 · 5★ C3</span>
+                <div class="p5-main">
+                    <aside class="p5-rail" aria-label="Menú">
+                        <button type="button" class="p5-rail-item is-featured" id="arena-gacha" aria-label="Abrir gacha">
+                            <img class="p5-rail-art" src="${this.THUMB}" alt="" onerror="this.style.display='none'">
+                            <span class="p5-rail-text">
+                                <b>CONVENIO</b>
+                                <i id="arena-gacha-cta">ENTRAR AL CONVENIO</i>
+                                <small id="arena-gacha-blurb">Gana combates únicos → gasta tiradas aquí.</small>
+                            </span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                        <button type="button" class="p5-rail-item" id="arena-training" aria-label="Abrir training">
+                            <span class="p5-rail-text">
+                                <b>TRAINING</b>
+                                <small>Muñeco · SP infinito · prueba voces y FX.</small>
+                            </span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                        <button type="button" class="p5-rail-item" id="arena-dupes">
+                            <span class="p5-rail-text"><b>DUPES · TIENDA</b></span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                        <button type="button" class="p5-rail-item" id="arena-equipment">
+                            <span class="p5-rail-text"><b>EQUIPAMIENTO 3★</b></span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                        <button type="button" class="p5-rail-item" id="arena-achievements">
+                            <span class="p5-rail-text"><b>LOGROS</b><small id="arena-ach-count">0/0</small></span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                        <button type="button" class="p5-rail-item" id="arena-tutorial">
+                            <span class="p5-rail-text"><b>TUTORIAL</b></span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                        <button type="button" class="p5-rail-item is-danger" id="arena-reset">
+                            <span class="p5-rail-text"><b>RESET PARTIDA</b></span>
+                            <span class="p5-rail-arrow" aria-hidden="true">▶</span>
+                        </button>
+                    </aside>
+
+                    <div class="p5-content">
+                        <div class="arena-hero">
+                            <div class="arena-hero-copy">
+                                <span class="arena-ribbon">CAMPAÑA LIMITADA</span>
+                                <h2 class="arena-hero-title">
+                                    <span>LA CRÓNICA</span>
+                                    <span class="arena-hero-gold">DE LOS ELEGIDOS</span>
+                                </h2>
+                                <p class="arena-hero-sub">Combates por turnos · One Piece · Naruto · JoJo · Bleach · JJK</p>
+                                <p class="arena-hero-hint">Combates → Chikistrites. En el Convenio: <strong>${(typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160} Chiki = 1 INV</strong> (botón +). Repetir frentes da menos, pero permite farmear. Tiradas Metaphor (rojas): +200 al cerrar cada apartado · +20 por repetir · +200 al vencer THE 50/50 (80 = hard pity). No se compran. El regalo solo sale tras vencer a THE 50/50 con Ren al máximo. THE 50/50 exige TODA la colección al máximo.</p>
+                                <div class="arena-train-line">
+                                    <span>CONSTELACIÓN</span>
+                                    <b id="arena-train-stats">C0 · 0/0</b>
+                                    <span class="arena-train-sep">4★ C6 · 5★ C3</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="arena-hero-actions">
-                        <button type="button" class="arena-portal" id="arena-gacha" aria-label="Abrir gacha">
-                            <div class="arena-portal-art">
-                                <img src="${this.THUMB}" alt=""
-                                     onerror="this.src='${this.ART}'">
-                                <div class="arena-portal-shine" aria-hidden="true"></div>
-                            </div>
-                            <div class="arena-portal-body">
-                                <div class="agc-kicker">BANNER · EVENTO LIMITADO</div>
-                                <h3 class="agc-title">${(typeof CONFIG !== 'undefined' && CONFIG.bannerName) || 'LA CRÓNICA DE LOS ELEGIDOS'}</h3>
-                                <p class="agc-blurb" id="arena-gacha-blurb">Gana combates únicos → gasta tiradas aquí.</p>
-                                <span class="agc-cta" id="arena-gacha-cta">ENTRAR AL CONVENIO</span>
-                            </div>
-                            <div class="arena-portal-stars" aria-hidden="true">★★★★★</div>
-                        </button>
+                        <nav class="arena-tabs" aria-label="Secciones">
+                            <a class="arena-tab is-active" href="#arena-sec-story">Historia</a>
+                            <a class="arena-tab" href="#arena-sec-archives">Archivos</a>
+                        </nav>
 
-                        <button type="button" class="arena-sandbox" id="arena-training" aria-label="Abrir training">
-                            <div class="atc-kicker">SANDBOX</div>
-                            <h3 class="atc-title">TRAINING DUMMY</h3>
-                            <p class="atc-blurb">Muñeco inerte · 1–3 chars · SP infinito · prueba voces y FX.</p>
-                            <span class="atc-cta">ENTRAR</span>
-                        </button>
+                        <div class="arena-frame">
+                            <section class="arena-block" id="arena-sec-story">
+                                <div class="arena-block-head">
+                                    <h2><span class="arena-chap">I</span> CRÓNICA DEL DESTINO</h2>
+                                    <p class="arena-block-note">22 sellos en cadena. Cada combate: un enemigo y un mapa únicos. Sin refritos.</p>
+                                </div>
+                                <div class="arena-missions" id="arena-story"></div>
+                            </section>
+
+                            <section class="arena-block" id="arena-sec-archives">
+                                <div class="arena-block-head">
+                                    <h2><span class="arena-chap">II</span> ARCHIVOS DEL MULTIVERSO</h2>
+                                    <p class="arena-block-note">Opcionales · también únicos · abren uno a uno. Primer clear = INV; repetir = Chiki.</p>
+                                </div>
+                                <div class="arena-missions arena-missions-grid" id="arena-archives"></div>
+                            </section>
+                        </div>
                     </div>
                 </div>
 
-                <nav class="arena-tabs" aria-label="Secciones">
-                    <a class="arena-tab is-active" href="#arena-sec-story">Historia</a>
-                    <a class="arena-tab" href="#arena-sec-archives">Archivos</a>
-                </nav>
-
-                <div class="arena-frame">
-                    <section class="arena-block" id="arena-sec-story">
-                        <div class="arena-block-head">
-                            <h2><span class="arena-chap">I</span> CRÓNICA DEL DESTINO</h2>
-                            <p class="arena-block-note">22 sellos en cadena. Cada combate: un enemigo y un mapa únicos. Sin refritos.</p>
-                        </div>
-                        <div class="arena-missions" id="arena-story"></div>
-                    </section>
-
-                    <section class="arena-block" id="arena-sec-archives">
-                        <div class="arena-block-head">
-                            <h2><span class="arena-chap">II</span> ARCHIVOS DEL MULTIVERSO</h2>
-                            <p class="arena-block-note">Opcionales · también únicos · abren uno a uno. Primer clear = INV; repetir = Chiki.</p>
-                        </div>
-                        <div class="arena-missions arena-missions-grid" id="arena-archives"></div>
-                    </section>
-
-                    <div class="arena-footer">
-                        <button type="button" class="btn-destiny" id="arena-dupes">DUPES · TIENDA</button>
-                        <button type="button" class="btn-secondary" id="arena-equipment">EQUIPAMIENTO 3★</button>
-                        <button type="button" class="btn-secondary" id="arena-tutorial">TUTORIAL</button>
-                        <button type="button" class="btn-secondary" id="arena-reset">RESET PARTIDA</button>
-                    </div>
-                </div>
+                <div class="p5-ticker" aria-hidden="true"><span>TAKE YOUR HEART ✦ EL DESTINO NO SE ENTREGA · SE CONQUISTA ✦ THE 50/50 EXIGE LA COLECCIÓN COMPLETA ✦ REPETIR FRENTES DA CHIKI ✦&nbsp;</span></div>
             </div>
         `;
         return el;
@@ -167,6 +185,9 @@ const ArenaScene = {
         this._rootEl = el;
         GameState.set('prologueDone', true);
         this.refresh(el);
+        this.bindResize();
+        this.layoutFit();
+        setTimeout(() => this.layoutFit(), 350);
         try {
             if (typeof AudioManager !== 'undefined' && AudioManager.setTheme) {
                 AudioManager.setTheme('hunt');
@@ -186,9 +207,17 @@ const ArenaScene = {
                 el.querySelectorAll('.arena-tab').forEach(t => t.classList.remove('is-active'));
                 tab.classList.add('is-active');
                 const target = el.querySelector(tab.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                el.querySelectorAll('.arena-block').forEach(b => b.classList.remove('is-shown'));
+                if (target) {
+                    target.classList.add('is-shown');
+                    if (typeof MotionFx !== 'undefined' && MotionFx.softListIn) {
+                        MotionFx.softListIn([...target.querySelectorAll('.arena-mission')]);
+                    }
+                    this.layoutFit();
+                }
             });
         });
+        el.querySelector('#arena-sec-story')?.classList.add('is-shown');
 
         el.querySelector('#arena-gacha')?.addEventListener('click', () => {
             AudioManager.ui.click();
@@ -230,6 +259,11 @@ const ArenaScene = {
             if (typeof TutorialSpotlight !== 'undefined') TutorialSpotlight.restart();
         });
 
+        el.querySelector('#arena-achievements')?.addEventListener('click', () => {
+            try { AudioManager.ui.click(); } catch (_) { /* ignore */ }
+            if (typeof Achievements !== 'undefined' && Achievements.open) Achievements.open();
+        });
+
         el.querySelector('#arena-reset')?.addEventListener('click', async () => {
             try { AudioManager.ui.click(); } catch (_) { /* ignore */ }
             const ok = typeof BattleUI !== 'undefined' && BattleUI.confirmDialog
@@ -251,6 +285,49 @@ const ArenaScene = {
         setTimeout(() => {
             try { TutorialSpotlight?.onScene('arena'); } catch (_) { /* ignore */ }
         }, 480);
+    },
+
+    /** Fill the viewport exactly: measure chrome, stretch rows + rail. No scroll, no void. */
+    layoutFit() {
+        try {
+            const el = this._rootEl;
+            if (!el) return;
+            const vh = window.innerHeight || 800;
+            const h = (sel) => {
+                const n = el.querySelector(sel);
+                return n ? n.getBoundingClientRect().height : 0;
+            };
+            const chrome =
+                h('.arena-topbar') + h('.arena-hero') + h('.arena-tabs') +
+                h('.arena-block-head') + h('.p5-pager') + h('.p5-ticker') + 78;
+            const avail = Math.max(0, vh - chrome);
+            const rows = el.querySelectorAll('.arena-block.is-shown .arena-mission');
+            if (rows.length) {
+                const rowH = Math.max(44, Math.min(84, Math.floor(avail / rows.length)));
+                rows.forEach((r) => { r.style.minHeight = `${rowH}px`; });
+            }
+            const rail = el.querySelectorAll('.p5-rail-item');
+            if (rail.length) {
+                const railH = (el.querySelector('.p5-rail')?.getBoundingClientRect().height) || 0;
+                if (railH > 100) {
+                    const itemH = Math.max(56, Math.floor(railH / rail.length) - 8);
+                    rail.forEach((b) => { b.style.minHeight = `${itemH}px`; });
+                }
+            }
+        } catch (_) { /* ignore */ }
+    },
+
+    bindResize() {
+        this.unbindResize();
+        this._resizeH = () => this.layoutFit();
+        window.addEventListener('resize', this._resizeH);
+    },
+
+    unbindResize() {
+        if (this._resizeH) {
+            window.removeEventListener('resize', this._resizeH);
+            this._resizeH = null;
+        }
     },
 
     toast(el, msg) {
@@ -295,13 +372,39 @@ const ArenaScene = {
         return !!GameState.flag(`enc_cleared_${m.encounter}`);
     },
 
-    /** Mission N locked until mission N-1 is cleared. */
+    /** Mission N locked until mission N-1 is cleared.
+     *  STORY uses the day system (ChronicleData.storyLockAt): previous front
+     *  + 3 unique archives per day. THE 50/50 also needs full collection. */
     isChainLocked(list, index, opts = {}) {
         if (index <= 0) return false;
-        if (opts.allowGojoFinal && list[index]?.id === 'gate_final') {
-            if (GameState.get('bossUnlockedByGojo') || GameState.get('gojoObtained')) return false;
+        if (opts.dayLock && typeof ChronicleData !== 'undefined' && ChronicleData.storyLockAt) {
+            return ChronicleData.storyLockAt(index).locked;
+        }
+        const m = list[index];
+        if (m && (m.id === 'gate_final' || m.isFinal)) {
+            if (typeof GachaRoster !== 'undefined' && GachaRoster.bossUnlockedByCollection) {
+                return !GachaRoster.bossUnlockedByCollection();
+            }
         }
         return !this.isCleared(list[index - 1]);
+    },
+
+    storyDayNote(list, index) {
+        if (typeof ChronicleData === 'undefined' || !ChronicleData.storyLockAt) return null;
+        const st = ChronicleData.storyLockAt(index);
+        if (!st.locked) return null;
+        const day = index + 1;
+        if (st.reason === 'prev') return `DÍA ${day} · Supera el frente anterior para abrir el día.`;
+        if (st.reason === 'sides') {
+            const left = Math.max(0, (st.need || 0) - (st.have || 0));
+            return `DÍA ${day} · Faltan ${left} archivo${left === 1 ? '' : 's'} (${st.have || 0}/${st.need || 0}) para abrir el día.`;
+        }
+        if (st.reason === 'collection') {
+            const txt = (typeof GachaRoster !== 'undefined' && GachaRoster.bossRequirementText)
+                ? GachaRoster.bossRequirementText() : 'Colección completa al máximo.';
+            return `DÍA ${day} · ${txt}`;
+        }
+        return `DÍA ${day} · Sellado.`;
     },
 
     sealedTitle(m, index) {
@@ -330,22 +433,40 @@ const ArenaScene = {
         return lines[i];
     },
 
-    missionBtn(m, locked, index = 0) {
+    missionBtn(m, locked, index = 0, opts = {}) {
         const cleared = this.isCleared(m);
         const reward = this.rewardLabel(m);
         const num = String(index + 1).padStart(2, '0');
         const state = locked ? 'locked' : (cleared ? 'cleared' : 'ready');
         const title = locked ? this.sealedTitle(m, index) : m.title;
-        const blurb = locked ? this.sealedBlurb(m) : m.blurb;
+        let blurb = locked ? this.sealedBlurb(m) : m.blurb;
+        if (locked && opts.dayLock) {
+            const note = this.storyDayNote(opts.dayList || [], index);
+            if (note) blurb = note;
+        }
+        // Enemy portrait once revealed (never while sealed).
+        let art = '';
+        if (!locked) {
+            try {
+                const enc = (typeof BattleData !== 'undefined' && BattleData.encounters) || {};
+                const foe = enc[m.encounter]?.enemies?.[0];
+                if (foe?.id && typeof StagedSprites !== 'undefined' && StagedSprites.normalUrl) {
+                    const url = StagedSprites.normalUrl(foe.id);
+                    if (url) art = `<span class="am-art" aria-hidden="true" style="background-image:url('${url}')"></span>`;
+                }
+            } catch (_) { /* ignore */ }
+        }
+        const dayBadge = opts.dayLock ? `<span class="am-day" aria-hidden="true">DÍA ${index + 1}</span>` : '';
         return `
             <button type="button" class="arena-mission ${state}"
                 data-encounter="${m.encounter}" data-mission="${m.id}" ${locked ? 'disabled' : ''}
                 style="--i:${index}"
                 title="${locked ? 'Supera el combate anterior para romper el sello' : (m.title || '')}">
                 <span class="am-index" aria-hidden="true">${num}</span>
+                ${art}
                 <span class="am-body">
                     <span class="am-top">
-                        <span class="am-title">${title}</span>
+                        <span class="am-title">${dayBadge}${title}</span>
                         <span class="am-top-end">
                             ${cleared && !locked ? '<span class="am-cleared-stamp" aria-hidden="true">CLEAR</span>' : ''}
                             ${locked
@@ -365,11 +486,41 @@ const ArenaScene = {
         return list.map((m, i) => this.missionBtn(m, this.isChainLocked(list, i, opts), i)).join('');
     },
 
+    /** Paginated missions — no page scroll, everything by clicks. */
+    PAGE_SIZE: 9,
+
+    renderMissionPage(list, page, opts = {}) {
+        const total = Math.max(1, Math.ceil(list.length / this.PAGE_SIZE));
+        const safe = Math.min(Math.max(0, page || 0), total - 1);
+        const start = safe * this.PAGE_SIZE;
+        const slice = list.slice(start, start + this.PAGE_SIZE);
+        const key = opts.key || 'story';
+        const pass = { ...opts, dayList: opts.dayLock ? list : undefined };
+        const html = slice.map((m, k) => this.missionBtn(m, this.isChainLocked(list, start + k, pass), start + k, pass)).join('');
+        const pager = total > 1 ? `
+            <div class="p5-pager" role="navigation" aria-label="Páginas">
+                <button type="button" class="p5-pager-btn" data-pg="${key}" data-dir="-1" ${safe <= 0 ? 'disabled' : ''} aria-label="Anterior">◀</button>
+                <span class="p5-pager-info">${safe + 1} / ${total}</span>
+                <button type="button" class="p5-pager-btn" data-pg="${key}" data-dir="1" ${safe >= total - 1 ? 'disabled' : ''} aria-label="Siguiente">▶</button>
+            </div>` : '';
+        return { html: html + pager, page: safe, total };
+    },
+
     bindMissions(el) {
         el.querySelectorAll('.arena-mission:not([disabled])').forEach(btn => {
             btn.onclick = () => {
                 AudioManager.ui.click();
                 GameManager.startMission(btn.dataset.encounter, btn.dataset.mission);
+            };
+        });
+        el.querySelectorAll('[data-pg]').forEach(btn => {
+            btn.onclick = () => {
+                AudioManager.ui.click();
+                const key = btn.dataset.pg;
+                const dir = parseInt(btn.dataset.dir || '1', 10) || 0;
+                if (key === 'archives') this._archivePage = (this._archivePage || 0) + dir;
+                else this._storyPage = (this._storyPage || 0) + dir;
+                this.refresh(this._rootEl || el);
             };
         });
     },
@@ -386,6 +537,21 @@ const ArenaScene = {
         const inv = GameState.get('invocations') || 0;
         const set = (id, v) => { const n = el.querySelector(id); if (n) n.textContent = v; };
         set('#arena-wins', wins);
+        try {
+            const total = (typeof ChronicleData !== 'undefined' && ChronicleData.STORY)
+                ? ChronicleData.STORY.length : 16;
+            const day = (typeof ChronicleData !== 'undefined' && ChronicleData.currentDay)
+                ? ChronicleData.currentDay() : 1;
+            const sides = (typeof ChronicleData !== 'undefined' && ChronicleData.sideClears)
+                ? ChronicleData.sideClears() : 0;
+            set('#arena-date', `DÍA ${day}/${total}`);
+            const sub = el.querySelector('.p5-date-sub');
+            if (sub) sub.textContent = `${sides} archivos`;
+            const dateBox = el.querySelector('.p5-date');
+            if (dateBox) {
+                dateBox.title = `Cada misión de historia es un día. Para abrir el siguiente día: supera el frente anterior + 3 archivos únicos por día (llevas ${sides}). Repetir no cuenta.`;
+            }
+        } catch (_) { /* ignore */ }
         set('#arena-inv', inv);
         set('#arena-meta', GameState.get('metaphorTickets') || 0);
         set('#arena-chiki', GameState.get('chikistrites') || 0);
@@ -393,6 +559,12 @@ const ArenaScene = {
         set('#arena-seals-5', GameState.get('starSeals5') || 0);
         set('#arena-seals-6', GameState.get('starSeals6') || 0);
         set('#arena-clears', this.countUniqueClears());
+        try {
+            const all = (typeof CONFIG !== 'undefined' && CONFIG.achievements) || [];
+            const owned = (typeof Achievements !== 'undefined' && Achievements.unlockedList)
+                ? Achievements.unlockedList() : [];
+            set('#arena-ach-count', `${owned.length}/${all.length}`);
+        } catch (_) { /* ignore */ }
         if (typeof CharProgress !== 'undefined') {
             CharProgress.ensure();
             const prog = CharProgress.collectionDupesProgress();
@@ -420,7 +592,7 @@ const ArenaScene = {
             }
             if (blurb) {
                 blurb.textContent = open
-                    ? `Tienes ${inv} INV. 4★ C0–C6 · 5★ C0–C3. Gojo abre THE 50/50.`
+                    ? `Tienes ${inv} INV. 4★ C0–C6 · 5★/6★ C0–C3. THE 50/50 exige colección completa al máximo.`
                     : `Acumula tiradas en combates nuevos. Ahora: ${inv}.`;
             }
         }
@@ -435,17 +607,22 @@ const ArenaScene = {
                 StoryData.missions.gate_aizen,
                 StoryData.missions.gate_final
             ].filter(Boolean);
-        el.querySelector('#arena-story').innerHTML = this.renderMissionList(story, { allowGojoFinal: true });
+        const storyR = this.renderMissionPage(story, this._storyPage || 0, { key: 'story', dayLock: true });
+        el.querySelector('#arena-story').innerHTML = storyR.html;
+        this._storyPage = storyR.page;
 
         const archivesHost = el.querySelector('#arena-archives');
         if (archivesHost) {
             const archives = (typeof ChronicleData !== 'undefined')
                 ? ChronicleData.archiveMissionList()
                 : [];
-            archivesHost.innerHTML = this.renderMissionList(archives);
+            const r = this.renderMissionPage(archives, this._archivePage || 0, { key: 'archives' });
+            archivesHost.innerHTML = r.html;
+            this._archivePage = r.page;
         }
 
         this.bindMissions(el);
+        this.layoutFit();
     },
 
     openDupes() {
@@ -458,6 +635,7 @@ const ArenaScene = {
     },
 
     exit() {
+        this.unbindResize();
         if (typeof DupesShop !== 'undefined') DupesShop.close();
         if (typeof MotionFx !== 'undefined') MotionFx.killTracked();
     }

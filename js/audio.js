@@ -101,77 +101,66 @@ const AudioManager = {
     /** Local files first; youtubeId used when files are missing. */
     PLAYLIST: {
         stardew: [
-            { src: 'assets/music/stardew.mp3', youtube: 'wJWksPWDKOc', weight: 1, label: 'Stardew' },
-            { src: 'assets/music/stardew-cloud-country.mp3', youtube: 'wJWksPWDKOc', weight: 1, label: 'Cloud Country' }
+            { src: 'assets/music/stardew.mp3', youtube: 'A9zlXUSuUeo', weight: 1, label: 'Reach Out (OST oficial)' },
+            { src: 'assets/music/stardew-cloud-country.mp3', youtube: 'X34igEEtrac', weight: 1, label: 'Nothing Can Be Explained (OST oficial)' }
         ],
 
-        /** Hub / village (Naruto peaceful) */
+        /** Hub / village (Naruto peaceful · OST oficial) */
         konoha: [
-            { youtube: 'qAGvQDoL5s4', weight: 3, label: 'Afternoon of Konoha' },
-            { youtube: 'YlYqQZcB1c0', weight: 2.5, label: 'Daylight of Konoha' },
-            { youtube: 'S4dBbG3WU2k', weight: 2, label: 'Konoha Peace' },
-            { youtube: '0qZGzqW7V8Y', weight: 1.5, label: 'Naruto Daily Life' },
-            { youtube: '5kQybVJa9AM', weight: 2, label: 'Samidare · lluvia' }
+            { youtube: 'Uz2CUU3AZZY', weight: 3, label: 'Emergence of Talents (OST oficial)' },
+            { youtube: 'HwFa3IKSLOo', weight: 3, label: 'Early Summer Rain (OST oficial)' },
+            { youtube: '4NDfNmfdhTM', weight: 2.5, label: 'Akatsuki (OST oficial)' },
+            { youtube: 'kHMs4gCl5rk', weight: 2, label: 'Fourth Hokage (OST oficial)' }
         ],
 
-        /** Arena menu — mezcla de series, rota */
+        /** Arena menu — mezcla de series, rota (todo oficial) */
         arena_mix: [
-            { youtube: 'daFi4MScfl8', weight: 3, label: 'OP · Overtaken' },
-            { youtube: 'bfW6dzCFy2A', weight: 3, label: 'OP · Overtaken Epic' },
-            { youtube: 'EJi4ElFl2EA', weight: 3, label: 'Naruto · Reverse Situation' },
-            { youtube: '4NDfNmfdhTM', weight: 2.5, label: 'Naruto · Akatsuki' },
-            { youtube: '7JEjQG4-tpU', weight: 3, label: 'Bleach · Number One' },
-            { youtube: 'jBhM-b93bsY', weight: 2, label: 'Bleach · Precipice of Defeat' },
-            { youtube: 'RfKgol6t58Q', weight: 2.5, label: 'JoJo · Final Battle' },
-            { youtube: 'U0TXIXTzJEY', weight: 2.5, label: "JoJo · il vento d'oro" },
-            { youtube: 'h_9RC8DCEPM', weight: 2.5, label: 'JJK · Malevolent Shrine' },
-            { youtube: 'O6Y9y2kOy0w', weight: 3, label: 'Metaphor · Battle Theme' },
-            { youtube: 'lvuHvXsZPrk', weight: 2.5, label: 'Persona 5 · Rivers in the Desert' },
-            { youtube: 'ZNGqBDRJgvo', weight: 2.5, label: 'Persona 5 · Last Surprise' },
-            { youtube: 'glo0lQfTpIs', weight: 2, label: 'Persona 4 · Reach Out to the Truth' },
-            { youtube: 'F7XKQ_yDoFQ', weight: 2.5, label: 'Bleach · Principio de lucha' },
-            { youtube: 'Z9Onb_z0XPI', weight: 2.5, label: 'Bleach · Clavar la espada' },
-            { youtube: 'fZx7yUztxJ0', weight: 2, label: 'Bleach · Escalon' }
+            { youtube: 'Flysqk6WfQE', weight: 3, label: 'OP · We Are (oficial)' },
+            { youtube: 'Uz2CUU3AZZY', weight: 3, label: 'Naruto · Emergence (OST oficial)' },
+            { youtube: 'U0TXIXTzJEY', weight: 2.5, label: "JoJo · il vento d'oro (OST oficial)" },
+            { youtube: '7JEjQG4-tpU', weight: 3, label: 'Bleach · Number One (OST oficial)' },
+            { youtube: 'h_9RC8DCEPM', weight: 2.5, label: 'JJK · Malevolent Shrine (OST oficial)' },
+            { youtube: 'CwkzK-F0Y00', weight: 2.5, label: 'Kimetsu · Gurenge (oficial)' },
+            { youtube: 'M2cckDmNLMI', weight: 3, label: 'CSM · KICK BACK (oficial)' },
+            { youtube: 'dsuJZx24V_A', weight: 2.5, label: 'Persona 5 · Life Will Change (OST oficial)' },
+            { youtube: 'ZNGqBDRJgvo', weight: 2.5, label: 'Persona 5 · Last Surprise (OST oficial)' },
+            { youtube: 'ezr_MVvEhqs', weight: 2, label: 'Metaphor · ATLUS (oficial)' }
         ],
 
-        /** Character select */
+        /** Character select (OST oficial) */
         bleach: [
-            { src: 'assets/music/bleach-sword.mp3', youtube: '7JEjQG4-tpU', weight: 3.5, label: 'Number One - Bankai' },
-            { src: 'assets/music/bleach-number-one.mp3', youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One (VIZ)' },
-            { youtube: 'jBhM-b93bsY', weight: 2.5, label: 'On the Precipice of Defeat' },
-            { youtube: 'GwIEDIxuXQU', weight: 1.5, label: 'Precipice · Full' },
-            { src: 'assets/music/bleach.mp3', youtube: '7JEjQG4-tpU', weight: 1, label: 'Number One' }
+            { src: 'assets/music/bleach-sword.mp3', youtube: '7JEjQG4-tpU', weight: 3.5, label: 'Number One - Bankai (OST oficial)' },
+            { src: 'assets/music/bleach-number-one.mp3', youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One (VIZ oficial)' },
+            { src: 'assets/music/bleach.mp3', youtube: 'zO_532nbu0c', weight: 2, label: 'never meant to belong (OST oficial)' }
         ],
 
-        /* ── Gacha menus por banner ── */
+        /* ── Gacha menus por banner (todo oficial) ── */
         menu_op: [
-            { youtube: 'daFi4MScfl8', startSeconds: 8, weight: 2, label: 'One Piece · Overtaken' },
-            { youtube: 'bfW6dzCFy2A', weight: 2, label: 'One Piece · Overtaken Epic' },
-            { youtube: 'QGbeqYJAUAc', weight: 1.5, label: 'One Piece · Grand Line' }
+            { youtube: 'Flysqk6WfQE', weight: 3, label: 'One Piece · We Are (oficial Netflix)' },
+            { youtube: 'r7n-L5B0bBw', weight: 2.5, label: 'One Piece · We Are (oficial Columbia)' },
+            { youtube: 'YoeP9w5UIlg', weight: 2, label: 'One Piece · We Are OP1 (oficial)' }
         ],
         menu_naruto: [
-            { youtube: 'qAGvQDoL5s4', weight: 3, label: 'Afternoon of Konoha' },
-            { youtube: '5kQybVJa9AM', weight: 3, label: 'Samidare' },
-            { youtube: 'EJi4ElFl2EA', weight: 2.5, label: 'Reverse Situation' },
-            { youtube: 'P6naO7tVcHg', weight: 2, label: 'Loneliness' },
-            { youtube: 'YlYqQZcB1c0', weight: 2, label: 'Daylight of Konoha' }
+            { youtube: 'Uz2CUU3AZZY', weight: 3, label: 'Emergence of Talents (OST oficial)' },
+            { youtube: 'HwFa3IKSLOo', weight: 3, label: 'Early Summer Rain (OST oficial)' },
+            { youtube: '4NDfNmfdhTM', weight: 2.5, label: 'Akatsuki (OST oficial)' },
+            { youtube: 'rmA62C4F5bk', weight: 2.5, label: "Obito's Theme (OST oficial)" },
+            { youtube: 'kHMs4gCl5rk', weight: 2, label: 'Fourth Hokage (OST oficial)' }
         ],
         menu_jojo: [
-            { youtube: 'U0TXIXTzJEY', weight: 4, label: "il vento d'oro" },
-            { youtube: '-W8MBjTk2E8', weight: 3, label: 'Awaken' },
-            { youtube: 'RfKgol6t58Q', weight: 2.5, label: 'Final Battle' },
-            { youtube: 'ayTe5S42guI', weight: 2, label: 'Killer' },
-            { youtube: 'lRrOLTHu-ew', weight: 1.5, label: 'Pillar Men' }
+            { youtube: 'U0TXIXTzJEY', weight: 4, label: "il vento d'oro (OST oficial)" },
+            { youtube: '-W8MBjTk2E8', weight: 3, label: 'Awaken (OST oficial)' },
+            { youtube: 'ayTe5S42guI', weight: 2.5, label: 'Killer (OST oficial)' },
+            { youtube: 'X6aEiZg7gTE', weight: 2.5, label: 'Diamond Main Theme (OST oficial)' }
         ],
         menu_bleach: [
-            { youtube: '7JEjQG4-tpU', weight: 4, label: 'Number One - Bankai' },
-            { youtube: 'jBhM-b93bsY', weight: 3, label: 'Precipice of Defeat' },
-            { youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One' },
-            { youtube: 'GwIEDIxuXQU', weight: 2, label: 'Precipice · Full' },
-            { youtube: 'F7XKQ_yDoFQ', weight: 3.5, label: 'Principio de lucha' },
-            { youtube: 'Z9Onb_z0XPI', weight: 3.5, label: 'Clavar la espada' },
-            { youtube: 'fZx7yUztxJ0', weight: 2.5, label: 'Escalon' },
-            { youtube: 'MZXerA8nfsg', weight: 2.5, label: 'Fiesta de Guerra' }
+            { youtube: '7JEjQG4-tpU', weight: 4, label: 'Number One - Bankai (OST oficial)' },
+            { youtube: '7nQAGywy3Rw', weight: 3, label: 'Number One (VIZ oficial)' },
+            { youtube: 'Z9Onb_z0XPI', weight: 3, label: 'Clavar la espada (OST oficial)' },
+            { youtube: 'zO_532nbu0c', weight: 3, label: 'never meant to belong (OST oficial)' },
+            { youtube: 'X34igEEtrac', weight: 2.5, label: 'Nothing Can Be Explained (OST oficial)' },
+            { youtube: 'F7XKQ_yDoFQ', weight: 2.5, label: 'Principio de lucha (VEVO oficial)' },
+            { youtube: 'fZx7yUztxJ0', weight: 2, label: 'Escalon (VEVO oficial)' }
         ],
         menu_jjk: [
             /* Official OP MVs — Kaikai Kitan is the default banner bed */
@@ -182,39 +171,38 @@ const AudioManager = {
         ],
 
         menu_kimetsu: [
-            { youtube: 'CwkzK-F0Y00', weight: 2, label: 'Gurenge · LiSA (OP1)', endSeconds: 110 },
-            { youtube: 'I-MOWW4Io6I', weight: 2, label: 'Kimetsu · Battle Themes' },
-            { youtube: 'nioQfmYE1Bk', weight: 2, label: 'Kimetsu · Infinity Castle' }
+            { youtube: 'CwkzK-F0Y00', weight: 3, label: 'Gurenge · LiSA (oficial)', endSeconds: 110 }
         ],
 
         menu_chainsaw: [
-            { youtube: 'M2cckDmNLMI', weight: 6, label: 'KICK BACK · Kenshi Yonezu' },
-            { youtube: 'bfW6dzCFy2A', weight: 2, label: 'Chainsaw Man · Pressure' },
-            { youtube: 'h_9RC8DCEPM', weight: 2, label: 'Chainsaw Man · Ritual' }
+            { youtube: 'M2cckDmNLMI', weight: 6, label: 'KICK BACK · Kenshi Yonezu (oficial)' },
+            { youtube: 'wiJO_OgsyPE', weight: 5, label: 'CHAINSAW BLOOD · Vaundy (oficial)' }
         ],
 
-        /* Metaphor: ReFantazio — banner / convene */
+        /* Persona 5 Royal — banner (oficial ATLUS/NexTone, sin covers) */
+        menu_persona: [
+            { youtube: 'dsuJZx24V_A', weight: 5, label: 'Persona 5 · Life Will Change (OST oficial)' },
+            { youtube: 'ZNGqBDRJgvo', weight: 5, label: 'Persona 5 · Last Surprise (OST oficial)' },
+            { youtube: 'A9zlXUSuUeo', weight: 3, label: 'Reach Out To The Truth (OST oficial)' }
+        ],
+
+        /* Metaphor: ReFantazio — banner / convene (oficial ATLUS) */
         menu_metaphor: [
-            { youtube: 'O6Y9y2kOy0w', weight: 5, label: 'Battle Theme (iconic)' },
-            { youtube: 'aQJluJSvCMI', weight: 4, label: 'Rival Candidates' },
-            { youtube: 'ezr_MVvEhqs', weight: 3.5, label: 'The Power of Hope' },
-            { youtube: 'HV_AGsXaijc', weight: 2.5, label: "Akademeia" }
+            { youtube: 'ezr_MVvEhqs', weight: 5, label: 'Metaphor · Power of Hope (ATLUS oficial)' },
+            { youtube: '0PXA_htn60M', weight: 3.5, label: 'ATLUS · Battle For Survival (oficial)' },
+            { youtube: 'wgIyZPiSXyI', weight: 3, label: 'ATLUS · Cathedral (oficial)' }
         ],
 
         battle_persona: [
-            { youtube: 'ZNGqBDRJgvo', weight: 4, label: 'Persona 5 · Last Surprise' },
-            { youtube: 'lvuHvXsZPrk', weight: 3.5, label: 'Persona 5 · Rivers in the Desert' },
-            { youtube: 'glo0lQfTpIs', weight: 3, label: 'Persona 4 · Reach Out to the Truth' },
-            { youtube: 'O6Y9y2kOy0w', weight: 2.5, label: 'Metaphor · Battle Theme' },
-            { youtube: 'aQJluJSvCMI', weight: 2, label: 'Metaphor · Rival Candidates' }
+            { youtube: 'ZNGqBDRJgvo', weight: 5, label: 'Persona 5 · Last Surprise (OST oficial)' },
+            { youtube: 'dsuJZx24V_A', weight: 5, label: 'Persona 5 · Life Will Change (OST oficial)' },
+            { youtube: 'A9zlXUSuUeo', weight: 3, label: 'Reach Out To The Truth (OST oficial)' },
+            { youtube: 'lvuHvXsZPrk', weight: 3, label: 'Persona 5 · Rivers in the Desert (OST oficial)' }
         ],
         battle_metaphor: [
-            { youtube: 'O6Y9y2kOy0w', weight: 5, label: 'Metaphor · Battle Theme' },
-            { youtube: 'aQJluJSvCMI', weight: 4, label: 'Metaphor · Rival Candidates' },
-            { youtube: 'ezr_MVvEhqs', weight: 3.5, label: 'Metaphor · The Power of Hope' },
-            { youtube: 'HV_AGsXaijc', weight: 3, label: 'Metaphor · Akademeia' },
-            { youtube: 'ZNGqBDRJgvo', weight: 2, label: 'Persona 5 · Last Surprise' },
-            { youtube: 'lvuHvXsZPrk', weight: 1.5, label: 'Persona 5 · Rivers in the Desert' }
+            { youtube: 'ezr_MVvEhqs', weight: 5, label: 'Metaphor · Power of Hope (ATLUS oficial)' },
+            { youtube: '0PXA_htn60M', weight: 4, label: 'ATLUS · Battle For Survival (oficial)' },
+            { youtube: 'wgIyZPiSXyI', weight: 3, label: 'ATLUS · Cathedral (oficial)' }
         ],
 
         /** Convene / wish cinematic bed (local, loops during pull FX) */
@@ -222,158 +210,134 @@ const AudioManager = {
             { src: 'assets/music/gacha-convene.mp3', weight: 5, label: 'Convene', loop: true }
         ],
 
-        /* ── Naruto battles ── */
+        /* ── Naruto battles (OST oficial) ── */
         battle: [
-            { id: 'reverse', youtube: 'EJi4ElFl2EA', weight: 3.5, label: 'Reverse Situation' },
-            { id: 'akatsuki', youtube: '4NDfNmfdhTM', weight: 2.5, label: 'Akatsuki' },
-            { id: 'samidare', youtube: '5kQybVJa9AM', weight: 2.5, label: 'Samidare' },
-            { id: 'lonely', youtube: 'P6naO7tVcHg', weight: 2, label: 'Loneliness' },
-            { id: 'stalemate', youtube: '5Yo5SoZcAUg', weight: 1.5, label: 'Stalemate' },
-            { youtube: 'O6Y9y2kOy0w', weight: 2.5, label: 'Metaphor · Battle Theme' },
-            { youtube: 'ZNGqBDRJgvo', weight: 2.5, label: 'Persona 5 · Last Surprise' },
-            { youtube: 'lvuHvXsZPrk', weight: 2, label: 'Persona 5 · Rivers in the Desert' },
-            { youtube: 'glo0lQfTpIs', weight: 2, label: 'Persona 4 · Reach Out to the Truth' }
+            { id: 'akatsuki', youtube: '4NDfNmfdhTM', weight: 3.5, label: 'Akatsuki (OST oficial)' },
+            { id: 'emergence', youtube: 'Uz2CUU3AZZY', weight: 3, label: 'Emergence of Talents (OST oficial)' },
+            { id: 'samidare', youtube: 'HwFa3IKSLOo', weight: 2.5, label: 'Early Summer Rain (OST oficial)' },
+            { id: 'hokage', youtube: 'kHMs4gCl5rk', weight: 2, label: 'Fourth Hokage (OST oficial)' }
         ],
         battle_akatsuki: [
-            { youtube: '4NDfNmfdhTM', weight: 5, label: 'Akatsuki' },
-            { youtube: 'P6naO7tVcHg', weight: 3, label: 'Loneliness' },
-            { youtube: 'EJi4ElFl2EA', weight: 2.5, label: 'Reverse Situation' },
-            { youtube: '5Yo5SoZcAUg', weight: 1.5, label: 'Stalemate' }
+            { youtube: '4NDfNmfdhTM', weight: 5, label: 'Akatsuki (OST oficial)' },
+            { youtube: 'rmA62C4F5bk', weight: 3.5, label: "Obito's Theme (OST oficial)" },
+            { youtube: 'Uz2CUU3AZZY', weight: 2.5, label: 'Emergence of Talents (OST oficial)' }
         ],
         battle_snake: [
-            { youtube: 'EJi4ElFl2EA', weight: 5, label: 'Reverse Situation' },
-            { youtube: 'P6naO7tVcHg', weight: 3, label: 'Loneliness' },
-            { youtube: '4NDfNmfdhTM', weight: 2, label: 'Dark Tension' },
-            { youtube: '5kQybVJa9AM', weight: 2, label: 'Samidare' }
+            { youtube: 'rmA62C4F5bk', weight: 5, label: "Obito's Theme (OST oficial)" },
+            { youtube: '4NDfNmfdhTM', weight: 3, label: 'Akatsuki (OST oficial)' },
+            { youtube: 'HwFa3IKSLOo', weight: 2, label: 'Early Summer Rain (OST oficial)' }
         ],
         battle_mist: [
-            { youtube: 'EJi4ElFl2EA', weight: 4, label: 'Reverse Situation' },
-            { youtube: '5kQybVJa9AM', weight: 3, label: 'Samidare' },
-            { youtube: 'P6naO7tVcHg', weight: 2.5, label: 'Loneliness' },
-            { youtube: '4NDfNmfdhTM', weight: 2, label: 'Tension' }
+            { youtube: 'HwFa3IKSLOo', weight: 4, label: 'Early Summer Rain (OST oficial)' },
+            { youtube: 'Uz2CUU3AZZY', weight: 3, label: 'Emergence of Talents (OST oficial)' },
+            { youtube: '4NDfNmfdhTM', weight: 2, label: 'Akatsuki (OST oficial)' }
         ],
 
-        /* ── One Piece battles ── */
+        /* ── One Piece battles (oficial) ── */
         battle_op: [
-            { youtube: 'daFi4MScfl8', weight: 5, label: 'Overtaken' },
-            { youtube: 'bfW6dzCFy2A', weight: 4.5, label: 'Overtaken Epic' },
-            { youtube: 'LSGNI--qh_E', weight: 4, label: 'Epic Soundtrack Collection' },
-            { youtube: 'V3r-YGGsKpk', weight: 3, label: 'Epic Battle Mix' },
-            { youtube: 'QGbeqYJAUAc', weight: 2, label: 'Grand Line' }
+            { youtube: 'Flysqk6WfQE', weight: 5, label: 'We Are (oficial)' },
+            { youtube: 'r7n-L5B0bBw', weight: 4.5, label: 'We Are Columbia (oficial)' },
+            { youtube: 'YoeP9w5UIlg', weight: 4, label: 'We Are OP1 (oficial)' }
         ],
         battle_enel: [
-            { youtube: 'bfW6dzCFy2A', weight: 5, label: 'Overtaken Epic' },
-            { youtube: 'daFi4MScfl8', weight: 4, label: 'Overtaken' },
-            { youtube: 'V3r-YGGsKpk', weight: 3.5, label: 'Epic Battle Mix' },
-            { youtube: 'LSGNI--qh_E', weight: 3, label: 'Epic Soundtrack Collection' }
+            { youtube: 'r7n-L5B0bBw', weight: 5, label: 'We Are Columbia (oficial)' },
+            { youtube: 'Flysqk6WfQE', weight: 4, label: 'We Are (oficial)' },
+            { youtube: 'YoeP9w5UIlg', weight: 3.5, label: 'We Are OP1 (oficial)' }
         ],
         battle_doflamingo: [
-            { youtube: 'LSGNI--qh_E', weight: 5, label: 'Epic Soundtrack Collection' },
-            { youtube: 'bfW6dzCFy2A', weight: 4, label: 'Overtaken Epic' },
-            { youtube: 'daFi4MScfl8', weight: 3.5, label: 'Overtaken' },
-            { youtube: 'V3r-YGGsKpk', weight: 2.5, label: 'Epic Battle Mix' }
+            { youtube: 'YoeP9w5UIlg', weight: 5, label: 'We Are OP1 (oficial)' },
+            { youtube: 'Flysqk6WfQE', weight: 4, label: 'We Are (oficial)' },
+            { youtube: 'r7n-L5B0bBw', weight: 3.5, label: 'We Are Columbia (oficial)' }
         ],
 
-        /* ── JoJo battles ── */
+        /* ── JoJo battles (OST oficial) ── */
         battle_jojo: [
-            { youtube: 'U0TXIXTzJEY', weight: 4, label: "il vento d'oro" },
-            { youtube: 'RfKgol6t58Q', weight: 4, label: 'Final Battle (DIO)' },
-            { youtube: 'ayTe5S42guI', weight: 3.5, label: 'Killer (Kira)' },
-            { youtube: '-W8MBjTk2E8', weight: 3.5, label: 'Awaken' },
-            { youtube: 'lRrOLTHu-ew', weight: 2, label: 'Pillar Men' }
+            { youtube: 'U0TXIXTzJEY', weight: 4, label: "il vento d'oro (OST oficial)" },
+            { youtube: 'X6aEiZg7gTE', weight: 4, label: 'Diamond Main Theme (OST oficial)' },
+            { youtube: 'ayTe5S42guI', weight: 3.5, label: 'Killer (OST oficial)' },
+            { youtube: '-W8MBjTk2E8', weight: 3.5, label: 'Awaken (OST oficial)' }
         ],
         battle_jojo_kira: [
-            { youtube: 'ayTe5S42guI', weight: 6, label: 'Killer (Kira)' },
-            { youtube: 'RfKgol6t58Q', weight: 2.5, label: 'Final Battle' },
-            { youtube: '-W8MBjTk2E8', weight: 2, label: 'Awaken' },
-            { youtube: 'U0TXIXTzJEY', weight: 1.5, label: "il vento d'oro" }
+            { youtube: 'ayTe5S42guI', weight: 6, label: 'Killer (OST oficial)' },
+            { youtube: 'X6aEiZg7gTE', weight: 2.5, label: 'Diamond Main Theme (OST oficial)' },
+            { youtube: '-W8MBjTk2E8', weight: 2, label: 'Awaken (OST oficial)' },
+            { youtube: 'U0TXIXTzJEY', weight: 1.5, label: "il vento d'oro (OST oficial)" }
         ],
         battle_jojo_dio: [
-            { youtube: 'RfKgol6t58Q', weight: 6, label: 'Final Battle (DIO)' },
-            { youtube: '-W8MBjTk2E8', weight: 3.5, label: 'Awaken' },
-            { youtube: 'ayTe5S42guI', weight: 2, label: 'Killer' },
-            { youtube: 'lRrOLTHu-ew', weight: 2, label: 'Pillar Men' }
+            { youtube: 'X6aEiZg7gTE', weight: 5, label: 'Diamond Main Theme (OST oficial)' },
+            { youtube: '-W8MBjTk2E8', weight: 3.5, label: 'Awaken (OST oficial)' },
+            { youtube: 'ayTe5S42guI', weight: 2, label: 'Killer (OST oficial)' },
+            { youtube: 'U0TXIXTzJEY', weight: 2, label: "il vento d'oro (OST oficial)" }
         ],
 
-        /* ── Bleach battles ── */
+        /* ── Bleach battles (OST oficial) ── */
         battle_bleach: [
-            { youtube: '7JEjQG4-tpU', weight: 5, label: 'Number One - Bankai' },
-            { youtube: 'jBhM-b93bsY', weight: 4, label: 'Precipice of Defeat' },
-            { youtube: '7nQAGywy3Rw', weight: 3, label: 'Number One' },
-            { youtube: 'GwIEDIxuXQU', weight: 2.5, label: 'Precipice · Full' },
-            { youtube: 'F7XKQ_yDoFQ', weight: 4, label: 'Principio de lucha' },
-            { youtube: 'Z9Onb_z0XPI', weight: 4, label: 'Clavar la espada' },
-            { youtube: 'fZx7yUztxJ0', weight: 3, label: 'Escalon' },
-            { youtube: 'MZXerA8nfsg', weight: 3, label: 'Fiesta de Guerra' }
+            { youtube: '7JEjQG4-tpU', weight: 5, label: 'Number One - Bankai (OST oficial)' },
+            { youtube: '7nQAGywy3Rw', weight: 3, label: 'Number One (VIZ oficial)' },
+            { youtube: 'zO_532nbu0c', weight: 4, label: 'never meant to belong (OST oficial)' },
+            { youtube: 'X34igEEtrac', weight: 3.5, label: 'Nothing Can Be Explained (OST oficial)' },
+            { youtube: 'F7XKQ_yDoFQ', weight: 3, label: 'Principio de lucha (VEVO oficial)' },
+            { youtube: 'Z9Onb_z0XPI', weight: 3, label: 'Clavar la espada (OST oficial)' }
         ],
         battle_aizen: [
-            { youtube: '7JEjQG4-tpU', weight: 5, label: 'Number One - Bankai' },
-            { youtube: 'jBhM-b93bsY', weight: 4.5, label: 'Precipice of Defeat' },
-            { youtube: 'GwIEDIxuXQU', weight: 3, label: 'Precipice · Full' },
-            { youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One' }
+            { youtube: 'X34igEEtrac', weight: 5, label: 'Nothing Can Be Explained (OST oficial)' },
+            { youtube: '7JEjQG4-tpU', weight: 4.5, label: 'Number One - Bankai (OST oficial)' },
+            { youtube: 'zO_532nbu0c', weight: 3, label: 'never meant to belong (OST oficial)' },
+            { youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One (VIZ oficial)' }
         ],
         battle_kenpachi: [
-            { youtube: '7JEjQG4-tpU', weight: 5.5, label: 'Number One - Bankai' },
-            { youtube: 'jBhM-b93bsY', weight: 3.5, label: 'Precipice of Defeat' },
-            { youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One' }
+            { youtube: '7JEjQG4-tpU', weight: 5.5, label: 'Number One - Bankai (OST oficial)' },
+            { youtube: 'zO_532nbu0c', weight: 3.5, label: 'never meant to belong (OST oficial)' },
+            { youtube: '7nQAGywy3Rw', weight: 2.5, label: 'Number One (VIZ oficial)' }
         ],
 
-        /* ── Jujutsu Kaisen ── */
+        /* ── Jujutsu Kaisen (todo oficial) ── */
         battle_jjk: [
-            { youtube: 'h_9RC8DCEPM', weight: 5, label: 'Malevolent Shrine' },
-            { youtube: 'EJi4ElFl2EA', weight: 2, label: 'Tension' },
-            { youtube: '4NDfNmfdhTM', weight: 1.5, label: 'Dark bed' },
-            { youtube: '1tk1pqwrOys', weight: 2, label: 'JJK · Kaikai Kitan' },
-            { youtube: 'fhzKLBZJC3w', weight: 2, label: 'JJK · SPECIALZ' },
-            { youtube: '8nNujr378EA', weight: 1.5, label: 'JJK · VIVID VICE' }
+            { youtube: 'h_9RC8DCEPM', weight: 5, label: 'Malevolent Shrine (OST oficial)' },
+            { youtube: '1tk1pqwrOys', weight: 2.5, label: 'JJK · Kaikai Kitan (oficial Eve)' },
+            { youtube: 'fhzKLBZJC3w', weight: 2.5, label: 'JJK · SPECIALZ (oficial King Gnu)' },
+            { youtube: '8nNujr378EA', weight: 2, label: 'JJK · VIVID VICE (oficial)' },
+            { youtube: 'GwaRztMaoY0', weight: 2, label: 'JJK · Kaikai Kitan (oficial Crunchyroll)' }
         ],
         battle_jjk_sukuna: [
-            { youtube: 'h_9RC8DCEPM', weight: 6, label: 'Malevolent Shrine' },
-            { youtube: 'jBhM-b93bsY', weight: 2, label: 'Precipice energy' },
-            { youtube: 'RfKgol6t58Q', weight: 1.5, label: 'Final pressure' }
+            { youtube: 'h_9RC8DCEPM', weight: 6, label: 'Malevolent Shrine (OST oficial)' },
+            { youtube: '8nNujr378EA', weight: 2, label: 'JJK · VIVID VICE (oficial)' },
+            { youtube: 'fhzKLBZJC3w', weight: 2, label: 'JJK · SPECIALZ (oficial King Gnu)' }
         ],
         battle_jjk_gojo: [
-            { youtube: 'h_9RC8DCEPM', weight: 4, label: 'Malevolent Shrine' },
-            { youtube: '7JEjQG4-tpU', weight: 3, label: 'Number One energy' },
-            { youtube: 'U0TXIXTzJEY', weight: 2, label: 'Golden wind bed' }
+            { youtube: 'h_9RC8DCEPM', weight: 4, label: 'Malevolent Shrine (OST oficial)' },
+            { youtube: '1tk1pqwrOys', weight: 3, label: 'JJK · Kaikai Kitan (oficial Eve)' },
+            { youtube: 'GwaRztMaoY0', weight: 2, label: 'JJK · Kaikai Kitan (oficial Crunchyroll)' }
         ],
 
-        /* ── Kimetsu no Yaiba ── */
+        /* ── Kimetsu no Yaiba (oficial) ── */
         battle_kimetsu: [
-            { youtube: 'CwkzK-F0Y00', weight: 4, label: 'Gurenge · Kimetsu', endSeconds: 110 },
-            { youtube: 'I-MOWW4Io6I', weight: 3, label: 'Kimetsu · Battle Themes' },
-            { youtube: 'nioQfmYE1Bk', weight: 3, label: 'Akaza · Infinity Castle' },
-            { youtube: 'O6Y9y2kOy0w', weight: 1.5, label: 'Metaphor · Battle Theme' }
+            { youtube: 'CwkzK-F0Y00', weight: 5, label: 'Gurenge · LiSA (oficial)', endSeconds: 110 }
         ],
         battle_kimetsu_kokushibo: [
-            { youtube: 'I-MOWW4Io6I', weight: 4, label: 'Kokushibo · Battle Themes' },
-            { youtube: 'CwkzK-F0Y00', weight: 3, label: 'Gurenge · Kimetsu', endSeconds: 110 },
-            { youtube: 'nioQfmYE1Bk', weight: 2.5, label: 'Infinity Castle · Battle' }
+            { youtube: 'CwkzK-F0Y00', weight: 4, label: 'Gurenge · LiSA (oficial)', endSeconds: 110 }
         ],
         battle_kimetsu_akaza: [
-            { youtube: 'nioQfmYE1Bk', weight: 5, label: 'Akaza · Infinity Castle' },
-            { youtube: 'I-MOWW4Io6I', weight: 3, label: 'Akaza · Battle Themes' },
-            { youtube: 'CwkzK-F0Y00', weight: 2.5, label: 'Gurenge · Kimetsu', endSeconds: 110 }
+            { youtube: 'CwkzK-F0Y00', weight: 4, label: 'Gurenge · LiSA (oficial)', endSeconds: 110 }
         ],
 
-        /* ── Chainsaw Man ── */
+        /* ── Chainsaw Man (oficial) ── */
         battle_chainsaw: [
-            { youtube: 'M2cckDmNLMI', weight: 8, label: 'KICK BACK' },
-            { youtube: 'bfW6dzCFy2A', weight: 2, label: 'Pressure bed' }
+            { youtube: 'M2cckDmNLMI', weight: 6, label: 'KICK BACK · Kenshi Yonezu (oficial)' },
+            { youtube: 'wiJO_OgsyPE', weight: 6, label: 'CHAINSAW BLOOD · Vaundy (oficial)' }
         ],
         battle_chainsaw_makima: [
-            { youtube: 'M2cckDmNLMI', weight: 5, label: 'KICK BACK' },
-            { youtube: 'h_9RC8DCEPM', weight: 4, label: 'Control pressure' },
-            { youtube: 'jBhM-b93bsY', weight: 2, label: 'Dark ritual' }
+            { youtube: 'wiJO_OgsyPE', weight: 5, label: 'CHAINSAW BLOOD · Vaundy (oficial)' },
+            { youtube: 'M2cckDmNLMI', weight: 4, label: 'KICK BACK · Kenshi Yonezu (oficial)' }
         ],
 
         battle_destiny: [
-            { youtube: 'RfKgol6t58Q', weight: 3.5, label: 'Final Battle' },
-            { youtube: '7JEjQG4-tpU', weight: 3.5, label: 'Number One' },
-            { youtube: 'bfW6dzCFy2A', weight: 3, label: 'Overtaken Epic' },
-            { youtube: 'h_9RC8DCEPM', weight: 3, label: 'Malevolent Shrine' },
-            { youtube: '4NDfNmfdhTM', weight: 2, label: 'Akatsuki' },
-            { youtube: 'daFi4MScfl8', weight: 2, label: 'Overtaken' }
+            { youtube: '7JEjQG4-tpU', weight: 3.5, label: 'Number One (OST oficial)' },
+            { youtube: 'h_9RC8DCEPM', weight: 3.5, label: 'Malevolent Shrine (OST oficial)' },
+            { youtube: '4NDfNmfdhTM', weight: 3, label: 'Akatsuki (OST oficial)' },
+            { youtube: 'ZNGqBDRJgvo', weight: 3, label: 'Last Surprise (OST oficial)' },
+            { youtube: 'Flysqk6WfQE', weight: 2.5, label: 'We Are (oficial)' },
+            { youtube: 'M2cckDmNLMI', weight: 2.5, label: 'KICK BACK (oficial)' }
         ]
     },
 
@@ -922,6 +886,56 @@ const AudioManager = {
         return 'yt-bgm-player';
     },
 
+    /** Fast path: load a new video in the live iframe (no iframe boot). */
+    _reuseYoutube(player, videoId, { loop = true, gen = this.musicGen, startSeconds = 0 } = {}) {
+        if (!player || gen !== this.musicGen) return null;
+        return new Promise((resolve) => {
+            let resolved = false;
+            const finish = (ok) => {
+                if (resolved) return;
+                resolved = true;
+                resolve(ok);
+            };
+            try {
+                if (typeof player.loadVideoById !== 'function') return finish(false);
+                try { player.setVolume(0); } catch (_) { /* */ }
+                try { player.unMute(); } catch (_) { /* */ }
+                player.loadVideoById({ videoId, startSeconds: Math.max(0, Number(startSeconds) || 0) });
+                try { player.playVideo(); } catch (_) { /* */ }
+                const t0 = Date.now();
+                const tick = () => {
+                    if (resolved) return;
+                    if (gen !== this.musicGen) return finish(false);
+                    let st = -99;
+                    try { st = player.getPlayerState(); } catch (_) { return finish(false); }
+                    if (st === 1) {
+                        try {
+                            const volume = Number.isFinite(AudioManager.masterVolume)
+                                ? AudioManager.masterVolume
+                                : 0.55;
+                            AudioManager._busLevel('music');
+                            player.setVolume(0);
+                            try { player.unMute(); } catch (_) { /* */ }
+                            AudioManager._targetMusicVol = 0;
+                            const fadeIn = Number.isFinite(AudioManager._pendingFadeInMs)
+                                ? AudioManager._pendingFadeInMs
+                                : 1800;
+                            AudioManager._fadeMusicTo(1, fadeIn);
+                        } catch (_) { /* */ }
+                        AudioManager._scheduleThemeRotate();
+                        return finish(true);
+                    }
+                    if (Date.now() - t0 > 8000) return finish(false);
+                    setTimeout(tick, 250);
+                };
+                setTimeout(tick, 300);
+                setTimeout(() => finish(false), 8500);
+            } catch (_) {
+                finish(false);
+            }
+        });
+    },
+
     async _playYoutube(videoId, { loop = true, gen = this.musicGen, startSeconds = 0 } = {}) {
         if (!videoId || !this.enabled) return false;
         await this._ensureYtApi();
@@ -936,7 +950,12 @@ const AudioManager = {
         }
 
         // Stop previous YT without bumping musicGen
+        // Reuse the iframe when possible — booting one per theme costs seconds.
         if (this.ytPlayer) {
+            try {
+                const reused = this._reuseYoutube(this.ytPlayer, videoId, { loop, gen, startSeconds });
+                if (reused) return reused;
+            } catch (_) { /* fall through to recreate */ }
             try { this.ytPlayer.destroy(); } catch (_) { /* */ }
             this.ytPlayer = null;
         }
@@ -1181,7 +1200,9 @@ const AudioManager = {
             jjk: 'menu_jjk',
             kimetsu: 'menu_kimetsu',
             chainsaw: 'menu_chainsaw',
-            metaphor: 'menu_metaphor'
+            metaphor: 'menu_metaphor',
+            persona5royal: 'menu_persona',
+            persona: 'menu_persona'
         };
         const resolved = map[theme] || theme;
         if (resolved === this.currentTheme && this._isMusicAlive()) return;

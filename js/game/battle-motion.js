@@ -119,7 +119,12 @@ const BattleMotion = {
             'buff': [base(entry * .2 * d, 0), base(-recoil * .25 * d, -lift * .25, 1.01, -rotation), base(0, -rise * 1.35, 1.07, rotation * .7), base(recoil * .12 * d, -rise * .4, 1.03, -rotation / 2), base(0, 0)],
             'guard': [base(0, 0), base(-recoil * .12 * d, 1, .99, -rotation / 2), base(0, -rise * .65, 1.04, rotation / 2), base(0, 0, 1.02), base(0, 0)],
             'awakening': [base(entry * d, 0), base(-3 * d, rise, .94, -rotation / 2), base(0, -rise * 2.2, 1.14, rotation), base(0, -rise / 2, 1.07, -rotation / 2), base(0, 0)],
-            'finisher': [base(entry * d, 0), base(-recoil * 2 * d, rise + 3, .93, -rotation), base(travel * .2 * d, -rise * 2, 1.1, rotation), base((travel + 32) * d, -rise, 1.08, -rotation * 1.3), base(0, 0)]
+            'finisher': [base(entry * d, 0), base(-recoil * 2 * d, rise + 3, .93, -rotation), base(travel * .2 * d, -rise * 2, 1.1, rotation), base((travel + 32) * d, -rise, 1.08, -rotation * 1.3), base(0, 0)],
+            'iaido': [base(0, 0), base(0, 0, .985, 0), base(travel * 1.15 * d, -2, pulse, rotation / 4), base(travel * .2 * d, 0, 1.01, 0), base(0, 0)],
+            'dance': [base(0, 0), base(-travel * .3 * d, -rise, 1.02, -rotation), base(travel * .3 * d, -rise * 1.4, 1.05, rotation), base(-travel * .2 * d, -rise / 2, 1.03, -rotation / 2), base(0, 0)],
+            'summon': [base(0, 0), base(0, rise, .92, 0), base(0, -rise * 2.4, 1.12, rotation / 2), base(0, -rise, 1.05, 0), base(0, 0)],
+            'snipe': [base(0, 0), base(-recoil * .2 * d, 1, .96, 0), base(-recoil * .35 * d, 0, .97, -rotation / 4), base(-recoil * .1 * d, 0, 1, 0), base(0, 0)],
+            'devour': [base(entry * d, 0), base(-recoil * d, lift, .94, -rotation), base(travel * .8 * d, -rise, 1.16, rotation / 2), base(travel * .3 * d, 0, 1.04, 0), base(0, 0)]
         };
         const frames = sets[kind] || sets['step-in'];
         const offset = seed % 3;
@@ -151,7 +156,12 @@ const BattleMotion = {
             'buff': [base(0, 0), base(-amount * .08 * d, -lift * .25, 1.01, lean, 1.08), base(0, -lift * 1.2, 1.07, -lean, 1.28), base(amount * .06 * d, -lift * .35, 1.03, lean / 2), base(0, 0)],
             'guard': [base(0, 0), base(-amount * .04 * d, 1, .99, -lean, 1.05), base(0, -lift * .55, 1.04, lean / 2, 1.16), base(0, 0, 1.02), base(0, 0)],
             'awakening': [base(0, 0), base(-amount * .08, lift, .94, lean, 1.2), base(0, -lift * 2.2, 1.14, -lean, 1.5), base(0, -lift / 2, 1.07, lean), base(0, 0)],
-            'finisher': [base(0, 0), base(-amount * .7 * d, lift * 1.2, .92, -lean - 5), base(amount * .3 * d, -lift * 2, 1.1, lean + 5, 1.5), base(amount * 1.2 * d, -lift, 1.08, -lean, 1.18), base(0, 0)]
+            'finisher': [base(0, 0), base(-amount * .7 * d, lift * 1.2, .92, -lean - 5), base(amount * .3 * d, -lift * 2, 1.1, lean + 5, 1.5), base(amount * 1.2 * d, -lift, 1.08, -lean, 1.18), base(0, 0)],
+            'iaido': [base(0, 0), base(0, 0, .985, 0, 1.05), base(amount * 1.05 * d, -2, 1.04, lean / 4, 1.3), base(amount * .15 * d, 0, 1.01), base(0, 0)],
+            'dance': [base(0, 0), base(-amount * .3 * d, -lift, 1.02, -lean, 1.1), base(amount * .3 * d, -lift * 1.3, 1.05, lean, 1.2), base(-amount * .2 * d, -lift / 2, 1.03, 1.1), base(0, 0)],
+            'summon': [base(0, 0), base(0, lift, .92, 0, 1.1), base(0, -lift * 2.2, 1.12, lean / 2, 1.4), base(0, -lift, 1.05, 1.1), base(0, 0)],
+            'snipe': [base(0, 0), base(-amount * .06 * d, 1, .96, 0, 1.05), base(-amount * .1 * d, 0, .97, lean / 4, 1.12), base(0, 0, 1, 1.02), base(0, 0)],
+            'devour': [base(0, 0), base(-amount * .3 * d, lift, .94, -lean, 1.1), base(amount * .7 * d, -lift, 1.16, lean / 2, 1.4), base(amount * .25 * d, 0, 1.04, 1.1), base(0, 0)]
         };
         const frames = sets[kind] || sets['step-in'];
         return frames.map((frame, index) => ({ ...frame, offset: index / (frames.length - 1) }));

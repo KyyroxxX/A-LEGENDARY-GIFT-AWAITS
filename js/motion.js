@@ -223,10 +223,12 @@ const MotionFx = {
         const hero = root.querySelector('.arena-hero');
         const tabs = root.querySelector('.arena-tabs');
         const frame = root.querySelector('.arena-frame');
+        const rail = root.querySelectorAll('.p5-rail-item');
         const missions = root.querySelectorAll('.arena-mission');
 
         const layers = [top, hero, tabs, frame].filter(Boolean);
         gsap.set(layers, { opacity: 0, y: 16, force3D: true });
+        if (rail.length) gsap.set(rail, { opacity: 0, x: -18, force3D: true });
         if (missions.length) gsap.set(missions, { opacity: 0, y: 10, force3D: true });
 
         const tl = gsap.timeline({
@@ -237,6 +239,9 @@ const MotionFx = {
 
         if (top) tl.to(top, { opacity: 1, y: 0, duration: 0.36 }, 0);
         if (hero) tl.to(hero, { opacity: 1, y: 0, duration: 0.4 }, 0.05);
+        if (rail.length) {
+            tl.to(rail, { opacity: 1, x: 0, duration: 0.3, stagger: 0.045 }, 0.08);
+        }
         if (tabs) tl.to(tabs, { opacity: 1, y: 0, duration: 0.32 }, 0.1);
         if (frame) tl.to(frame, { opacity: 1, y: 0, duration: 0.36 }, 0.12);
         if (missions.length) {
@@ -246,6 +251,18 @@ const MotionFx = {
                 duration: 0.3,
                 stagger: 0.014
             }, 0.14);
+        }
+    },
+
+    /** Wipe mood per destination (sigil word + veil tint). */
+    setWipeMood(mood, word) {
+        const wipe = this.ensureWipe();
+        if (!wipe) return;
+        wipe.classList.remove('mx-mood-gold', 'mx-mood-crimson', 'mx-mood-ink');
+        if (mood) wipe.classList.add(`mx-mood-${mood}`);
+        if (word) {
+            const sigil = wipe.querySelector('.mx-wipe-sigil');
+            if (sigil) sigil.textContent = word;
         }
     },
 
@@ -275,10 +292,30 @@ const MotionFx = {
         }
 
         gsap.killTweensOf([art, ...layers].filter(Boolean));
-        if (art) gsap.set(art, { opacity: 1, force3D: true });
+        // Punch the key art, then cascade chrome (fast — entry already waited)
+        const tl = gsap.timeline({
+            defaults: { ease: this.ease, overwrite: 'auto', force3D: true },
+        });
+        this.track(tl);
+        if (art) {
+            tl.fromTo(art, { opacity: 0.6, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.32 }, 0);
+        }
         if (layers.length) {
-            gsap.set(layers, { opacity: 1, y: 0, force3D: true });
-            gsap.set(layers, { clearProps: 'transform' });
+            tl.fromTo(layers, { opacity: 0, y: 14 }, {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                stagger: 0.05
+            }, 0.06);
+        }
+        const rail = shell.querySelectorAll('.gw-thumb');
+        if (rail.length) {
+            tl.fromTo(rail, { opacity: 0, x: -10 }, {
+                opacity: 1,
+                x: 0,
+                duration: 0.24,
+                stagger: 0.02
+            }, 0.1);
         }
     },
 

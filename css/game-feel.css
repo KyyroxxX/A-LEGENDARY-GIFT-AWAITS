@@ -1,0 +1,389 @@
+/* ============================================================
+   GAME FEEL — Persona × Metaphor identity layer for menus.
+   Pure CSS (GPU transform/opacity only). Loads last-ish.
+   ============================================================ */
+
+/* ── Persona slash divider ─────────────────────────────────── */
+.p5-slash {
+    height: 6px;
+    margin: 0.6rem 0;
+    background: linear-gradient(90deg, #c41e3a 0 62%, transparent 62% 70%, #e8c76a 70% 78%, transparent 78%);
+    transform: skewX(-24deg);
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.6));
+}
+.p5-kicker {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: #fff;
+    background: #c41e3a;
+    padding: 0.28rem 0.8rem 0.28rem 1rem;
+    transform: skewX(-12deg);
+    box-shadow: 3px 3px 0 #111;
+}
+
+/* ── Starburst badge (P5 “NEW / TAKE YOUR HEART”) ───────────── */
+.p5-burst {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    min-width: 74px;
+    min-height: 74px;
+    padding: 0.6rem;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 0.72rem;
+    text-align: center;
+    background: #c41e3a;
+    clip-path: polygon(50% 0%, 61% 12%, 76% 6%, 79% 21%, 95% 21%, 92% 37%, 100% 50%, 92% 63%, 95% 79%, 79% 79%, 76% 94%, 61% 88%, 50% 100%, 39% 88%, 24% 94%, 21% 79%, 5% 79%, 8% 63%, 0 50%, 8% 37%, 5% 21%, 21% 21%, 24% 6%, 39% 12%);
+    filter: drop-shadow(3px 3px 0 #111);
+    animation: p5BurstSpin 14s linear infinite;
+}
+.p5-burst > * { animation: p5BurstCounter 14s linear infinite; }
+@keyframes p5BurstSpin { to { transform: rotate(360deg); } }
+@keyframes p5BurstCounter { to { transform: rotate(-360deg); } }
+
+/* ── Halftone dots backdrop ─────────────────────────────────── */
+.p5-halftone {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.13) 1.2px, transparent 1.3px);
+    background-size: 14px 14px;
+}
+
+/* ── Metaphor gold-trim panel ───────────────────────────────── */
+.mfrm-panel {
+    position: relative;
+    background: linear-gradient(180deg, rgba(24, 18, 30, 0.92), rgba(10, 8, 14, 0.94));
+    border: 1px solid rgba(232, 199, 106, 0.55);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7), 0 0 28px rgba(232, 199, 106, 0.12), inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+.mfrm-panel::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(232, 199, 106, 0.28);
+    pointer-events: none;
+}
+.mfrm-panel::after {
+    content: '✦';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #e8c76a;
+    background: #0a0810;
+    padding: 0 0.6rem;
+    font-size: 0.8rem;
+}
+
+/* ── Button juice (all menus) ───────────────────────────────── */
+.btn-destiny,
+.btn-secondary,
+.gw-pull-btn,
+.gw-rail-tool,
+.vn-choice {
+    position: relative;
+    overflow: hidden;
+}
+.btn-destiny::before,
+.gw-pull-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 45%;
+    left: -60%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-18deg);
+    transition: left 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+.btn-destiny:hover::before,
+.gw-pull-btn:hover::before {
+    left: 130%;
+}
+.btn-destiny:hover:not(:disabled),
+.gw-pull-btn:hover:not(:disabled),
+.vn-choice:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: #e8c76a;
+}
+.vn-choice:hover {
+    background: #c41e3a;
+    color: #fff;
+}
+
+/* ── Card hover snap (missions, thumbs, roster, hub) ────────── */
+.arena-mission:not([disabled]):hover,
+.gw-thumb:not([aria-disabled="true"]):hover,
+.psel-chip:hover,
+.hub-card:hover,
+.hub-loc:hover {
+    transform: translateY(-3px) scale(1.015);
+    border-color: rgba(232, 199, 106, 0.85) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(232, 199, 106, 0.35), 0 0 22px rgba(196, 30, 58, 0.25);
+    z-index: 3;
+}
+.arena-mission:not([disabled]):hover .am-title,
+.gw-thumb:not([aria-disabled="true"]):hover .gw-thumb-name {
+    color: #ffe9a0;
+}
+
+/* ── Entrance stagger for any scene (opt-in via .gf-in + --i) ─ */
+.scene.active .gf-in,
+.scene.active .final-content,
+.scene.active .steam-code-box,
+.scene.active .system-panel {
+    animation: gfIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 55ms + 60ms);
+}
+@keyframes gfIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Wipe moods (sigil + veil tint per destination) ─────────── */
+.mx-wipe-veil { transition: filter 0.2s; }
+.mx-wipe.mx-mood-gold .mx-wipe-veil {
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(60, 44, 16, 0.4), transparent 55%),
+        linear-gradient(105deg, #0a0705 0%, #14100a 42%, #1a1208 100%);
+}
+.mx-wipe.mx-mood-gold .mx-wipe-sigil { color: rgba(255, 233, 160, 0.9); }
+.mx-wipe.mx-mood-crimson .mx-wipe-veil {
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(80, 10, 22, 0.45), transparent 55%),
+        linear-gradient(105deg, #0c040a 0%, #160810 42%, #200a12 100%);
+}
+.mx-wipe.mx-mood-crimson .mx-wipe-sigil { color: rgba(255, 120, 140, 0.9); }
+.mx-wipe.mx-mood-ink .mx-wipe-veil {
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(16, 20, 40, 0.5), transparent 55%),
+        linear-gradient(105deg, #04060c 0%, #0a0e1a 42%, #0c1224 100%);
+}
+.mx-wipe.mx-mood-ink .mx-wipe-sigil { color: rgba(160, 200, 255, 0.9); }
+
+/* ── Dialogue typewriter caret ──────────────────────────────── */
+.vn-text.typing::after {
+    content: '▌';
+    display: inline-block;
+    margin-left: 2px;
+    color: #e8c76a;
+    animation: vnCaret 0.7s steps(1) infinite;
+}
+@keyframes vnCaret { 50% { opacity: 0; } }
+.vn-next.await {
+    animation: vnNextBob 0.9s ease-in-out infinite;
+}
+@keyframes vnNextBob {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(4px); opacity: 0.65; }
+}
+
+/* ── Toasts with P5 snap ────────────────────────────────────── */
+.arena-toast.show,
+.gacha-toast.show {
+    border-left: 4px solid #c41e3a;
+    transform: translateY(0) skewX(-4deg);
+}
+
+/* ── Marquee ticker (P5 news ribbon) ────────────────────────── */
+.p5-ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    background: #c41e3a;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    padding: 0.32rem 0;
+    transform: skewX(-8deg);
+    box-shadow: 3px 3px 0 #111;
+}
+.p5-ticker > span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: p5Ticker 22s linear infinite;
+}
+@keyframes p5Ticker { to { transform: translateX(-100%); } }
+
+/* ── Idle life for menu art ─────────────────────────────────── */
+.gw-banner-media.is-loaded {
+    animation: gwArtBreathe 9s ease-in-out infinite alternate;
+}
+@keyframes gwArtBreathe {
+    from { transform: scale(1); }
+    to { transform: scale(1.035); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .p5-burst, .p5-burst > *,
+    .p5-ticker > span,
+    .gw-banner-media.is-loaded,
+    .scene.active .gf-in,
+    .vn-text.typing::after,
+    .vn-next.await {
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+   FULL RESKIN — the whole web becomes the game.
+   ============================================================ */
+
+/* Global stage: ink black, red rays, halftone, vignette */
+body {
+    background: #060308 !important;
+}
+body::before {
+    content: '';
+    position: fixed;
+    inset: -12%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        repeating-conic-gradient(from -12deg at 50% 120%, rgba(196, 30, 58, 0.10) 0 6deg, transparent 6deg 14deg),
+        radial-gradient(ellipse at 50% 30%, rgba(196, 30, 58, 0.12), transparent 55%),
+        linear-gradient(180deg, #0b0610 0%, #060308 60%, #030204 100%);
+    animation: p5BgPan 26s ease-in-out infinite alternate;
+}
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.2px);
+    background-size: 9px 9px;
+    box-shadow: inset 0 0 180px rgba(0, 0, 0, 0.85);
+}
+@keyframes p5BgPan {
+    from { transform: rotate(-2deg) scale(1); }
+    to { transform: rotate(2deg) scale(1.06); }
+}
+#app, #scene-container, .scene {
+    background: transparent;
+}
+::selection { background: #c41e3a; color: #fff; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0a0710; }
+::-webkit-scrollbar-thumb { background: #c41e3a; border: 2px solid #0a0710; }
+
+/* Intro: full P5 title treatment */
+.intro-content h1 {
+    font-style: italic;
+    transform: skewX(-6deg);
+    text-shadow: 3px 3px 0 #c41e3a, 6px 6px 0 #111;
+    letter-spacing: 0.02em;
+}
+.intro-content {
+    position: relative;
+}
+.intro-content::before {
+    content: '★';
+    position: absolute;
+    top: -70px;
+    right: 6%;
+    font-size: 9rem;
+    color: rgba(196, 30, 58, 0.35);
+    animation: p5BurstSpin 24s linear infinite;
+    pointer-events: none;
+}
+#btn-start {
+    transform: skewX(-8deg);
+    font-style: italic;
+    box-shadow: 5px 5px 0 #111, 0 0 34px rgba(196, 30, 58, 0.45) !important;
+}
+
+/* Primary buttons go full Persona */
+.btn-destiny {
+    transform: skewX(-8deg);
+    font-style: italic;
+    border-radius: 0 !important;
+    box-shadow: 5px 5px 0 #111, 0 0 26px rgba(232, 199, 106, 0.25) !important;
+}
+.btn-destiny > * { transform: skewX(8deg); }
+.btn-secondary {
+    border-radius: 0 !important;
+    transform: skewX(-8deg);
+}
+
+/* Every system panel: dark ops + red slash header */
+.system-panel {
+    background: linear-gradient(180deg, rgba(18, 10, 16, 0.96), rgba(8, 5, 10, 0.97)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.85) !important;
+    border-radius: 0 !important;
+    box-shadow: 7px 7px 0 rgba(196, 30, 58, 0.55), 0 24px 60px rgba(0, 0, 0, 0.6) !important;
+}
+.final-content,
+.steam-code-box {
+    border-radius: 0 !important;
+}
+
+/* Dialogue: black P5 panel, red speaker tag */
+.vn-panel {
+    background: rgba(5, 4, 8, 0.96) !important;
+    border: 2px solid #fff !important;
+    border-radius: 0 !important;
+    box-shadow: 6px 6px 0 #c41e3a !important;
+}
+.vn-speaker {
+    display: inline-block;
+    background: #c41e3a;
+    color: #fff !important;
+    padding: 0.2rem 1rem 0.2rem 0.8rem;
+    transform: skewX(-12deg);
+    box-shadow: 3px 3px 0 #111;
+    font-style: italic;
+}
+.vn-next {
+    background: #c41e3a !important;
+    border-radius: 0 !important;
+    transform: skewX(-8deg);
+}
+
+/* Arena chrome goes P5 */
+.arena-brand-title {
+    font-style: italic;
+    text-shadow: 2px 2px 0 #c41e3a, 4px 4px 0 #111;
+}
+.arena-chip {
+    border-radius: 0 !important;
+    transform: skewX(-8deg);
+}
+.arena-chip > * { transform: skewX(8deg); }
+.arena-portal, .arena-sandbox {
+    border-radius: 0 !important;
+}
+.arena-mission {
+    border-radius: 0 !important;
+    border-left: 6px solid #c41e3a !important;
+}
+
+/* Gacha chrome goes P5 */
+.gw-topbar { transform: skewX(-4deg); }
+.gw-thumb { border-radius: 0 !important; }
+.gw-thumb.is-active {
+    box-shadow: 0 0 0 2px #e8c76a, 5px 5px 0 #c41e3a !important;
+}
+.gw-pull-btn {
+    transform: skewX(-8deg);
+    font-style: italic;
+    border-radius: 0 !important;
+    box-shadow: 5px 5px 0 #111 !important;
+}
+.gw-currency {
+    border-radius: 0 !important;
+    transform: skewX(-8deg);
+}
+.gw-currency > * { transform: skewX(8deg); }
+
+/* Dupes / equipment panels inherit the ops look */
+.dupes-panel, .equipment-panel, .gw-panel {
+    border-radius: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body::before, .intro-content::before { animation: none !important; }
+}

@@ -6,6 +6,48 @@ const GachaRoster = {
     STARTERS: ['luffy', 'naruto', 'jotaro'],
     EXCLUDED: new Set(['dummy', 'boss5050']),
     GOJO_ID: 'gojo',
+    /** Ren only enters the gacha after beating THE 50/50 (never required for it). */
+    SEALED_ID: 'ren',
+
+    /** The game code only drops after THE 50/50 AND Ren maxed (C3). */
+    legendaryEligible() {
+        try {
+            const boss = !!(GameState.get('bossDefeated') || GameState.flag('gate_final_cleared'));
+            if (!boss) return false;
+            if (typeof CharProgress !== 'undefined' && CharProgress.isMaxed) {
+                return CharProgress.isMaxed('ren');
+            }
+            return (typeof CharProgress !== 'undefined' ? CharProgress.copiesOf('ren') : 0) >= 4;
+        } catch (_) {
+            return false;
+        }
+    },
+
+    /** Why the gift is (not) available right now. */
+    legendaryBlockers() {
+        let boss = false;
+        try {
+            boss = !!(GameState.get('bossDefeated') || GameState.flag('gate_final_cleared'));
+        } catch (_) { /* ignore */ }
+        const need = (typeof CharProgress !== 'undefined' && CharProgress.maxConstFor)
+            ? CharProgress.maxConstFor('ren') + 1 : 4;
+        const have = (typeof CharProgress !== 'undefined' && CharProgress.copiesOf)
+            ? CharProgress.copiesOf('ren') : 0;
+        const done = !!((() => { try { return GameState.get('legendaryObtained'); } catch (_) { return false; } })());
+        return { boss, renHave: have, renNeed: need, done };
+    },
+
+    renUnlocked() {
+        try {
+            return !!(GameState.get('bossDefeated') || GameState.flag('gate_final_cleared'));
+        } catch (_) {
+            return false;
+        }
+    },
+
+    isUnitSealed(id) {
+        return id === this.SEALED_ID && !this.renUnlocked();
+    },
     FINAL_TEN: 10, // Metaphor tickets from THE 50/50 (red convene)
     INVOCATION_CAP: 2700,
     /** @deprecated use CharProgress.maxConstFor(id) */
@@ -16,10 +58,10 @@ const GachaRoster = {
     STAR_SEAL_FROM_6: 2,
     STAR_SEAL_COST_5: 1,
     STAR_SEAL_COST_6: 2,
-    /** Red Metaphor tickets: 14×5 section finales + 10 boss = 80 (hard pity). */
+    /** Red Metaphor tickets: 5 section finales ×200 + boss 200 + repeats ×20. */
     METAPHOR_TOTAL: 80,
-    METAPHOR_SECTION: 14,
-    METAPHOR_BOSS: 10,
+    METAPHOR_SECTION: 200,
+    METAPHOR_BOSS: 200,
 
     /** Shared anime-banner rates (gift-game friendly). */
     SERIES_RATES: {
@@ -70,8 +112,8 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['doflamingo', 'zoro', 'sanji'],
-            pool5Std: ['law', 'shanks', 'mihawk'],
+            pool6: ['doflamingo', 'zoro', 'sanji', 'marshall', 'katakuri'],
+            pool5Std: ['law', 'shanks', 'mihawk', 'marco', 'jinbe'],
             pool4: ['nami', 'robin', 'crocodile', 'enel', 'lucci'],
             pool3: ['brook', 'franky', 'chopper', 'usopp'],
             pool3Names: ['Fragmento del Sombrero', 'Den Den Mushi', 'Cartel de recompensa', 'Log Pose']
@@ -96,9 +138,9 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['sasuke', 'jiraiya', 'kakashi', 'itachi', 'hidan'],
-            pool5Std: ['gai', 'minato', 'tsunade', 'kisame'],
-            pool4: ['gaara', 'sakura', 'zabuza', 'orochimaru', 'sasori', 'deidara'],
+            pool6: ['sasuke', 'jiraiya', 'kakashi', 'itachi', 'hidan', 'tobi', 'pain'],
+            pool5Std: ['gai', 'minato', 'tsunade', 'kisame', 'tobirama', 'konan', 'kimimaro', 'kakuzu'],
+            pool4: ['gaara', 'sakura', 'zabuza', 'orochimaru', 'sasori', 'deidara', 'jugo', 'karin', 'suigetsu'],
             pool3: ['shikamaru', 'hinata', 'sai', 'neji', 'lee'],
             pool3Names: ['Kunai oxidado', 'Pergamino vacío', 'Banda ninja rota', 'Sello explosivo']
         },
@@ -162,7 +204,7 @@ const GachaRoster = {
             tag: 'Jujutsu Kaisen',
             featuredId: 'gojo',
             featured: 'Satoru Gojo',
-            featuredNote: '6★ rate-up · desbloquea THE 50/50',
+            featuredNote: '6★ rate-up · Vacío Infinito',
             featuredStars: 6,
             thumb: 'assets/gacha/banners/jjk-thumb.webp',
             art: 'assets/gacha/banners/jjk-stage.webp',
@@ -173,8 +215,8 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['gojo', 'sukuna', 'hakari', 'yuta'],
-            pool5Std: ['geto', 'toji', 'nanami', 'yuki', 'higuruma', 'choso'],
+            pool6: ['gojo', 'sukuna', 'hakari', 'yuta', 'kashimo'],
+            pool5Std: ['geto', 'toji', 'nanami', 'yuki', 'higuruma', 'choso', 'meimei'],
             pool4: ['yuji', 'megumi', 'maki', 'nobara', 'mahito', 'jogo', 'uro', 'ryu'],
             pool3: ['todo'],
             pool3Names: ['Talismán roto', 'Dedo maldito (réplica)', 'Cuerda negra']
@@ -198,9 +240,35 @@ const GachaRoster = {
             rate7: 0.008, rate4: 0.10, soft7: 50, hard7: 80, hard4: 10,
             featured5050: true,
             isMetaphor: true,
+            pool6: ['basilio', 'eupha'],
+            pool5Std: ['strohl', 'heismay', 'junah', 'hualkenberg'],
             pool5StdNames: ['Destino Falso', 'Clave espejismo', 'Sueño de royal'],
             pool4Names: ['Fragmento Real', 'Éter de Archetype', 'Sello de Príncipe'],
             pool3Names: ['Chispa de esperanza', 'Nota de viaje', 'Moneda de Tribes']
+        },
+        persona5royal: {
+            id: 'persona5royal',
+            series: 'Persona 5 Royal',
+            short: 'P5R',
+            title: 'TAKE YOUR HEART',
+            titleLines: ['TAKE YOUR', 'HEART'],
+            subtitle: 'Los Phantom Thieves entran en escena. Cambia el mundo a tu manera.',
+            tag: 'Persona 5 Royal',
+            featuredId: null,
+            featured: 'PHANTOM THIEVES',
+            featuredNote: 'Banner especial · Persona 5 Royal',
+            thumb: 'assets/gacha/banners/persona5royal-thumb.png',
+            art: 'assets/gacha/banners/persona5royal-stage.png',
+            banner: 'assets/gacha/banners/persona5royal-stage.png',
+            objectPosition: '50% 50%',
+            accent: '#c41e3a',
+            rate6: 0.003, soft6: 55, hard6: 80,
+            rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
+            featuredRate: 0.3,
+            pool6: ['ren', 'goro', 'sumire'],
+            pool5Std: ['ann', 'makoto'],
+            pool4: ['tae', 'futaba'],
+            pool3Names: ['Carta de invitación', 'Máscara de ladrón', 'Café de Leblanc']
         },
         kimetsu: {
             id: 'kimetsu',
@@ -223,8 +291,8 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, pity5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['tanjiro', 'gyomei', 'kokushibo', 'rengoku'],
-            pool5Std: ['giyu', 'tengen', 'sanemi', 'mitsuri', 'muichiro', 'obanai', 'akaza', 'doma', 'nezuko'],
+            pool6: ['tanjiro', 'gyomei', 'kokushibo', 'rengoku', 'muzan', 'yourichi'],
+            pool5Std: ['giyu', 'tengen', 'sanemi', 'mitsuri', 'muichiro', 'obanai', 'akaza', 'doma', 'nezuko', 'shinobu', 'genya'],
             pool4: ['zenitsu', 'inosuke', 'daki', 'hantengu', 'gyokko', 'sabito'],
             pool3: ['urokodaki'],
             pool3Names: ['Máscara tengu rota', 'Nichirin mellada', 'Talismán de Ubuyashiki']
@@ -250,14 +318,14 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, pity5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['denji', 'makima'],
-            pool5Std: ['power', 'reze', 'aki', 'angel'],
-            pool4: ['beam'],
+            pool6: ['denji', 'makima', 'quanxi', 'asa'],
+            pool5Std: ['power', 'reze', 'aki', 'angel', 'katana', 'kishibe'],
+            pool4: ['beam', 'kobeni'],
             pool3Names: ['Cordón oxidado', 'Kunai de Public Safety', 'Lata de comida de gato', 'Pin de bomba']
         }
     },
 
-    SERIES_ORDER: ['onepiece', 'naruto', 'jojo', 'bleach', 'jjk', 'kimetsu', 'chainsaw', 'metaphor'],
+    SERIES_ORDER: ['onepiece', 'naruto', 'jojo', 'bleach', 'jjk', 'kimetsu', 'chainsaw', 'metaphor', 'persona5royal'],
 
     enemyTemplate(id) {
         if (!this._enemyCache) {
@@ -309,12 +377,12 @@ const GachaRoster = {
     allCharIdsFromBanners() {
         const set = new Set(this.STARTERS);
         Object.values(this.BANNERS).forEach(b => {
-            if (b.isMetaphor) return;
-            if (b.featuredId) set.add(b.featuredId);
-            (b.pool6 || []).forEach(id => set.add(id));
-            (b.pool5Std || []).forEach(id => set.add(id));
-            (b.pool4 || []).forEach(id => set.add(id));
-            (b.pool3 || []).forEach(id => set.add(id));
+            if (b.isMetaphor && !(b.pool6?.length || b.pool5Std?.length || b.pool4?.length)) return;
+            if (b.featuredId && !this.isUnitSealed(b.featuredId)) set.add(b.featuredId);
+            (b.pool6 || []).forEach(id => { if (!this.isUnitSealed(id)) set.add(id); });
+            (b.pool5Std || []).forEach(id => { if (!this.isUnitSealed(id)) set.add(id); });
+            (b.pool4 || []).forEach(id => { if (!this.isUnitSealed(id)) set.add(id); });
+            (b.pool3 || []).forEach(id => { if (!this.isUnitSealed(id)) set.add(id); });
         });
         return [...set].filter(id => !this.EXCLUDED.has(id));
     },
@@ -333,7 +401,7 @@ const GachaRoster = {
     },
 
     availablePool(ids = [], includeMaxed = false) {
-        const list = (ids || []).filter(Boolean);
+        const list = (ids || []).filter(id => id && !this.isUnitSealed(id));
         const open = list.filter(id => this.isPlayableId(id) && (includeMaxed || !this.isCopyMaxed(id)));
         if (open.length) return open;
         // If every char in this tier is maxed, allow empty → caller refunds INV
@@ -412,19 +480,9 @@ const GachaRoster = {
         return list;
     },
 
-    /** Grant Kimetsu / Chainsaw (etc.) when the save already has a deep classic roster. */
-    _expansionIdsToGrant(missing, ownedSet) {
-        if (!missing.length || ownedSet.size < 60) return [];
-        const expansionSeries = new Set(['Kimetsu no Yaiba', 'Chainsaw Man']);
-        const seriesOf = (id) => {
-            const party = (typeof BattleData !== 'undefined' && BattleData.party) || [];
-            const fromParty = party.find(p => p.id === id);
-            if (fromParty?.series) return fromParty.series;
-            if (this.ENEMY_SERIES[id]) return this.ENEMY_SERIES[id];
-            const t = this.getTemplate(id);
-            return t?.series || '';
-        };
-        return missing.filter(id => expansionSeries.has(seriesOf(id)));
+    /** Disabled: every unit must be pulled (THE 50/50 requires full maxed collection). */
+    _expansionIdsToGrant() {
+        return [];
     },
 
     unlock(id) {
@@ -563,7 +621,7 @@ const GachaRoster = {
     seriesList() {
         return [
             'One Piece', 'Naruto', 'JoJo', 'Bleach', 'Jujutsu Kaisen',
-            'Kimetsu no Yaiba', 'Chainsaw Man'
+            'Kimetsu no Yaiba', 'Chainsaw Man', 'Persona 5 Royal', 'Metaphor: ReFantazio'
         ];
     },
 
@@ -579,8 +637,29 @@ const GachaRoster = {
         return bossCleared;
     },
 
+    /** THE 50/50: se desbloquea con TODOS los personajes al máximo de dupes.
+     *  4★ C6 · 5★/6★ C3. Da igual el progreso de historia. Gojo no abre nada. */
+    bossRequirement() {
+        if (typeof CharProgress !== 'undefined') {
+            const p = CharProgress.collectionDupesProgress();
+            return { copiesHave: p.have, copiesTotal: p.total, chars: p.chars };
+        }
+        const all = this.playableIds();
+        const owned = this.owned().filter(id => all.includes(id));
+        return { copiesHave: owned.length, copiesTotal: all.length, chars: all.length };
+    },
+
+    bossUnlockedByCollection() {
+        if (typeof CharProgress !== 'undefined') return CharProgress.allMaxed();
+        return this.playableIds().length > 0 && this.remainingPool().length === 0;
+    },
+
+    bossRequirementText() {
+        const r = this.bossRequirement();
+        return `THE 50/50 exige TODA la colección al máximo: ${r.copiesHave}/${r.copiesTotal} copias (${r.chars} personajes · 4★ C6 · 5★/6★ C3). La historia no importa.`;
+    },
+
     isBannerUnlocked(bannerId) {
-        if (bannerId === 'metaphor') return this.metaphorUnlocked();
         return !!this.BANNERS[bannerId];
     },
 
@@ -632,7 +711,6 @@ const GachaRoster = {
         const stars = new Set();
         if (!id) return [];
         Object.values(this.BANNERS).forEach((b) => {
-            if (!b || b.isMetaphor) return;
             const featStars = b.featuredStars || 5;
             if (b.featuredId === id) stars.add(featStars);
             if ((b.pool6 || []).includes(id)) stars.add(6);
@@ -682,7 +760,7 @@ const GachaRoster = {
         let has4 = false;
         let has5 = false;
         Object.values(this.BANNERS).forEach((b) => {
-            if (!b || b.isMetaphor) return;
+            if (!b) return;
             if ((b.pool4 || []).includes(id)) has4 = true;
             if ((b.pool5Std || []).includes(id)) has5 = true;
             if (b.featuredId === id && (b.featuredStars || 5) >= 5) has5 = true;
@@ -844,8 +922,7 @@ const GachaRoster = {
         const out = [];
         const seen = new Set();
         Object.values(this.BANNERS).forEach((b) => {
-            if (b.isMetaphor) return;
-            const ids = [b.featuredId, ...(b.pool6 || []), ...(b.pool5Std || []), ...(b.pool4 || [])].filter(Boolean);
+            const ids = [b.featuredId, ...(b.pool6 || []), ...(b.pool5Std || []), ...(b.pool4 || [])].filter(id => id && !this.isUnitSealed(id));
             ids.forEach((id) => {
                 if (seen.has(id) || !this.getTemplate(id)) return;
                 seen.add(id);
@@ -861,7 +938,7 @@ const GachaRoster = {
                     stars: this.starsLabel(id),
                     cost: this.starSealCostFor(id),
                     dual: this.isDualRarity(id),
-                    art: `assets/sprites/anim/${id}_idle.png`
+                    art: (typeof StagedSprites !== 'undefined' && StagedSprites.normalUrl && StagedSprites.normalUrl(id)) || tpl.img || `assets/sprites/anim/${id}_idle.png`
                 });
             });
         });
@@ -924,12 +1001,123 @@ const GachaRoster = {
         return pick(list);
     },
 
+    /** Featured picks per banner — one 5★ + one 6★, each 50% of its own tier. */
+    featuredEligible(bannerId, stars = null) {
+        const b = this.BANNERS[bannerId];
+        if (!b || b.isMetaphor) return [];
+        const tierOf = (id) => (this.primaryStars(id) >= 6 ? 6 : 5);
+        let ids = [...(b.pool6 || []), ...(b.pool5Std || [])];
+        if (b.featuredId && !ids.includes(b.featuredId)) ids.unshift(b.featuredId);
+        ids = [...new Set(ids)].filter(id => id && this.isPlayableId(id));
+        if (stars === 6) return ids.filter(id => tierOf(id) === 6);
+        if (stars === 5) return ids.filter(id => tierOf(id) === 5);
+        return ids;
+    },
+
+    /** Migrate legacy single `featuredPick` into the dual slots. */
+    _migrateFeaturedPick(st) {
+        if (!st || st.featuredPick == null) return false;
+        const legacy = st.featuredPick;
+        delete st.featuredPick;
+        if (!legacy) return true;
+        try {
+            const stars = this.primaryStars(legacy) >= 6 ? 6 : 5;
+            if (stars === 6) st.featuredPick6 = legacy;
+            else st.featuredPick5 = legacy;
+            return true;
+        } catch (_) {
+            return true;
+        }
+    },
+
+    /** Featured for a single tier: { id, stars, picked }. */
+    getFeaturedFor(bannerId, stars) {
+        const b = this.BANNERS[bannerId];
+        const tier = Number(stars) >= 6 ? 6 : 5;
+        if (!b) return { id: null, stars: tier, picked: false };
+        try {
+            const st = this.getState(bannerId);
+            if (st.featuredPick != null) {
+                this._migrateFeaturedPick(st);
+                this.saveState(bannerId, st);
+            }
+            const key = tier === 6 ? 'featuredPick6' : 'featuredPick5';
+            const pick = st[key] || null;
+            if (pick && this.featuredEligible(bannerId, tier).includes(pick)) {
+                return { id: pick, stars: tier, picked: true };
+            }
+        } catch (_) { /* ignore */ }
+        // Default: banner featured if it belongs to this tier, else NO rate-up
+        // (pool aleatorio — preserva las odds antiguas donde el tier sin destacado era random).
+        const defStars = b.featuredStars || 5;
+        if (b.featuredId && this.isPlayableId(b.featuredId)) {
+            const defTier = this.primaryStars(b.featuredId) >= 6 ? 6 : defStars >= 6 ? 6 : 5;
+            if (defTier === tier) return { id: b.featuredId, stars: tier, picked: false };
+        }
+        return { id: null, stars: tier, picked: false };
+    },
+
+    /** Both tiers at once: { six, five }. */
+    getFeaturedPair(bannerId) {
+        return {
+            six: this.getFeaturedFor(bannerId, 6),
+            five: this.getFeaturedFor(bannerId, 5)
+        };
+    },
+
+    getFeatured(bannerId) {
+        // Back-compat: prefer the 6★ pick (chase unit), else 5★, else banner default.
+        try {
+            const pair = this.getFeaturedPair(bannerId);
+            if (pair.six?.picked && pair.six.id) return pair.six;
+            if (pair.five?.picked && pair.five.id) return pair.five;
+            if (pair.six?.id) {
+                const b = this.BANNERS[bannerId];
+                if (b && (b.featuredStars || 5) >= 6) return pair.six;
+            }
+            if (pair.five?.id) return pair.five;
+            if (pair.six?.id) return pair.six;
+        } catch (_) { /* ignore */ }
+        const b = this.BANNERS[bannerId];
+        if (!b) return { id: null, stars: 5 };
+        return { id: b.featuredId || null, stars: b.featuredStars || 5, picked: false };
+    },
+
+    setFeaturedPick(bannerId, charId, stars = null) {
+        const b = this.BANNERS[bannerId];
+        if (!b || b.isMetaphor) return false;
+        const st = this.getState(bannerId);
+        if (st.featuredPick != null) {
+            this._migrateFeaturedPick(st);
+        }
+        if (!charId) {
+            // Clear one tier when asked, else clear both (legacy AUTO behaviour).
+            if (stars === 6) delete st.featuredPick6;
+            else if (stars === 5) delete st.featuredPick5;
+            else {
+                delete st.featuredPick6;
+                delete st.featuredPick5;
+                delete st.featuredPick;
+            }
+            this.saveState(bannerId, st);
+            return true;
+        }
+        if (!this.featuredEligible(bannerId).includes(charId)) return false;
+        const tier = stars === 6 || stars === 5
+            ? Number(stars)
+            : (this.primaryStars(charId) >= 6 ? 6 : 5);
+        // Guard: picked unit must belong to the tier slot it occupies.
+        if (!this.featuredEligible(bannerId, tier).includes(charId)) return false;
+        if (tier === 6) st.featuredPick6 = charId;
+        else st.featuredPick5 = charId;
+        delete st.featuredPick;
+        this.saveState(bannerId, st);
+        return true;
+    },
+
     rollOne(bannerId) {
         const b = this.BANNERS[bannerId];
         if (!b) return null;
-        if (bannerId === 'metaphor' && GameState.get('legendaryObtained')) {
-            return this.shardResult('Banner Metaphor completado', 3);
-        }
         if (!this.isBannerUnlocked(bannerId)) return null;
 
         // Entire playable banner maxed → INV instead of junk shards
@@ -953,33 +1141,33 @@ const GachaRoster = {
 
         const rates = typeof GachaRates !== 'undefined' ? GachaRates : null;
         const pick = rates ? rates.pick.bind(rates) : (list) => list[Math.floor(Math.random() * list.length)];
-        const featChance = b.featuredRate != null
-            ? b.featuredRate
-            : (this.SERIES_RATES?.featuredRate ?? 0.3);
-        const featStars = b.featuredStars || 5;
+        const featPair = (typeof this.getFeaturedPair === 'function')
+            ? this.getFeaturedPair(bannerId)
+            : { six: this.getFeatured(bannerId), five: this.getFeatured(bannerId) };
+        // Picked/default featured takes half of its tier drops (5★ and 6★ independent).
+        const featChance = 0.5;
 
         const rollHigh = (starsTarget) => {
             let charId = null;
             let featured = false;
             const poolKey = starsTarget >= 6 ? 'pool6' : 'pool5Std';
-            const rawStd = (b[poolKey] || []).filter((id) => id !== b.featuredId || featStars !== starsTarget);
+            const tierFeat = starsTarget >= 6 ? featPair.six : featPair.five;
+            const featId = tierFeat?.id || null;
+            const featStars = tierFeat?.stars || starsTarget;
+            const rawStd = (b[poolKey] || []).filter((id) => id !== featId);
             const stdOpen = this.availablePool(rawStd, true);
-            const featOpen = b.featuredId
+            const featOpen = featId
                 && featStars === starsTarget
-                && this.getTemplate(b.featuredId);
+                && this.getTemplate(featId);
 
-            const featuredWeight = 1.25;
-            const standardWeight = 1;
-            const featuredChance = featOpen
-                ? featuredWeight / (featuredWeight + (standardWeight * stdOpen.length))
-                : 0;
+            const featuredChance = featOpen ? featChance : 0;
             if (featOpen && Math.random() < featuredChance) {
-                charId = b.featuredId;
+                charId = featId;
                 featured = true;
             } else if (stdOpen.length) {
                 charId = this.pickWithCollectionBias(stdOpen, pick);
             } else if (featOpen) {
-                charId = b.featuredId;
+                charId = featId;
                 featured = true;
             }
 
@@ -1003,11 +1191,17 @@ const GachaRoster = {
             else if (st.pity4 >= b.hard4 || Math.random() < (b.rate4 || 0.10) / Math.max(0.001, 1 - r7)) stars = 4;
 
             if (stars === 7) {
+                // Hard pity reached on THIS roll (before reset below).
+                const wasHard = st.pity7 >= (b.hard7 || 80);
                 st.pity7 = 0;
                 st.pity6 = 0;
                 st.pity5 = 0;
                 st.pity4 = 0;
-                if (Math.random() < featChance) {
+                // The gift drops ONCE and only when eligible (boss + Ren C3).
+                // Hard pity 7★ forces it; soft 7★ rolls the 50/50.
+                // Otherwise the 7★ always resolves to a Metaphor unit.
+                const giftOpen = !GameState.get('legendaryObtained') && this.legendaryEligible();
+                if (giftOpen && (wasHard || Math.random() < featChance)) {
                     result = {
                         kind: 'legendary',
                         rarity: 'celestial',
@@ -1019,8 +1213,18 @@ const GachaRoster = {
                         bannerId
                     };
                 } else {
-                    result = this.shardResult(pick(b.pool5StdNames) || 'Destino Falso', 5);
-                    result.featured = false;
+                    // Lost the celestial 50/50 → Metaphor unit (farmable via red tickets).
+                    // Maxed units still drop (they convert to Sellos Estelares).
+                    const meta6open = this.availablePool(b.pool6 || [], true);
+                    const meta5open = this.availablePool(b.pool5Std || [], true);
+                    const meta6 = meta6open.length ? this.pickWithCollectionBias(meta6open, pick) : null;
+                    const meta5 = (!meta6 && meta5open.length) ? this.pickWithCollectionBias(meta5open, pick) : null;
+                    if (meta6) result = this.characterResult(meta6, 6, false);
+                    else if (meta5) result = this.characterResult(meta5, 5, false);
+                    else {
+                        result = this.shardResult(pick(b.pool5StdNames) || 'Destino Falso', 5);
+                        result.featured = false;
+                    }
                 }
             } else if (stars === 4) {
                 st.pity4 = 0;
@@ -1167,19 +1371,23 @@ const GachaRoster = {
                     const slot = planned.findIndex((r, i) => !fiveSlots.includes(i) && (r.stars || 0) < 5);
                     if (slot >= 0) {
                         const st = this.getState(bannerId);
-                        const featOpen = b.featuredId
-                            && (b.featuredStars || 5) === 5
-                            && this.getTemplate(b.featuredId);
-                        const stdOpen = this.availablePool(b.pool5Std || [], true);
+                        const dFeat = (typeof this.getFeaturedFor === 'function')
+                            ? this.getFeaturedFor(bannerId, 5)
+                            : this.getFeatured(bannerId);
+                        const featOpen = dFeat.id
+                            && dFeat.stars === 5
+                            && this.getTemplate(dFeat.id);
+                        const stdOpen = this.availablePool(
+                            (b.pool5Std || []).filter((id) => id !== dFeat.id), true);
                         let charId = null;
                         let featured = false;
-                        if (featOpen && Math.random() < (b.featuredRate ?? 0.3)) {
-                            charId = b.featuredId;
+                        if (featOpen && Math.random() < 0.5) {
+                            charId = dFeat.id;
                             featured = true;
                         } else if (stdOpen.length) {
                             charId = stdOpen[Math.floor(Math.random() * stdOpen.length)];
                         } else if (featOpen) {
-                            charId = b.featuredId;
+                            charId = dFeat.id;
                             featured = true;
                         }
                         if (charId) {
@@ -1266,11 +1474,9 @@ const GachaRoster = {
             }
         }
 
-        if (result.kind === 'gojo' || result.charId === this.GOJO_ID) {
-            GameState.set('gojoObtained', true);
-            GameState.set('bossUnlockedByGojo', true);
-            GameState.setFlag('gate_gojo_unlock', true);
-            GameState.setFlag('gate_aizen_cleared', true); // legacy saves
+        // Gojo no desbloquea nada: THE 50/50 exige la colección completa al máximo.
+        if (result.kind === 'gojo' && result.charId === this.GOJO_ID && !result.dupe) {
+            result.kind = 'character';
         }
         if (result.kind === 'legendary' || result.metaphor) {
             GameState.set('legendaryObtained', true);

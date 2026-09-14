@@ -38,15 +38,16 @@ const BattleAI = {
         const weakHit = this.bestWeaknessPlay(skills, livingFoes);
         if (weakHit && Math.random() < 0.98) return pick(weakHit.skill, weakHit.target);
 
-        if (hpRatio < 0.4) {
+        if (hpRatio < 0.5) {
             const heal = skills.find(s => s.heal && !s.power);
-            if (heal && Math.random() < 0.88) return pick(heal, enemy);
+            if (heal && Math.random() < 0.92) return pick(heal, enemy);
             const defBuff = skills.find(s => s.buff?.def || s.partyBuff?.def);
-            if (defBuff && Math.random() < 0.72) return pick(defBuff, enemy);
+            if (defBuff && Math.random() < 0.8) return pick(defBuff, enemy);
         }
 
+        // Cripple the carry early and often — debuffs open every serious fight.
         const debuff = skills.find(s => (s.debuff || s.targetEnemy) && (!s.power || s.power < 45));
-        if (debuff && strongest.hp / strongest.maxHp > 0.45 && Math.random() < 0.65) {
+        if (debuff && strongest.hp / strongest.maxHp > 0.35 && Math.random() < 0.85) {
             return pick(debuff, strongest);
         }
 
@@ -55,41 +56,43 @@ const BattleAI = {
                 return pick(this.bestDamage(skills, livingFoes) || basic, lowest);
 
             case 'assassin':
-                if (lowest.hp / lowest.maxHp < 0.42) return pick(this.highestPower(skills) || basic, lowest);
+                // Executes at half HP — keep everyone topped or lose someone.
+                if (lowest.hp / lowest.maxHp < 0.5) return pick(this.highestPower(skills) || basic, lowest);
                 return pick(skills.find(s => s.critBonus) || this.bestDamage(skills, livingFoes) || basic, healer || lowest);
 
             case 'tank':
                 if (livingFoes.length >= 2) {
                     const aoe = skills.find(s => s.aoe && s.power > 0);
-                    if (aoe && Math.random() < 0.55) return pick(aoe, livingFoes[0]);
+                    if (aoe && Math.random() < 0.68) return pick(aoe, livingFoes[0]);
                 }
-                if (hpRatio < 0.55) {
+                if (hpRatio < 0.65) {
                     const guard = skills.find(s => s.buff?.def || s.cover);
-                    if (guard && Math.random() < 0.4) return pick(guard, enemy);
+                    if (guard && Math.random() < 0.62) return pick(guard, enemy);
                 }
                 return pick(this.bestDamage(skills, livingFoes) || basic, strongest);
 
             case 'support': {
                 const needy = livingAllies.filter(a => a !== enemy).sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp)[0];
-                if (needy && needy.hp / needy.maxHp < 0.55) {
+                if (needy && needy.hp / needy.maxHp < 0.65) {
                     const heal = skills.find(s => s.heal);
                     if (heal) return pick(heal, needy);
                 }
                 const buff = skills.find(s => s.allyBuff || s.buff || s.partyBuff);
-                if (buff && Math.random() < 0.68) return pick(buff, needy || enemy);
+                if (buff && Math.random() < 0.88) return pick(buff, needy || enemy);
                 return pick(skills.find(s => s.power > 0) || basic, lowest);
             }
 
             case 'tactical': {
-                if (healer && healer.hp / healer.maxHp > 0.25 && Math.random() < 0.7) {
+                // Your healer dies first. Protect them or do without healing.
+                if (healer && healer.hp / healer.maxHp > 0.2 && Math.random() < 0.88) {
                     return pick(this.bestDamage(skills, [healer]) || basic, healer);
                 }
-                if (hpRatio < 0.55) {
+                if (hpRatio < 0.6) {
                     const guard = skills.find(s => s.buff?.def);
-                    if (guard && Math.random() < 0.32) return pick(guard, enemy);
+                    if (guard && Math.random() < 0.55) return pick(guard, enemy);
                 }
                 const aoe = skills.find(s => s.aoe && s.power > 0);
-                if (aoe && livingFoes.length > 1 && Math.random() < 0.5) return pick(aoe, livingFoes[0]);
+                if (aoe && livingFoes.length > 1 && Math.random() < 0.62) return pick(aoe, livingFoes[0]);
                 return pick(this.bestDamage(skills, livingFoes) || basic, lowest);
             }
 
@@ -112,17 +115,17 @@ const BattleAI = {
                 }
                 if (phase === 3) {
                     const finisher = this.highestPower(skills) || basic;
-                    return pick(finisher, Math.random() < 0.55 ? strongest : healer || lowest);
+                    return pick(finisher, Math.random() < 0.68 ? strongest : healer || lowest);
                 }
-                const aoeChance = state.encounter?.aiAoEChance ?? 0.58;
+                const aoeChance = state.encounter?.aiAoEChance ?? 0.7;
                 if (livingFoes.length > 1 && Math.random() < aoeChance) {
                     const aoe = skills.find(s => s.aoe && s.power > 0);
                     if (aoe) return pick(aoe, livingFoes[0]);
                 }
                 const skip = skills.find(s => s.skipEnemy);
-                if (skip && phase >= 2 && Math.random() < 0.28) return pick(skip, enemy);
+                if (skip && phase >= 2 && Math.random() < 0.46) return pick(skip, enemy);
         const healerFocus = state.encounter?.aiHealerFocus
-            ?? (state.partyHasSupport ? 0.78 : 0.64);
+            ?? (state.partyHasSupport ? 0.87 : 0.75);
                 if (healer && Math.random() < healerFocus) return pick(this.bestDamage(skills, [healer]) || basic, healer);
                 return pick(this.bestDamage(skills, livingFoes) || basic, lowest);
             }
@@ -188,7 +191,8 @@ const BattleAI = {
                 if ((f.weak || []).includes(s.type)) sc *= 2.3;
                 if ((f.resist || []).includes(s.type)) sc *= 0.45;
                 if ((f.null || []).includes(s.type)) sc *= 0.02;
-                if (f.hp / f.maxHp < 0.35) sc *= 1.15;
+                // Focus fire: execute the weakened instead of spreading damage.
+                if (f.hp / f.maxHp < 0.4) sc *= 1.45;
                 if (sc > score) { score = sc; best = s; }
             }
         }

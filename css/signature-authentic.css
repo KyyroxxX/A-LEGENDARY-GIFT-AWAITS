@@ -1,0 +1,110 @@
+/* Authentic signature VFX — researched look per iconic 5★/6★ move.
+   Philosophy: BOLD SIMPLE shapes (white-hot core + saturated rim). These rules
+   set GEOMETRY ONLY (clip-path, background, size). Motion/choreography stays
+   with the vfx-pro phase keyframes (charge gather, emit release, impact burst)
+   so nothing fights and every phase reads clean.
+   Colors arrive via --vfx-primary/--vfx-secondary (per-skill authentic pair). */
+/* Shards off for auth styles: the signature silhouette must read, not confetti. */
+.vfx-pro[class*="vfx-style-auth-"] > .vfx-pro__shard { display: none; }
+/* One soft glow for all auth halos — no mud. */
+.vfx-pro[class*="vfx-style-auth-"] > .vfx-pro__halo { background: radial-gradient(circle, var(--vfx-primary) 0 14%, transparent 60%); filter: blur(10px); opacity: .8; }
+
+/* ── Orbs: Rasengan / Blue / Red (chakra sphere, white-hot heart) ── */
+.vfx-style-auth-spiral-orb .vfx-pro__core { width:26%; height:26%; border-radius:50%; background:radial-gradient(circle,#fff 0 22%,var(--vfx-primary) 45%,var(--vfx-secondary) 68%,transparent 74%); border:3px solid #fff; }
+.vfx-style-auth-spiral-orb .vfx-pro__trail { left:30%; right:30%; top:24%; height:48%; border-radius:50%; border:3px solid var(--vfx-secondary); opacity:.8; }
+.vfx-style-auth-spiral-orb .vfx-pro__accent { inset:14%; border-radius:50%; border:2px dashed var(--vfx-primary); opacity:.9; }
+/* ── Hollow Purple / void orbs (white core eaten by dark void, violet rim) ── */
+.vfx-style-auth-void-orb .vfx-pro__core { width:30%; height:30%; border-radius:50%; background:radial-gradient(circle,#fff 0 8%,var(--vfx-primary) 22%,#000 48%,var(--vfx-secondary) 66%,transparent 76%); border:3px solid var(--vfx-primary); }
+.vfx-style-auth-void-orb .vfx-pro__accent { inset:8%; border-radius:50%; border:3px solid var(--vfx-secondary); transform:scaleX(1.4); opacity:.9; }
+/* ── Menacing Ball / blood orbs (black sphere, violet dread rim) ── */
+.vfx-style-auth-blood-orb .vfx-pro__core { width:28%; height:28%; border-radius:50%; background:radial-gradient(circle,#2a0a12 0 42%,var(--vfx-secondary) 62%,var(--vfx-primary) 74%,transparent 82%); border:3px solid var(--vfx-primary); }
+.vfx-style-auth-blood-orb .vfx-pro__trail { left:26%; right:26%; top:20%; height:56%; border-radius:50%; border:2px solid var(--vfx-secondary); opacity:.7; }
+/* ── Chidori / lightning hand (single jagged white bolt) ── */
+.vfx-style-auth-lightning-hand .vfx-pro__core { width:24%; height:48%; background:linear-gradient(180deg,#fff 0 18%,var(--vfx-primary) 45%,var(--vfx-secondary) 80%,transparent); clip-path:polygon(44% 0,60% 0,53% 30%,84% 30%,38% 100%,47% 58%,16% 58%); }
+.vfx-style-auth-lightning-hand .vfx-pro__trail { background:linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter:blur(3px); }
+.vfx-style-auth-lightning-hand .vfx-pro__accent { left:36%; width:28%; top:28%; height:40%; background:linear-gradient(180deg,#fff,transparent 70%); clip-path:polygon(46% 0,58% 0,53% 45%,80% 50%,52% 60%,56% 100%,44% 100%,47% 60%,20% 55%); opacity:.9; }
+/* ── Kirin (one thick sky-to-ground beam) ── */
+.vfx-style-auth-lightning-fall .vfx-pro__core { left:45%; width:10%; top:0; height:94%; background:linear-gradient(180deg,transparent,var(--vfx-primary) 25%,#fff 52%,var(--vfx-secondary) 78%,transparent); }
+.vfx-style-auth-lightning-fall .vfx-pro__trail { top:40%; height:20%; background:linear-gradient(90deg,transparent,var(--vfx-primary),transparent); filter:blur(5px); }
+.vfx-style-auth-lightning-fall .vfx-pro__accent { left:32%; width:36%; top:4%; height:22%; border:3px solid #fff; border-radius:50%; transform:scaleY(.5); opacity:.85; }
+/* ── Getsuga (one wide glowing crescent) ── */
+.vfx-style-auth-crescent-slash .vfx-pro__core { width:66%; height:24%; background:linear-gradient(180deg,transparent 5%,var(--vfx-primary) 32%,#fff 50%,var(--vfx-secondary) 70%,transparent 95%); clip-path:ellipse(50% 46% at 50% 60%); }
+.vfx-style-auth-crescent-slash .vfx-pro__trail { top:32%; height:26%; background:linear-gradient(180deg,transparent,var(--vfx-secondary),transparent); filter:blur(5px); }
+.vfx-style-auth-crescent-slash .vfx-pro__accent { left:12%; width:76%; top:36%; height:6%; background:#fff; clip-path:polygon(0 50%,30% 0,100% 50%,30% 100%); opacity:.9; }
+/* ── Hinokami (single ring of fire) ── */
+.vfx-style-auth-flame-dance .vfx-pro__core { width:42%; height:42%; border-radius:50%; border:8px solid var(--vfx-primary); background:radial-gradient(circle,transparent 52%,var(--vfx-secondary) 72%,transparent 88%); }
+.vfx-style-auth-flame-dance .vfx-pro__trail { left:26%; right:26%; top:20%; height:56%; border-radius:50%; border:3px solid var(--vfx-secondary); opacity:.75; }
+.vfx-style-auth-flame-dance .vfx-pro__accent { inset:28%; border-radius:50%; background:radial-gradient(circle,#fff 0 14%,var(--vfx-primary) 45%,transparent 70%); }
+/* ── Eruption (rising fire tongue) ── */
+.vfx-style-auth-flame-eruption .vfx-pro__core { width:30%; height:54%; top:32%; background:linear-gradient(0deg,var(--vfx-secondary) 0%,var(--vfx-primary) 45%,#fff 75%,transparent); clip-path:polygon(50% 0,68% 32%,60% 62%,72% 100%,28% 100%,40% 62%,32% 32%); }
+.vfx-style-auth-flame-eruption .vfx-pro__trail { top:54%; height:32%; background:linear-gradient(0deg,transparent,var(--vfx-secondary)); filter:blur(6px); }
+/* ── Water wheel (flowing horizontal band) ── */
+.vfx-style-auth-water-wheel .vfx-pro__core { width:60%; height:16%; background:linear-gradient(180deg,transparent 10%,var(--vfx-primary) 40%,#fff 52%,var(--vfx-secondary) 65%,transparent 92%); clip-path:ellipse(50% 50% at 50% 50%); }
+.vfx-style-auth-water-wheel .vfx-pro__trail { top:34%; height:22%; background:linear-gradient(90deg,transparent,var(--vfx-secondary) 40%,#fff 50%,var(--vfx-secondary) 60%,transparent); filter:blur(3px); }
+.vfx-style-auth-water-wheel .vfx-pro__accent { left:18%; width:64%; top:42%; height:5%; background:#fff; clip-path:polygon(0 50%,15% 0,100% 50%,15% 100%); opacity:.85; }
+/* ── Mist veil (low pale fog bank) ── */
+.vfx-style-auth-mist-veil .vfx-pro__core { width:72%; height:22%; top:60%; background:linear-gradient(180deg,transparent,var(--vfx-primary) 55%,var(--vfx-secondary) 85%); filter:blur(7px); opacity:.9; }
+.vfx-style-auth-mist-veil .vfx-pro__trail { top:62%; height:18%; background:linear-gradient(180deg,transparent,#fff 60%,transparent); filter:blur(6px); opacity:.7; }
+/* ── Serpent slash (single winding cut) ── */
+.vfx-style-auth-serpent-slash .vfx-pro__core { width:62%; height:18%; background:linear-gradient(90deg,transparent,var(--vfx-primary) 30%,#fff 50%,var(--vfx-secondary) 70%,transparent); clip-path:polygon(0 65%,22% 20%,45% 70%,68% 15%,100% 55%,92% 80%,66% 40%,44% 95%,20% 45%); }
+.vfx-style-auth-serpent-slash .vfx-pro__accent { left:24%; width:52%; top:32%; height:28%; border:2px solid var(--vfx-secondary); border-radius:50%; transform:rotate(-14deg) scaleY(.5); opacity:.8; }
+/* ── Barrages (fist impacts, warm flash) ── */
+.vfx-style-auth-rubber-barrage .vfx-pro__core { width:56%; height:34%; background:radial-gradient(ellipse at 20% 45%,#fff 0 5%,var(--vfx-primary) 6% 12%,transparent 13%),radial-gradient(ellipse at 50% 55%,#fff 0 5%,var(--vfx-secondary) 6% 13%,transparent 14%),radial-gradient(ellipse at 80% 45%,#fff 0 5%,var(--vfx-primary) 6% 12%,transparent 13%); }
+.vfx-style-auth-rubber-barrage .vfx-pro__trail { height:36%; background:linear-gradient(90deg,transparent,var(--vfx-secondary) 45%,transparent); filter:blur(4px); }
+.vfx-style-auth-stand-barrage .vfx-pro__core { width:50%; height:40%; background:radial-gradient(ellipse at 30% 35%,#fff 0 6%,var(--vfx-primary) 7% 14%,transparent 15%),radial-gradient(ellipse at 62% 50%,#fff 0 6%,var(--vfx-secondary) 7% 14%,transparent 15%),radial-gradient(ellipse at 45% 72%,#fff 0 5%,var(--vfx-primary) 6% 12%,transparent 13%); }
+.vfx-style-auth-stand-barrage .vfx-pro__trail { height:40%; background:linear-gradient(90deg,transparent,var(--vfx-primary) 50%,transparent); filter:blur(4px); }
+.vfx-style-auth-stand-barrage .vfx-pro__accent { left:32%; width:36%; top:30%; height:36%; border:3px solid #fff; clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); opacity:.85; }
+/* ── Iaido draw (one blinding horizontal line) ── */
+.vfx-style-auth-blade-draw .vfx-pro__core { width:78%; height:3.5%; top:44%; background:linear-gradient(90deg,transparent,var(--vfx-primary) 35%,#fff 50%,var(--vfx-secondary) 65%,transparent); }
+.vfx-style-auth-blade-draw .vfx-pro__trail { height:3.5%; top:44%; opacity:.45; filter:blur(2px); }
+.vfx-style-auth-blade-draw .vfx-pro__accent { left:6%; width:10%; top:37%; height:14%; background:#fff; clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
+/* ── Blade storm (petal cross of cuts) ── */
+.vfx-style-auth-blade-storm .vfx-pro__core { width:52%; height:36%; background:linear-gradient(90deg,transparent,var(--vfx-primary) 30%,#fff 50%,var(--vfx-secondary) 70%,transparent),linear-gradient(0deg,transparent,var(--vfx-secondary) 35%,#fff 50%,var(--vfx-primary) 65%,transparent); clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
+.vfx-style-auth-blade-storm .vfx-pro__trail { height:32%; background:linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter:blur(4px); }
+/* ── Time stop (pale clock ring on dead air) ── */
+.vfx-style-auth-time-stop .vfx-pro__core { width:30%; height:30%; border-radius:50%; border:4px solid #fff; background:radial-gradient(circle,transparent 55%,var(--vfx-primary) 72%,transparent 88%); }
+.vfx-style-auth-time-stop .vfx-pro__accent { left:45%; width:10%; top:26%; height:44%; border:2px solid #fff; border-radius:50%; opacity:.9; }
+/* ── Domain shrine (dark horned gate) ── */
+.vfx-style-auth-domain-shrine .vfx-pro__core { width:44%; height:38%; background:linear-gradient(180deg,var(--vfx-primary) 0 12%,#000 45%,var(--vfx-secondary) 80%,transparent); clip-path:polygon(22% 100%,22% 45%,10% 30%,32% 30%,40% 4%,46% 28%,54% 28%,60% 4%,68% 30%,90% 30%,78% 45%,78% 100%); }
+.vfx-style-auth-domain-shrine .vfx-pro__accent { inset:20% 32%; border:2px solid var(--vfx-primary); border-radius:50% 50% 0 0; opacity:.85; }
+/* ── Black flash (white-red cross spark) ── */
+.vfx-style-auth-black-flash .vfx-pro__core { width:36%; height:40%; background:linear-gradient(180deg,#fff 0 30%,var(--vfx-primary) 55%,var(--vfx-secondary)); clip-path:polygon(44% 0,56% 0,54% 38%,100% 44%,54% 52%,56% 100%,44% 100%,46% 54%,0 50%,46% 40%); }
+.vfx-style-auth-black-flash .vfx-pro__trail { background:linear-gradient(90deg,transparent,var(--vfx-primary) 50%,transparent); filter:blur(3px); }
+.vfx-style-auth-black-flash .vfx-pro__accent { inset:24%; border:3px solid #fff; clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); opacity:.9; }
+/* ── Cero (thick white-green beam) ── */
+.vfx-style-auth-cero-beam .vfx-pro__core { width:74%; height:10%; top:41%; background:linear-gradient(180deg,var(--vfx-primary) 0 30%,#fff 30% 55%,var(--vfx-secondary) 55% 80%,var(--vfx-primary) 80%); }
+.vfx-style-auth-cero-beam .vfx-pro__trail { height:20%; top:36%; background:linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter:blur(5px); }
+.vfx-style-auth-cero-beam .vfx-pro__accent { left:66%; width:14%; top:32%; height:24%; border-radius:50%; background:radial-gradient(circle,#fff 0 20%,var(--vfx-primary) 55%,transparent 75%); }
+/* ── Bankai aura (black pillar, blue edge) ── */
+.vfx-style-auth-bankai-aura .vfx-pro__core { left:43%; width:14%; top:10%; height:78%; background:linear-gradient(180deg,transparent,var(--vfx-primary) 30%,#000 60%,var(--vfx-secondary) 88%); }
+.vfx-style-auth-bankai-aura .vfx-pro__trail { left:34%; right:34%; top:12%; height:72%; border-left:3px solid var(--vfx-primary); border-right:3px solid var(--vfx-primary); opacity:.7; }
+/* ── Cursed slash (black blade, violet edge) ── */
+.vfx-style-auth-cursed-slash .vfx-pro__core { width:64%; height:9%; background:linear-gradient(90deg,transparent,#000 25%,var(--vfx-secondary) 50%,#000 75%,transparent); border-top:2px solid var(--vfx-secondary); border-bottom:2px solid var(--vfx-secondary); clip-path:polygon(0 60%,55% 0,100% 40%,60% 100%); }
+.vfx-style-auth-cursed-slash .vfx-pro__trail { height:14%; background:linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter:blur(3px); }
+.vfx-style-auth-cursed-slash .vfx-pro__accent { left:28%; width:44%; top:28%; height:30%; border:2px solid var(--vfx-secondary); border-radius:50%; transform:rotate(-18deg) scaleY(.5); opacity:.8; }
+/* ── Chainsaw (steel disc, orange heart) ── */
+.vfx-style-auth-chainsaw-rev .vfx-pro__core { width:30%; height:30%; border-radius:50%; background:radial-gradient(circle,var(--vfx-primary) 0 28%,#3a3a3a 30% 46%,var(--vfx-secondary) 48% 58%,transparent 62%); border:4px solid #d8d8d8; }
+.vfx-style-auth-chainsaw-rev .vfx-pro__trail { height:26%; background:linear-gradient(90deg,transparent,var(--vfx-primary),transparent); filter:blur(3px); }
+/* ── Explosive fist (star compass blast) ── */
+.vfx-style-auth-explosive-fist .vfx-pro__core { width:36%; height:36%; background:radial-gradient(circle,#fff 0 10%,var(--vfx-primary) 28%,var(--vfx-secondary) 55%,transparent 72%); clip-path:polygon(50% 0,62% 32%,100% 38%,68% 56%,78% 100%,50% 74%,22% 100%,32% 56%,0 38%,38% 32%); }
+.vfx-style-auth-explosive-fist .vfx-pro__trail { height:36%; background:radial-gradient(ellipse,var(--vfx-secondary) 0 32%,transparent 65%); filter:blur(5px); }
+/* ── Requiem beam (pale nullifying ray) ── */
+.vfx-style-auth-requiem-beam .vfx-pro__core { width:68%; height:6%; top:43%; background:linear-gradient(90deg,transparent,var(--vfx-primary) 40%,#fff 50%,var(--vfx-primary) 60%,transparent); }
+.vfx-style-auth-requiem-beam .vfx-pro__accent { left:42%; width:16%; top:28%; height:40%; border:2px solid #fff; clip-path:polygon(50% 0,100% 100%,0 100%); opacity:.9; }
+/* ── Iron guard (steel shell) ── */
+.vfx-style-auth-guard-iron .vfx-pro__core { width:42%; height:38%; background:linear-gradient(180deg,var(--vfx-primary) 0 18%,var(--vfx-secondary) 55%,#fff 92%); clip-path:polygon(50% 0,92% 30%,85% 100%,15% 100%,8% 30%); opacity:.92; }
+.vfx-style-auth-guard-iron .vfx-pro__accent { inset:26% 30%; border:3px solid #fff; border-radius:10%; opacity:.85; }
+/* ── Heal glow (rising feather bloom) ── */
+.vfx-style-auth-heal-glow .vfx-pro__core { width:32%; height:32%; border-radius:50% 50% 50% 6%; background:radial-gradient(circle,#fff 0 16%,var(--vfx-primary) 45%,transparent 70%); transform:rotate(-45deg); }
+.vfx-style-auth-heal-glow .vfx-pro__trail { left:32%; right:32%; top:28%; height:44%; background:linear-gradient(0deg,transparent,var(--vfx-secondary) 60%,#fff); filter:blur(4px); opacity:.85; }
+/* ── Poison moth (twin wing burst) ── */
+.vfx-style-auth-poison-moth .vfx-pro__core { width:42%; height:28%; background:radial-gradient(ellipse at 28% 50%,var(--vfx-primary) 0 26%,transparent 27%),radial-gradient(ellipse at 72% 50%,#fff 0 12%,var(--vfx-secondary) 13% 26%,transparent 27%); }
+.vfx-style-auth-poison-moth .vfx-pro__trail { height:30%; background:linear-gradient(90deg,transparent,var(--vfx-primary),transparent); filter:blur(3px); }
+.vfx-style-auth-poison-moth .vfx-pro__accent { left:34%; width:32%; top:26%; height:44%; border:2px solid #fff; border-radius:50%; opacity:.8; }
+/* ── Sound blast (expanding wavefronts) ── */
+.vfx-style-auth-sound-blast .vfx-pro__core { width:54%; height:16%; background:radial-gradient(ellipse at 12% 50%,transparent 0 30%,var(--vfx-primary) 31% 40%,transparent 41% 60%,var(--vfx-secondary) 61% 68%,transparent 69%); }
+.vfx-style-auth-sound-blast .vfx-pro__trail { height:30%; background:linear-gradient(90deg,transparent,var(--vfx-secondary) 45%,transparent); filter:blur(3px); }
+.vfx-style-auth-sound-blast .vfx-pro__accent { left:45%; width:10%; top:32%; height:32%; border-radius:50%; border:3px solid #fff; opacity:.85; }
+/* ── Love whip (pink lash) ── */
+.vfx-style-auth-love-whip .vfx-pro__core { width:64%; height:14%; background:linear-gradient(90deg,transparent,var(--vfx-primary) 35%,#fff 50%,var(--vfx-primary) 65%,transparent); clip-path:polygon(0 70%,25% 15%,50% 60%,75% 5%,100% 55%,90% 80%,70% 35%,48% 85%,24% 40%); }
+.vfx-style-auth-love-whip .vfx-pro__trail { height:16%; background:linear-gradient(90deg,transparent,var(--vfx-secondary),transparent); filter:blur(3px); }

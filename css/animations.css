@@ -1,0 +1,142 @@
+/* ============================================================
+   ANIMATIONS — the whole web moves like Persona.
+   GPU-only (transform/opacity/filter). One easing language.
+   ============================================================ */
+
+:root {
+    --ani-snap: cubic-bezier(0.34, 1.4, 0.64, 1);
+    --ani-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    --ani-swift: cubic-bezier(0.55, 0.06, 0.35, 1);
+    --ani-flow: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --ani-t-fast: 0.16s;
+    --ani-t-med: 0.32s;
+    --ani-t-slow: 0.55s;
+}
+
+/* ── Core entrances (stagger with --i) ────────────────────── */
+@keyframes aniRiseIn {
+    from { opacity: 0; transform: translateY(22px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes aniPopIn {
+    0% { opacity: 0; transform: scale(0.82) rotate(-2deg); }
+    70% { opacity: 1; transform: scale(1.03) rotate(0.5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes aniDealIn {
+    0% { opacity: 0; transform: translateY(-16px) rotate(-4deg) scale(0.9); }
+    60% { opacity: 1; transform: translateY(3px) rotate(1deg) scale(1.01); }
+    100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+}
+@keyframes aniSlashIn {
+    0% { opacity: 0; transform: translateX(-46px) skewX(-8deg); }
+    60% { opacity: 1; transform: translateX(6px) skewX(-8deg); }
+    100% { opacity: 1; transform: translateX(0) skewX(-8deg); }
+}
+@keyframes aniSlideRight {
+    from { opacity: 0; transform: translateX(34px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes aniCountPop {
+    0% { transform: scale(1.45); }
+    100% { transform: scale(1); }
+}
+@keyframes aniPulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(196, 30, 58, 0.55); }
+    50% { box-shadow: 0 0 0 7px rgba(196, 30, 58, 0); }
+}
+@keyframes aniFloatIdle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+@keyframes aniShimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+}
+@keyframes aniShakeX {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ── Party select: cards deal in ──────────────────────────── */
+.psel-chip {
+    animation: aniDealIn 0.38s var(--ani-snap) both;
+    animation-delay: calc(var(--i, 0) * 28ms);
+    transition: transform var(--ani-t-fast) var(--ani-smooth), box-shadow 0.22s, border-color 0.22s !important;
+}
+.psel-chip:hover {
+    transform: translateY(-5px) scale(1.02) !important;
+}
+.psel-chip.selected {
+    animation: aniPopIn 0.3s var(--ani-snap) both;
+}
+.psel-slot {
+    animation: aniPopIn 0.34s var(--ani-snap) both;
+    animation-delay: calc(var(--i, 0) * 60ms);
+    transition: transform var(--ani-t-fast) var(--ani-smooth), box-shadow 0.22s !important;
+}
+.psel-tab, .psel-typepill {
+    transition: transform var(--ani-t-fast) var(--ani-smooth), background 0.2s, color 0.2s, border-color 0.2s !important;
+}
+.psel-tab:hover, .psel-typepill:hover:not(:disabled) { transform: translateY(-2px); }
+.psel-tab:active, .psel-typepill:active:not(:disabled) { transform: scale(0.95); }
+
+/* ── Battle HUD: everything snaps ─────────────────────────── */
+.p5-cmd {
+    transition: transform var(--ani-t-fast) var(--ani-snap), filter 0.2s, opacity 0.2s !important;
+}
+.p5-cmd:hover:not(:disabled) {
+    transform: scale(1.1) rotate(-2deg) !important;
+    filter: brightness(1.25) drop-shadow(0 0 12px rgba(196, 30, 58, 0.7));
+}
+.p5-cmd:active:not(:disabled) { transform: scale(0.92) !important; }
+.p5-cmd:disabled { filter: grayscale(0.8) brightness(0.6); }
+.p5-party-chip {
+    animation: aniSlashIn 0.4s var(--ani-smooth) both;
+    transition: transform var(--ani-t-fast) var(--ani-smooth), border-color 0.2s !important;
+}
+.p5-party-chip.active { animation: aniPulseGlow 1.6s ease-out infinite; }
+.p5-party-chip.downed { animation: none; }
+#btn-start-battle:not(:disabled) { animation: aniPulseGlow 2s ease-out infinite; }
+
+/* ── Menus: panels slash in, lists rise ────────────────────── */
+.gw-panel[aria-hidden="false"] { animation: aniSlideRight 0.4s var(--ani-smooth) both; }
+.arena-mission {
+    animation: aniRiseIn 0.4s var(--ani-smooth) both;
+    animation-delay: calc(var(--i, 0) * 30ms);
+}
+.gw-thumb {
+    transition: transform var(--ani-t-fast) var(--ani-snap), box-shadow 0.22s, border-color 0.22s !important;
+}
+.gw-thumb:hover:not([aria-disabled="true"]) { transform: translateY(-4px) scale(1.03) !important; }
+.gw-thumb:active:not([aria-disabled="true"]) { transform: scale(0.96) !important; }
+.vn-choice {
+    animation: aniRiseIn 0.3s var(--ani-smooth) both;
+}
+.trk-chip {
+    animation: aniPopIn 0.3s var(--ani-snap) both;
+}
+.trk-table tbody tr {
+    animation: aniRiseIn 0.35s var(--ani-smooth) both;
+}
+
+/* ── Counts pop when they change ──────────────────────────── */
+.count-pop { animation: aniCountPop 0.3s var(--ani-snap); }
+
+/* ── Loading shimmer ──────────────────────────────────────── */
+.ani-loading {
+    background: linear-gradient(100deg, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0.14) 50%, rgba(255,255,255,0.04) 60%);
+    background-size: 200% 100%;
+    animation: aniShimmer 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .psel-chip, .psel-slot, .psel-tab, .psel-typepill, .p5-cmd,
+    .p5-party-chip, .gw-panel[aria-hidden="false"], .arena-mission,
+    .gw-thumb, .vn-choice, .trk-chip, .trk-table tbody tr,
+    #btn-start-battle:not(:disabled) {
+        animation: none !important;
+        transition: none !important;
+    }
+}

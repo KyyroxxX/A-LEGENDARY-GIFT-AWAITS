@@ -1345,6 +1345,7 @@
 .p5-dmg.weak { color: #f1c40f; font-size: 1.55rem; }
 .p5-dmg.crit { color: #ff6b6b; font-size: 1.7rem; }
 .p5-dmg.null { color: #888; font-size: 1rem; }
+.p5-dmg.miss { color: #8ed8ff; font-size: 1.08rem; letter-spacing: 0.08em; text-shadow: 0 0 12px #2f9ed0, 2px 2px 0 #05070d; }
 @keyframes p5Dmg {
     0% { opacity: 0; transform: translate(-50%, 10px) scale(0.6); }
     20% { opacity: 1; transform: translate(-50%, -8px) scale(1.2); }

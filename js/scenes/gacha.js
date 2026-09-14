@@ -176,7 +176,7 @@ const GachaScene = {
             const active = id === 'onepiece' ? ' is-active' : '';
             const lockCls = locked ? ' is-locked' : '';
             return `
-                    <button type="button" class="gw-thumb${active}${lockCls}" data-banner="${id}" title="${b.featured}${locked ? ' · SELLADO · Gojo → THE 50/50' : ''}" ${locked ? 'aria-disabled="true"' : ''}>
+                    <button type="button" class="gw-thumb${active}${lockCls}" data-banner="${id}" title="${b.featured}${locked ? ' · SELLADO' : ''}" ${locked ? 'aria-disabled="true"' : ''}>
                         <span class="gw-thumb-tag">${b.tag}</span>
                         <img data-thumb-src="${b.thumb}?v=${this.CACHE}" alt="${b.featured}"
                              width="120" height="160"
@@ -185,7 +185,7 @@ const GachaScene = {
                              onerror="this.onerror=null;this.src='${this.BANNER_STATIC}'">
                         ${locked ? '<span class="gw-thumb-lock" aria-hidden="true"><i></i><b>SELLADO</b></span>' : ''}
                         <span class="gw-thumb-name">${b.short === 'Metaphor' ? 'Metaphor' : (b.featured.length > 14 ? b.featured.split(' ').slice(-1)[0] : b.featured)}</span>
-                        <span class="gw-thumb-game">${locked ? 'Gojo → 50/50' : b.series}</span>
+                        <span class="gw-thumb-game">${b.series}</span>
                     </button>`;
         }).join('');
 
@@ -333,9 +333,24 @@ const GachaScene = {
                         <span class="gw-reward-q">?</span>
                     </div>
                     <div class="gw-reward-banner">
-                        <span class="gw-reward-k"><span aria-hidden="true">✦</span> Destacado ${featuredStars}★</span>
-                        <strong class="gw-reward-v" id="hl-pulls">${op.featured}</strong>
-                        <span class="gw-stars-row gw-reward-stars">${'★'.repeat(featuredStars)}</span>
+                        <span class="gw-reward-k"><span aria-hidden="true">✦</span> Destacados 5★ + 6★</span>
+                        <div class="gw-feat-duo" id="gw-feat-duo">
+                            <div class="gw-feat-slot is-six" id="gw-feat-slot-6">
+                                <span class="gw-feat-slot-art" id="gw-feat-art-6"></span>
+                                <div class="gw-feat-slot-copy">
+                                    <em class="gw-feat-slot-tier" id="gw-feat-tier-6">6★ · AUTO</em>
+                                    <strong class="gw-feat-slot-name" id="gw-feat-name-6">${op.featured}</strong>
+                                </div>
+                            </div>
+                            <div class="gw-feat-slot is-five" id="gw-feat-slot-5">
+                                <span class="gw-feat-slot-art" id="gw-feat-art-5"></span>
+                                <div class="gw-feat-slot-copy">
+                                    <em class="gw-feat-slot-tier" id="gw-feat-tier-5">5★ · AUTO</em>
+                                    <strong class="gw-feat-slot-name" id="gw-feat-name-5">${op.featured}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="gw-reward-change" id="btn-featured-change" title="Elegir personajes destacados 5★ y 6★">▼ ELEGIR DESTACADO</button>
                     </div>
                     <div class="gw-cost-pill gw-reward-chip" id="gw-cost-chip" title="${currency}">
                         <div class="gw-currency-gem sm" aria-hidden="true"></div>
@@ -384,7 +399,7 @@ const GachaScene = {
                                 <strong>×10</strong>
                             </span>
                         </button>
-                        <button class="btn-secondary gw-back" id="btn-back-hunt">${GameState.get('bossDefeated') ? 'VOLVER' : 'COMBATE'}</button>
+                        <button class="btn-secondary gw-back" id="btn-back-hunt">◀ VOLVER A LA ARENA</button>
                     </div>
                 </footer>
 
@@ -402,9 +417,10 @@ const GachaScene = {
                             <li>Combates dan <strong>Chikistrites</strong>. En el Convenio: <strong>${(typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160} Chiki = 1 INV</strong> (botón +).</li>
                             <li>Dupes → <strong>4★ C0–C6</strong> · <strong>5★/6★ C0–C3</strong> (sube poder; 6★ domina el techo).</li>
                             <li>4★ max → +1 sello · 5★ C3 → +1 sello · 6★ C3 → +2 sellos. Canjea en <strong>DUPES</strong>.</li>
-                            <li>Metaphor (rojas): +14 por apartado · +10 THE 50/50 · no se compran.</li>
+                            <li>Metaphor (rojas): +200 por apartado · +200 THE 50/50 · +20 por repetir combates. No se compran.</li>
+                            <li>El <strong>regalo</strong> solo sale tras vencer a THE 50/50 <strong>con Ren al máximo</strong>.</li>
                             <li>Presupuesto ~2.8k INV (vía Chikistrites) para completar el roster.</li>
-                            <li><strong>Gojo</strong> abre THE 50/50. Metaphor es late-game.</li>
+                            <li><strong>THE 50/50</strong> se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3). La historia no importa.</li>
                             <li>~${GachaRoster.totalPullsRequired()} invocaciones de presupuesto.</li>
                         </ul>
                         <p>Garantía 5★: <strong id="details-pity">0</strong> / ${op.hard5}</p>
@@ -458,7 +474,12 @@ const GachaScene = {
             const soft = b.soft7 || 50;
             const hard = b.hard7 || 80;
             if (GameState.get('legendaryObtained')) return 'Metaphor obtenido · tiradas adicionales disponibles';
-            if (p7 + 1 >= hard) return '7★ CELESTIAL GARANTIZADO en la próxima tirada';
+            if (p7 + 1 >= hard) {
+                const ok = (typeof GachaRoster !== 'undefined' && GachaRoster.legendaryEligible)
+                    ? GachaRoster.legendaryEligible() : true;
+                return ok ? '7★ CELESTIAL GARANTIZADO en la próxima tirada · será el REGALO'
+                    : '7★ garantizado, pero el REGALO está bloqueado (boss + Ren C3)';
+            }
             if (p7 >= soft) return `Garantía suave 7★ · bloqueado en ${hard - p7} tirada${hard - p7 === 1 ? '' : 's'}`;
             return `7★ celestial en ${hard} · sube desde ${soft}`;
         }
@@ -523,10 +544,20 @@ const GachaScene = {
         return { kind: 'neutral', label: '' };
     },
 
+    /** Filenames kept as the user delivered them (no renames). */
+    CUTIN_ALIASES: {
+        katana: 'katanaman',
+        ren: 'joker',
+        sumire: 'kasumi',
+        yourichi: 'yoriichi',
+        jiraiya: 'Jiraiya'
+    },
+
     cutinVideoCandidates(r) {
         if (!r?.charId || !this.isFiveStarResult(r)) return [];
         const tier = this.isMythicResult(r) ? '6star' : '5star';
-        const base = `assets/gacha/cutin-videos/${tier}/${encodeURIComponent(r.charId)}`;
+        const file = this.CUTIN_ALIASES[r.charId] || r.charId;
+        const base = `assets/gacha/cutin-videos/${tier}/${encodeURIComponent(file)}`;
         return [`${base}.mp4?v=${this.CACHE}`, `${base}.webm?v=${this.CACHE}`];
     },
 
@@ -535,6 +566,81 @@ const GachaScene = {
         return this.isMythicResult(r)
             ? `assets/gacha/pull-videos/wuwa-bridge-red.mp4?v=${this.CACHE}`
             : `assets/gacha/pull-videos/wuwa-bridge-gold.mp4?v=${this.CACHE}`;
+    },
+
+    isMetaphorCharPull(r) {
+        if (!r?.charId) return false;
+        try {
+            const tpl = (typeof GachaRoster !== 'undefined') ? GachaRoster.getTemplate(r.charId) : null;
+            return (tpl?.series || '') === 'Metaphor: ReFantazio';
+        } catch (_) {
+            return false;
+        }
+    },
+
+    /** Royal archetype cinematic for Metaphor pulls (no videos exist). */
+    async playMetaphorCutin(r, host) {
+        host?.classList.add('is-cutin-host-hidden');
+        try { AudioManager?._fadeMusicTo?.(0, 160); } catch (_) { /* */ }
+        await this.playCutinBridge(r);
+        const firstObtain = !this.hasSeenCutin(r.charId);
+        const mythic = this.isMythicResult(r);
+        let roleTag = '';
+        let art = '';
+        try {
+            const tpl = (typeof GachaRoster !== 'undefined') ? GachaRoster.getTemplate(r.charId) : null;
+            const glyphs = { DPS: '⚔', Tank: '🛡', Healer: '✚', Caster: '✦', Controller: '◉', Debuffer: '☠', Support: '❖' };
+            roleTag = glyphs[tpl?.role] || '✦';
+            art = this.charPortraitSrc(r.charId);
+        } catch (_) { /* ignore */ }
+        const cutin = document.createElement('div');
+        cutin.className = `pull-meta-cutin rarity-${r.rarity || 'epic'}${firstObtain ? ' is-first-obtain' : ''}`;
+        cutin.innerHTML = `
+            <div class="pmc-backdrop" aria-hidden="true"></div>
+            <div class="pmc-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="pmc-frame">
+                <div class="pmc-kicker">${firstObtain ? 'PRIMERA OBTENCIÓN' : 'REPETICIÓN'} · ${mythic ? '6★' : '5★'}</div>
+                <div class="pmc-glyph" aria-hidden="true">${roleTag}</div>
+                <div class="pmc-art" style="background-image:url('${art}')"></div>
+                <div class="pmc-name">${r.reward || this.displayName(r.charId)}</div>
+                <div class="pmc-sub">ARCHETYPE AWAKENED · METAPHOR</div>
+                ${firstObtain
+                    ? '<div class="pmc-required">DESPERTAR ROYAL · NO SE PUEDE SALTAR</div>'
+                    : '<button type="button" class="pmc-skip">SALTAR</button>'}
+            </div>`;
+        document.body.appendChild(cutin);
+        requestAnimationFrame(() => cutin.classList.add('is-on'));
+        const skip = cutin.querySelector('button');
+        let settled = false;
+        let timer = null;
+        return new Promise((resolve) => {
+            const finish = (played) => {
+                if (settled) return;
+                settled = true;
+                if (timer) clearTimeout(timer);
+                try {
+                    const normal = Number.isFinite(AudioManager?._conveneMusicNorm)
+                        ? AudioManager._conveneMusicNorm : 1;
+                    AudioManager?._fadeMusicTo?.(Math.max(0.28, normal * 0.42), 260);
+                } catch (_) { /* */ }
+                if (played) this.markCutinSeen(r.charId);
+                window.dispatchEvent(new Event('pull-cutin-ready'));
+                cutin.classList.remove('is-on');
+                host?.classList.remove('is-cutin-host-hidden');
+                const removeTimer = setTimeout(() => cutin.remove(), 220);
+                this._timers.push(removeTimer);
+                resolve(played);
+            };
+            skip?.addEventListener('click', (event) => {
+                event.stopPropagation();
+                finish(true);
+            });
+            cutin.addEventListener('click', () => {
+                if (!firstObtain) finish(true);
+            });
+            timer = setTimeout(() => finish(true), firstObtain ? 3000 : 2600);
+            this._timers.push(timer);
+        });
     },
 
     cutinSeenState() {
@@ -554,6 +660,8 @@ const GachaScene = {
     },
 
     async playCharacterCutin(r, host) {
+        // Metaphor units have no videos — bespoke royal cinematic instead.
+        if (this.isMetaphorCharPull(r)) return this.playMetaphorCutin(r, host);
         const candidates = this.cutinVideoCandidates(r);
         if (!candidates.length) return false;
         host?.classList.add('is-cutin-host-hidden');
@@ -704,6 +812,8 @@ const GachaScene = {
 
     enter(el) {
         this._rootEl = el;
+        // Warm the YouTube API while the wipe covers — first banner switch is instant.
+        try { AudioManager._ensureYtApi?.(); } catch (_) { /* ignore */ }
         const unlocked = !!(GameState.get('prologueDone')
             || GameState.get('storyComplete')
             || GameState.get('legendaryObtained')
@@ -712,7 +822,7 @@ const GachaScene = {
             DialogueScene.open({
                 lines: [
                     { speaker: 'Sistema', text: 'El Convenio aún no está abierto.' },
-                    { speaker: 'Narrador', text: 'Hay un banner por anime. Gojo en JJK abre THE 50/50. Metaphor es late-game tras el boss.' }
+                    { speaker: 'Narrador', text: 'Hay un banner por anime, más Persona 5 Royal y Metaphor. El regalo solo sale tras vencer a THE 50/50.' }
                 ],
                 onComplete: () => SceneManager.goTo('arena')
             });
@@ -730,7 +840,7 @@ const GachaScene = {
                 const id = btn.dataset.banner;
                 if (this.isSeriesBanner(id) && !GachaRoster.isBannerUnlocked(id)) {
                     AudioManager.ui.click();
-                    this.showEgg('Metaphor sellado. Consigue a Gojo y derrota THE 50/50 para abrir el banner rojo.');
+                    this.showEgg('Banner sellado.');
                     return;
                 }
                 AudioManager.ui.click();
@@ -793,6 +903,24 @@ const GachaScene = {
             try { AudioManager.ui.click(); } catch (_) { /* ignore */ }
             if (typeof DupesShop !== 'undefined') DupesShop.open();
         });
+        // Carta de Destacado (imagen + banner + pill + botón ELEGIR) → picker 5★/6★.
+        // Delegado en el root: sobrevive a todos los re-renders del banner.
+        el.addEventListener('click', (e) => {
+            const hit = e.target?.closest?.('#btn-featured-change, .gw-reward');
+            if (!hit || !el.contains(hit)) return;
+            const panelOpen = el.querySelector('#panel-details.open');
+            // Si el clic viene del botón explícito, abrir siempre; si viene de la
+            // carta y el panel ya está abierto, no hacer nada (evita rebotes).
+            if (!e.target?.closest?.('#btn-featured-change') && panelOpen) return;
+            this.openFeaturedPicker(el);
+        });
+        el.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && e.target?.closest?.('.gw-reward')
+                && !e.target?.closest?.('button')) {
+                e.preventDefault();
+                this.openFeaturedPicker(el);
+            }
+        });
         el.querySelector('#gw-backdrop')?.addEventListener('click', () => this.closePanels(el));
         el.querySelectorAll('[data-close-panel]').forEach(btn => {
             btn.addEventListener('click', () => this.closePanels(el));
@@ -844,7 +972,8 @@ const GachaScene = {
             jjk: 'menu_jjk',
             kimetsu: 'menu_kimetsu',
             chainsaw: 'menu_chainsaw',
-            metaphor: 'menu_metaphor'
+            metaphor: 'menu_metaphor',
+            persona5royal: 'menu_persona'
         };
         const theme = map[bannerId] || (this.isEggBanner?.(bannerId) ? 'stardew' : 'menu_op');
         try {
@@ -944,9 +1073,11 @@ const GachaScene = {
                 body: `
                     <p>Tickets <strong>especiales rojos</strong> solo para el banner Metaphor. <strong>No se compran</strong> con Chikistrites.</p>
                     <ul>
-                        <li><strong>+14</strong> al cerrar la última misión de cada apartado.</li>
-                        <li><strong>+10</strong> al vencer <strong>THE 50/50</strong>.</li>
+                        <li><strong>+200</strong> al cerrar la última misión de cada apartado.</li>
+                        <li><strong>+200</strong> al vencer <strong>THE 50/50</strong>.</li>
+                        <li><strong>+20</strong> por cada combate repetido (farmeo).</li>
                         <li>Total <strong>80</strong> = garantía dura del banner Metaphor.</li>
+                        <li>El <strong>regalo</strong> solo puede salir tras vencer a THE 50/50 <strong>con Ren al máximo (C3)</strong>.</li>
                     </ul>
                     <p class="gw-currency-info-foot">Se usan solo en el banner rojo.</p>`
             });
@@ -1201,9 +1332,172 @@ const GachaScene = {
         });
     },
 
+    featuredPairFor(id) {
+        const b = (typeof GachaRoster !== 'undefined') ? GachaRoster.BANNERS[id] : null;
+        if (!b) return { six: { id: null, stars: 6 }, five: { id: null, stars: 5 } };
+        if (typeof GachaRoster.getFeaturedPair === 'function') return GachaRoster.getFeaturedPair(id);
+        const f = GachaRoster.getFeatured(id);
+        return { six: f.stars >= 6 ? f : { id: null, stars: 6 }, five: f.stars <= 5 ? f : { id: null, stars: 5 } };
+    },
+
+    featuredHeaderFor(id) {
+        const b = (typeof GachaRoster !== 'undefined') ? GachaRoster.BANNERS[id] : null;
+        const pair = this.featuredPairFor(id);
+        const sixName = pair.six?.id ? this.displayName(pair.six.id) : null;
+        const fiveName = pair.five?.id ? this.displayName(pair.five.id) : null;
+        const anyPick = !!(pair.six?.picked || pair.five?.picked);
+        if (!b) return { main: sixName || fiveName || '', label: '', kick: '', stars: '', rateStars: '' };
+        if (!anyPick) {
+            const fs = this.featuredStarsFor(b);
+            return {
+                main: b.featured,
+                label: b.featuredNote,
+                kick: `Destacado ${fs}★`,
+                stars: '★'.repeat(fs),
+                rateStars: '★'.repeat(fs)
+            };
+        }
+        if (pair.six?.picked && pair.five?.picked) {
+            return {
+                main: sixName,
+                label: `ELEGIDOS · 6★ ${sixName} + 5★ ${fiveName} · 50% c/u`,
+                kick: 'Destacados 5★+6★',
+                stars: '★★★★★★',
+                rateStars: '★★★★★+★★★★★★',
+                sub5: fiveName
+            };
+        }
+        if (pair.six?.picked) {
+            return {
+                main: sixName,
+                label: `ELEGIDO 6★ · ${sixName} se lleva el 50% de los 6★${fiveName ? ` · 5★: ${fiveName}` : ''}`,
+                kick: 'Destacado 6★',
+                stars: '★★★★★★',
+                rateStars: '★★★★★★'
+            };
+        }
+        return {
+            main: fiveName,
+            label: `ELEGIDO 5★ · ${fiveName} se lleva el 50% de los 5★${sixName ? ` · 6★: ${sixName}` : ''}`,
+            kick: 'Destacado 5★',
+            stars: '★★★★★',
+            rateStars: '★★★★★'
+        };
+    },
+
+    /** Datos de un slot de la carta dual: { name, art, picked, auto }. */
+    featSlotData(bannerId, tier) {
+        const t = Number(tier) >= 6 ? 6 : 5;
+        let id = null;
+        let picked = false;
+        try {
+            const f = (typeof GachaRoster !== 'undefined' && GachaRoster.getFeaturedFor)
+                ? GachaRoster.getFeaturedFor(bannerId, t) : null;
+            if (f?.id) {
+                id = f.id;
+                picked = !!f.picked;
+            }
+        } catch (_) { /* ignore */ }
+        if (!id) return { id: null, name: 'Aleatorio', art: this.INV_GEM, picked: false, auto: true };
+        return { id, name: this.displayName(id), art: `${this.charPortraitSrc(id)}?v=${this.CACHE}`, picked, auto: false };
+    },
+
+    fillFeatSlot(el, tier, d, tierLabel = null) {
+        const t = Number(tier) >= 6 ? 6 : 5;
+        const slot = el.querySelector(`#gw-feat-slot-${t}`);
+        const art = el.querySelector(`#gw-feat-art-${t}`);
+        const name = el.querySelector(`#gw-feat-name-${t}`);
+        const badge = el.querySelector(`#gw-feat-tier-${t}`);
+        if (!slot) return;
+        slot.classList.remove('is-hidden-slot');
+        if (art && d.art) art.style.backgroundImage = `url('${d.art}')`;
+        if (name) name.textContent = d.name || '—';
+        if (badge) badge.textContent = tierLabel || `${t}★ · ${d.picked ? 'ELEGIDO' : 'AUTO'}`;
+        slot.classList.toggle('is-auto', !!d.auto);
+        slot.classList.toggle('is-picked', !!d.picked);
+    },
+
+    /** Carta dual: el 6★ y el 5★ destacados, cada uno con su retrato. */
+    renderFeaturedDuo(el, bannerId) {
+        const duo = el.querySelector('#gw-feat-duo');
+        if (!duo) return;
+        const b = (typeof GachaRoster !== 'undefined') ? GachaRoster.BANNERS[bannerId] : null;
+        // Metaphor con su 7★ va en modo single dentro de la misma carta.
+        if (b?.isMetaphor) {
+            this.renderFeaturedSingle(el, {
+                name: b.featured,
+                art: `${b.thumb}?v=${this.CACHE}`,
+                tierLabel: '7★ · CELESTIAL'
+            });
+            return;
+        }
+        duo.classList.remove('is-single');
+        el.querySelector('#gw-feat-slot-5')?.classList.remove('is-hidden-slot');
+        this.fillFeatSlot(el, 6, this.featSlotData(bannerId, 6));
+        this.fillFeatSlot(el, 5, this.featSlotData(bannerId, 5));
+        const rk = el.querySelector('.gw-reward-k');
+        if (rk) rk.innerHTML = '<span aria-hidden="true">✦</span> Destacados 5★ + 6★';
+    },
+
+    /** Modo single (banners egg): un solo slot protagonista. */
+    renderFeaturedSingle(el, d) {
+        const duo = el.querySelector('#gw-feat-duo');
+        if (!duo) return;
+        duo.classList.add('is-single');
+        el.querySelector('#gw-feat-slot-5')?.classList.add('is-hidden-slot');
+        this.fillFeatSlot(el, 6, { name: d.name, art: d.art, picked: false, auto: false }, d.tierLabel || '5★');
+        const rk = el.querySelector('.gw-reward-k');
+        if (rk) rk.innerHTML = '<span aria-hidden="true">✦</span> Destacado';
+    },
+
+    /** Marca visual de la carta de Destacado (el clic va por delegación en enter()). */
+    bindFeaturedCard(el) {
+        const card = el.querySelector('.gw-reward');
+        if (!card) return;
+        card.classList.add('is-clickable');
+        if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex', '0');
+        if (!card.hasAttribute('role')) card.setAttribute('role', 'button');
+        card.title = 'Ver / elegir personajes destacados 5★ y 6★';
+    },
+
+    openFeaturedPicker(el) {
+        if (!el) return;
+        if (this.pulling) return;
+        try { AudioManager.ui?.click?.(); } catch (_) { /* ignore */ }
+        this.openPanel(el, 'details');
+        window.setTimeout(() => {
+            const body = el.querySelector('#panel-details .gw-panel-body');
+            const anchor = el.querySelector('#gw-feat-picker') || el.querySelector('.gw-feat-grid');
+            if (!body || !anchor) return;
+            try {
+                const br = body.getBoundingClientRect();
+                const ar = anchor.getBoundingClientRect();
+                body.scrollTop += (ar.top - br.top) - 12;
+            } catch (_) {
+                try { anchor.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (_) { /* ignore */ }
+            }
+            anchor.classList.remove('is-flash');
+            void anchor.offsetWidth;
+            anchor.classList.add('is-flash');
+            window.setTimeout(() => anchor.classList.remove('is-flash'), 1400);
+        }, 60);
+    },
+
     applySeriesBannerUI(el, id) {
         const b = GachaRoster.BANNERS[id];
         if (!b) return;
+        // El header de destacados nunca debe tumbar el bind de la carta ni el
+        // rebuild de detalles: si algo falla, se usan los defaults del banner.
+        let head = null;
+        try {
+            head = this.featuredHeaderFor(id);
+        } catch (_) {
+            head = null;
+        }
+        if (!head) {
+            const fs = this.featuredStarsFor(b);
+            head = { main: b.featured, label: b.featuredNote, kick: `Destacado ${fs}★`, stars: '★'.repeat(fs), rateStars: '★'.repeat(fs) };
+        }
         const set = (sel, html, text) => {
             const n = el.querySelector(sel);
             if (!n) return;
@@ -1213,12 +1507,12 @@ const GachaScene = {
         set('.gw-event-ribbon', null, b.tag);
         set('.gw-title', `<span class="gw-title-line">${b.titleLines[0]}</span><span class="gw-title-gold">${b.titleLines[1]}<span class="gw-title-glint" aria-hidden="true">✦</span></span>`);
         set('.gw-sub', null, b.subtitle);
-        set('#gw-featured-label', null, b.featuredNote);
-        set('#hl-pulls', null, b.featured);
-        const featuredStars = this.featuredStarsFor(b);
-        set('.gw-rate-row .gw-stars-row', null, '★'.repeat(featuredStars));
-        set('.gw-reward-k', '<span aria-hidden="true">✦</span> Destacado ' + featuredStars + '★');
-        set('.gw-reward-stars', null, '★'.repeat(featuredStars));
+        set('#gw-featured-label', null, head.label || b.featuredNote);
+        set('.gw-rate-row .gw-stars-row', null, head.rateStars || head.stars);
+        try {
+            this.renderFeaturedDuo(el, id);
+        } catch (_) { /* la carta nunca debe tumbar el banner */ }
+        this.bindFeaturedCard(el);
         const rewardSil = el.querySelector('.gw-reward-sil');
         if (rewardSil) {
             const thumbUrl = `${b.thumb}?v=${this.CACHE}`;
@@ -1251,6 +1545,21 @@ const GachaScene = {
         still?.classList.remove('is-contain');
         const details = el.querySelector('#panel-details .gw-panel-body');
         if (details) details.innerHTML = this.buildSeriesDetailsHTML(b, id);
+        details?.querySelectorAll('[data-feat-pick]')?.forEach((btn) => {
+            btn.onclick = () => {
+                try { AudioManager.ui?.click?.(); } catch (_) { /* ignore */ }
+                const v = btn.dataset.featPick || null;
+                const tier = btn.dataset.featStars ? Number(btn.dataset.featStars) : null;
+                // No perder el scroll del panel al re-elegir (el rebuild lo resetea).
+                const body = el.querySelector('#panel-details .gw-panel-body');
+                const prevTop = body ? body.scrollTop : 0;
+                if (typeof GachaRoster.setFeaturedPick === 'function') GachaRoster.setFeaturedPick(id, v, tier === 6 || tier === 5 ? tier : null);
+                this.applySeriesBannerUI(el, id);
+                this.refreshStats(el);
+                const nb = el.querySelector('#panel-details .gw-panel-body');
+                if (nb) nb.scrollTop = prevTop;
+            };
+        });
         this.syncSpendUI(el, b.isMetaphor ? 'meta' : 'inv');
     },
 
@@ -1353,9 +1662,55 @@ const GachaScene = {
             </div>`;
     },
 
+    /** Pick your rate-ups: one 5★ + one 6★, each takes half of its own tier. */
+    featuredPickerHTML(bannerId) {
+        if (typeof GachaRoster === 'undefined' || !GachaRoster.featuredEligible) return '';
+        const b = GachaRoster.BANNERS[bannerId];
+        if (!b || b.isMetaphor) return '';
+        const eligible6 = GachaRoster.featuredEligible(bannerId, 6);
+        const eligible5 = GachaRoster.featuredEligible(bannerId, 5);
+        if (!eligible6.length && !eligible5.length) return '';
+        const pair = (typeof GachaRoster.getFeaturedPair === 'function')
+            ? GachaRoster.getFeaturedPair(bannerId)
+            : { six: GachaRoster.getFeatured(bannerId), five: GachaRoster.getFeatured(bannerId) };
+        const gridFor = (list, cur, tier) => (list || []).map((cid) => {
+            const active = cur?.id === cid;
+            return `<button type="button" class="gw-feat-pick${active ? ' is-active' : ''}" data-feat-pick="${cid}" data-feat-stars="${tier}" title="${this.displayName(cid)} · ${tier}★ rate-up 50%">
+                <span class="gw-feat-art" style="background-image:url('${this.charPortraitSrc(cid)}?v=${this.CACHE}')"></span>
+                <strong>${this.displayName(cid)}</strong>
+                <em>${'★'.repeat(tier)}</em>
+            </button>`;
+        }).join('');
+        const labelFor = (cur, tier) => {
+            if (cur?.picked && cur.id) return `Elegido: <strong>${this.displayName(cur.id)}</strong> <button type="button" class="gw-feat-reset" data-feat-pick="" data-feat-stars="${tier}">AUTO</button>`;
+            if (cur?.id) return `Auto: <strong>${this.displayName(cur.id)}</strong> · 50%`;
+            return `Auto: <strong>aleatorio</strong> · sin rate-up fijo`;
+        };
+        return `<div class="gw-feat-wrap" id="gw-feat-picker">
+            <h4 class="gw-pool-h">Personajes destacados <span>50% c/u</span></h4>
+            <p class="gw-pool-empty">Elige <strong>un 6★ y un 5★</strong>: cada uno se lleva la <strong>mitad</strong> de su tier. Toca la carta de Destacado o entra aquí para cambiarlos.</p>
+            ${eligible6.length ? `
+                <h4 class="gw-pool-h">Destacado 6★ <span>50% de los 6★</span></h4>
+                <p class="gw-pool-empty">${labelFor(pair.six, 6)}</p>
+                <div class="gw-feat-grid" data-feat-tier="6">${gridFor(eligible6, pair.six, 6)}</div>` : ''}
+            ${eligible5.length ? `
+                <h4 class="gw-pool-h">Destacado 5★ <span>50% de los 5★</span></h4>
+                <p class="gw-pool-empty">${labelFor(pair.five, 5)}</p>
+                <div class="gw-feat-grid" data-feat-tier="5">${gridFor(eligible5, pair.five, 5)}</div>` : ''}
+        </div>`;
+    },
+
     buildSeriesDetailsHTML(b, id) {
         const prize = CONFIG.gachaRewards?.legendary?.name || CONFIG.legendaryReward;
         if (b.isMetaphor) {
+            const six = (b.pool6 || []).map((cid) => ({
+                name: this.displayName(cid),
+                art: this.charPortraitSrc(cid)
+            }));
+            const five = (b.pool5Std || []).map((cid) => ({
+                name: this.displayName(cid),
+                art: this.charPortraitSrc(cid)
+            }));
             return `
                 <p class="gw-details-lead"><strong>Banner Metaphor</strong> — ${prize} (Steam) · <em>7★ celestial</em>.</p>
                 ${this.rateTableHTML(b)}
@@ -1365,40 +1720,59 @@ const GachaScene = {
                     art: b.thumb || this.BANNER_STATIC,
                     featured: true
                 }], 7)}
+                <h4 class="gw-pool-h">Personajes 6★ <span>al perder el 50/50 celestial</span></h4>
+                ${this.poolGridHTML(six, 6, 'Sin 6★ en este banner')}
+                <h4 class="gw-pool-h">Personajes 5★ <span>al perder el 50/50 celestial</span></h4>
+                ${this.poolGridHTML(five, 5, 'Sin 5★ en este banner')}
                 <h4 class="gw-pool-h">4★ / 3★</h4>
                 <p class="gw-pool-empty">${(b.pool4Names || []).join(' · ') || 'Fragmentos'} · ${(b.pool3Names || []).join(' · ') || 'Chikistrites'}</p>
-                <p class="gw-details-foot">Gasta tiradas <strong>rojas</strong>. Garantía 7★ en ${b.hard7 || 80}. Contador: <strong id="details-pity">0</strong>.</p>`;
+                ${(() => {
+                    if (typeof GachaRoster === 'undefined' || !GachaRoster.legendaryBlockers) return '';
+                    const bl = GachaRoster.legendaryBlockers();
+                    if (bl.done) return '<p class="gw-details-foot">Regalo ya obtenido. El 7★ da personajes Metaphor.</p>';
+                    const boss = bl.boss ? '✓ Boss vencido' : '✗ Vence a THE 50/50';
+                    const ren = bl.renHave >= bl.renNeed ? `✓ Ren C${bl.renNeed - 1}` : `✗ Ren C${Math.max(0, bl.renHave - 1)}/C${bl.renNeed - 1}`;
+                    return `<p class="gw-details-foot">Regalo: hard pity 7★ lo garantiza · ${boss} · ${ren}</p>`;
+                })()}
+                <p class="gw-details-foot">Gasta tiradas <strong>rojas</strong>. Garantía 7★ en ${b.hard7 || 80}. El regalo solo sale tras vencer a THE 50/50 con Ren al máximo. Contador: <strong id="details-pity">0</strong>.</p>`;
         }
 
+        const pair = (typeof GachaRoster !== 'undefined' && GachaRoster.getFeaturedPair)
+            ? GachaRoster.getFeaturedPair(id)
+            : { six: { id: b.featuredId }, five: { id: b.featuredId } };
         const six = [];
-        const featStars = b.featuredStars || 5;
-        if (b.featuredId && featStars >= 6) {
+        const open = (cid) => !(typeof GachaRoster !== 'undefined' && GachaRoster.isUnitSealed && GachaRoster.isUnitSealed(cid));
+        const seenSix = new Set();
+        const pushSix = (cid) => {
+            if (!cid || !open(cid) || seenSix.has(cid)) return;
+            seenSix.add(cid);
             six.push({
-                name: this.displayName(b.featuredId),
-                art: this.charPortraitSrc(b.featuredId),
-                featured: true
+                name: this.displayName(cid),
+                art: this.charPortraitSrc(cid),
+                featured: pair.six?.id === cid
             });
-        }
-        (b.pool6 || []).forEach((cid) => {
-            if (six.some((x) => x.name === this.displayName(cid))) return;
-            six.push({ name: this.displayName(cid), art: this.charPortraitSrc(cid) });
-        });
+        };
+        // El destacado 6★ elegido va primero para que se vea el tag DESTACADO.
+        pushSix(pair.six?.id);
+        (b.pool6 || []).forEach(pushSix);
         const five = [];
-        if (b.featuredId && featStars <= 5) {
+        const seenFive = new Set();
+        const pushFive = (cid) => {
+            if (!cid || !open(cid) || seenFive.has(cid)) return;
+            seenFive.add(cid);
             five.push({
-                name: this.displayName(b.featuredId),
-                art: this.charPortraitSrc(b.featuredId),
-                featured: true
+                name: this.displayName(cid),
+                art: this.charPortraitSrc(cid),
+                featured: pair.five?.id === cid
             });
-        }
-        (b.pool5Std || []).forEach((cid) => {
-            five.push({ name: this.displayName(cid), art: this.charPortraitSrc(cid) });
-        });
-        const four = (b.pool4 || []).map((cid) => ({
+        };
+        pushFive(pair.five?.id);
+        (b.pool5Std || []).forEach(pushFive);
+        const four = (b.pool4 || []).filter(open).map((cid) => ({
             name: this.displayName(cid),
             art: this.charPortraitSrc(cid)
         }));
-        const three = (b.pool3 || []).map((cid) => ({
+        const three = (b.pool3 || []).filter(open).map((cid) => ({
             name: this.displayName(cid),
             art: this.charPortraitSrc(cid)
         }));
@@ -1407,9 +1781,11 @@ const GachaScene = {
             art: typeof EquipmentSystem !== 'undefined' ? EquipmentSystem.artForName(n) : 'assets/gacha/invocacion-gem.svg'
         }));
 
+        const leadFeat = [pair.six?.id ? `6★ ${this.displayName(pair.six.id)}` : null, pair.five?.id ? `5★ ${this.displayName(pair.five.id)}` : null].filter(Boolean).join(' · ') || b.featured;
         return `
-            <p class="gw-details-lead"><strong>${b.series}</strong> — pool jugable. Destacado: <em>${b.featured}</em>.</p>
+            <p class="gw-details-lead"><strong>${b.series}</strong> — pool jugable. Destacados: <em>${leadFeat}</em>.</p>
             ${this.rateTableHTML(b)}
+            ${this.featuredPickerHTML(id)}
             <h4 class="gw-pool-h">Personajes 6★ <span>${((b.rate6 || 0.003) * 100).toFixed(2)}%</span></h4>
             ${this.poolGridHTML(six, 6, 'Sin 6★ en este banner')}
             <h4 class="gw-pool-h">Personajes 5★ <span>${((b.rate5 || 0.02) * 100).toFixed(1)}%</span></h4>
@@ -1418,7 +1794,8 @@ const GachaScene = {
             ${this.poolGridHTML(four, 4)}
             <h4 class="gw-pool-h">3★ <span>${((Math.max(0, 1 - (b.rate6 || 0.003) - (b.rate5 || 0.02) - (b.rate4 || 0.12))) * 100).toFixed(1)}%</span></h4>
             ${this.poolGridHTML(three.concat(threeNames), 3, 'Objetos equipables')}
-            ${id === 'jjk' ? '<p class="gw-details-foot"><strong>Gojo 6★</strong> desbloquea THE 50/50 en Historia.</p>' : ''}
+            ${id === 'jjk' ? '<p class="gw-details-foot"><strong>Gojo 6★</strong> · Vacío Infinito. Ya no desbloquea nada: THE 50/50 exige la colección completa al máximo.</p>' : ''}
+            ${id === 'persona5royal' && !open('ren') ? '<p class="gw-details-foot"><strong>Ren Amamiya</strong> solo sale en este banner tras vencer a THE 50/50. No cuenta para desbloquearlo.</p>' : ''}
             <p class="gw-details-foot">Duplicados: 4★ C0–C6 · 5★/6★ C0–C3 · sellos → <strong>DUPES</strong>. Garantía 6★: <strong id="details-pity">0</strong> / ${b.hard6 || 80}</p>`;
     },
 
@@ -1468,7 +1845,13 @@ const GachaScene = {
         set('.gw-title', `<span class="gw-title-line">${b.titleLines[0]}</span><span class="gw-title-gold">${b.titleLines[1]}<span class="gw-title-glint" aria-hidden="true">✦</span></span>`);
         set('.gw-sub', null, b.subtitle);
         set('#gw-featured-label', null, b.featuredNote);
-        set('#hl-pulls', null, b.featured);
+        try {
+            this.renderFeaturedSingle(el, {
+                name: b.featured,
+                art: `${EggGacha.portraitFor(id, b.featured) || b.art5 || b.art}?v=${this.CACHE}`,
+                tierLabel: '5★ · EASTER EGG'
+            });
+        } catch (_) { /* ignore */ }
         const rewardSil = el.querySelector('.gw-reward-sil');
         if (rewardSil) {
             // Destacado: sourced official/character splash only (thumb), never AI banner gens.
@@ -1739,7 +2122,7 @@ const GachaScene = {
             : (GameState.get('invocations') || 0);
         if (bal < count) {
             this.showEgg(isMeta
-                ? 'Sin tiradas Metaphor. Cierra la última quest de cada apartado o vence a THE 50/50.'
+                ? 'Sin tiradas Metaphor. Cierra finales de apartado, repite combates o vence a THE 50/50.'
                 : 'No te quedan invocaciones. Gana combates nuevos.');
             return;
         }
@@ -1778,7 +2161,6 @@ const GachaScene = {
             ...(mythicCount > 0 ? ['six_star'] : [])
         ];
         const hasMetaphor = results.some(r => this.isCelestialResult(r));
-        const hasGojo = results.some(r => r.kind === 'gojo' || r.charId === 'gojo');
         // 6★ siempre fakeout oro→rojo. 5★ ~28% fakeout morado→oro.
         const goldSurprise = mythicCount < 1 && fiveCount >= 1 && Math.random() < 0.28;
         this._pullMythicBreak = mythicCount >= 1;
@@ -1803,28 +2185,6 @@ const GachaScene = {
                     'legendary'
                 ]
             });
-            return;
-        }
-
-        if (hasGojo) {
-            for (const r of results) GachaRoster.applyPull(r);
-            await this.playPullAnimation(this._pullMythicBreak ? 'epic' : (goldSurprise ? 'rare' : 'mythic'), spend, {
-                fiveCount: goldSurprise && !this._pullMythicBreak ? 0 : Math.max(1, fiveCount),
-                goldSurprise: this._pullGoldSurprise,
-                mythicForce: this._pullMythicBreak
-            });
-            await this.showPullResults(el, results);
-            revealedAchievements.forEach(id => Achievements.show(id));
-            if ((GameState.get('pullsDone') || 0) >= 2) Achievements.show('rng_survivor');
-            this.showEgg('¡Satoru Gojo 6★! THE 50/50 se ha desbloqueado en Historia.');
-            this._freshHistoryCount = results.length;
-            const action = this._lastResultsAction;
-            this._lastResultsAction = null;
-            this.refreshStats(el);
-            this._pullGoldSurprise = false;
-            this._pullMythicBreak = false;
-            this.pulling = false;
-            this.handleResultsAction(el, action);
             return;
         }
 
@@ -1880,8 +2240,10 @@ const GachaScene = {
         return 'INV';
     },
 
-    renderHistoryList(all, shortLabel, emptyMsg) {
+    renderHistoryList(all, shortLabel, emptyMsg, st = null) {
         if (!all.length) return `<p style="opacity:0.65">${emptyMsg}</p>`;
+        // Tracker layout when banner state is available (series banners).
+        if (st && typeof st.pulls === 'number') return this.renderTracker(all, st);
         const fresh = Math.max(0, this._freshHistoryCount || 0);
         return all.slice().reverse().slice(0, 40).map((h, i) => {
             const isFresh = i < fresh;
@@ -1897,6 +2259,84 @@ const GachaScene = {
                     <span>${h.reward}${h.featured ? ' · DESTACADO' : ''} · ${shortLabel}${isFresh ? ' <em class="pull-fresh-tag">NUEVO</em>' : ''}</span>
                 </div>`;
         }).join('');
+    },
+
+    /** Name → char id for history avatars (built once per roster). */
+    historyNameMap() {
+        if (this._nameMap) return this._nameMap;
+        const map = {};
+        try {
+            const ids = (typeof GachaRoster !== 'undefined' && GachaRoster.allCharIdsFromBanners)
+                ? GachaRoster.allCharIdsFromBanners() : [];
+            ids.forEach((id) => {
+                const tpl = GachaRoster.getTemplate(id);
+                if (tpl?.name) map[tpl.name] = id;
+            });
+        } catch (_) { /* ignore */ }
+        this._nameMap = map;
+        return map;
+    },
+
+    historyCharId(reward) {
+        const base = String(reward || '').split('·')[0].trim();
+        return this.historyNameMap()[base] || null;
+    },
+
+    historyArt(h) {
+        const id = this.historyCharId(h.reward);
+        if (id) return this.charPortraitSrc(id);
+        return this.INV_GEM;
+    },
+
+    historyDate(t) {
+        if (!t) return '—';
+        try {
+            return new Date(t).toLocaleString('es-ES', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        } catch (_) {
+            return '—';
+        }
+    },
+
+    /** WuWa-tracker style: stats + recent rares + table. */
+    renderTracker(all, st) {
+        const n = all.length;
+        const stars = (h) => h.stars || 0;
+        const c6 = all.filter(h => stars(h) >= 6).length;
+        const c5 = all.filter(h => stars(h) === 5).length;
+        const c4 = all.filter(h => stars(h) === 4).length;
+        const hard6 = st.isMetaphor ? 80 : 80;
+        const pityTxt = st.isMetaphor
+            ? `7★ ${st.pity7 || 0}/80`
+            : `6★ ${st.pity6 || 0}/80 · 5★ ${st.pity5 || 0}/50`;
+        const recent = all.filter(h => stars(h) >= 4).slice(-10).reverse();
+        const base = Math.max(0, (st.pulls || n) - n);
+        const rows = all.slice(-30).map((h, k, arr) => {
+            const no = base + (n - arr.length) + k + 1;
+            return `<tr>
+                <td>${no}</td>
+                <td><span class="trk-item"><img src="${this.historyArt(h)}" alt="" loading="lazy" onerror="this.style.display='none'"><span>${h.reward}${h.featured ? ' ★DEST' : ''}</span></span></td>
+                <td class="trk-stars s${stars(h)}">${'★'.repeat(Math.min(7, stars(h) || 3))}</td>
+                <td class="trk-date">${this.historyDate(h.t)}</td>
+            </tr>`;
+        }).join('');
+        return `<div class="trk">
+            <div class="trk-stats">
+                <div class="trk-stat"><b>${st.pulls || n}</b><span>Tiradas</span></div>
+                <div class="trk-stat gold"><b>${c6}</b><span>6★+</span></div>
+                <div class="trk-stat epic"><b>${c5}</b><span>5★</span></div>
+                <div class="trk-stat rare"><b>${c4}</b><span>4★</span></div>
+                <div class="trk-stat pity"><b>${pityTxt}</b><span>Pity</span></div>
+            </div>
+            ${recent.length ? `<div class="trk-recent">${recent.map(h => `
+                <span class="trk-chip s${stars(h)}" title="${h.reward}">
+                    <img src="${this.historyArt(h)}" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <i>${'★'.repeat(Math.min(7, stars(h)))}</i>
+                </span>`).join('')}</div>` : ''}
+            <table class="trk-table">
+                <thead><tr><th>Nº</th><th>Item</th><th>★</th><th>Fecha</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>`;
     },
 
     bestRarity(rarities) {
@@ -1936,7 +2376,23 @@ const GachaScene = {
             : `6★ ${st.pity6 || 0}/${b.hard6 || 80} · 5★ ${st.pity5}/${b.hard5}`);
         setText('#details-pity', String(isMeta ? (st.pity7 || 0) : (st.pity6 || 0)));
         setText('#gacha-pity-hint', this.pityHintText(b, st));
-        setText('#gw-featured-label', b.featuredNote);
+        if (!isMeta) {
+            try {
+                const head = this.featuredHeaderFor(bannerId);
+                setText('#gw-featured-label', head.label);
+                const rateStars = el.querySelector('.gw-rate-row .gw-stars-row');
+                if (rateStars) rateStars.textContent = head.rateStars;
+                this.renderFeaturedDuo(el, bannerId);
+                this.bindFeaturedCard(el);
+            } catch (_) {
+                setText('#gw-featured-label', b.featuredNote);
+            }
+        } else {
+            setText('#gw-featured-label', b.featuredNote);
+            try {
+                this.renderFeaturedDuo(el, bannerId);
+            } catch (_) { /* ignore */ }
+        }
         setText('#gacha-left', isMeta
             ? `${metaTickets} tiradas rojas · finales de apartado + THE 50/50 · garantía ${b.hard7 || 80}`
             : `${invocations} INV · ${chiki.toLocaleString('es-ES')} Chiki · ${st.pulls} tiradas en ${b.short} · colección ${progress.have}/${progress.total}`);
@@ -1965,7 +2421,8 @@ const GachaScene = {
         const history = el.querySelector('#pull-history');
         if (history) {
             const all = st.history || [];
-            history.innerHTML = this.renderHistoryList(all, b.short, `Aún no hay tiradas en ${b.series}.`);
+            st.isMetaphor = isMeta;
+            history.innerHTML = this.renderHistoryList(all, b.short, `Aún no hay tiradas en ${b.series}.`, st);
         }
         if (typeof DupesShop !== 'undefined') DupesShop.refreshIfOpen();
     },

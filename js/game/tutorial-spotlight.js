@@ -32,89 +32,103 @@ const TutorialSpotlight = {
             selector: '.arena-brand',
             title: 'Bienvenido a la Arena',
             body: 'Este es tu <strong>cuartel general</strong>. Desde aquí lanzas combates, entrenas y abres el Convenio (gacha). Todo el progreso se guarda solo.',
-            bullets: ['Historia = campaña principal', 'Libre / Oleadas / JJK = contenido extra', 'Entreno = práctica sin riesgo']
+            bullets: ['Historia = 22 días de campaña', 'Archivos = 130+ misiones opcionales (las necesitas para avanzar de día)', 'Entreno = práctica sin riesgo']
         },
         {
             id: 'arena_currencies',
             scene: 'arena',
             selector: '.arena-currencies',
             title: 'Tus recursos',
-            body: 'Aquí ves lo que importa para progresar:',
+            body: 'Todo lo que importa, de un vistazo:',
             bullets: [
-                '<strong>Invocaciones</strong> — tiradas de banners anime',
-                '<strong>Chikistrites</strong> — monedas de combate (se cambian por invocaciones)',
-                '<strong>Metaphor / Sellos</strong> — late-game y tienda de dupes'
+                '<strong>Invocaciones</strong> — tiradas de banners (320 Chiki = 1 INV con el +)',
+                '<strong>Chikistrites</strong> — moneda de combate',
+                '<strong>Metaphor</strong> — tickets rojos del banner final',
+                '<strong>Sellos 4★/5★/6★</strong> — salen de maxear dupes, se gastan en la tienda',
+                '<strong>Victorias / Clears</strong> — tu progresión'
             ],
-            hint: 'Gana combates únicos → Chiki → convierte → tira en el Convenio.'
+            hint: 'Gana combates → Chiki → convierte → tira en el Convenio.'
         },
         {
-            id: 'arena_tabs',
+            id: 'arena_day',
             scene: 'arena',
-            selector: '.arena-tabs, .arena-nav, #arena-sec-story',
-            fallbackSelectors: ['.arena-hero', '#arena-story'],
-            title: 'Secciones de misiones',
-            body: 'Cambia entre <strong>Historia</strong>, Libre, Oleadas, JJK y Side. Cada pestaña muestra combates de esa rama.',
-            hint: 'Empieza siempre por Historia hasta desbloquear el resto.'
+            selector: '.p5-date',
+            title: 'El sistema de días',
+            body: 'Cada misión de <strong>Historia es un día</strong>. Para abrir el siguiente día necesitas el frente anterior + <strong>3 archivos únicos por día</strong> (día 2→3 archivos, día 3→6…).',
+            bullets: [
+                'Repetir el mismo archivo NO cuenta (antifarmeo)',
+                'La misión bloqueada te dice qué le falta',
+                'El boss final pide además la colección completa'
+            ]
+        },
+        {
+            id: 'arena_rail',
+            scene: 'arena',
+            selector: '.p5-rail',
+            title: 'Menú lateral',
+            body: 'Todo por clics, sin scroll:',
+            bullets: [
+                '<strong>CONVENIO</strong> — el gacha (muestra tus INV)',
+                '<strong>TRAINING</strong> — muñeco con SP infinito',
+                '<strong>DUPES · TIENDA</strong> — compra duplicados con sellos',
+                '<strong>EQUIPAMIENTO / TUTORIAL / RESET</strong> — lo que pone'
+            ]
         },
         {
             id: 'arena_story',
             scene: 'arena',
             selector: '#arena-story .arena-mission.ready, #arena-story .arena-mission:not(.locked)',
             fallbackSelectors: ['#arena-story', '#arena-sec-story'],
-            title: 'Combates de Historia',
-            body: 'Cada misión lista se puede pulsar. Al ganar obtienes <strong>Chikistrites</strong> (primera clear) y avances de historia.',
-            bullets: ['Bloqueadas = falta un clear anterior', 'Cleared = ya la venciste (puedes repetir con menos premio)'],
-            hint: 'Pulsa Siguiente y luego elige una misión… o ve al Entreno primero.'
+            title: 'Misiones de Historia',
+            body: 'Cada misión lista se puede pulsar. Primera clear = <strong>INV</strong>; repetir = Chiki + 1 ticket rojo Metaphor.',
+            bullets: ['Sellada = falta frente anterior o archivos del día', 'CLEAR = vencida (se puede farmear)'],
+            hint: 'Las misiones van por páginas ◀ ▶ — 6 por página.'
+        },
+        {
+            id: 'arena_archives',
+            scene: 'arena',
+            selector: '.arena-tabs, #arena-sec-archives',
+            fallbackSelectors: ['.arena-tabs', '#arena-archives'],
+            title: 'Archivos: tu farmeo',
+            body: 'Pestaña <strong>Archivos</strong>: se abren de uno en uno y sirven para <strong>desbloquear días</strong>, farmear y completar la colección para el 50/50.',
+            hint: 'Sin archivos no hay días nuevos. Sin días no hay final.'
         },
         {
             id: 'arena_training',
             scene: 'arena',
             selector: '#arena-training',
             title: 'Modo Entreno',
-            body: 'Combate de práctica contra un muñeco. Ideal para probar <strong>técnicas, Stands y transformaciones</strong> sin gastar progresión.',
-            hint: 'Recomendado la primera vez que entres a pelear.'
+            body: 'Combate de práctica contra un muñeco que no ataca. Ideal para probar <strong>ataques, técnicas y transformaciones</strong> sin gastar progresión.',
+            hint: 'Recomendado antes de tu primera historia.'
         },
         {
             id: 'arena_gacha',
             scene: 'arena',
             selector: '#arena-gacha',
             title: 'El Convenio (Gacha)',
-            body: 'Aquí invocas personajes. Hay un banner por anime (One Piece, Naruto, JoJo, Bleach, JJK) más eggs y Metaphor late-game.',
-            bullets: [
-                'Rate-up del featured del banner',
-                'Pity blando / duro en 5★ y 6★',
-                'Dupes → constelaciones o Sellos'
-            ],
-            hint: 'Primero gana Chiki en combates; luego convierte e invoca.'
-        },
-        {
-            id: 'arena_dupes',
-            scene: 'arena',
-            selector: '.arena-footer',
-            fallbackSelectors: ['#arena-dupes'],
-            title: 'Tienda de Dupes',
-            body: 'Abajo del todo: <strong>Dupes · Tienda</strong> (Sellos 4★) y el botón Tutorial. Úsalo cuando tengas repeticiones de personajes.',
-            hint: 'No es urgente al inicio. El tutorial también se puede repetir desde aquí.'
-        },
-        {
-            id: 'arena_bridge_party',
-            scene: 'arena',
-            selector: '#arena-training',
-            title: 'Siguiente: formar equipo',
-            body: 'Al pulsar una misión o <strong>Entreno</strong> abrirás el selector de escuadrón. El tutorial seguirá allí automáticamente.',
-            hint: 'Pulsa Entreno (o una misión) cuando quieras continuar.',
+            body: 'Aquí invocas personajes. Hay banner por anime + <strong>Persona 5 Royal</strong> + <strong>Metaphor</strong> (rojo). Entra y te sigo explicando dentro.',
             requireClick: true,
-            waitText: 'Pulsa Entreno o una misión para seguir…'
+            waitText: 'Pulsa CONVENIO para seguir…'
         },
 
         /* ── PARTY ── */
         {
-            id: 'party_roster',
+            id: 'party_tabs',
             scene: 'party',
-            selector: '.psel-roster',
-            title: 'Tu roster',
-            body: 'Aquí aparecen los personajes que posees. Las pestañas filtran por <strong>serie</strong> (One Piece, Naruto, JoJo…).',
-            bullets: ['Toca un chip para meterlo / sacarlo del equipo', 'La rareza ★ se ve en la esquina']
+            selector: '.psel-tabs, .psel-tab',
+            fallbackSelectors: ['.psel-roster'],
+            title: 'Filtra por serie',
+            body: 'Pestañas por anime, <strong>incluido Metaphor</strong> cuando tengas sus personajes. El número dice cuántos posees.',
+            hint: 'Si una serie está vacía, toca invocar.'
+        },
+        {
+            id: 'party_cards',
+            scene: 'party',
+            selector: '.psel-chip',
+            fallbackSelectors: ['.psel-roster', '.psel-grid'],
+            title: 'Elige 3 (paginado)',
+            body: 'Toca cartas para meter/sacar del equipo. Verás <strong>rareza ★, rol, constelación C y tipos</strong>. El roster va por páginas ◀ ▶, 12 por página.',
+            bullets: ['LISTO = en el equipo', 'C0/C3/C6 = nivel de dupes', 'Mira debilidades antes de entrar']
         },
         {
             id: 'party_squad',
@@ -141,7 +155,7 @@ const TutorialSpotlight = {
             selector: '#battle-enemies, .p5-stage',
             fallbackSelectors: ['#battle-root', '.p5-stage'],
             title: 'Campo de batalla',
-            body: 'Arriba/frente: enemigos. Abajo/lado: tu equipo. Cada unidad tiene HP, CP (energía de técnicas) y afinidades.',
+            body: 'Derecha: enemigos. Izquierda: tu equipo. Cada unidad tiene HP, CP (energía de técnicas) y afinidades.',
             hint: 'Observa iconos de debilidad/resistencia en el HUD.'
         },
         {
@@ -161,14 +175,14 @@ const TutorialSpotlight = {
             id: 'battle_skills',
             scene: 'battle',
             selector: '#p5-skill-rail, #battle-command',
-            title: 'Técnicas y Stands',
-            body: 'En Técnica verás 4 habilidades. Muchos personajes tienen una skill de <strong>TRANSFORM</strong> (Stand / Bankai / Mode) que cambia el kit.',
+            title: 'Técnicas, Stands y Transformaciones',
+            body: 'En Técnica verás las habilidades. Muchas tienen <strong>TRANSFORM</strong> (Stand / Bankai / Modo / Persona) que cambia el kit entero con <strong>efectos y animación únicos por técnica</strong>.',
             bullets: [
-                'La transformación suele costar CP de mantenimiento cada turno',
+                'La transformación suele pedir CP de mantenimiento',
                 'Skills con AoE golpean a todos',
-                'Algunas curan, buffean o saltan el turno enemigo'
+                'Algunas curan, buffean o paralizan al enemigo'
             ],
-            hint: 'Pasa el ratón / mira la descripción abajo antes de gastar CP.'
+            hint: 'Lee la descripción antes de gastar CP.'
         },
         {
             id: 'battle_target',
@@ -184,7 +198,7 @@ const TutorialSpotlight = {
             selector: '#p5-party-strip, #p5-actor-hud',
             fallbackSelectors: ['#p5-actor-hud', '#battle-command'],
             title: 'Estado del equipo',
-            body: 'La franja de aliados y el HUD del actor muestran HP/CP y quién actúa. Si un aliado cae, puedes revivir solo si tienes skills de revive.',
+            body: 'La franja de aliados y el HUD del actor muestran HP/CP y quién actúa. Si un aliado cae, solo revive con skills de revive.',
             hint: 'Prioriza curar o defender si vas mal de HP.'
         },
         {
@@ -193,7 +207,7 @@ const TutorialSpotlight = {
             selector: '#btn-flee-battle',
             fallbackSelectors: ['#battle-command'],
             title: 'Huir (si hace falta)',
-            body: 'Puedes abandonar un combate. En Entreno no pasa nada; en Historia perderás la clear de esa run.',
+            body: 'Puedes abandonar un combate. En Entreno no pasa nada; en Historia pierdes la clear de esa run.',
             hint: 'Tras ganar o salir, el tutorial sigue en el Convenio cuando entres.'
         },
         {
@@ -201,7 +215,7 @@ const TutorialSpotlight = {
             scene: 'battle',
             selector: '#battle-command',
             title: 'Después del combate',
-            body: 'Vuelve a la Arena y abre el <strong>Convenio</strong>. Allí te enseño banners, conversión de Chiki y tiradas.',
+            body: 'Vuelve a la Arena y abre el <strong>Convenio</strong>. Allí te enseño banners, pity, dupes y el tracker.',
             hint: 'Termina o huye cuando quieras; al entrar al gacha continúo yo.'
         },
 
@@ -211,8 +225,8 @@ const TutorialSpotlight = {
             scene: 'gacha',
             selector: '#gacha-wuwa, .gacha-wuwa',
             title: 'El Convenio',
-            body: 'Pantalla de invocación estilo banner. El arte grande es el featured del anime activo.',
-            hint: 'Cada thumb de la rail cambia de serie.'
+            body: 'Pantalla de invocación. El arte grande es el banner activo y la rail izquierda cambia de serie.',
+            hint: 'Hay 9 banners: 7 anime + Persona 5 Royal + Metaphor.'
         },
         {
             id: 'gacha_banners',
@@ -220,10 +234,24 @@ const TutorialSpotlight = {
             selector: '.gw-thumb[data-banner="onepiece"], .gw-thumbs, [data-banner]',
             fallbackSelectors: ['.gw-thumb'],
             title: 'Banners por anime',
-            body: 'Cambia entre One Piece, Naruto, JoJo, Bleach, JJK… Cada uno tiene su pool 4★ / 5★ / 6★ y un featured en rate-up.',
+            body: 'Cada uno tiene su pool 4★ / 5★ / 6★ con pity propio (6★ garantizado a 80, 5★ a 50).',
             bullets: [
-                'Eggs (WuWa / ToF / Genshin) = tiradas gratis especiales',
-                'Metaphor (rojo) = sellado hasta late-game'
+                'Eggs = tiradas gratis especiales',
+                'Metaphor (rojo) = tickets rojos, no INV',
+                'Persona 5 Royal = banner normal con INV'
+            ]
+        },
+        {
+            id: 'gacha_metaphor',
+            scene: 'gacha',
+            selector: '.gw-thumb[data-banner="metaphor"]',
+            fallbackSelectors: ['.gw-thumb'],
+            title: 'Metaphor: tickets rojos',
+            body: 'El banner rojo usa <strong>tickets Metaphor</strong>: +200 por final de apartado, +20 por repetir combates, +200 al vencer a THE 50/50 (80 = hard pity).',
+            bullets: [
+                'Perder el 50/50 celestial da personajes Metaphor con cinemática royal',
+                'El regalo (código) solo sale tras vencer al boss CON Ren al máximo',
+                'Ren solo sale AQUÍ tras vencer a THE 50/50'
             ]
         },
         {
@@ -232,15 +260,15 @@ const TutorialSpotlight = {
             selector: '.gw-currency, #gacha-invocations, #gw-cost-chip',
             fallbackSelectors: ['#gw-cost-chip', '.gw-top'],
             title: 'Invocaciones y Chiki',
-            body: 'Las tiradas anime cuestan <strong>Invocaciones</strong>. Si te faltan, pulsa el <strong>+</strong> junto a Chikistrites para convertir.',
-            hint: '1 tirada = 1 invocación (aprox. según tu economía).'
+            body: 'Las tiradas anime cuestan <strong>Invocaciones</strong> (320 Chiki = 1 INV con el botón +).',
+            hint: 'Farmea Chiki repitiendo frentes.'
         },
         {
             id: 'gacha_pull',
             scene: 'gacha',
             selector: '#btn-pull-1',
             title: 'Tirar ×1 y ×10',
-            body: '<strong>×1</strong> para probar suerte; <strong>×10</strong> para farmear pity más rápido. Verás cinemática y luego las cartas.',
+            body: '<strong>×1</strong> para probar suerte; <strong>×10</strong> para farmear pity. Los 5★/6★ traen <strong>cut-in de vídeo</strong> propio.',
             bullets: ['5★ y 6★ son raros', 'El pity garantiza que no se eternice la sequía']
         },
         {
@@ -249,29 +277,51 @@ const TutorialSpotlight = {
             selector: '#pity-fill, .gw-pity, #gacha-pity',
             fallbackSelectors: ['#btn-pull-10', '#btn-pull-1'],
             title: 'Pity (garantía)',
-            body: 'La barra de pity sube con tiradas sin el premio alto. Soft pity mejora tasas cerca del final; hard pity garantiza.',
-            hint: 'No hace falta leer números exactos: si la barra está alta, estás cerca.'
+            body: 'La barra sube con tiradas sin premio alto. Soft pity mejora tasas cerca del final; hard pity garantiza.',
+            hint: 'El HISTORIAL muestra tus tiradas, pity y fechas estilo tracker.'
         },
         {
-            id: 'gacha_tools',
+            id: 'gacha_history',
             scene: 'gacha',
-            selector: '#btn-gacha-details, #btn-dock-details',
+            selector: '#panel-history, #pull-history',
             fallbackSelectors: ['#btn-gacha-history', '#btn-back-hunt'],
-            title: 'Detalles e historial',
-            body: 'Detalles = tasas y pools del banner. Historial = qué te ha salido. Dupes abre la tienda estelar.',
+            title: 'Historial tracker',
+            body: 'Abre HISTORIAL (LOG): verás <strong>totales, conteos 6★/5★/4★, recientes con avatar y tabla Nº/Item/★/Fecha</strong> de cada banner.',
+            hint: 'Úsalo para saber a cuántas tiradas estás del pity.'
+        },
+        {
+            id: 'gacha_dupes',
+            scene: 'gacha',
+            selector: '#btn-dock-dupes',
+            fallbackSelectors: ['#btn-gacha-details', '#btn-back-hunt'],
+            title: 'Dupes y sellos',
+            body: 'Los duplicados suben constelación (<strong>4★ hasta C6, 5★/6★ hasta C3</strong>). Al maxear dan <strong>Sellos Estelares</strong> para comprar dupes que te falten.',
+            hint: 'Maxearlo TODO es requisito del boss final.'
+        },
+        {
+            id: 'gacha_5050',
+            scene: 'gacha',
+            selector: '#btn-pull-10',
+            fallbackSelectors: ['#btn-pull-1'],
+            title: 'THE 50/50: el requisito',
+            body: 'El boss final se desbloquea con <strong>TODA la colección al máximo de dupes</strong> (da igual la historia). Solo entonces sale el <strong>regalo</strong> del banner.',
+            bullets: [
+                'Ren no cuenta para desbloquearlo (sale después)',
+                'Gojo no abre nada'
+            ]
         },
         {
             id: 'gacha_back',
             scene: 'gacha',
             selector: '#btn-back-hunt',
-            title: 'Volver a la Arena',
-            body: 'Cuando termines de invocar, vuelve al cuartel y sigue la Historia. ¡Ya sabes el loop completo!',
+            title: 'El loop completo',
+            body: 'Ya sabes jugar. El loop es:',
             bullets: [
-                'Combatir → Chiki',
-                'Convertir → Invocaciones',
-                'Tirar → más roster → combates más fuertes'
+                'Historia (días) + Archivos (3 por día) → Chiki e INV',
+                'Convenio → más roster y dupes',
+                'Colección al máximo → THE 50/50 → regalo'
             ],
-            hint: 'Puedes repetir este tutorial desde Dupes/footer o consola: TutorialSpotlight.restart()'
+            hint: 'Puedes repetir este tutorial desde el botón TUTORIAL de la Arena.'
         }
     ],
 

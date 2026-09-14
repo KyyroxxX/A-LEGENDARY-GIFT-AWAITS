@@ -90,7 +90,7 @@
     left: 0% !important;
     right: 43% !important;
     bottom: calc(var(--hud-cmd-h) + 0.55rem) !important;
-    gap: clamp(0.45rem, 1vw, 1rem) !important;
+    gap: clamp(0.9rem, 2.2vw, 2rem) !important;
     align-items: flex-end !important;
     justify-content: flex-start !important;
     display: flex !important;
@@ -105,7 +105,7 @@
     top: auto !important;
     max-width: none !important;
     width: auto !important;
-    gap: clamp(0.45rem, 1vw, 1rem) !important;
+    gap: clamp(0.9rem, 2.2vw, 2rem) !important;
     align-items: flex-end !important;
     justify-content: flex-end !important;
     display: flex !important;
@@ -1117,4 +1117,20 @@ body:has(.hud-p5.hud-storm) .vol-dock {
 .p5-fighter.motion-active .p5-sprite,
 .p5-fighter.motion-active .p5-rig {
     animation: none !important;
+}
+
+.hud-p5.hud-storm .p5-fighter > .p5-sprite {
+    width: clamp(240px, 32vw, 460px) !important;
+    height: clamp(340px, 62vh, 620px) !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    overflow: visible !important;
+}
+
+.hud-p5.hud-storm .p5-fighter[data-id="giyu"].transformed > .p5-sprite {
+    width: clamp(240px, 32vw, 460px) !important;
+    height: clamp(340px, 62vh, 620px) !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
 }

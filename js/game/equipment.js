@@ -61,9 +61,42 @@ const EquipmentSystem = {
     },
     idForName(name) { return this.ALIASES[name] || Object.keys(this.ITEMS).find(id => this.ITEMS[id].name === name) || null; },
     get(id) { return this.ITEMS[id] || null; },
+    /** Real photos (wikis/Commons, personal gift use). SVG icons stay as fallback. */
+    PHOTOS: {
+        fragmento_sombrero: 'assets/equipment/photos/fragmento_sombrero.jpg',
+        den_den_mushi: 'assets/equipment/photos/den_den_mushi.jpg',
+        cartel_recompensa: 'assets/equipment/photos/cartel_recompensa.jpg',
+        log_pose: 'assets/equipment/photos/log_pose.jpg',
+        kunai_oxidado: 'assets/equipment/photos/kunai_oxidado.jpg',
+        pergamino_vacio: 'assets/equipment/photos/pergamino_vacio.jpg',
+        banda_ninja_rota: 'assets/equipment/photos/banda_ninja_rota.jpg',
+        sello_explosivo: 'assets/equipment/photos/sello_explosivo.jpg',
+        fragmento_stand: 'assets/equipment/photos/fragmento_stand.jpg',
+        flecha_rota: 'assets/equipment/photos/flecha_rota.jpg',
+        disco_memoria: 'assets/equipment/photos/disco_memoria.jpg',
+        reloj_arena: 'assets/equipment/photos/reloj_arena.jpg',
+        zanpakuto_rosa: 'assets/equipment/photos/zanpakuto_rosa.jpg',
+        gikon: 'assets/equipment/photos/gikon.jpg',
+        alma_fragmentada: 'assets/equipment/photos/alma_fragmentada.jpg',
+        hueco_mundo_scrap: 'assets/equipment/photos/hueco_mundo_scrap.jpg',
+        talisman_roto: 'assets/equipment/photos/talisman_roto.jpg',
+        dedo_maldito: 'assets/equipment/photos/dedo_maldito.jpg',
+        cuerda_negra: 'assets/equipment/photos/cuerda_negra.jpg',
+        chispa_esperanza: 'assets/equipment/photos/chispa_esperanza.jpg',
+        nota_viaje: 'assets/equipment/photos/nota_viaje.jpg',
+        moneda_tribes: 'assets/equipment/photos/moneda_tribes.jpg',
+        mascara_tengu: 'assets/equipment/photos/mascara_tengu.jpg',
+        nichirin_mellada: 'assets/equipment/photos/nichirin_mellada.jpg',
+        talisman_ubuyashiki: 'assets/equipment/photos/talisman_ubuyashiki.jpg',
+        cordon_oxidado: 'assets/equipment/photos/cordon_oxidado.jpg',
+        kunai_public_safety: 'assets/equipment/photos/kunai_public_safety.jpg',
+        lata_comida_gato: 'assets/equipment/photos/lata_comida_gato.jpg',
+        pin_bomba: 'assets/equipment/photos/pin_bomba.jpg'
+    },
     artFor(item) {
         const entry = typeof item === 'string' ? this.get(item) : item;
-        return entry?.photo || entry?.icon || 'assets/equipment/fragmento-sombrero.svg';
+        const id = typeof item === 'string' ? item : (entry ? this.idForName(entry.name) : null);
+        return (id && this.PHOTOS[id]) || entry?.photo || entry?.icon || 'assets/equipment/fragmento-sombrero.svg';
     },
     artForName(name) { return this.artFor(this.get(this.idForName(name))); },
     owned(id) { return Number(this.ensure().inv[id] || 0); },

@@ -117,6 +117,23 @@ const SceneManager = {
         if (typeof MotionFx !== 'undefined' && MotionFx.swapScene) {
             // Gacha: skip CONVOCAR wipe — heavy thumbs + stage already tax the GPU
             const mode = (sceneName === 'gacha') ? 'quick' : undefined;
+            // Wipe identity per destination (Persona sigil + tint)
+            if (typeof MotionFx.setWipeMood === 'function') {
+                const moods = {
+                    gacha: ['crimson', 'CONVOCAR'],
+                    arena: ['gold', 'CRÓNICA'],
+                    hub: ['gold', 'CRÓNICA'],
+                    destiny: ['ink', 'DESTINO'],
+                    final: ['gold', 'DESTINO'],
+                    reveal: ['crimson', 'DESPERTAR'],
+                    legendary: ['gold', 'CONVENIO'],
+                    letter: ['ink', 'CARTA'],
+                    prologue: ['ink', 'PRÓLOGO'],
+                    intro: ['crimson', 'DESTINO']
+                };
+                const [mood, word] = moods[sceneName] || [null, null];
+                try { MotionFx.setWipeMood(mood, word); } catch (_) { /* ignore */ }
+            }
             MotionFx.swapScene({ outEl: oldEl, midSwap, prepareIn, afterIn, mode }).catch((err) => {
                 console.error('MotionFx swap failed', err);
                 this._transitioning = false;

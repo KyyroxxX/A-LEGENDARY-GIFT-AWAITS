@@ -667,6 +667,12 @@
 .p5-action-banner.fam-inferno { border-color: #ff7a45; }
 .p5-action-banner.fam-heal,
 .p5-action-banner.fam-support { border-color: #7dffb2; }
+.p5-action-banner.fam-transform {
+    border-color: #ffe39a;
+    box-shadow: 6px 6px 0 #7a1020, 0 0 30px rgba(255, 214, 106, 0.48);
+}
+.p5-action-banner.fam-hex { border-color: #c384ff; }
+.p5-action-banner.fam-element { border-color: #72d7cf; }
 .p5-action-tag {
     display: inline-block;
     align-self: flex-start;

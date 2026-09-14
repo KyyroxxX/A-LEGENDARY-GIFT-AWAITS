@@ -386,7 +386,6 @@ img.arena-chip-ico {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 28px rgba(232, 199, 106, 0.28));
 }
 .arena-hero-sub {
     margin: 0.85rem 0 0;

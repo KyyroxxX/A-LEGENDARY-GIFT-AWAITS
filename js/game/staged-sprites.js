@@ -23,10 +23,15 @@ const StagedSprites = {
         'ichigo', 'jogo', 'joseph', 'kira', 'kisame', 'lee', 'mahito', 'megumi',
         'mihawk', 'minato', 'mista', 'mitsuri', 'nami', 'neji', 'obanai',
         'okuyasu', 'orihime', 'pain', 'polnareff', 'power', 'rengoku', 'risotto',
-        'robin', 'sabito', 'sanji', 'sasori', 'shanks', 'shunsui', 'tanjiro',
+        'robin', 'sabito', 'sanji', 'sasori', 'shanks', 'shunsui', 'tanjiro', 'tobi',
         'sukuna', 'tengen', 'toshiro', 'tsunade', 'ulquiorra', 'urahara', 'urokodaki',
         'usopp', 'zenitsu', 'zoro'
     ],
+
+    /** Transform art living under another basename (user filenames kept as-is). */
+    TRANSFORM_FILE_OVERRIDES: {
+        asa: 'yoru'
+    },
 
     FACING_FORM_OVERRIDES: {
         akaza: { normal: false, transform: true },
@@ -86,9 +91,11 @@ const StagedSprites = {
 
     hasXform(id) {
         if (!id) return false;
+        const ov = this.TRANSFORM_FILE_OVERRIDES[id];
         return this.has(`ref_${id}_xform.png`)
             || this.has(`ref_${id}_xform1.png`)
-            || this.has(`ref_${id}_xform_2.png`);
+            || this.has(`ref_${id}_xform_2.png`)
+            || (ov ? this.has(`ref_${ov}.png`) : false);
     },
 
     /** Art that natively faces screen-left. */
@@ -150,7 +157,8 @@ const StagedSprites = {
             return null;
         }
         if (k === 'transform' || k === 'transform_1') {
-            file = `ref_${id}_xform.png`;
+            const ov = this.TRANSFORM_FILE_OVERRIDES[id];
+            file = ov ? `ref_${ov}.png` : `ref_${id}_xform.png`;
             // No silent idle fallback — that would hide anim/*_transform.png
             if (this._files && !this.has(file)) return null;
             if (!this._files) return null;

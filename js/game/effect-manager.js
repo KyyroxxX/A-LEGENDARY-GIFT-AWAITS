@@ -91,9 +91,13 @@ const EffectManager = {
         const fallback = this.palette[family];
         const character = String(profile.characterId || '').toLowerCase().replace(/[^a-z0-9_]/g, '_');
         const element = String(profile.element || (profile.transformed ? profile.transformElement : '') || '').toLowerCase();
-        const colors = this.elementPalette[element]
-            || this.characterPalette[character]
-            || this.generatedCharacterPalette(character, fallback);
+        const technique = `${profile.slug || ''} ${profile.name || ''}`;
+        const isBlueChakra = /rasengan|odama/i.test(technique);
+        // Authentic per-skill colors (Hollow Purple ≠ Blue ≠ Red) beat palettes.
+        const override = Array.isArray(profile.colors) && profile.colors.length >= 2 ? profile.colors : null;
+        const colors = override || (isBlueChakra ? this.palette.spiral : (this.characterPalette[character]
+            || this.elementPalette[element]
+            || this.generatedCharacterPalette(character, fallback)));
         return { family, primary: colors[0], secondary: colors[1], character, element };
     },
 
@@ -131,7 +135,8 @@ const EffectManager = {
         const bladeClass = profile.bladeVariant ? `vfx-blade-${String(profile.bladeVariant).replace(/[^a-z0-9-]/gi, '')}` : '';
         const energyClass = profile.energyVariant ? `vfx-energy-${String(profile.energyVariant).replace(/[^a-z0-9-]/gi, '')}` : '';
         const supportMode = String(profile.supportMode || '').replace(/[^a-z0-9-]/gi, '');
-        node.className = ['vfx-pro', `vfx-pro--${meta.family}`, `vfx-pro--${phase}`, supportMode ? `vfx-support-${supportMode}` : '', profile.slug || '', styleClass ? `vfx-style-${styleClass}` : '', bladeClass, energyClass, impactClass ? `vfx-impact-${impactClass}` : '', options.trail ? 'vfx-pro--trail' : '', options.multi ? 'vfx-pro--multi' : ''].filter(Boolean).join(' ');
+        const characterClass = meta.character ? `vfx-character-${meta.character}` : '';
+        node.className = ['vfx-pro', `vfx-pro--${meta.family}`, `vfx-pro--${phase}`, characterClass, supportMode ? `vfx-support-${supportMode}` : '', profile.slug || '', styleClass ? `vfx-style-${styleClass}` : '', bladeClass, energyClass, impactClass ? `vfx-impact-${impactClass}` : '', options.trail ? 'vfx-pro--trail' : '', options.multi ? 'vfx-pro--multi' : ''].filter(Boolean).join(' ');
         node.style.setProperty('--vfx-primary', meta.primary);
         node.style.setProperty('--vfx-secondary', meta.secondary);
         const variant = this.hash(`${profile.slug}:${phase}`);
