@@ -84,7 +84,7 @@ const BattleAI = {
 
             case 'tactical': {
                 // Your healer dies first. Protect them or do without healing.
-                if (healer && healer.hp / healer.maxHp > 0.2 && Math.random() < 0.88) {
+                if (healer && healer.hp / healer.maxHp > 0.2 && Math.random() < 0.85) {
                     return pick(this.bestDamage(skills, [healer]) || basic, healer);
                 }
                 if (hpRatio < 0.6) {
@@ -117,15 +117,15 @@ const BattleAI = {
                     const finisher = this.highestPower(skills) || basic;
                     return pick(finisher, Math.random() < 0.68 ? strongest : healer || lowest);
                 }
-                const aoeChance = state.encounter?.aiAoEChance ?? 0.7;
+                const aoeChance = state.encounter?.aiAoEChance ?? 0.65;
                 if (livingFoes.length > 1 && Math.random() < aoeChance) {
                     const aoe = skills.find(s => s.aoe && s.power > 0);
                     if (aoe) return pick(aoe, livingFoes[0]);
                 }
                 const skip = skills.find(s => s.skipEnemy);
-                if (skip && phase >= 2 && Math.random() < 0.46) return pick(skip, enemy);
+                if (skip && phase >= 2 && Math.random() < 0.4) return pick(skip, enemy);
         const healerFocus = state.encounter?.aiHealerFocus
-            ?? (state.partyHasSupport ? 0.87 : 0.75);
+            ?? (state.partyHasSupport ? 0.85 : 0.72);
                 if (healer && Math.random() < healerFocus) return pick(this.bestDamage(skills, [healer]) || basic, healer);
                 return pick(this.bestDamage(skills, livingFoes) || basic, lowest);
             }

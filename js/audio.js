@@ -1555,6 +1555,8 @@ const AudioManager = {
         skill(type = 'strike', skillId = '') {
             AudioManager.withCategory('skill', () => {
                 const id = String(skillId).toLowerCase();
+                // Iconic moves first — bespoke synth that sounds like the move.
+                if (AudioManager.sfx.playSignature(id, type)) return;
                 const eye = /sharingan|byakugan|genjutsu|kyoka|scan|oeil|time.stop|world|erase/.test(id);
                 const heal = /heal|regen|restore|revive|food|soten|santen/.test(id);
                 const shadow = /shadow|kage.shibari|kage.kubishibari|curse|cero|getsuga.black|menacing/.test(`${id} ${type}`);
@@ -1586,6 +1588,568 @@ const AudioManager = {
                     AudioManager.playTone(125, 0.24, 'square', 0.2);
                 }
             });
+        },
+        /* ── Signature SFX: one bespoke synth per iconic move ── */
+        _sigArchMap: null,
+        sigArchetype(skillId) {
+            try {
+                if (!this._sigArchMap) {
+                    this._sigArchMap = {};
+                    const blocks = (typeof SignatureAuthentic !== 'undefined' && SignatureAuthentic.blocks) || {};
+                    Object.values(blocks).forEach((skills) => {
+                        Object.entries(skills || {}).forEach(([sid, d]) => {
+                            const m = /^auth-([a-z-]+)$/.exec(d?.style || '');
+                            if (m) this._sigArchMap[String(sid).toLowerCase()] = m[1];
+                        });
+                    });
+                }
+                return this._sigArchMap[String(skillId || '').toLowerCase()] || null;
+            } catch (_) {
+                return null;
+            }
+        },
+        playSignature(id, type) {
+            const S = AudioManager.sfx;
+            // Exact iconic quirks first (order matters — specific before general)
+            if (/jackpot(?!_fists)|bonus_round/.test(id)) { S.sigJackpot(); return true; }
+            if (/finger_gun/.test(id)) { S.sigBang(false); return true; }
+            if (/(^|_)crush$/.test(id)) { S.sigBang(true); return true; }
+            if (/absolute_control/.test(id)) { S.sigControl(); return true; }
+            if (/six_shots|point_blank/.test(id)) { S.sigGunshots(); return true; }
+            if (/kamui|tobi_strike/.test(id)) { S.sigWarp(); return true; }
+            if (/time_accel/.test(id)) { S.sigAccel(); return true; }
+            if (/bites_dust/.test(id)) { S.sigRewind(); return true; }
+            if (/erase|fate_crush|time_erase/.test(id)) { S.sigErase(); return true; }
+            if (/tsukuyomi/.test(id)) { S.sigNightmare(); return true; }
+            if (/pain_strike|pain_x/.test(id)) { S.sigAlmighty(); return true; }
+            if (/senbon|hakuteiken/.test(id)) { S.sigPetals(); return true; }
+            if (/hyorin|hyoten/.test(id)) { S.sigIceRoar(); return true; }
+            if (/konan/.test(id)) { S.sigPaper(); return true; }
+            if (/heaven_page|masterpiece/.test(id)) { S.sigPages(); return true; }
+            if (/chain_miles|inv_spear/.test(id)) { S.sigChain(); return true; }
+            if (/desgarron/.test(id)) { S.sigClaws(); return true; }
+            if (/million_stab|chariot_finale/.test(id)) { S.sigFencing(); return true; }
+            if (/emerald/.test(id)) { S.sigEmerald(); return true; }
+            if (/aria|arrivederci/.test(id)) { S.sigZipper(); return true; }
+            if (/full_dive|bone_twist/.test(id)) { S.sigDive(); return true; }
+            if (/iron_needles|assassin_finisher/.test(id)) { S.sigIronRain(); return true; }
+            if (/overheat|ito_awaken|parasite/.test(id)) { S.sigStrings(); return true; }
+            if (/katakuri/.test(id)) { S.sigMochi(); return true; }
+            if (/marshall/.test(id)) { S.sigVoidQuake(); return true; }
+            if (/genya/.test(id)) { S.sigShotgun(); return true; }
+            if (/piercing_blood|pierce_max|blood_spear|blood_rain/.test(id)) { S.sigBlood(); return true; }
+            if (/pure_love/.test(id)) { S.sigLoveBeam(); return true; }
+            if (/deadly/.test(id)) { S.sigGavel(); return true; }
+            if (/bubble_launcher/.test(id)) { S.sigBubbles(); return true; }
+            if (/flame_tiger/.test(id)) { S.sigTiger(); return true; }
+            if (/water_dragon/.test(id)) { S.sigWaterRoar(); return true; }
+            if (/gale_slash|idaten/.test(id)) { S.sigGale(); return true; }
+            if (/disorder|annihilation/.test(id)) { S.sigCompass(); return true; }
+            if (/quanxi/.test(id)) { S.sigBolts(); return true; }
+            if (/asa_strike/.test(id)) { S.sigWarClang(); return true; }
+            if (/year_blade|century_sword/.test(id)) { S.sigWings(); return true; }
+            if (/katana_strike|katana_x/.test(id)) { S.sigSpinDive(); return true; }
+            if (id === 'kon') { S.sigFox(); return true; }
+            if (/^(critical_)?ratio$/.test(id)) { S.sigChop(); return true; }
+            if (/ftg|tobirama_x/.test(id)) { S.sigBlink(); return true; }
+            if (/kyoka/.test(id)) { S.sigHypnosis(); return true; }
+            if (/gear_second/.test(id)) { S.sigGear(); return true; }
+            if (/kyubi/.test(id) && !/claw|regen/.test(id)) { S.sigFoxRoar(); return true; }
+            if (/rika_manifest/.test(id)) { S.sigSummon(); return true; }
+            if (/diable|ifrit/.test(id)) { S.sigSizzle(); return true; }
+            if (/marco/.test(id)) { S.sigPhoenix(); return true; }
+            if (/train_crash/.test(id)) { S.sigMetro(); return true; }
+            if (/meimei/.test(id)) { S.sigCrows(); return true; }
+            if (/bushogoma|takaoni|kageoni/.test(id)) { S.sigGames(); return true; }
+            // Archetype fallback — covers every authentic signature move
+            const arch = this.sigArchetype(id);
+            const fn = arch && this['sigA_' + arch.replace(/-/g, '_')];
+            if (typeof fn === 'function') {
+                fn.call(this);
+                return true;
+            }
+            // Family fallback — melee/barrage/finisher/transform have no good
+            // generic synth, so they get one; hex/heal/element/inferno/support
+            // already sound right and fall through to the element router.
+            const fam = this.sigFamily(id);
+            const ff = fam && this['sigF_' + fam];
+            if (typeof ff === 'function') {
+                ff.call(this);
+                return true;
+            }
+            return false;
+        },
+        _sigFamMap: null,
+        sigFamily(skillId) {
+            try {
+                if (!this._sigFamMap) {
+                    this._sigFamMap = {};
+                    const blocks = (typeof SignatureAuthentic !== 'undefined' && SignatureAuthentic.blocks) || {};
+                    Object.values(blocks).forEach((skills) => {
+                        Object.entries(skills || {}).forEach(([sid, d]) => {
+                            if (d?.family) this._sigFamMap[String(sid).toLowerCase()] = d.family;
+                        });
+                    });
+                }
+                return this._sigFamMap[String(skillId || '').toLowerCase()] || null;
+            } catch (_) {
+                return null;
+            }
+        },
+        sigF_melee() {
+            for (let i = 0; i < 3; i++) {
+                AudioManager.playTone(170 - i * 20, 0.09, 'square', 0.2, i * 0.08);
+                AudioManager.playNoise(0.07, 0.12, 1200, i * 0.08);
+            }
+            AudioManager.playTone(70, 0.25, 'sine', 0.2, 0.24);
+        },
+        sigF_barrage() {
+            for (let i = 0; i < 8; i++) {
+                AudioManager.playTone(190 + Math.random() * 50, 0.06, 'square', 0.15, i * 0.06);
+            }
+            AudioManager.playNoise(0.3, 0.1, 1800, 0.2);
+        },
+        sigF_finisher() {
+            [150, 220, 320, 470, 680].forEach((f, i) => AudioManager.playTone(f, 0.09, 'sawtooth', 0.13, i * 0.06));
+            AudioManager.playTone(52, 0.6, 'sine', 0.28, 0.3);
+            AudioManager.playNoise(0.4, 0.18, 450, 0.3);
+        },
+        sigF_transform() {
+            [220, 330, 470, 660, 920].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sawtooth', 0.11, i * 0.07));
+            AudioManager.playNoise(0.45, 0.14, 650, 0.15);
+            AudioManager.playTone(65, 0.5, 'sine', 0.22, 0.38);
+        },
+        sigJackpot() {
+            [880, 1175, 1568, 2093].forEach((f, i) => AudioManager.playTone(f, 0.12, 'sine', 0.16, i * 0.07));
+            AudioManager.playTone(2500, 0.1, 'sine', 0.12, 0.3);
+            AudioManager.playTone(3200, 0.14, 'sine', 0.1, 0.36);
+            AudioManager.playChord([523, 659, 784], 0.4, 'triangle', 0.14);
+        },
+        sigBang(big) {
+            AudioManager.playTone(3000, 0.03, 'square', 0.22);
+            const d = big ? 0.3 : 0.24;
+            AudioManager.playTone(45, 0.6, 'sine', 0.3, d);
+            AudioManager.playNoise(0.4, 0.2, 250, d);
+        },
+        sigControl() {
+            AudioManager.playTone(110, 0.8, 'sawtooth', 0.12);
+            AudioManager.playTone(113, 0.8, 'sawtooth', 0.12, 0.02);
+            AudioManager.playTone(660, 0.4, 'sine', 0.1, 0.1);
+            AudioManager.playTone(55, 0.5, 'sine', 0.22, 0.35);
+        },
+        sigGunshots() {
+            for (let i = 0; i < 4; i++) {
+                AudioManager.playTone(900, 0.05, 'square', 0.24, i * 0.1);
+                AudioManager.playNoise(0.06, 0.2, 4500, i * 0.1);
+            }
+        },
+        sigWarp() {
+            [1200, 950, 700, 450, 220].forEach((f, i) => AudioManager.playTone(f, 0.09, 'sine', 0.14, i * 0.07));
+            AudioManager.playTone(90, 0.2, 'sine', 0.16, 0.38);
+        },
+        sigAccel() {
+            const gaps = [0, 0.14, 0.26, 0.36, 0.44, 0.51, 0.57, 0.62];
+            gaps.forEach((d) => AudioManager.playTone(1800, 0.03, 'square', 0.14, d));
+            AudioManager.playNoise(0.3, 0.1, 3000, 0.6);
+        },
+        sigRewind() {
+            [300, 500, 750, 1050, 1500].forEach((f, i) => AudioManager.playTone(f, 0.08, 'sine', 0.14, i * 0.07));
+            AudioManager.playTone(60, 0.4, 'sine', 0.24, 0.38);
+        },
+        sigErase() {
+            [400, 300, 500, 250].forEach((f, i) => AudioManager.playTone(f, 0.05, 'square', 0.16, i * 0.08));
+            AudioManager.playNoise(0.3, 0.14, 800, 0.32);
+            AudioManager.playTone(70, 0.4, 'sine', 0.2, 0.34);
+        },
+        sigNightmare() {
+            [0, 0.25, 0.5].forEach((d) => AudioManager.playTone(55, 0.12, 'sine', 0.26, d));
+            AudioManager.playTone(110, 0.8, 'sawtooth', 0.1);
+            AudioManager.playTone(117, 0.8, 'sawtooth', 0.1, 0.03);
+        },
+        sigAlmighty() {
+            AudioManager.playTone(200, 0.3, 'sine', 0.2);
+            AudioManager.playTone(90, 0.4, 'sine', 0.24, 0.12);
+            AudioManager.playTone(50, 0.55, 'sine', 0.28, 0.25);
+            AudioManager.playNoise(0.4, 0.18, 400, 0.25);
+        },
+        sigPetals() {
+            for (let i = 0; i < 12; i++) {
+                AudioManager.playTone(2500 + Math.random() * 2000, 0.05, 'sine', 0.08, i * 0.04);
+            }
+            AudioManager.playNoise(0.3, 0.06, 6000, 0.1);
+        },
+        sigIceRoar() {
+            AudioManager.playNoise(0.4, 0.16, 2500);
+            AudioManager.playTone(200, 0.3, 'sawtooth', 0.12, 0.05);
+            AudioManager.playTone(3000, 0.3, 'sine', 0.08, 0.2);
+            AudioManager.playTone(150, 0.35, 'sawtooth', 0.14, 0.25);
+        },
+        sigPaper() {
+            for (let i = 0; i < 10; i++) {
+                AudioManager.playNoise(0.04, 0.1, 5000, i * 0.045);
+            }
+            AudioManager.playTone(700, 0.2, 'sine', 0.08, 0.4);
+        },
+        sigPages() {
+            AudioManager.playNoise(0.12, 0.12, 4000);
+            AudioManager.playNoise(0.12, 0.12, 3500, 0.12);
+            for (let i = 0; i < 5; i++) {
+                AudioManager.playTone(2000 + i * 200, 0.03, 'square', 0.07, 0.22 + i * 0.05);
+            }
+        },
+        sigChain() {
+            [2000, 2400, 1800].forEach((f, i) => AudioManager.playTone(f, 0.04, 'square', 0.1, i * 0.05));
+            AudioManager.playNoise(0.15, 0.14, 3000, 0.12);
+            AudioManager.playTone(1200, 0.12, 'sawtooth', 0.14, 0.18);
+        },
+        sigClaws() {
+            for (let i = 0; i < 5; i++) {
+                AudioManager.playTone(900 - i * 120, 0.08, 'sawtooth', 0.16, i * 0.07);
+                AudioManager.playNoise(0.07, 0.12, 2800, i * 0.07);
+            }
+        },
+        sigFencing() {
+            for (let i = 0; i < 6; i++) {
+                AudioManager.playTone(2800 + i * 150, 0.04, 'triangle', 0.12, i * 0.06);
+            }
+            AudioManager.playNoise(0.15, 0.1, 5000, 0.3);
+        },
+        sigEmerald() {
+            for (let i = 0; i < 4; i++) {
+                AudioManager.playTone(1500, 0.08, 'sine', 0.16, i * 0.09);
+                AudioManager.playNoise(0.08, 0.12, 3500, i * 0.09);
+            }
+        },
+        sigZipper() {
+            AudioManager.playNoise(0.15, 0.14, 2500);
+            AudioManager.playNoise(0.15, 0.14, 1800, 0.1);
+            for (let i = 0; i < 3; i++) {
+                AudioManager.playTone(200, 0.08, 'square', 0.16, 0.2 + i * 0.08);
+            }
+        },
+        sigDive() {
+            [800, 600, 400, 200].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sine', 0.14, i * 0.08));
+            AudioManager.playNoise(0.2, 0.16, 700, 0.34);
+            AudioManager.playTone(90, 0.3, 'sine', 0.2, 0.36);
+        },
+        sigIronRain() {
+            AudioManager.playTone(150, 0.2, 'sawtooth', 0.12);
+            for (let i = 0; i < 6; i++) {
+                AudioManager.playTone(3000, 0.03, 'square', 0.08, 0.1 + i * 0.05);
+            }
+        },
+        sigStrings() {
+            AudioManager.playTone(2400, 0.3, 'sawtooth', 0.06);
+            AudioManager.playTone(2500, 0.3, 'sawtooth', 0.06, 0.02);
+            AudioManager.playNoise(0.18, 0.14, 3800, 0.2);
+            AudioManager.playNoise(0.15, 0.12, 4200, 0.3);
+        },
+        sigMochi() {
+            AudioManager.playTone(160, 0.25, 'sine', 0.2);
+            AudioManager.playTone(120, 0.25, 'sine', 0.2, 0.15);
+            AudioManager.playTone(140, 0.1, 'square', 0.2, 0.32);
+            AudioManager.playNoise(0.12, 0.14, 900, 0.32);
+        },
+        sigVoidQuake() {
+            [900, 650, 420, 200].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sine', 0.12, i * 0.07));
+            AudioManager.playNoise(0.6, 0.16, 150, 0.25);
+            AudioManager.playTone(48, 0.6, 'sine', 0.28, 0.3);
+        },
+        sigShotgun() {
+            AudioManager.playNoise(0.3, 0.3, 900);
+            AudioManager.playTone(70, 0.4, 'sine', 0.28);
+            AudioManager.playTone(140, 0.2, 'square', 0.14, 0.03);
+        },
+        sigBlood() {
+            AudioManager.playNoise(0.12, 0.18, 800);
+            AudioManager.playTone(180, 0.1, 'sine', 0.18, 0.02);
+            AudioManager.playNoise(0.12, 0.16, 900, 0.14);
+            AudioManager.playTone(150, 0.12, 'sine', 0.18, 0.16);
+        },
+        sigLoveBeam() {
+            AudioManager.playChord([523, 659, 784, 1047], 0.5, 'sine', 0.2);
+            AudioManager.playTone(2093, 0.4, 'sine', 0.12, 0.1);
+            AudioManager.playNoise(0.3, 0.1, 4000, 0.05);
+        },
+        sigGavel() {
+            AudioManager.playTone(180, 0.1, 'square', 0.22);
+            AudioManager.playNoise(0.08, 0.16, 900);
+            AudioManager.playTone(110, 0.6, 'sawtooth', 0.1, 0.12);
+        },
+        sigBubbles() {
+            for (let i = 0; i < 5; i++) {
+                AudioManager.playTone(700 + Math.random() * 800, 0.05, 'sine', 0.12, i * 0.06);
+            }
+            AudioManager.playTone(500, 0.2, 'sine', 0.1, 0.32);
+        },
+        sigTiger() {
+            AudioManager.playTone(95, 0.4, 'sawtooth', 0.2);
+            AudioManager.playTone(70, 0.4, 'sawtooth', 0.18, 0.05);
+            AudioManager.playNoise(0.45, 0.18, 750, 0.1);
+        },
+        sigWaterRoar() {
+            AudioManager.playNoise(0.4, 0.18, 1000);
+            AudioManager.playTone(80, 0.4, 'sine', 0.22, 0.05);
+            AudioManager.playTone(120, 0.3, 'sawtooth', 0.12, 0.15);
+            AudioManager.playNoise(0.25, 0.12, 1600, 0.3);
+        },
+        sigGale() {
+            AudioManager.playNoise(0.5, 0.16, 1600);
+            AudioManager.playNoise(0.4, 0.12, 2200, 0.12);
+            for (let i = 0; i < 3; i++) {
+                AudioManager.playTone(1100, 0.1, 'sawtooth', 0.1, 0.2 + i * 0.09);
+            }
+        },
+        sigCompass() {
+            AudioManager.playTone(196, 0.5, 'sine', 0.16);
+            AudioManager.playTone(294, 0.4, 'sine', 0.12, 0.05);
+            for (let i = 0; i < 6; i++) {
+                AudioManager.playTone(170, 0.07, 'square', 0.16, 0.15 + i * 0.07);
+            }
+            AudioManager.playNoise(0.25, 0.08, 5000, 0.3);
+        },
+        sigBolts() {
+            for (let i = 0; i < 5; i++) {
+                AudioManager.playTone(2200, 0.08, 'sine', 0.12, i * 0.07);
+                AudioManager.playNoise(0.05, 0.1, 4000, i * 0.07);
+            }
+            AudioManager.playNoise(0.3, 0.1, 1200, 0.3);
+        },
+        sigWarClang() {
+            AudioManager.playTone(150, 0.2, 'square', 0.2);
+            AudioManager.playTone(233, 0.15, 'square', 0.16, 0.02);
+            AudioManager.playNoise(0.25, 0.16, 1000, 0.05);
+            AudioManager.playTone(75, 0.4, 'sine', 0.2, 0.15);
+        },
+        sigWings() {
+            AudioManager.playNoise(0.4, 0.14, 1000);
+            [1500, 1100, 800, 600].forEach((f, i) => AudioManager.playTone(f, 0.12, 'sine', 0.1, 0.25 + i * 0.08));
+        },
+        sigSpinDive() {
+            [200, 350, 550, 800].forEach((f, i) => AudioManager.playTone(f, 0.08, 'sawtooth', 0.12, i * 0.07));
+            AudioManager.playTone(1800, 0.2, 'sine', 0.12, 0.3);
+            AudioManager.playTone(65, 0.4, 'sine', 0.24, 0.45);
+            AudioManager.playNoise(0.3, 0.16, 600, 0.45);
+        },
+        sigFox() {
+            AudioManager.playTone(1320, 0.2, 'sine', 0.14);
+            AudioManager.playTone(1760, 0.25, 'sine', 0.12, 0.08);
+            AudioManager.playTone(70, 0.25, 'sine', 0.2, 0.2);
+            AudioManager.playNoise(0.15, 0.12, 400, 0.2);
+        },
+        sigChop() {
+            AudioManager.playTone(130, 0.12, 'square', 0.24);
+            AudioManager.playNoise(0.1, 0.18, 700);
+            AudioManager.playTone(65, 0.3, 'sine', 0.22, 0.05);
+        },
+        sigBlink() {
+            AudioManager.playTone(2500, 0.06, 'sine', 0.14);
+            AudioManager.playTone(2600, 0.12, 'triangle', 0.14, 0.05);
+            AudioManager.playNoise(0.12, 0.12, 3500, 0.08);
+        },
+        sigHypnosis() {
+            AudioManager.playTone(880, 0.6, 'sine', 0.1);
+            AudioManager.playTone(884, 0.6, 'sine', 0.1, 0.02);
+            AudioManager.playTone(1760, 0.4, 'sine', 0.06, 0.15);
+        },
+        sigGear() {
+            AudioManager.playNoise(0.4, 0.14, 3000);
+            [0, 0.3].forEach((d) => {
+                AudioManager.playTone(55, 0.12, 'sine', 0.26, d);
+                AudioManager.playTone(55, 0.12, 'sine', 0.22, d + 0.16);
+            });
+        },
+        sigFoxRoar() {
+            AudioManager.playTone(75, 0.5, 'sawtooth', 0.2);
+            AudioManager.playTone(58, 0.5, 'sawtooth', 0.18, 0.05);
+            AudioManager.playNoise(0.5, 0.16, 600, 0.1);
+        },
+        sigSummon() {
+            AudioManager.playTone(600, 0.5, 'sawtooth', 0.1);
+            AudioManager.playTone(603, 0.5, 'sawtooth', 0.1, 0.02);
+            AudioManager.playTone(65, 0.5, 'sine', 0.24, 0.3);
+            AudioManager.playNoise(0.3, 0.12, 500, 0.3);
+        },
+        sigSizzle() {
+            AudioManager.playTone(220, 0.1, 'square', 0.18);
+            AudioManager.playNoise(0.4, 0.16, 6000);
+            AudioManager.playTone(140, 0.12, 'square', 0.16, 0.12);
+        },
+        sigPhoenix() {
+            [900, 1200, 1500, 1800].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sine', 0.12, i * 0.07));
+            AudioManager.playNoise(0.4, 0.14, 1200, 0.1);
+        },
+        sigMetro() {
+            AudioManager.playNoise(0.5, 0.14, 300, 0);
+            AudioManager.playTone(140, 0.3, 'sawtooth', 0.12, 0.1);
+            AudioManager.playTone(55, 0.5, 'sine', 0.26, 0.4);
+            AudioManager.playNoise(0.35, 0.18, 500, 0.4);
+        },
+        sigCrows() {
+            for (let i = 0; i < 4; i++) {
+                AudioManager.playNoise(0.08, 0.14, 2000, i * 0.09);
+                AudioManager.playTone(420 - i * 30, 0.1, 'sawtooth', 0.08, i * 0.09);
+            }
+        },
+        sigGames() {
+            [1200, 1500, 1800, 1500, 1200].forEach((f, i) => AudioManager.playTone(f, 0.09, 'sine', 0.12, i * 0.08));
+            AudioManager.playNoise(0.2, 0.1, 3000, 0.4);
+        },
+        /* ── Archetype recipes (one synth grammar per visual family) ── */
+        sigA_spiral_orb() {
+            [200, 320, 470, 650, 880].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sine', 0.14, i * 0.06));
+            AudioManager.playNoise(0.35, 0.12, 900, 0.05);
+            AudioManager.playTone(440, 0.2, 'triangle', 0.1, 0.32);
+        },
+        sigA_void_orb() {
+            [1400, 1000, 700, 450].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sine', 0.12, i * 0.07));
+            AudioManager.playTone(110, 0.5, 'sine', 0.2, 0.15);
+            AudioManager.playTone(55, 0.55, 'sine', 0.24, 0.28);
+            AudioManager.playNoise(0.35, 0.14, 300, 0.3);
+        },
+        sigA_blood_orb() {
+            AudioManager.playTone(58, 0.7, 'sawtooth', 0.16);
+            AudioManager.playTone(1200, 0.2, 'sine', 0.08, 0.1);
+            AudioManager.playTone(70, 0.5, 'sine', 0.22, 0.3);
+        },
+        sigA_lightning_hand() {
+            for (let i = 0; i < 10; i++) {
+                AudioManager.playTone(1700 + Math.random() * 1500, 0.05, 'square', 0.09, i * 0.045);
+            }
+            AudioManager.playNoise(0.35, 0.14, 4500, 0.05);
+            AudioManager.playTone(220, 0.15, 'sawtooth', 0.14, 0.4);
+        },
+        sigA_lightning_fall() {
+            AudioManager.playNoise(0.18, 0.26, 5200);
+            AudioManager.playTone(55, 0.9, 'sine', 0.28, 0.1);
+            AudioManager.playTone(82, 0.7, 'sawtooth', 0.14, 0.15);
+            AudioManager.playNoise(0.8, 0.12, 200, 0.2);
+        },
+        sigA_crescent_slash() {
+            [1300, 950, 650, 380].forEach((f, i) => AudioManager.playTone(f, 0.09, 'sawtooth', 0.14, i * 0.06));
+            AudioManager.playNoise(0.2, 0.16, 3600, 0.1);
+            AudioManager.playTone(90, 0.3, 'sine', 0.18, 0.28);
+        },
+        sigA_flame_dance() {
+            AudioManager.playNoise(0.35, 0.14, 700, 0);
+            AudioManager.playNoise(0.35, 0.12, 900, 0.1);
+            AudioManager.playNoise(0.35, 0.12, 1100, 0.2);
+            AudioManager.playTone(130, 0.4, 'sawtooth', 0.12, 0.1);
+        },
+        sigA_flame_eruption() {
+            AudioManager.playNoise(0.55, 0.2, 750);
+            AudioManager.playTone(65, 0.5, 'sine', 0.24, 0.08);
+            [0.2, 0.32, 0.44].forEach((d) => AudioManager.playNoise(0.1, 0.12, 2500, d));
+        },
+        sigA_water_wheel() {
+            AudioManager.playNoise(0.25, 0.18, 1500);
+            [880, 660, 520].forEach((f, i) => AudioManager.playTone(f, 0.12, 'sine', 0.1, 0.15 + i * 0.08));
+        },
+        sigA_mist_veil() {
+            AudioManager.playNoise(0.7, 0.12, 450);
+            AudioManager.playTone(1800, 0.3, 'sine', 0.05, 0.2);
+        },
+        sigA_serpent_slash() {
+            AudioManager.playTone(420, 0.12, 'sine', 0.14);
+            AudioManager.playTone(900, 0.12, 'sine', 0.14, 0.1);
+            AudioManager.playTone(520, 0.14, 'sine', 0.14, 0.2);
+            AudioManager.playNoise(0.18, 0.14, 3800, 0.05);
+        },
+        sigA_rubber_barrage() {
+            for (let i = 0; i < 8; i++) {
+                AudioManager.playTone(220 + Math.random() * 60, 0.06, 'square', 0.16, i * 0.06);
+            }
+            AudioManager.playTone(350, 0.1, 'sine', 0.1, 0.45);
+        },
+        sigA_stand_barrage() {
+            for (let i = 0; i < 10; i++) {
+                AudioManager.playTone(150, 0.07, 'square', 0.18, i * 0.055);
+                AudioManager.playNoise(0.04, 0.1, 2500, i * 0.055);
+            }
+        },
+        sigA_blade_draw() {
+            AudioManager.playTone(2500, 0.12, 'triangle', 0.16);
+            AudioManager.playTone(3400, 0.1, 'sine', 0.12, 0.02);
+            AudioManager.playNoise(0.15, 0.14, 3000, 0.05);
+        },
+        sigA_blade_storm() {
+            for (let i = 0; i < 6; i++) {
+                AudioManager.playTone(1800 + i * 300, 0.08, 'triangle', 0.12, i * 0.07);
+            }
+            AudioManager.playNoise(0.35, 0.1, 2800, 0.15);
+        },
+        sigA_time_stop() {
+            AudioManager.playTone(2100, 0.04, 'square', 0.16);
+            AudioManager.playTone(2100, 0.04, 'square', 0.16, 0.12);
+            AudioManager.playTone(58, 0.7, 'sine', 0.2, 0.15);
+        },
+        sigA_domain_shrine() {
+            AudioManager.playTone(98, 0.9, 'sine', 0.16);
+            AudioManager.playTone(147, 0.8, 'sine', 0.12, 0.05);
+            AudioManager.playTone(196, 0.7, 'sine', 0.1, 0.1);
+            AudioManager.playTone(65, 0.8, 'sawtooth', 0.1, 0.2);
+            AudioManager.playTone(50, 0.5, 'sine', 0.2, 0.45);
+        },
+        sigA_black_flash() {
+            AudioManager.playTone(190, 0.12, 'square', 0.28);
+            AudioManager.playNoise(0.2, 0.2, 900);
+            AudioManager.playTone(190, 0.1, 'square', 0.2, 0.07);
+            AudioManager.playTone(60, 0.35, 'sine', 0.24, 0.05);
+        },
+        sigA_cero_beam() {
+            [300, 500, 750, 950, 1100].forEach((f, i) => AudioManager.playTone(f, 0.07, 'sawtooth', 0.12, i * 0.06));
+            AudioManager.playTone(140, 0.45, 'sawtooth', 0.16, 0.32);
+            AudioManager.playNoise(0.4, 0.16, 600, 0.32);
+        },
+        sigA_bankai_aura() {
+            AudioManager.playNoise(0.5, 0.16, 500);
+            AudioManager.playTone(2400, 0.12, 'triangle', 0.14, 0.2);
+            AudioManager.playTone(3200, 0.1, 'sine', 0.1, 0.24);
+            AudioManager.playTone(70, 0.7, 'sawtooth', 0.14, 0.15);
+        },
+        sigA_cursed_slash() {
+            AudioManager.playTone(85, 0.4, 'sawtooth', 0.16);
+            AudioManager.playNoise(0.4, 0.14, 300, 0.05);
+            [0.15, 0.25, 0.35].forEach((d) => AudioManager.playNoise(0.06, 0.1, 2800, d));
+            AudioManager.playTone(1100, 0.12, 'sawtooth', 0.1, 0.3);
+        },
+        sigA_chainsaw_rev() {
+            [70, 95, 120, 150].forEach((f, i) => AudioManager.playTone(f, 0.09, 'sawtooth', 0.16, i * 0.08));
+            AudioManager.playNoise(0.4, 0.14, 1100, 0.1);
+            AudioManager.playTone(65, 0.08, 'square', 0.16, 0.4);
+            AudioManager.playTone(65, 0.08, 'square', 0.14, 0.5);
+        },
+        sigA_explosive_fist() {
+            AudioManager.playTone(48, 0.6, 'sine', 0.28);
+            AudioManager.playNoise(0.35, 0.22, 500);
+            [0.15, 0.28, 0.4].forEach((d) => AudioManager.playNoise(0.1, 0.12, 2000, d));
+        },
+        sigA_requiem_beam() {
+            AudioManager.playTone(1568, 0.5, 'sine', 0.16);
+            AudioManager.playTone(2093, 0.4, 'sine', 0.1, 0.06);
+            AudioManager.playNoise(0.2, 0.08, 5000, 0.05);
+        },
+        sigA_guard_iron() {
+            AudioManager.playTone(233, 0.15, 'square', 0.18);
+            AudioManager.playTone(311, 0.12, 'square', 0.14, 0.02);
+            AudioManager.playNoise(0.08, 0.14, 4000);
+        },
+        sigA_poison_moth() {
+            for (let i = 0; i < 6; i++) {
+                AudioManager.playNoise(0.05, 0.1, 6000, i * 0.05);
+            }
+            AudioManager.playTone(660, 0.15, 'sine', 0.1, 0.2);
+            AudioManager.playTone(880, 0.15, 'sine', 0.1, 0.3);
+        },
+        sigA_sound_blast() {
+            [90, 75, 65].forEach((f, i) => AudioManager.playTone(f, 0.12, 'square', 0.2, i * 0.1));
+            AudioManager.playNoise(0.3, 0.14, 3000, 0.3);
+        },
+        sigA_love_whip() {
+            for (let i = 0; i < 3; i++) {
+                AudioManager.playNoise(0.07, 0.2, 5200, i * 0.09);
+            }
+            AudioManager.playNoise(0.2, 0.1, 1200, 0.1);
         },
         ultimate() {
             AudioManager.withCategory('ultimate', () => {
@@ -1811,6 +2375,34 @@ const AudioManager = {
                 return;
             }
             AudioManager.sfx.hit();
+            AudioManager.sfx.impactTail(type);
+        },
+        impactTail(type = '') {
+            const t = String(type || '').toLowerCase();
+            if (/^(hit|weak|crit|down|null|dodge|perfect)$/.test(t)) return;
+            AudioManager.withCategory('impact', () => {
+                if (/fire|inferno|hawk|furnace|amaterasu/.test(t)) {
+                    AudioManager.playNoise(0.18, 0.12, 900);
+                    AudioManager.playTone(220, 0.12, 'sawtooth', 0.1, 0.02);
+                } else if (/elec|thunder|lightning|chidori|raikiri/.test(t)) {
+                    AudioManager.playTone(1800, 0.06, 'square', 0.12);
+                    AudioManager.playNoise(0.1, 0.12, 4200, 0.02);
+                } else if (/water/.test(t)) {
+                    AudioManager.playNoise(0.16, 0.12, 1500, 0.02);
+                } else if (/ice|frost|hyorin/.test(t)) {
+                    AudioManager.playTone(2800, 0.12, 'sine', 0.08, 0.02);
+                } else if (/slash|sword|blade|katana/.test(t)) {
+                    AudioManager.playTone(2400, 0.08, 'triangle', 0.1, 0.02);
+                } else if (/pierce|bullet|needle|blood/.test(t)) {
+                    AudioManager.playTone(300, 0.08, 'square', 0.12, 0.02);
+                } else if (/curse|psy|shadow|void|hex/.test(t)) {
+                    AudioManager.playTone(70, 0.25, 'sine', 0.16, 0.02);
+                } else if (/wind|storm|gale/.test(t)) {
+                    AudioManager.playNoise(0.18, 0.1, 1800, 0.02);
+                } else if (/strike|melee|fist|punch/.test(t)) {
+                    AudioManager.playTone(95, 0.14, 'sine', 0.16, 0.02);
+                }
+            });
         },
         death(meta = {}) {
             if (meta.heavy) return AudioManager.sfx.bossHit();

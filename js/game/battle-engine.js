@@ -36,9 +36,8 @@ const BattleEngine = {
                 || skills.some((skill) => skill.heal || skill.aoeHeal || skill.cover || skill.partyBuff || skill.allyBuff);
         });
         // Support composition is deliberately part of the difficulty curve.
-        // Your team is squishier now — sustain must be earned every fight.
-        const partyHpMul = (partyHasSupport ? 2.1 : 1.9) * (encounter.partyHpScale ?? 1);
-        const healScale = (partyHasSupport ? 1.5 : 1.1) * (encounter.partyHealScale ?? 1);
+        const partyHpMul = (partyHasSupport ? 2.3 : 2.05) * (encounter.partyHpScale ?? 1);
+        const healScale = (partyHasSupport ? 1.6 : 1.2) * (encounter.partyHealScale ?? 1);
         party.forEach(u => {
             u.maxHp = Math.round(u.maxHp * partyHpMul);
             u.hp = u.maxHp;
@@ -74,34 +73,40 @@ const BattleEngine = {
                 u.ai = 'dummy';
                 return;
             }
-            // BRUTAL but fair: enemies hit like trucks, scale hard per
-            // difficulty and soak a lot — raw attacks bounce off, so buffs,
-            // debuffs, weaknesses, guards and team comp are mandatory.
+            // Firm but fair curve: early fights sting (stronger than the old
+            // easy mode), mid game demands setup, bosses demand everything.
+            // Raw unbuffed attacks fall off — buffs, debuffs, weaknesses,
+            // guards and team comp decide fights, without bricking progress.
             const standardTuning = encounter.isBoss
-                ? { hp: 4.2, hpStep: 0.5, scale: 1.25, atk: 1.45, def: 1.35, skill: 1.35, heal: 1.25 }
-                : { hp: 4.3, hpStep: 0.52, scale: 1.28, atk: 1.5, def: 1.38, skill: 1.38, heal: 1.28 };
+                ? { hp: 3.3, hpStep: 0.42, scale: 1.15, atk: 1.14, def: 1.10, skill: 1.12, heal: 1.15 }
+                : { hp: 3.2, hpStep: 0.42, scale: 1.15, atk: 1.12, def: 1.08, skill: 1.10, heal: 1.16 };
             const globalHard = encounter.enemyGlobalScale ?? standardTuning.scale;
             const hpM = (standardTuning.hp + (diff - 1) * standardTuning.hpStep) * globalHard * (encounter.enemyHpScale ?? 1);
-            const atkM = (1.5 + (diff - 1) * 0.15)
-                * (partyHasSupport ? 1 : 1.2)
+            const atkM = (1.05 + (diff - 1) * 0.10)
+                * (partyHasSupport ? 1 : 1.12)
                 * (encounter.enemyGlobalAtkScale ?? standardTuning.atk)
                 * (encounter.enemyAtkScale ?? 1);
-            const defM = (1.4 + (diff - 1) * 0.12)
+            const defM = (1.15 + (diff - 1) * 0.09)
                 * (encounter.enemyGlobalDefScale ?? standardTuning.def)
                 * (encounter.enemyDefScale ?? 1);
-            u.maxHp = Math.round(u.maxHp * hpM);
+            // Lone-wolf bonus: a single enemy facing a full party fights
+            // above its weight (keeps duels like story_aizen tense).
+            const realFoes = encounter.enemies.filter((e) => e.ai !== 'dummy').length;
+            const loneMul = realFoes === 1 && party.length >= 3 ? 1.22 : 1;
+            const loneHp = realFoes === 1 && party.length >= 3 ? 1.18 : 1;
+            u.maxHp = Math.round(u.maxHp * hpM * loneHp);
             u.hp = u.maxHp;
-            u.atk = Math.round(u.atk * atkM);
+            u.atk = Math.round(u.atk * atkM * loneMul);
             u.def = Math.round(u.def * defM);
             u.maxSp = Math.max(u.maxSp || 0, 140);
             u.sp = u.maxSp;
             u.ai = u.ai || (u.transform ? 'bosslet' : 'tactical');
             const scaleSkill = (sk) => {
                 if (sk.heal) sk.heal = Math.round(
-                    sk.heal * (1.8 + diff * 0.16) * (encounter.enemyGlobalHealScale ?? standardTuning.heal) * (encounter.enemyHealScale ?? 1)
+                    sk.heal * (1.5 + diff * 0.12) * (encounter.enemyGlobalHealScale ?? standardTuning.heal) * (encounter.enemyHealScale ?? 1)
                 );
                 if (sk.power) sk.power = Math.round(
-                    sk.power * (1.15 + (diff - 1) * 0.10) * (encounter.enemyGlobalSkillScale ?? standardTuning.skill) * (encounter.enemySkillScale ?? 1)
+                    sk.power * (1.0 + (diff - 1) * 0.06) * (encounter.enemyGlobalSkillScale ?? standardTuning.skill) * (encounter.enemySkillScale ?? 1)
                 );
             };
             (u.skills || []).forEach(scaleSkill);
@@ -608,8 +613,8 @@ const BattleEngine = {
     affinityMult(target, type) {
         if ((target.null || []).includes(type)) return { mult: 0, tag: 'NULL' };
         if ((target.weak || []).includes(type)) return { mult: 1.75, tag: 'WEAK' };
-        // Resisted hits tickle — spamming the wrong type is throwing turns away.
-        if ((target.resist || []).includes(type)) return { mult: 0.3, tag: 'RESIST' };
+        // Resisted hits are weak — spamming the wrong type wastes turns.
+        if ((target.resist || []).includes(type)) return { mult: 0.35, tag: 'RESIST' };
         return { mult: 1, tag: 'HIT' };
     },
 
@@ -645,10 +650,11 @@ const BattleEngine = {
             attacker.charged = false;
         }
         base *= aff.mult;
-        // Neutral hits fall off hard with difficulty — hunt weaknesses or buff up.
+        // Neutral hits fall off with difficulty — hunt weaknesses or buff up.
+        // (No penalty at diff 1: the onboarding stays welcoming.)
         if (aff.tag === 'HIT') {
             const diff = state?.difficulty || 1;
-            base *= diff >= 4 ? 0.78 : diff >= 2 ? 0.88 : 0.94;
+            base *= diff >= 4 ? 0.82 : diff >= 2 ? 0.9 : 1;
         }
         if (state?.difficulty >= 4 && aff.tag === 'WEAK' && state.weaknessChain > 0) {
             base *= 1 + Math.min(0.18, state.weaknessChain * 0.06);
@@ -737,15 +743,15 @@ const BattleEngine = {
     cappedDamage(state, attacker, target, damage, crit = false) {
         if (state.encounter?.training) return damage;
         if (attacker.side === 'enemy' && target.side === 'ally') {
-            // Two clean hits can kill — guard, debuff their ATK or erase them first.
-            const supportGap = state.partyHasSupport ? 0 : 0.12;
-            const ratio = (crit ? 0.62 : 0.52) + supportGap;
+            // Hits chunk — guard, debuff their ATK or erase them first.
+            const supportGap = state.partyHasSupport ? 0 : 0.08;
+            const ratio = (crit ? 0.44 : 0.36) + supportGap;
             return Math.min(damage, Math.max(1, Math.floor(target.maxHp * ratio)));
         }
         if (attacker.side === 'ally' && target.side === 'enemy') {
-            // Bosses are damage sponges: setup (buffs + weakness + DOWN) or nothing.
+            // Bosses are spongy: setup (buffs + weakness + DOWN) beats raw spam.
             const boss = /boss|final/i.test(target.ai || '');
-            return Math.min(damage, Math.max(1, Math.floor(target.maxHp * (boss ? 0.22 : 0.38))));
+            return Math.min(damage, Math.max(1, Math.floor(target.maxHp * (boss ? 0.28 : 0.45))));
         }
         return damage;
     },
