@@ -148,6 +148,19 @@ const JJKData = {
                 { id: 'bonus_round', name: 'Bonus Round', cry: 'Another roll!', cost: 40, power: 0, type: 'support', partyBuff: { atk: 1.3, luk: 1.4 }, turns: 3, restoreSp: 60, desc: 'Buff equipo + 60 CP (Jackpot = energía infinita).' }
             ],
             gachaLegendary: true
+        },
+        {
+            id: 'inumaki', name: 'Toge Inumaki', series: 'Jujutsu Kaisen', role: 'Controller', roleTag: 'Cursed Speech',
+            img: 'assets/sprites/anim/inumaki_idle.png', color: '#5d6d7e', accent: '#aed6f1',
+            resist: ['curse'], weak: ['bless'],
+            maxHp: 320, maxSp: 150, atk: 58, def: 28, agi: 34, luk: 24,
+            skills: [
+                { id: 'sleep_cmd', name: 'Sleep', cry: 'Sleep.', cost: 32, power: 0, type: 'support', stun: true, targetEnemy: true, desc: 'Duérmete · stun.' },
+                { id: 'blast_away', name: 'Blast Away', cry: 'Blast away!', cost: 38, power: 150, type: 'strike', aoe: true, hpCost: 25, desc: 'Onda expansiva AoE · le quema la garganta.' },
+                { id: 'stop_cmd', name: 'Stop', cry: 'Stop.', cost: 28, power: 0, type: 'support', debuff: { agi: 0.55 }, debuffTurns: 3, targetEnemy: true, desc: 'Párate · AGI ↓↓.' },
+                { id: 'salmon_heal', name: 'Salmon', cry: 'Salmon!', cost: 30, power: 0, type: 'support', heal: 80, desc: 'Onigiri curativo.' }
+            ],
+            gachaLegendary: true
         }
     ],
 

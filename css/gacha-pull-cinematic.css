@@ -1557,6 +1557,27 @@
 }
 .pull-character-cutin.is-loading .pull-character-cutin-video { opacity: 0; }
 .pull-character-cutin.is-ready .pull-character-cutin-video { opacity: 1; }
+/* Staged-art fallback when a unit has no cut-in video yet (Raikage…):
+   same frame, slow Ken Burns push over the portrait. */
+.pull-character-cutin-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    z-index: 1;
+    background: #05060c;
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(.22, 1, .36, 1);
+    animation: cutinKenBurns 3.4s ease-out both;
+}
+.pull-character-cutin.is-loading .pull-character-cutin-art { opacity: 0; }
+.pull-character-cutin.is-ready .pull-character-cutin-art { opacity: 1; }
+@keyframes cutinKenBurns {
+    from { transform: scale(1.03); }
+    to { transform: scale(1.15); }
+}
 .pull-character-cutin-frame::after {
     inset: 18px;
     border-color: rgba(255, 233, 160, 0.38);

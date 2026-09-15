@@ -715,11 +715,46 @@ const GachaScene = {
             };
             const loadCandidate = () => {
                 if (!video || candidateIndex >= candidates.length) {
-                    finish(false);
+                    // Sin vídeo (Raikage, Starrk hasta que llegue el suyo…):
+                    // momento cinemático con el retrato en vez de rendirse.
+                    startStagedFallback();
                     return;
                 }
                 video.src = candidates[candidateIndex++];
                 video.load();
+            };
+            const startStagedFallback = () => {
+                if (settled) return;
+                let art = null;
+                try {
+                    art = typeof this.charPortraitSrc === 'function' ? this.charPortraitSrc(r.charId) : null;
+                } catch (_) { art = null; }
+                if (!art) {
+                    finish(false);
+                    return;
+                }
+                if (!/\?/.test(art)) art += `?v=${this.CACHE}`;
+                const img = document.createElement('img');
+                img.className = 'pull-character-cutin-art';
+                img.alt = this.displayName(r.charId);
+                img.decoding = 'async';
+                img.onerror = () => {
+                    img.remove();
+                    finish(false);
+                };
+                img.onload = () => {
+                    if (settled || !cutin.isConnected) {
+                        finish(false);
+                        return;
+                    }
+                    video?.remove();
+                    cutin.querySelector('.pull-character-cutin-frame')?.prepend(img);
+                    cutin.classList.remove('is-loading');
+                    cutin.classList.add('is-ready', 'is-staged');
+                    window.dispatchEvent(new Event('pull-cutin-ready'));
+                    timer = setTimeout(() => finish(true), 3200);
+                };
+                img.src = art;
             };
             const start = () => {
                 if (settled) return;
@@ -1796,6 +1831,11 @@ const GachaScene = {
             ${this.poolGridHTML(three.concat(threeNames), 3, 'Objetos equipables')}
             ${id === 'jjk' ? '<p class="gw-details-foot"><strong>Gojo 6★</strong> · Vacío Infinito. Ya no desbloquea nada: THE 50/50 exige la colección completa al máximo.</p>' : ''}
             ${id === 'persona5royal' && !open('ren') ? '<p class="gw-details-foot"><strong>Ren Amamiya</strong> solo sale en este banner tras vencer a THE 50/50. No cuenta para desbloquearlo.</p>' : ''}
+            ${(() => {
+                if (id !== 'bleach' || typeof GachaRoster === 'undefined' || !GachaRoster.sealNote) return '';
+                const note = GachaRoster.sealNote('ulquiorra');
+                return note ? `<p class="gw-details-foot">🔒 ${note}</p>` : '';
+            })()}
             <p class="gw-details-foot">Duplicados: 4★ C0–C6 · 5★/6★ C0–C3 · sellos → <strong>DUPES</strong>. Garantía 6★: <strong id="details-pity">0</strong> / ${b.hard6 || 80}</p>`;
     },
 

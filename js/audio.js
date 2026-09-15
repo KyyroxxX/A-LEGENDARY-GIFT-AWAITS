@@ -1620,6 +1620,9 @@ const AudioManager = {
             if (/time_accel/.test(id)) { S.sigAccel(); return true; }
             if (/bites_dust/.test(id)) { S.sigRewind(); return true; }
             if (/erase|fate_crush|time_erase/.test(id)) { S.sigErase(); return true; }
+            if (/meteor/.test(id)) { S.sigMeteor(); return true; }
+            if (/mero_mero/.test(id)) { S.sigPetrify(); return true; }
+            if (/boro|ragnaraku/.test(id)) { S.sigDragon(); return true; }
             if (/tsukuyomi/.test(id)) { S.sigNightmare(); return true; }
             if (/pain_strike|pain_x/.test(id)) { S.sigAlmighty(); return true; }
             if (/senbon|hakuteiken/.test(id)) { S.sigPetals(); return true; }
@@ -1760,6 +1763,24 @@ const AudioManager = {
             [400, 300, 500, 250].forEach((f, i) => AudioManager.playTone(f, 0.05, 'square', 0.16, i * 0.08));
             AudioManager.playNoise(0.3, 0.14, 800, 0.32);
             AudioManager.playTone(70, 0.4, 'sine', 0.2, 0.34);
+        },
+        sigMeteor() {
+            [1800, 1400, 1000, 650, 350].forEach((f, i) => AudioManager.playTone(f, 0.09, 'sine', 0.13, i * 0.07));
+            AudioManager.playTone(48, 0.65, 'sine', 0.3, 0.36);
+            AudioManager.playNoise(0.45, 0.2, 420, 0.36);
+            AudioManager.playNoise(0.25, 0.12, 2000, 0.45);
+        },
+        sigPetrify() {
+            [2400, 2800, 3200].forEach((f, i) => AudioManager.playTone(f, 0.1, 'sine', 0.1, i * 0.06));
+            AudioManager.playNoise(0.3, 0.12, 500, 0.15);
+            AudioManager.playTone(140, 0.25, 'square', 0.14, 0.25);
+            AudioManager.playTone(90, 0.3, 'sine', 0.16, 0.3);
+        },
+        sigDragon() {
+            AudioManager.playTone(58, 0.6, 'sawtooth', 0.22);
+            AudioManager.playTone(44, 0.6, 'sawtooth', 0.18, 0.05);
+            AudioManager.playNoise(0.55, 0.18, 700, 0.1);
+            AudioManager.playTone(130, 0.35, 'sawtooth', 0.14, 0.3);
         },
         sigNightmare() {
             [0, 0.25, 0.5].forEach((d) => AudioManager.playTone(55, 0.12, 'sine', 0.26, d));

@@ -300,13 +300,216 @@ const BattleData = {
                 { id: 'amaterasu', name: 'Amaterasu', cry: '¡Amaterasu!', cost: 45, power: 115, type: 'curse', desc: 'Presión genjutsu (sin spoilers).' },
                 { id: 'katon_i', name: 'Katon: Gran Bola de Fuego', cry: '¡Katon!', cost: 33, power: 100, type: 'fire', aoe: true, desc: 'Bola de fuego AoE.' },
                 { id: 'tsukuyomi', name: 'Genjutsu Sharingan', cry: '¡Genjutsu!', cost: 48, power: 0, type: 'support', once: true, debuff: { atk: 0.55, agi: 0.55 }, debuffTurns: 3, targetEnemy: true, desc: 'Genjutsu · ATK/AGI ↓↓ · 1 uso/combate' },
-                { id: 'sharingan_i', name: 'Sharingan', cry: '¡SHARINGAN!', cost: 55, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.45, transformAgi: 1.3, desc: 'TRANSFORM · Sharingan · permanece hasta quedarse sin CP.' }
+                { id: 'sharingan_i', name: 'Sharingan', cry: '¡SHARINGAN!', cost: 55, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformStages: 2, transformStageNames: ['Sharingan', 'Susanoo'], transformStageAtk: [1.45, 1.8], transformStageAgi: [1.3, 1.5], transformStageDef: [1, 1.35], transformStageUpkeep: [12, 18], transformUpkeep: 12, transformAtk: 1.45, transformAgi: 1.3, desc: 'TRANSFORM · Sharingan · luego Susanoo (2ª etapa).' }
             ],
             transformedSkills: [
                 { id: 'amaterasu_x', name: 'Amaterasu · Focus', cry: '¡Amaterasu!', cost: 40, power: 145, type: 'curse', desc: 'Llamas negras concentradas.' },
                 { id: 'katon_x', name: 'Katon · Barrage', cry: '¡Katon!', cost: 36, power: 125, type: 'fire', aoe: true, desc: 'Fuego AoE potenciado.' },
                 { id: 'genjutsu_x', name: 'Genjutsu · Deep', cry: '…', cost: 42, power: 0, type: 'support', debuff: { atk: 0.5, agi: 0.5 }, debuffTurns: 3, targetEnemy: true, desc: 'Genjutsu profundo · ATK/AGI ↓↓.' },
-                { id: 'feint_x', name: 'Crow Feint', cry: '…', cost: 30, power: 0, type: 'support', partyBuff: { luk: 1.45, agi: 1.2 }, turns: 2, desc: 'Cuervos · LUK/AGI equipo ↑.' }
+                { id: 'feint_x', name: 'Crow Feint', cry: '…', cost: 30, power: 0, type: 'support', partyBuff: { luk: 1.45, agi: 1.2 }, turns: 2, desc: 'Cuervos · LUK/AGI equipo ↑.' },
+                { id: 'susanoo_rise', name: 'Susanoo', cry: '¡SUSANOO!', cost: 42, power: 0, type: 'support', once: true, advanceTransform: true, transformAtk: 1.8, transformAgi: 1.5, transformDef: 1.35, transformUpkeep: 18, transformStageName: 'Susanoo', transformHeal: 30, minTransformStage: 1, maxTransformStage: 1, desc: 'Susanoo · 2ª etapa · ATK/DEF/AGI ↑↑ · upkeep alto.' },
+                { id: 'totsuka', name: 'Totsuka Blade', cry: '¡Totsuka!', cost: 44, power: 175, type: 'pierce', downBonus: 0.15, minTransformStage: 2, desc: 'Espada selladora · DOWN fácil.' },
+                { id: 'yasaka', name: 'Yasaka Magatama', cry: '¡Yasaka!', cost: 46, power: 145, type: 'curse', hits: 3, aoe: true, minTransformStage: 2, desc: 'Magatamas AoE ×3.' },
+                { id: 'yata_mirror', name: 'Yata Mirror', cry: '¡Yata!', cost: 34, power: 0, type: 'support', buff: { def: 2.0 }, turns: 3, cover: true, coverHits: 3, minTransformStage: 2, desc: 'Espejo Yata · DEF ↑↑ + cover 3 hits.' }
+            ]
+        },
+        {
+            id: 'kaido', name: 'Kaido', series: 'One Piece', role: 'Tank', roleTag: 'King of Beasts',
+            img: 'assets/sprites/anim/kaido_idle.png', color: '#1f3a93', accent: '#e67e22',
+            transform: true, transformName: 'Dragon Form', resist: ['strike', 'fire'], weak: ['slash'],
+            maxHp: 560, maxSp: 150, atk: 72, def: 38, agi: 26, luk: 18,
+            skills: [
+                { id: 'kanabo_swing', name: 'Kanabo Swing', cry: 'Die!', cost: 30, power: 130, type: 'strike', desc: 'Garrotazo imperial.' },
+                { id: 'boro_breath', name: 'Boro Breath', cry: 'BORO BREATH!', cost: 42, power: 150, type: 'fire', aoe: true, desc: 'Aliento de fuego AoE.' },
+                { id: 'drunk_sway', name: 'Drunken Sway', cry: 'More sake!', cost: 30, power: 0, type: 'support', buff: { def: 1.4, atk: 1.2 }, turns: 3, desc: 'Borrachera · DEF/ATK ↑.' },
+                { id: 'dragon_awaken', name: 'Dragon Form', cry: 'WORORO!', cost: 68, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 14, transformAtk: 1.6, transformDef: 1.3, desc: 'TRANSFORM · dragón azul · forma total.' }
+            ],
+            transformedSkills: [
+                { id: 'boro_max', name: 'Boro Breath Max', cry: 'BURN!', cost: 52, power: 185, type: 'fire', aoe: true, desc: 'Infierno draconiano AoE.' },
+                { id: 'ragnaraku', name: 'Ragnaraku', cry: 'RAGUNAROKU!', cost: 58, power: 200, type: 'strike', desc: 'Garrote del fin del mundo.' },
+                { id: 'thunder_bagua', name: 'Thunder Bagua', cry: 'Too slow.', cost: 46, power: 175, type: 'strike', critBonus: 0.2, desc: 'Bagua atronador.' },
+                { id: 'dragon_guard', name: 'Dragon Scales', cry: '...', cost: 34, power: 0, type: 'support', buff: { def: 1.6 }, turns: 3, desc: 'Escamas · DEF ↑↑.' }
+            ]
+        },
+        {
+            id: 'ace', name: 'Portgas D. Ace', series: 'One Piece', role: 'Caster', roleTag: 'Fire Fist',
+            img: 'assets/sprites/anim/ace_idle.png', color: '#e67e22', accent: '#f1c40f',
+            resist: ['fire'], weak: ['water'],
+            maxHp: 420, maxSp: 165, atk: 68, def: 26, agi: 36, luk: 22,
+            skills: [
+                { id: 'hiken', name: 'Fire Fist', cry: 'HIKEN!', cost: 34, power: 155, type: 'fire', desc: 'Puño de fuego.' },
+                { id: 'higan', name: 'Firefly Higan', cry: 'Hotaru!', cost: 30, power: 130, type: 'fire', hits: 2, desc: 'Luciérnagas ×2.' },
+                { id: 'heat_haze', name: 'Heat Haze', cry: 'Feel the heat.', cost: 28, power: 0, type: 'support', buff: { agi: 1.4, atk: 1.2 }, turns: 3, desc: 'Espejismo · AGI/ATK ↑.' },
+                { id: 'entei', name: 'Great Flame Commandment: Entei', cry: 'ENTEI!', cost: 66, power: 210, type: 'fire', aoe: true, desc: 'Sol de llamas AoE.' }
+            ]
+        },
+        {
+            id: 'kidd', name: 'Eustass Kidd', series: 'One Piece', role: 'DPS', roleTag: 'Magnetism',
+            img: 'assets/sprites/anim/kidd_idle.png', color: '#7d3c98', accent: '#f4d03f',
+            resist: ['slash'], weak: ['elec'],
+            maxHp: 460, maxSp: 145, atk: 74, def: 34, agi: 30, luk: 20,
+            skills: [
+                { id: 'scrap_punch', name: 'Scrap Punch', cry: 'Scrap!', cost: 30, power: 140, type: 'strike', desc: 'Puño de chatarra.' },
+                { id: 'repel', name: 'Repel', cry: 'Repel!', cost: 32, power: 0, type: 'support', reflectDamage: true, reflectMul: 1.2, turns: 3, desc: 'Polaridad · devuelve daño.' },
+                { id: 'punk_gibson', name: 'Punk Gibson', cry: 'PUNK GIBSON!', cost: 52, power: 185, type: 'pierce', desc: 'Cañón de riel.' },
+                { id: 'assign', name: 'Assign', cry: 'Mine.', cost: 28, power: 0, type: 'support', debuff: { def: 0.7 }, debuffTurns: 3, targetEnemy: true, desc: 'Magnetiza · DEF ↓.' },
+                { id: 'damned_punk', name: 'Damned Punk', cry: 'DAMNED PUNK!', cost: 64, power: 215, type: 'pierce', desc: 'Cañón maldito · finisher.' }
+            ]
+        },
+        {
+            id: 'kizaru', name: 'Borsalino Kizaru', series: 'One Piece', role: 'Caster', roleTag: 'Light Admiral',
+            img: 'assets/sprites/anim/kizaru_idle.png', color: '#f7dc6f', accent: '#f39c12',
+            resist: ['bless', 'slash'], weak: ['curse', 'dark'],
+            maxHp: 400, maxSp: 170, atk: 70, def: 28, agi: 44, luk: 24,
+            skills: [
+                { id: 'light_sword', name: 'Ama no Murakumo', cry: 'Speed is weight.', cost: 30, power: 150, type: 'slash', desc: 'Espada de luz.' },
+                { id: 'yasakani', name: 'Yasakani no Magatama', cry: 'KICK... I mean, jewels!', cost: 40, power: 140, type: 'bless', hits: 3, desc: 'Joyas de luz ×3.' },
+                { id: 'light_dash', name: 'Light Speed Dash', cry: 'So slow.', cost: 28, power: 0, type: 'support', buff: { agi: 1.6 }, turns: 3, desc: 'Velocidad luz · AGI ↑↑.' },
+                { id: 'light_kick', name: 'Light-Speed Kick', cry: 'Have you ever been kicked at light speed?', cost: 62, power: 205, type: 'bless', desc: 'Patada lumínica · finisher.' }
+            ]
+        },
+        {
+            id: 'hancock', name: 'Boa Hancock', series: 'One Piece', role: 'Controller', roleTag: 'Snake Empress',
+            img: 'assets/sprites/anim/hancock_idle.png', color: '#e84393', accent: '#f9e79f',
+            resist: ['psy'], weak: ['strike'],
+            maxHp: 380, maxSp: 160, atk: 64, def: 30, agi: 40, luk: 26,
+            skills: [
+                { id: 'mero_mero', name: 'Mero Mero Merrow', cry: 'Love me!', cost: 34, power: 0, type: 'support', debuff: { atk: 0.6, agi: 0.6 }, debuffTurns: 3, targetEnemy: true, desc: 'Petrifica de amor · ATK/AGI ↓↓.' },
+                { id: 'slave_arrow', name: 'Slave Arrow', cry: 'Slaves!', cost: 30, power: 145, type: 'pierce', hits: 2, desc: 'Flechas de piedra ×2.' },
+                { id: 'perfume_femur', name: 'Perfume Femur', cry: 'Beauty is power!', cost: 36, power: 155, type: 'strike', desc: 'Patada de emperatriz.' },
+                { id: 'empress_haki', name: "Conqueror's Gaze", cry: 'Kneel.', cost: 40, power: 0, type: 'support', partyBuff: { atk: 1.35, luk: 1.25 }, turns: 3, desc: 'Haki del rey · equipo ↑.' }
+            ]
+        },
+        {
+            id: 'killer', name: 'Killer', series: 'One Piece', role: 'DPS', roleTag: 'Massacre Soldier',
+            img: 'assets/sprites/anim/killer_idle.png', color: '#8395a7', accent: '#c0392b',
+            resist: ['slash'], weak: ['fire'],
+            maxHp: 340, maxSp: 135, atk: 66, def: 30, agi: 42, luk: 28,
+            skills: [
+                { id: 'sonic_scythe', name: 'Sonic Scythe', cry: 'Zoro...!', cost: 30, power: 150, type: 'slash', hits: 2, desc: 'Guadañas sónicas ×2.' },
+                { id: 'beheading_claws', name: 'Beheading Claws', cry: 'Off with it!', cost: 28, power: 135, type: 'slash', critBonus: 0.3, desc: 'Garras · crítico alto.' },
+                { id: 'kamazou_dash', name: 'Kamazou Dash', cry: 'Too fast!', cost: 26, power: 0, type: 'support', buff: { agi: 1.5 }, turns: 3, desc: 'Asesino · AGI ↑↑.' },
+                { id: 'punisher', name: 'Punisher', cry: 'PUNISHER!', cost: 58, power: 190, type: 'slash', desc: 'Castigo giratorio · finisher.' }
+            ]
+        },
+        {
+            id: 'madara', name: 'Madara Uchiha', series: 'Naruto', role: 'Caster', roleTag: 'Ghost of the Uchiha',
+            img: 'assets/sprites/anim/madara_idle.png', color: '#6c3483', accent: '#e74c3c',
+            resist: ['curse', 'fire'], weak: ['bless', 'wind'],
+            maxHp: 480, maxSp: 170, atk: 76, def: 32, agi: 34, luk: 22,
+            skills: [
+                { id: 'gunbai_fan', name: 'Gunbai Reflection', cry: 'Dance!', cost: 30, power: 150, type: 'strike', desc: 'Abanico de guerra.' },
+                { id: 'limbo_dodge', name: 'Limbo Clone', cry: 'Limbo!', cost: 32, power: 0, type: 'support', buff: { agi: 1.6, luk: 1.4 }, turns: 3, desc: 'Clon del limbo · esquiva ↑.' },
+                { id: 'rinnegan_absorb', name: 'Preta Path', cry: 'Mine.', cost: 34, power: 120, type: 'curse', heal: 60, drainSp: 30, desc: 'Absorbe chakra · cura + roba CP.' },
+                { id: 'meteor', name: 'Tengai Shinsei', cry: 'Two meteors!', cost: 64, power: 200, type: 'almighty', aoe: true, desc: 'Meteorito · finisher AoE.' }
+            ]
+        },
+        {
+            id: 'bee', name: 'Killer Bee', series: 'Naruto', role: 'DPS', roleTag: 'Perfect Jinchuriki',
+            img: 'assets/sprites/anim/bee_idle.png', color: '#f39c12', accent: '#212f3d',
+            resist: ['strike'], weak: ['elec'],
+            maxHp: 470, maxSp: 145, atk: 75, def: 32, agi: 36, luk: 30,
+            skills: [
+                { id: 'lariat_b', name: 'Lariat', cry: 'Yeah, fool!', cost: 32, power: 165, type: 'strike', desc: 'Lariat del Hachibi.' },
+                { id: 'rap_flow', name: 'Rap Flow', cry: 'Yo! Check it!', cost: 28, power: 0, type: 'support', partyBuff: { atk: 1.3, luk: 1.35 }, turns: 3, desc: 'Rapeo · ATK/LUK equipo ↑.' },
+                { id: 'ink_clone', name: 'Ink Clone Barrage', cry: 'Ink!', cost: 30, power: 130, type: 'strike', hits: 3, desc: 'Clones de tinta ×3.' },
+                { id: 'tailed_bomb', name: 'Tailed Beast Bomb', cry: 'BIJUU DAMA!', cost: 62, power: 200, type: 'curse', desc: 'Bomba Bijuu · finisher.' }
+            ]
+        },
+        {
+            id: 'raikage', name: 'A · Raikage', series: 'Naruto', role: 'Tank', roleTag: 'Lightning Armor',
+            img: 'assets/sprites/anim/raikage_idle.png', color: '#f4d03f', accent: '#212f3d',
+            resist: ['elec', 'strike'], weak: ['wind'],
+            maxHp: 430, maxSp: 130, atk: 68, def: 44, agi: 34, luk: 20,
+            skills: [
+                { id: 'lightning_armor', name: 'Lightning Armor', cry: 'RAITON ARMOR!', cost: 30, power: 0, type: 'support', buff: { def: 1.5, agi: 1.3 }, turns: 3, desc: 'Armadura rayo · DEF/AGI ↑.' },
+                { id: 'lariat_r', name: 'Lariat', cry: 'Crushed!', cost: 30, power: 160, type: 'strike', desc: 'Lariat del Raikage.' },
+                { id: 'hell_stab', name: 'Hell Stab', cry: 'One finger!', cost: 38, power: 175, type: 'pierce', critBonus: 0.3, desc: 'Dedo infernal · crítico.' },
+                { id: 'chop_r', name: 'Chop', cry: 'Hah!', cost: 26, power: 140, type: 'strike', desc: 'Hachazo eléctrico.' }
+            ]
+        },
+        {
+            id: 'yamamoto', name: 'Genryusai Yamamoto', series: 'Bleach', role: 'Caster', roleTag: 'Captain-Commander',
+            img: 'assets/sprites/anim/yamamoto_idle.png', color: '#c0392b', accent: '#f39c12',
+            resist: ['fire'], weak: ['water', 'ice'],
+            maxHp: 500, maxSp: 170, atk: 78, def: 34, agi: 28, luk: 20,
+            skills: [
+                { id: 'north_jokaku', name: 'North: Jokaku', cry: 'Zanka no Tachi, North!', cost: 58, power: 205, type: 'fire', desc: 'Llama concentrada del norte.' },
+                { id: 'east_rising', name: 'East: Rising Sun Edge', cry: 'East!', cost: 34, power: 0, type: 'support', buff: { atk: 1.7 }, turns: 3, desc: 'Filo del sol naciente · ATK ↑↑.' },
+                { id: 'west_flames', name: 'West: Zanjitsu Gokui', cry: 'West!', cost: 36, power: 0, type: 'support', buff: { def: 1.5 }, turns: 3, reflectDamage: true, reflectMul: 1.2, desc: 'Manto de llamas · DEF ↑ + refleja.' },
+                { id: 'south_ashes', name: 'South: Great Burial Ranks', cry: 'South!', cost: 48, power: 170, type: 'fire', aoe: true, desc: 'Ejército de cenizas AoE.' }
+            ]
+        },
+        {
+            id: 'unohana', name: 'Retsu Unohana', series: 'Bleach', role: 'Healer', roleTag: 'First Kenpachi',
+            img: 'assets/sprites/anim/unohana_idle.png', color: '#7fb3d5', accent: '#c0392b',
+            resist: ['bless', 'slash'], weak: ['curse'],
+            maxHp: 460, maxSp: 175, atk: 60, def: 36, agi: 30, luk: 26,
+            skills: [
+                { id: 'minazuki_heal', name: 'Minazuki', cry: 'Rest now.', cost: 36, power: 0, type: 'support', heal: 200, desc: 'Mantaraya · gran cura.' },
+                { id: 'blood_arts', name: 'Blood Arts', cry: '...', cost: 32, power: 165, type: 'slash', desc: 'Corte de la primera Kenpachi.' },
+                { id: 'pacifist', name: 'Pacifist Oath', cry: 'No more blood.', cost: 30, power: 0, type: 'support', heal: 60, aoeHeal: true, cleanse: true, desc: 'Voto · cura equipo + limpia.' },
+                { id: 'bloodlust', name: 'Bloodlust Unleashed', cry: 'DIE.', cost: 40, power: 0, type: 'support', once: true, buff: { atk: 1.8 }, turns: 4, hpCost: 40, desc: 'Sed de sangre · ATK ↑↑↑ a cambio de HP.' }
+            ]
+        },
+        {
+            id: 'senjumaru', name: 'Senjumaru Shutara', series: 'Bleach', role: 'Controller', roleTag: 'Great Weaver',
+            img: 'assets/sprites/anim/senjumaru_idle.png', color: '#f1c40f', accent: '#212f3d',
+            resist: ['psy', 'slash'], weak: ['fire'],
+            maxHp: 390, maxSp: 165, atk: 66, def: 32, agi: 38, luk: 24,
+            skills: [
+                { id: 'weave_bind', name: 'Weave Bind', cry: 'Threaded.', cost: 30, power: 0, type: 'support', debuff: { agi: 0.55, def: 0.75 }, debuffTurns: 3, targetEnemy: true, desc: 'Tejido · AGI/DEF ↓↓.' },
+                { id: 'thousand_arms', name: 'Thousand Hands', cry: 'Sew!', cost: 38, power: 160, type: 'pierce', hits: 4, desc: 'Brazos dorados ×4.' },
+                { id: 'tapestry', name: 'Fate Tapestry', cry: 'Woven fate.', cost: 32, power: 0, type: 'support', partyBuff: { atk: 1.3, luk: 1.3 }, turns: 3, desc: 'Tapiz · ATK/LUK equipo ↑.' },
+                { id: 'needle_seal', name: 'Needle Seal', cry: 'Sealed.', cost: 52, power: 190, type: 'pierce', desc: 'Aguja final · sella el destino.' }
+            ]
+        },
+        {
+            id: 'oetsu', name: 'Oetsu Nimaiya', series: 'Bleach', role: 'DPS', roleTag: 'God of the Sword',
+            img: 'assets/sprites/anim/oetsu_idle.png', color: '#aab7b1', accent: '#f39c12',
+            resist: ['slash'], weak: ['curse'],
+            maxHp: 440, maxSp: 140, atk: 76, def: 30, agi: 40, luk: 24,
+            skills: [
+                { id: 'sayabusa', name: 'Sayabusa Slash', cry: 'Failed blade!', cost: 30, power: 170, type: 'slash', desc: 'Hoja fallida · corte perfecto.' },
+                { id: 'razor_edge', name: 'Razor Edge', cry: 'Sharp.', cost: 26, power: 0, type: 'support', buff: { atk: 1.45, critBonus: 0.2 }, turns: 3, desc: 'Filo · ATK/crítico ↑.' },
+                { id: 'forge_strike', name: 'Forge Strike', cry: 'Forged!', cost: 34, power: 160, type: 'strike', desc: 'Golpe de forja.' },
+                { id: 'ookami', name: 'Ookami', cry: 'OOKAMI!', cost: 58, power: 205, type: 'slash', desc: 'Lobo divino · finisher.' }
+            ]
+        },
+        {
+            id: 'mayuri', name: 'Mayuri Kurotsuchi', series: 'Bleach', role: 'Debuffer', roleTag: 'Mad Scientist',
+            img: 'assets/sprites/anim/mayuri_idle.png', color: '#8e44ad', accent: '#2ecc71',
+            resist: ['curse', 'poison'], weak: ['bless', 'fire'],
+            maxHp: 330, maxSp: 160, atk: 58, def: 30, agi: 34, luk: 30,
+            skills: [
+                { id: 'poison_bankai', name: 'Konjiki Ashisogi Jizo', cry: 'Scream!', cost: 36, power: 140, type: 'curse', dot: 25, dotTurns: 3, desc: 'Bebé Bankai · veneno DoT.' },
+                { id: 'fear_factor', name: 'Fear Factor', cry: 'Afraid?', cost: 30, power: 0, type: 'support', debuff: { atk: 0.65, luk: 0.6 }, debuffTurns: 3, targetEnemy: true, desc: 'Terror · ATK/LUK ↓↓.' },
+                { id: 'gadget_foot', name: 'Gadget Foot', cry: 'Hoh!', cost: 26, power: 0, type: 'support', buff: { agi: 1.5, def: 1.2 }, turns: 3, desc: 'Pierna falsa · AGI/DEF ↑.' },
+                { id: 'nemuri_9', name: 'Nemuri No.9', cry: 'Drug: Ninth!', cost: 52, power: 185, type: 'curse', dot: 30, dotTurns: 3, desc: 'Droga final · remate con DoT.' }
+            ]
+        },
+        {
+            id: 'nelliel', name: 'Nelliel Tu Odelschwanck', series: 'Bleach', role: 'Caster', roleTag: 'Tres Espada',
+            img: 'assets/sprites/anim/nelliel_idle.png', color: '#2ecc71', accent: '#f9e79f',
+            resist: ['curse'], weak: ['fire'],
+            maxHp: 360, maxSp: 150, atk: 62, def: 30, agi: 38, luk: 26,
+            skills: [
+                { id: 'cero_doble', name: 'Cero Doble', cry: 'Cero... doble!', cost: 38, power: 165, type: 'curse', desc: 'Doble cero verde.' },
+                { id: 'lanza_verde', name: 'Lanzador Verde', cry: 'Take this!', cost: 32, power: 150, type: 'pierce', desc: 'Lanza esmeralda.' },
+                { id: 'heal_nel', name: 'Nel Heal', cry: 'Mascaron!', cost: 30, power: 0, type: 'support', heal: 120, desc: 'Vómito curativo (no preguntes).' },
+                { id: 'gamuza_rush', name: 'Gamuza Rush', cry: 'Itsygo!', cost: 28, power: 140, type: 'strike', desc: 'Cabezazo de cabra.' }
+            ]
+        },
+        {
+            id: 'starrk', name: 'Coyote Starrk', series: 'Bleach', role: 'Caster', roleTag: 'Primera Espada',
+            img: 'assets/sprites/anim/starrk_idle.png', color: '#5d6d7e', accent: '#85c1e9',
+            resist: ['curse'], weak: ['fire', 'bless'],
+            maxHp: 450, maxSp: 165, atk: 72, def: 30, agi: 40, luk: 22,
+            skills: [
+                { id: 'cero_metralleta', name: 'Cero Metralleta', cry: 'Bang bang.', cost: 38, power: 150, type: 'curse', hits: 3, desc: 'Metralleta de ceros ×3.' },
+                { id: 'colmillos', name: 'Colmillos', cry: 'Bite.', cost: 30, power: 140, type: 'slash', desc: 'Espadas colmillo.' },
+                { id: 'spirit_wolves', name: 'Spirit Wolves', cry: 'Wolves!', cost: 46, power: 175, type: 'curse', aoe: true, desc: 'Lobos espirituales AoE.' },
+                { id: 'los_lobos', name: 'Los Lobos', cry: 'LOS LOBOS!', cost: 62, power: 205, type: 'curse', desc: 'Manada final · finisher.' }
             ]
         },
         {

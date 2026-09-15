@@ -374,6 +374,30 @@ const KimetsuData = {
                 { id: 'mentor_aura', name: 'Master\'s Aura', cry: 'Breathe.', cost: 30, power: 0, type: 'support', partyBuff: { atk: 1.2, def: 1.15 }, turns: 3, desc: 'Aura · buff equipo.' },
                 { id: 'flowing_lesson', name: 'Flowing Dance Lesson', cry: 'Again.', cost: 36, power: 115, type: 'water', hits: 2, desc: 'Danza fluida · lección.' }
             ]
+        },
+        {
+            id: 'kaigaku', name: 'Kaigaku', series: 'Kimetsu no Yaiba', role: 'Caster', roleTag: 'Upper Six · Thunder',
+            img: 'assets/sprites/anim/kaigaku_idle.png', color: '#f1c40f', accent: '#212f3d',
+            resist: ['elec'], weak: ['water'],
+            maxHp: 350, maxSp: 150, atk: 64, def: 28, agi: 40, luk: 22,
+            skills: [
+                { id: 'thunder_swarm', name: 'Thunder Swarm', cry: 'Thunder!', cost: 32, power: 150, type: 'elec', hits: 3, desc: 'Enjambre eléctrico ×3.' },
+                { id: 'heat_lightning', name: 'Heat Lightning', cry: 'Burn!', cost: 38, power: 165, type: 'elec', desc: 'Rayo abrasador.' },
+                { id: 'second_form', name: 'Second Form', cry: 'Faster!', cost: 28, power: 0, type: 'support', buff: { agi: 1.5 }, turns: 3, desc: 'Segunda forma · AGI ↑↑.' },
+                { id: 'blood_demon', name: 'Blood Demon Art', cry: 'DIE!', cost: 56, power: 195, type: 'elec', desc: 'Arte demoníaca · finisher.' }
+            ]
+        },
+        {
+            id: 'kanao', name: 'Kanao Tsuyuri', series: 'Kimetsu no Yaiba', role: 'DPS', roleTag: 'Silent Flower',
+            img: 'assets/sprites/anim/kanao_idle.png', color: '#f9a8d4', accent: '#7c3aed',
+            resist: ['wind'], weak: ['curse'],
+            maxHp: 280, maxSp: 135, atk: 58, def: 26, agi: 44, luk: 34,
+            skills: [
+                { id: 'flower_thrust', name: 'Flower Thrust', cry: '…', cost: 26, power: 130, type: 'slash', desc: 'Estocada silenciosa.' },
+                { id: 'final_form', name: 'Final Form: Equinoctial Eye', cry: '...!', cost: 34, power: 0, type: 'support', buff: { atk: 1.4 }, turns: 3, critBonus: 0.3, desc: 'Ojo equinoccial · ATK/crítico ↑.' },
+                { id: 'silent_step', name: 'Silent Step', cry: '…', cost: 26, power: 0, type: 'support', buff: { agi: 1.5, luk: 1.3 }, turns: 3, desc: 'Paso silencioso · AGI/LUK ↑.' },
+                { id: 'equinoctial', name: 'Equinoctial Vermilion Eye', cry: 'Heads!', cost: 52, power: 175, type: 'slash', critBonus: 0.3, desc: 'Cara o cruz · crítico brutal.' }
+            ]
         }
     ],
 

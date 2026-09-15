@@ -81,6 +81,51 @@ const UserCharacterExpansion = {
         ] },
         { id: 'makoto', name: 'Makoto Niijima', series: 'Persona 5 Royal', role: 'Tank', roleTag: 'Queen', type: 'nuclear', color: '#2471a3', transform: true, transformName: 'Johanna Awakened', moves: ['Frei', 'Milady Charge', 'Marakukaja'], xMoves: ['Mafreila', 'Charge Punch', 'Johanna Guard', 'Vajra Blast'], hits: 2 },
         { id: 'hualkenberg', name: 'Hulkenberg', series: 'Metaphor: ReFantazio', role: 'Tank', roleTag: 'Knight Archetype', type: 'pierce', color: '#2e86c1', transform: true, transformName: 'Royal Knight', moves: ['Knight Tackle', 'Iron Guard', 'Oath of Protection'], xMoves: ['Royal Charge', 'Impenetrable Wall', 'Knightly Vow', 'Grand Knight Finale'] },
+        { id: 'yusuke', name: 'Yusuke Kitagawa', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Fox', type: 'slash', color: '#d5dbdb', accent: '#c0392b', transform: true, transformName: 'Goemon Awakened', resist: ['ice', 'slash'], weak: ['fire'], maxHp: 320, maxSp: 150, atk: 70, def: 30, agi: 36, luk: 22, skills: [
+            { id: 'counter_stance', name: 'Counter Stance', cry: 'Come.', cost: 30, power: 0, type: 'support', buff: { def: 1.5 }, turns: 3, reflectDamage: true, reflectMul: 1.2, desc: 'Postura · DEF ↑ + devuelve daño.' },
+            { id: 'eiha_cut', name: 'Eiha Cut', cry: 'Eiha!', cost: 28, power: 150, type: 'curse', desc: 'Corte maldito.' },
+            { id: 'frost_bite', name: 'Frost Bite', cry: 'Freeze!', cost: 32, power: 140, type: 'ice', desc: 'Mordisco de hielo.' },
+            { id: 'goemon_awaken', name: 'Goemon Awakened', cry: 'Goemon!', cost: 60, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.55, transformAgi: 1.3, desc: 'TRANSFORM · Goemon despierta.' }
+        ], transformedSkills: [
+            { id: 'god_hand', name: 'Gods Hand', cry: 'Beautiful...!', cost: 44, power: 190, type: 'bless', desc: 'Puño divino.' },
+            { id: 'counter_x', name: 'Counter Arts', cry: 'Too slow.', cost: 34, power: 0, type: 'support', buff: { def: 1.7 }, turns: 3, reflectDamage: true, reflectMul: 1.4, desc: 'Contra-arte · devuelve más.' },
+            { id: 'heat_wave_fox', name: 'Heat Wave', cry: 'Burn!', cost: 38, power: 165, type: 'fire', desc: 'Ola de calor.' },
+            { id: 'goemon_finale', name: 'Goemon Impact', cry: 'Masterpiece!', cost: 62, power: 210, type: 'bless', once: true, desc: 'Obra maestra · 1 uso.' }
+        ] },
+        { id: 'haru', name: 'Haru Okumura', series: 'Persona 5 Royal', role: 'Caster', roleTag: 'Noir', type: 'psy', color: '#f5b7b1', accent: '#7d3c98', transform: true, transformName: 'Milady Awakened', resist: ['psy', 'fire'], weak: ['ice'], maxHp: 300, maxSp: 160, atk: 64, def: 28, agi: 34, luk: 26, skills: [
+            { id: 'psi_blast', name: 'Psi Blast', cry: 'Psio!', cost: 32, power: 150, type: 'psy', aoe: true, desc: 'Explosión psíquica AoE.' },
+            { id: 'grenade_launcher', name: 'Grenade Launcher', cry: 'Fire!', cost: 36, power: 140, type: 'fire', aoe: true, desc: 'Granadas AoE.' },
+            { id: 'sweet_talk', name: 'Sweet Talk', cry: 'Please~', cost: 28, power: 0, type: 'support', partyBuff: { atk: 1.3 }, turns: 3, desc: 'Dulzura · ATK equipo ↑.' },
+            { id: 'milady_awaken', name: 'Milady Awakened', cry: 'Milady!', cost: 60, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.5, transformAgi: 1.25, desc: 'TRANSFORM · Milady despierta.' }
+        ], transformedSkills: [
+            { id: 'milady_might', name: 'Milady Might', cry: 'Take this!', cost: 42, power: 180, type: 'psy', aoe: true, desc: 'Poder de Milady AoE.' },
+            { id: 'triple_down', name: 'Triple Down', cry: 'Down!', cost: 40, power: 165, type: 'fire', aoe: true, desc: 'Triple descarga AoE.' },
+            { id: 'noir_guard', name: 'Noir Guard', cry: 'Behind me!', cost: 32, power: 0, type: 'support', buff: { def: 1.6 }, turns: 3, cover: true, desc: 'Guardia · DEF ↑ + cover.' },
+            { id: 'beauty_finale', name: 'Beauty Thief Finale', cry: 'For father!', cost: 62, power: 200, type: 'psy', once: true, desc: 'Final de ladrona · 1 uso.' }
+        ] },
+        { id: 'ryuji', name: 'Ryuji Sakamoto', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Skull', type: 'elec', color: '#f39c12', accent: '#212f3d', transform: true, transformName: 'Captain Kidd Awakened', resist: ['elec'], weak: ['wind'], maxHp: 340, maxSp: 140, atk: 72, def: 30, agi: 32, luk: 20, skills: [
+            { id: 'skull_cracker', name: 'Skull Cracker', cry: 'Skull crack!', cost: 28, power: 155, type: 'strike', desc: 'Bate demoledor.' },
+            { id: 'mapsi', name: 'Mapsio', cry: 'Zio!', cost: 32, power: 145, type: 'elec', aoe: true, desc: 'Rayo pirata AoE.' },
+            { id: 'punk_talk', name: 'Punk Talk', cry: 'Shut up!', cost: 26, power: 0, type: 'support', debuff: { atk: 0.75 }, debuffTurns: 3, targetEnemy: true, desc: 'Vacile · ATK ↓.' },
+            { id: 'kidd_awaken', name: 'Captain Kidd Awakened', cry: 'Kidd!', cost: 60, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 13, transformAtk: 1.55, transformAgi: 1.25, desc: 'TRANSFORM · Captain Kidd.' }
+        ], transformedSkills: [
+            { id: 'god_hand_r', name: "God's Hand", cry: 'FOR REAL!', cost: 42, power: 185, type: 'strike', desc: 'Mano de dios.' },
+            { id: 'thunder_reign', name: 'Thunder Reign', cry: 'Maziodyne!', cost: 46, power: 175, type: 'elec', aoe: true, desc: 'Reinado del trueno AoE.' },
+            { id: 'skull_buff', name: 'Skull Charge', cry: 'Run it up!', cost: 32, power: 0, type: 'support', buff: { atk: 1.45 }, turns: 3, desc: 'Carga · ATK ↑↑.' },
+            { id: 'kidd_finale', name: 'Kidd Finale', cry: 'All out!', cost: 62, power: 205, type: 'elec', once: true, desc: 'Cañonazo final · 1 uso.' }
+        ] },
+        { id: 'louis', name: 'Louis Guiabern', series: 'Metaphor: ReFantazio', role: 'Caster', roleTag: 'Utopist King', type: 'almighty', color: '#2c3e50', accent: '#f1c40f', resist: ['almighty', 'curse'], weak: ['bless'], maxHp: 420, maxSp: 175, atk: 72, def: 30, agi: 34, luk: 26, skills: [
+            { id: 'kings_magic', name: "King's Magic", cry: 'Kneel.', cost: 38, power: 170, type: 'almighty', desc: 'Magia del rey utópico.' },
+            { id: 'mana_burn', name: 'Mana Burn', cry: 'Empty.', cost: 34, power: 130, type: 'curse', drainSp: 35, desc: 'Quema CP enemigo + daño.' },
+            { id: 'utopia_decree', name: 'Utopia Decree', cry: 'My world.', cost: 32, power: 0, type: 'support', partyBuff: { atk: 1.3, def: 1.2 }, turns: 3, desc: 'Decreto · equipo ↑.' },
+            { id: 'tyrant_requiem', name: 'Tyrant Requiem', cry: 'DIE for utopia!', cost: 66, power: 210, type: 'almighty', desc: 'Réquiem del tirano · finisher.' }
+        ] },
+        { id: 'gallica', name: 'Gallica', series: 'Metaphor: ReFantazio', role: 'Support', roleTag: 'Fairy Guide', type: 'support', color: '#aed6f1', accent: '#f9e79f', resist: ['wind'], weak: ['curse'], maxHp: 240, maxSp: 170, atk: 42, def: 26, agi: 46, luk: 34, skills: [
+            { id: 'scout', name: 'Fairy Scout', cry: 'I see it!', cost: 26, power: 0, type: 'support', partyBuff: { agi: 1.35, luk: 1.35 }, turns: 3, desc: 'Exploración · AGI/LUK equipo ↑.' },
+            { id: 'fairy_dust', name: 'Fairy Dust', cry: 'Sprinkles!', cost: 30, power: 0, type: 'support', heal: 120, cleanse: true, desc: 'Polvo · cura + limpia.' },
+            { id: 'hide_wings', name: 'Hide Wings', cry: 'Shh!', cost: 26, power: 0, type: 'support', buff: { def: 1.5, agi: 1.3 }, turns: 3, desc: 'Escondite · DEF/AGI ↑.' },
+            { id: 'guide_wind', name: 'Guiding Wind', cry: 'This way!', cost: 24, power: 90, type: 'wind', desc: 'Viento guía.' }
+        ] },
         { id: 'genya', name: 'Genya Shinazugawa', series: 'Kimetsu no Yaiba', role: 'DPS', roleTag: 'Demon Eater', type: 'pierce', color: '#6e2c00', transform: true, transformName: 'Demonized Genya', moves: ['Double-Barrel Blast', 'Demon Flesh Bite', 'Repeating Shots'], xMoves: ['Demon Howl', 'Flesh Regeneration', 'Blood Burst', 'Devourer Finale'] },
         { id: 'kimimaro', name: 'Kimimaro', series: 'Naruto', role: 'DPS', roleTag: 'Shikotsumyaku', type: 'pierce', color: '#d5dbdb', transform: true, transformName: 'Curse Mark · Second State', moves: ['Bone Bullets', 'Dance of the Camellia', 'Dance of the Larch'], xMoves: ['Dance of the Clematis', 'Bone Spear Barrage', 'Cursed Seal Armor', 'Dance of the Seedling Fern'] },
         { id: 'suigetsu', name: 'Suigetsu Hozuki', series: 'Naruto', role: 'Tank', roleTag: 'Hydrification', type: 'water', color: '#5dade2', moves: ['Water Pistol', 'Hydrification Wall', 'Kubikiribocho Slash'], hits: 2 },

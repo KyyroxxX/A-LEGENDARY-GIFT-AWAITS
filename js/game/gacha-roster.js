@@ -9,6 +9,10 @@ const GachaRoster = {
     /** Ren only enters the gacha after beating THE 50/50 (never required for it). */
     SEALED_ID: 'ren',
 
+    /** Ordered drops: Ulquiorra can only appear after the first Starrk
+     *  (Espada order). Already-owned units are grandfathered, never taken. */
+    SEAL_CHAIN: [{ id: 'ulquiorra', needs: 'starrk' }],
+
     /** The game code only drops after THE 50/50 AND Ren maxed (C3). */
     legendaryEligible() {
         try {
@@ -46,7 +50,37 @@ const GachaRoster = {
     },
 
     isUnitSealed(id) {
-        return id === this.SEALED_ID && !this.renUnlocked();
+        if (id === this.SEALED_ID && !this.renUnlocked()) return true;
+        return this.chainSealed(id);
+    },
+
+    /** True while `id` is still locked behind its `needs` unit. */
+    chainSealed(id) {
+        const rule = (this.SEAL_CHAIN || []).find((r) => r.id === id);
+        if (!rule) return false;
+        try {
+            if (this.owns(rule.needs)) return false;
+            if (this.owns(id)) return false;
+            return true;
+        } catch (_) {
+            return false;
+        }
+    },
+
+    /** Human reason for a seal (details panels). Null when open. */
+    sealNote(id) {
+        if (id === this.SEALED_ID && !this.renUnlocked()) {
+            return 'Ren Amamiya solo sale en este banner tras vencer a THE 50/50.';
+        }
+        const rule = (this.SEAL_CHAIN || []).find((r) => r.id === id);
+        if (rule && this.chainSealed(id)) {
+            let who = rule.needs;
+            try {
+                who = this.getTemplate(rule.needs)?.name || rule.needs;
+            } catch (_) { /* keep id */ }
+            return `Ulquiorra solo sale en este banner tras conseguir a ${who} por primera vez.`;
+        }
+        return null;
     },
     FINAL_TEN: 10, // Metaphor tickets from THE 50/50 (red convene)
     INVOCATION_CAP: 2700,
@@ -112,8 +146,8 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['doflamingo', 'zoro', 'sanji', 'marshall', 'katakuri'],
-            pool5Std: ['law', 'shanks', 'mihawk', 'marco', 'jinbe'],
+            pool6: ['doflamingo', 'zoro', 'sanji', 'marshall', 'katakuri', 'kaido', 'ace', 'kidd', 'kizaru', 'hancock'],
+            pool5Std: ['law', 'shanks', 'mihawk', 'marco', 'jinbe', 'killer'],
             pool4: ['nami', 'robin', 'crocodile', 'enel', 'lucci'],
             pool3: ['brook', 'franky', 'chopper', 'usopp'],
             pool3Names: ['Fragmento del Sombrero', 'Den Den Mushi', 'Cartel de recompensa', 'Log Pose']
@@ -138,8 +172,8 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['sasuke', 'jiraiya', 'kakashi', 'itachi', 'hidan', 'tobi', 'pain'],
-            pool5Std: ['gai', 'minato', 'tsunade', 'kisame', 'tobirama', 'konan', 'kimimaro', 'kakuzu'],
+            pool6: ['sasuke', 'jiraiya', 'kakashi', 'itachi', 'hidan', 'tobi', 'pain', 'madara', 'bee'],
+            pool5Std: ['gai', 'minato', 'tsunade', 'kisame', 'tobirama', 'konan', 'kimimaro', 'kakuzu', 'raikage'],
             pool4: ['gaara', 'sakura', 'zabuza', 'orochimaru', 'sasori', 'deidara', 'jugo', 'karin', 'suigetsu'],
             pool3: ['shikamaru', 'hinata', 'sai', 'neji', 'lee'],
             pool3Names: ['Kunai oxidado', 'Pergamino vacío', 'Banda ninja rota', 'Sello explosivo']
@@ -189,8 +223,8 @@ const GachaRoster = {
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
-            pool6: ['aizen', 'ulquiorra', 'grimmjow', 'shunsui'],
-            pool5Std: ['byakuya', 'rukia', 'toshiro', 'yoruichi', 'urahara', 'kenpachi'],
+            pool6: ['aizen', 'ulquiorra', 'grimmjow', 'shunsui', 'yamamoto', 'unohana', 'senjumaru', 'oetsu', 'starrk'],
+            pool5Std: ['byakuya', 'rukia', 'toshiro', 'yoruichi', 'urahara', 'kenpachi', 'mayuri', 'nelliel'],
             pool4: ['renji', 'orihime', 'ginjo', 'gantenbainne'],
             pool3Names: ['Zanpakutō rosa', 'Gikon', 'Alma fragmentada', 'Hueco Mundo scrap']
         },
@@ -216,7 +250,7 @@ const GachaRoster = {
             featured5050: true,
             featuredRate: 0.3,
             pool6: ['gojo', 'sukuna', 'hakari', 'yuta', 'kashimo'],
-            pool5Std: ['geto', 'toji', 'nanami', 'yuki', 'higuruma', 'choso', 'meimei'],
+            pool5Std: ['geto', 'toji', 'nanami', 'yuki', 'higuruma', 'choso', 'meimei', 'inumaki'],
             pool4: ['yuji', 'megumi', 'maki', 'nobara', 'mahito', 'jogo', 'uro', 'ryu'],
             pool3: ['todo'],
             pool3Names: ['Talismán roto', 'Dedo maldito (réplica)', 'Cuerda negra']
@@ -240,8 +274,9 @@ const GachaRoster = {
             rate7: 0.008, rate4: 0.10, soft7: 50, hard7: 80, hard4: 10,
             featured5050: true,
             isMetaphor: true,
-            pool6: ['basilio', 'eupha'],
+            pool6: ['basilio', 'eupha', 'louis'],
             pool5Std: ['strohl', 'heismay', 'junah', 'hualkenberg'],
+            pool4: ['gallica'],
             pool5StdNames: ['Destino Falso', 'Clave espejismo', 'Sueño de royal'],
             pool4Names: ['Fragmento Real', 'Éter de Archetype', 'Sello de Príncipe'],
             pool3Names: ['Chispa de esperanza', 'Nota de viaje', 'Moneda de Tribes']
@@ -265,8 +300,8 @@ const GachaRoster = {
             rate6: 0.003, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featuredRate: 0.3,
-            pool6: ['ren', 'goro', 'sumire'],
-            pool5Std: ['ann', 'makoto'],
+            pool6: ['ren', 'goro', 'sumire', 'yusuke'],
+            pool5Std: ['ann', 'makoto', 'haru', 'ryuji'],
             pool4: ['tae', 'futaba'],
             pool3Names: ['Carta de invitación', 'Máscara de ladrón', 'Café de Leblanc']
         },
@@ -292,8 +327,8 @@ const GachaRoster = {
             featured5050: true,
             featuredRate: 0.3,
             pool6: ['tanjiro', 'gyomei', 'kokushibo', 'rengoku', 'muzan', 'yourichi'],
-            pool5Std: ['giyu', 'tengen', 'sanemi', 'mitsuri', 'muichiro', 'obanai', 'akaza', 'doma', 'nezuko', 'shinobu', 'genya'],
-            pool4: ['zenitsu', 'inosuke', 'daki', 'hantengu', 'gyokko', 'sabito'],
+            pool5Std: ['giyu', 'tengen', 'sanemi', 'mitsuri', 'muichiro', 'obanai', 'akaza', 'doma', 'nezuko', 'shinobu', 'genya', 'kaigaku'],
+            pool4: ['zenitsu', 'inosuke', 'daki', 'hantengu', 'gyokko', 'sabito', 'kanao'],
             pool3: ['urokodaki'],
             pool3Names: ['Máscara tengu rota', 'Nichirin mellada', 'Talismán de Ubuyashiki']
         },
@@ -320,7 +355,7 @@ const GachaRoster = {
             featuredRate: 0.3,
             pool6: ['denji', 'makima', 'quanxi', 'asa'],
             pool5Std: ['power', 'reze', 'aki', 'angel', 'katana', 'kishibe'],
-            pool4: ['beam', 'kobeni'],
+            pool4: ['beam', 'kobeni', 'himeno'],
             pool3Names: ['Cordón oxidado', 'Kunai de Public Safety', 'Lata de comida de gato', 'Pin de bomba']
         }
     },
@@ -490,6 +525,14 @@ const GachaRoster = {
         if (list.includes(id)) return false;
         list.push(id);
         GameState.set('ownedCharacters', list);
+        // Unlocking a gatekeeper (Starrk → Ulquiorra) refreshes rarities
+        // everywhere so the unsealed unit immediately shows correctly.
+        try {
+            const flips = (this.SEAL_CHAIN || []).some((r) => r.needs === id);
+            if (flips && typeof CharacterRegistry !== 'undefined' && CharacterRegistry.rebuild) {
+                CharacterRegistry.rebuild();
+            }
+        } catch (_) { /* ignore */ }
         return true;
     },
 
@@ -1008,7 +1051,8 @@ const GachaRoster = {
         const tierOf = (id) => (this.primaryStars(id) >= 6 ? 6 : 5);
         let ids = [...(b.pool6 || []), ...(b.pool5Std || [])];
         if (b.featuredId && !ids.includes(b.featuredId)) ids.unshift(b.featuredId);
-        ids = [...new Set(ids)].filter(id => id && this.isPlayableId(id));
+        // Sealed units (Ren pre-boss, Ulquiorra pre-Starrk) can't be picked either.
+        ids = [...new Set(ids)].filter(id => id && this.isPlayableId(id) && !this.isUnitSealed(id));
         if (stars === 6) return ids.filter(id => tierOf(id) === 6);
         if (stars === 5) return ids.filter(id => tierOf(id) === 5);
         return ids;

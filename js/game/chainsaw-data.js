@@ -121,6 +121,18 @@ const ChainsawData = {
                 { id: 'gill_bite', name: 'Gill Bite', cry: 'Chomp!', cost: 30, power: 120, type: 'slash', desc: 'Mordisco de branquias.' },
                 { id: 'great_white', name: 'Great White Carnage', cry: 'SHARK!', cost: 48, power: 165, type: 'slash', once: true, hits: 4, desc: 'Carnicería · 1 uso.' }
             ]
+        },
+        {
+            id: 'himeno', name: 'Himeno', series: 'Chainsaw Man', role: 'Controller', roleTag: 'Ghost Devil',
+            img: 'assets/sprites/anim/himeno_idle.png', color: '#5d6d7e', accent: '#f1948a',
+            resist: ['curse'], weak: ['fire'],
+            maxHp: 270, maxSp: 140, atk: 54, def: 26, agi: 32, luk: 28,
+            skills: [
+                { id: 'ghost_arm', name: 'Ghost Arm', cry: 'Ghost!', cost: 30, power: 150, type: 'curse', hpCost: 30, desc: 'Brazo fantasma · le cuesta vida.' },
+                { id: 'ghost_bind', name: 'Ghost Bind', cry: 'Hold him!', cost: 32, power: 0, type: 'support', stun: true, targetEnemy: true, desc: 'El fantasma lo sujeta · stun.' },
+                { id: 'smoke_break', name: 'Smoke Break', cry: 'One cigarette.', cost: 26, power: 0, type: 'support', buff: { agi: 1.4 }, turns: 3, desc: 'Pausa · AGI ↑.' },
+                { id: 'sacrifice', name: 'Full Sacrifice', cry: 'Take everything!', cost: 44, power: 190, type: 'curse', hpCost: 50, desc: 'Todo el fantasma · finisher suicida.' }
+            ]
         }
     ],
 

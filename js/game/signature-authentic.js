@@ -70,7 +70,11 @@ const SignatureAuthentic = {
         itachi: {
             amaterasu: { style: 'auth-cursed-slash', family: 'finisher', motion: 'control', impact: 'ember-bloom', camera: 'dutch-drift', colors: ['#FF3B00', '#0A0A0A'] },
             tsukuyomi: { family: 'hex', motion: 'control', impact: 'illusion-fracture', camera: 'dutch-drift', colors: ['#FF1A1A', '#0A0A0A'] },
-            amaterasu_x: { style: 'auth-cursed-slash', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FF6A00', '#0A0A0A'] }
+            amaterasu_x: { style: 'auth-cursed-slash', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FF6A00', '#0A0A0A'] },
+            susanoo_rise: { style: 'auth-flame-eruption', family: 'transform', motion: 'awakening', impact: 'form-break', camera: 'aura-rise', colors: ['#FF8C00', '#C1121F'] },
+            totsuka: { style: 'auth-blade-draw', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'micro-lunge', colors: ['#FFB300', '#7A0D0D'] },
+            yasaka: { style: 'auth-spiral-orb', family: 'spiral', motion: 'projectile', impact: 'orb-crush', camera: 'micro-lunge', colors: ['#FF6A00', '#FFD23B'] },
+            yata_mirror: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#FFF3D6', '#C98A1B'] }
         },
         hidan: {
             scythe_sweep: { style: 'auth-cursed-slash', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'side-slice', colors: ['#C0392B', '#1A1A1A'] },
@@ -408,12 +412,187 @@ const SignatureAuthentic = {
         kishibe: {
             kishibe_strike: { style: 'auth-blade-draw', family: 'melee', motion: 'step-in', impact: 'cross-cut', camera: 'micro-lunge', colors: ['#E8E4DA', '#4D4A42'] },
             kishibe_burst: { style: 'auth-blade-draw', family: 'pierce', motion: 'barrage', impact: 'form-break', camera: 'rush-track', colors: ['#E8E4DA', '#4D4A42'] }
+        },
+        kaido: {
+            kanabo_swing: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'crater-break', camera: 'micro-lunge', colors: ['#F5B041', '#1A1A2E'] },
+            boro_breath: { style: 'auth-flame-eruption', family: 'inferno', motion: 'projectile-fire', impact: 'ember-bloom', camera: 'heat-wave', colors: ['#FF6A00', '#7A0D0D'] },
+            drunk_sway: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F5B041', '#5D4037'] },
+            dragon_awaken: { style: 'auth-bankai-aura', family: 'transform', motion: 'awakening', impact: 'form-break', camera: 'aura-rise', colors: ['#2E6BD8', '#FF6A00'] },
+            boro_max: { style: 'auth-flame-eruption', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FF6A00', '#7A0D0D'] },
+            ragnaraku: { style: 'auth-black-flash', family: 'finisher', motion: 'finisher', impact: 'crater-break', camera: 'wide-shock', colors: ['#F5B041', '#1A1A2E'] },
+            thunder_bagua: { style: 'auth-lightning-hand', family: 'lightning', motion: 'step-in', impact: 'spear-pierce', camera: 'snap-zoom', colors: ['#FFE93B', '#2E86C1'] },
+            dragon_guard: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#2E6BD8', '#1A1A2E'] }
+        },
+        ace: {
+            hiken: { style: 'auth-flame-eruption', family: 'inferno', motion: 'step-in', impact: 'crossfire-burst', camera: 'punch-dolly', colors: ['#FF6A00', '#FFD23B'] },
+            higan: { style: 'auth-flame-dance', family: 'inferno', motion: 'projectile', impact: 'ember-bloom', camera: 'micro-lunge', colors: ['#FF6A00', '#FFD23B'] },
+            heat_haze: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#FFD23B', '#FF6A00'] },
+            entei: { style: 'auth-flame-eruption', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FFD23B', '#FF4D00'] }
+        },
+        kidd: {
+            scrap_punch: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'crater-break', camera: 'micro-lunge', colors: ['#E8A0BF', '#7D3C98'] },
+            repel: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#E8A0BF', '#4A235A'] },
+            punk_gibson: { style: 'auth-cero-beam', family: 'pierce', motion: 'projectile', impact: 'spear-pierce', camera: 'snap-zoom', colors: ['#F9A8D4', '#7D3C98'] },
+            assign: { family: 'hex', motion: 'control', impact: 'power-lock', camera: 'dutch-drift', colors: ['#C084FC', '#4A235A'] },
+            damned_punk: { style: 'auth-cero-beam', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#F9A8D4', '#7D3C98'] }
+        },
+        kizaru: {
+            light_sword: { style: 'auth-blade-draw', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'micro-lunge', colors: ['#FFF9C4', '#F39C12'] },
+            yasakani: { style: 'auth-spiral-orb', family: 'spiral', motion: 'projectile', impact: 'orb-crush', camera: 'micro-lunge', colors: ['#FFF9C4', '#F39C12'] },
+            light_dash: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#FFF9C4', '#F39C12'] },
+            light_kick: { style: 'auth-black-flash', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'snap-zoom', colors: ['#FFFFFF', '#F39C12'] }
+        },
+        hancock: {
+            mero_mero: { style: 'auth-time-stop', family: 'hex', motion: 'control', impact: 'illusion-fracture', camera: 'dutch-drift', colors: ['#F9A8D4', '#C2185B'] },
+            slave_arrow: { style: 'auth-blood-orb', family: 'pierce', motion: 'projectile', impact: 'spear-pierce', camera: 'rush-track', colors: ['#F9A8D4', '#C2185B'] },
+            perfume_femur: { style: 'auth-crescent-slash', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'side-slice', colors: ['#F9A8D4', '#7B0F3A'] },
+            empress_haki: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'wide-shock', colors: ['#8B0000', '#F9A8D4'] }
+        },
+        killer: {
+            sonic_scythe: { style: 'auth-blade-storm', family: 'blade', motion: 'blade', impact: 'chain-crash', camera: 'rush-track', colors: ['#D5DBDB', '#8395A7'] },
+            beheading_claws: { style: 'auth-blade-draw', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'micro-lunge', colors: ['#FFFFFF', '#8395A7'] },
+            kamazou_dash: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#D5DBDB', '#C0392B'] },
+            punisher: { style: 'auth-blade-storm', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FFFFFF', '#C0392B'] }
+        },
+        madara: {
+            gunbai_fan: { style: 'auth-crescent-slash', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'side-slice', colors: ['#C39BD3', '#4A235A'] },
+            limbo_dodge: { style: 'auth-mist-veil', family: 'support', motion: 'buff', impact: 'power-lock', camera: 'dutch-drift', colors: ['#C39BD3', '#1A1A2E'] },
+            rinnegan_absorb: { style: 'auth-void-orb', family: 'hex', motion: 'control', impact: 'black-orb-collapse', camera: 'orbit-pull', colors: ['#8E44AD', '#1A1A2E'] },
+            meteor: { style: 'auth-flame-eruption', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'wide-shock', colors: ['#F5B041', '#5D4037'] }
+        },
+        bee: {
+            lariat_b: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'crater-break', camera: 'micro-lunge', colors: ['#F9E79F', '#7E5109'] },
+            rap_flow: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F9E79F', '#7E5109'] },
+            ink_clone: { style: 'auth-cursed-slash', family: 'melee', motion: 'barrage', impact: 'chain-crash', camera: 'rush-track', colors: ['#1A1A1A', '#7E5109'] },
+            tailed_bomb: { style: 'auth-blood-orb', family: 'finisher', motion: 'finisher', impact: 'black-orb-collapse', camera: 'void-dolly', colors: ['#1A1A2E', '#C0392B'] }
+        },
+        raikage: {
+            lightning_armor: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#FFF9C4', '#B7950B'] },
+            lariat_r: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'crater-break', camera: 'micro-lunge', colors: ['#FFF9C4', '#7E5109'] },
+            hell_stab: { style: 'auth-lightning-hand', family: 'pierce', motion: 'step-in', impact: 'spear-pierce', camera: 'snap-zoom', colors: ['#FFF9C4', '#2E86C1'] },
+            chop_r: { family: 'melee', motion: 'step-in', impact: 'signature-impact', camera: 'micro-lunge', colors: ['#F9E79F', '#7E5109'] }
+        },
+        yamamoto: {
+            north_jokaku: { style: 'auth-flame-eruption', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FFFFFF', '#FF4D00'] },
+            east_rising: { style: 'auth-flame-dance', family: 'support', motion: 'buff', impact: 'power-lock', camera: 'aura-rise', colors: ['#FFD23B', '#FF4D00'] },
+            west_flames: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#FF6A00', '#7A0D0D'] },
+            south_ashes: { style: 'auth-flame-eruption', family: 'inferno', motion: 'projectile-fire', impact: 'ember-bloom', camera: 'heat-wave', colors: ['#F5B041', '#922B21'] }
+        },
+        unohana: {
+            minazuki_heal: { style: 'auth-heal-glow', family: 'heal', motion: 'recovery', impact: 'rebuild-bloom', camera: 'soft-pull', colors: ['#AED6F1', '#EAF2F8'] },
+            blood_arts: { style: 'auth-crescent-slash', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'side-slice', colors: ['#FF5B5B', '#7B0A0A'] },
+            pacifist: { style: 'auth-heal-glow', family: 'heal', motion: 'recovery', impact: 'rebuild-bloom', camera: 'wide-bloom', colors: ['#D6EAF8', '#AED6F1'] },
+            bloodlust: { style: 'auth-black-flash', family: 'support', motion: 'buff', impact: 'power-lock', camera: 'heavy-dolly', colors: ['#FF1A1A', '#0A0A0A'] }
+        },
+        senjumaru: {
+            weave_bind: { style: 'auth-serpent-slash', family: 'hex', motion: 'control', impact: 'power-lock', camera: 'dutch-drift', colors: ['#F9E79F', '#7E5109'] },
+            thousand_arms: { style: 'auth-blade-storm', family: 'pierce', motion: 'barrage', impact: 'chain-crash', camera: 'orbit-pull', colors: ['#F9E79F', '#B7950B'] },
+            tapestry: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F9E79F', '#7E5109'] },
+            needle_seal: { style: 'auth-blade-draw', family: 'finisher', motion: 'finisher', impact: 'cross-cut', camera: 'vertical-strike', colors: ['#FFFFFF', '#B7950B'] }
+        },
+        oetsu: {
+            sayabusa: { style: 'auth-blade-draw', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'micro-lunge', colors: ['#EAEDED', '#5D6D7E'] },
+            razor_edge: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#FFFFFF', '#5D6D7E'] },
+            forge_strike: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'crater-break', camera: 'micro-lunge', colors: ['#F5B041', '#5D4037'] },
+            ookami: { style: 'auth-crescent-slash', family: 'finisher', motion: 'finisher', impact: 'sky-split', camera: 'vertical-strike', colors: ['#FFFFFF', '#2C3E50'] }
+        },
+        mayuri: {
+            poison_bankai: { style: 'auth-poison-moth', family: 'curse', motion: 'projectile-element', impact: 'orb-crush', camera: 'micro-lunge', colors: ['#7B3FB5', '#1E8449'] },
+            fear_factor: { family: 'hex', motion: 'control', impact: 'illusion-fracture', camera: 'dutch-drift', colors: ['#8E44AD', '#0A0A0A'] },
+            gadget_foot: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#AED6F1', '#8E44AD'] },
+            nemuri_9: { style: 'auth-poison-moth', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#7B3FB5', '#1E8449'] }
+        },
+        nelliel: {
+            cero_doble: { style: 'auth-cero-beam', family: 'element', motion: 'projectile-element', impact: 'orb-crush', camera: 'punch-dolly', colors: ['#39FF6A', '#0E3B1E'] },
+            lanza_verde: { style: 'auth-lightning-hand', family: 'pierce', motion: 'projectile-element', impact: 'spear-pierce', camera: 'rush-track', colors: ['#7CFF00', '#0E3B1E'] },
+            heal_nel: { style: 'auth-heal-glow', family: 'heal', motion: 'recovery', impact: 'rebuild-bloom', camera: 'soft-pull', colors: ['#A9DFBF', '#EAFaf1'] },
+            gamuza_rush: { family: 'melee', motion: 'step-in', impact: 'signature-impact', camera: 'micro-lunge', colors: ['#82E0AA', '#0E3B1E'] }
+        },
+        starrk: {
+            cero_metralleta: { style: 'auth-cero-beam', family: 'element', motion: 'projectile-element', impact: 'crossfire-burst', camera: 'micro-lunge', colors: ['#39D0FF', '#0A1F33'] },
+            colmillos: { style: 'auth-blade-draw', family: 'blade', motion: 'blade', impact: 'cross-cut', camera: 'side-slice', colors: ['#D6EAF8', '#0A1F33'] },
+            spirit_wolves: { style: 'auth-void-orb', family: 'hex', motion: 'projectile-element', impact: 'chakra-bloom', camera: 'rush-track', colors: ['#5DADE2', '#0A1F33'] },
+            los_lobos: { style: 'auth-cero-beam', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'void-dolly', colors: ['#39D0FF', '#0A1F33'] }
+        },
+        inumaki: {
+            sleep_cmd: { style: 'auth-time-stop', family: 'hex', motion: 'control', impact: 'illusion-fracture', camera: 'dutch-drift', colors: ['#D6DBDF', '#5D6D7E'] },
+            blast_away: { style: 'auth-explosive-fist', family: 'strike', motion: 'projectile', impact: 'crater-break', camera: 'wide-shock', colors: ['#F2F3F4', '#5D6D7E'] },
+            stop_cmd: { family: 'hex', motion: 'control', impact: 'power-lock', camera: 'locked-frame', colors: ['#D6DBDF', '#2C3E50'] },
+            salmon_heal: { style: 'auth-heal-glow', family: 'heal', motion: 'recovery', impact: 'rebuild-bloom', camera: 'soft-pull', colors: ['#FCF3CF', '#F5B041'] }
+        },
+        kaigaku: {
+            thunder_swarm: { style: 'auth-lightning-hand', family: 'lightning', motion: 'projectile-element', impact: 'crossfire-burst', camera: 'micro-lunge', colors: ['#FFF9C4', '#B7950B'] },
+            heat_lightning: { style: 'auth-lightning-fall', family: 'lightning', motion: 'projectile', impact: 'sky-split', camera: 'vertical-strike', colors: ['#FF6A00', '#7E5109'] },
+            second_form: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#FFF9C4', '#7E5109'] },
+            blood_demon: { style: 'auth-lightning-fall', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#FF1A1A', '#7E5109'] }
+        },
+        kanao: {
+            flower_thrust: { style: 'auth-blade-draw', family: 'pierce', motion: 'step-in', impact: 'spear-pierce', camera: 'micro-lunge', colors: ['#F9A8D4', '#7C3AED'] },
+            final_form: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F9A8D4', '#7C3AED'] },
+            silent_step: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#E9D5FF', '#7C3AED'] },
+            equinoctial: { style: 'auth-crescent-slash', family: 'finisher', motion: 'finisher', impact: 'sky-split', camera: 'vertical-strike', colors: ['#FF1A1A', '#7C3AED'] }
+        },
+        himeno: {
+            ghost_arm: { style: 'auth-cursed-slash', family: 'curse', motion: 'step-in', impact: 'cross-cut', camera: 'micro-lunge', colors: ['#5D6D7E', '#1A1A1A'] },
+            ghost_bind: { style: 'auth-time-stop', family: 'hex', motion: 'control', impact: 'power-lock', camera: 'locked-frame', colors: ['#AEB6BF', '#1A1A1A'] },
+            smoke_break: { style: 'auth-mist-veil', family: 'support', motion: 'buff', impact: 'power-lock', camera: 'soft-pull', colors: ['#D5DBDB', '#5D6D7E'] },
+            sacrifice: { style: 'auth-black-flash', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#C0392B', '#0A0A0A'] }
+        },
+        yusuke: {
+            counter_stance: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#FFFFFF', '#C0392B'] },
+            eiha_cut: { style: 'auth-cursed-slash', family: 'curse', motion: 'blade', impact: 'cross-cut', camera: 'side-slice', colors: ['#8E44AD', '#1A1A1A'] },
+            frost_bite: { style: 'auth-water-wheel', family: 'element', motion: 'projectile-element', impact: 'water-splash', camera: 'fluid-track', colors: ['#AED6F1', '#1A5276'] },
+            goemon_awaken: { style: 'auth-bankai-aura', family: 'transform', motion: 'awakening', impact: 'form-break', camera: 'aura-rise', colors: ['#FFFFFF', '#C0392B'] },
+            god_hand: { style: 'auth-black-flash', family: 'finisher', motion: 'finisher', impact: 'meteor-fist', camera: 'punch-dolly', colors: ['#F9E79F', '#B7950B'] },
+            counter_x: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'perfect-parry', camera: 'stand-rise', colors: ['#FFFFFF', '#922B21'] },
+            heat_wave_fox: { style: 'auth-flame-eruption', family: 'inferno', motion: 'projectile-fire', impact: 'ember-bloom', camera: 'heat-wave', colors: ['#FF6A00', '#7A0D0D'] },
+            goemon_finale: { style: 'auth-crescent-slash', family: 'finisher', motion: 'finisher', impact: 'sky-split', camera: 'vertical-strike', colors: ['#FFFFFF', '#922B21'] }
+        },
+        haru: {
+            psi_blast: { style: 'auth-void-orb', family: 'hex', motion: 'projectile-element', impact: 'orb-crush', camera: 'micro-lunge', colors: ['#D988BC', '#7D3C98'] },
+            grenade_launcher: { style: 'auth-explosive-fist', family: 'inferno', motion: 'projectile-fire', impact: 'crossfire-burst', camera: 'wide-shock', colors: ['#FF6A00', '#7E5109'] },
+            sweet_talk: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F9A8D4', '#7D3C98'] },
+            milady_awaken: { style: 'auth-bankai-aura', family: 'transform', motion: 'awakening', impact: 'form-break', camera: 'aura-rise', colors: ['#F9A8D4', '#1A1A1A'] },
+            milady_might: { style: 'auth-void-orb', family: 'hex', motion: 'projectile-element', impact: 'chakra-bloom', camera: 'rush-track', colors: ['#D988BC', '#1A1A1A'] },
+            triple_down: { style: 'auth-explosive-fist', family: 'inferno', motion: 'projectile-fire', impact: 'crossfire-burst', camera: 'wide-shock', colors: ['#FF6A00', '#7D3C98'] },
+            noir_guard: { style: 'auth-guard-iron', family: 'support', motion: 'guard', impact: 'guard-lock', camera: 'locked-frame', colors: ['#1A1A1A', '#D988BC'] },
+            beauty_finale: { style: 'auth-crescent-slash', family: 'finisher', motion: 'finisher', impact: 'sky-split', camera: 'vertical-strike', colors: ['#F9A8D4', '#7D3C98'] }
+        },
+        ryuji: {
+            skull_cracker: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'crater-break', camera: 'micro-lunge', colors: ['#F9E79F', '#7E5109'] },
+            mapsi: { style: 'auth-lightning-fall', family: 'lightning', motion: 'projectile-element', impact: 'crossfire-burst', camera: 'vertical-strike', colors: ['#FFF9C4', '#B7950B'] },
+            punk_talk: { family: 'hex', motion: 'control', impact: 'power-lock', camera: 'dutch-drift', colors: ['#F9E79F', '#1C2833'] },
+            kidd_awaken: { style: 'auth-bankai-aura', family: 'transform', motion: 'awakening', impact: 'form-break', camera: 'aura-rise', colors: ['#F39C12', '#1A1A1A'] },
+            god_hand_r: { style: 'auth-black-flash', family: 'melee', motion: 'step-in', impact: 'meteor-fist', camera: 'punch-dolly', colors: ['#F9E79F', '#7E5109'] },
+            thunder_reign: { style: 'auth-lightning-fall', family: 'lightning', motion: 'projectile-element', impact: 'sky-split', camera: 'wide-shock', colors: ['#FFF9C4', '#7E5109'] },
+            skull_buff: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F9E79F', '#1C2833'] },
+            kidd_finale: { style: 'auth-black-flash', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#F9E79F', '#1A1A1A'] }
+        },
+        louis: {
+            kings_magic: { style: 'auth-void-orb', family: 'hex', motion: 'projectile-element', impact: 'orb-crush', camera: 'micro-lunge', colors: ['#5DADE2', '#F1C40F'] },
+            mana_burn: { style: 'auth-cursed-slash', family: 'curse', motion: 'control', impact: 'black-orb-collapse', camera: 'orbit-pull', colors: ['#2C3E50', '#F1C40F'] },
+            utopia_decree: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#F1C40F', '#2C3E50'] },
+            tyrant_requiem: { style: 'auth-black-flash', family: 'finisher', motion: 'finisher', impact: 'cinematic-crash', camera: 'heavy-dolly', colors: ['#F1C40F', '#1A1A1A'] }
+        },
+        gallica: {
+            scout: { family: 'support', motion: 'buff', impact: 'power-lock', camera: 'locked-frame', colors: ['#AED6F1', '#F9E79F'] },
+            fairy_dust: { style: 'auth-heal-glow', family: 'heal', motion: 'recovery', impact: 'rebuild-bloom', camera: 'soft-pull', colors: ['#FCF3CF', '#F9E79F'] },
+            hide_wings: { style: 'auth-mist-veil', family: 'support', motion: 'buff', impact: 'power-lock', camera: 'soft-pull', colors: ['#D6EAF8', '#AED6F1'] },
+            guide_wind: { style: 'auth-blade-storm', family: 'element', motion: 'projectile-element', impact: 'chain-crash', camera: 'fluid-track', colors: ['#AED6F1', '#5DADE2'] }
         }
     },
 
     transformationElement: {
         sanji: 'fire', kashimo: 'elec', denji: 'fire',
-        yuta: 'curse', giorno: 'bless', dio: 'psy'
+        yuta: 'curse', giorno: 'bless', dio: 'psy', itachi: 'fire'
+    },
+
+    katanaVariants: {
+        itachi: { totsuka: 'iaido' }
+    },
+
+    energyVariants: {
+        itachi: { yasaka: 'energy-orb' }
     },
 
     boot() {
@@ -421,6 +600,16 @@ const SignatureAuthentic = {
         Object.entries(this.blocks).forEach(([char, skills]) => {
             BattleTechniqueDesigns[char] = { ...(BattleTechniqueDesigns[char] || {}), ...skills };
         });
+        if (BattleTechniqueDesigns.KATANA_VARIANTS) {
+            Object.entries(this.katanaVariants).forEach(([char, map]) => {
+                BattleTechniqueDesigns.KATANA_VARIANTS[char] = { ...(BattleTechniqueDesigns.KATANA_VARIANTS[char] || {}), ...map };
+            });
+        }
+        if (BattleTechniqueDesigns.ENERGY_VARIANTS) {
+            Object.entries(this.energyVariants).forEach(([char, map]) => {
+                BattleTechniqueDesigns.ENERGY_VARIANTS[char] = { ...(BattleTechniqueDesigns.ENERGY_VARIANTS[char] || {}), ...map };
+            });
+        }
         if (typeof EffectManager !== 'undefined') {
             Object.assign(EffectManager.transformationElement, this.transformationElement);
         }
