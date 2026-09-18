@@ -38,7 +38,7 @@ const UserCharacterExpansion = {
             { id: 'karin_bite', name: 'Healing Bite', cry: '¡Cúrate!', cost: 26, power: 0, type: 'support', heal: 150, desc: 'Cura a un aliado.' },
             { id: 'karin_sensor', name: 'Sensor Kagura', cry: 'Te veo.', cost: 28, power: 0, type: 'support', partyBuff: { agi: 1.3, luk: 1.35 }, turns: 3, desc: 'Precisión y velocidad del equipo.' },
             { id: 'chain_bind', name: 'Adamantine Chains', cry: '¡Quieto!', cost: 34, power: 120, type: 'pierce', desc: 'Cadenas de chakra.' },
-            { id: 'chakra_scan', name: 'Chakra Diagnosis', cry: 'No te mueras.', cost: 42, power: 0, type: 'support', heal: 70, aoeHeal: true, cleanse: true, desc: 'Cura y limpia estados.' }
+            { id: 'chakra_scan', name: 'Chakra Diagnosis', cry: 'No te mueras.', cost: 42, power: 0, type: 'support', heal: 70, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura y limpia estados + 25 CP.' }
         ] },
         { id: 'marshall', name: 'Marshall D. Teach', series: 'One Piece', role: 'DPS', roleTag: 'Yami Yami no Mi', type: 'curse', color: '#17202a', transform: true, transformName: 'Gura Gura no Mi', moves: ['Black Hole', 'Liberation', 'Darkness Pull'], xMoves: ['Gura Smash', 'Tremor Burst', 'Quake Shield', 'World Shock'] },
         { id: 'marco', name: 'Marco', series: 'One Piece', role: 'Healer', roleTag: 'Fénix', type: 'fire', color: '#2471a3', transform: true, transformName: 'Forma Fénix', moves: ['Blue Flames', 'Phoenix Talon', 'Regeneration'], xMoves: ['Phoenix Dive', 'Flame Wingstorm', 'Immortal Guard', 'Blue Bird Revival'] },
@@ -66,12 +66,12 @@ const UserCharacterExpansion = {
             { id: 'takemi_medicine', name: 'Experimental Medicine', cry: 'Esto puede doler.', cost: 30, power: 0, type: 'support', heal: 180, desc: 'Cura intensa.' },
             { id: 'takemi_poison', name: 'Toxicology Dose', cry: 'Traga.', cost: 28, power: 105, type: 'curse', dot: 22, dotTurns: 3, desc: 'Veneno médico.' },
             { id: 'takemi_stim', name: 'Stimulant', cry: 'No te duermas.', cost: 34, power: 0, type: 'support', partyBuff: { atk: 1.3, agi: 1.2 }, turns: 3, desc: 'Estimulante de combate.' },
-            { id: 'takemi_house_call', name: 'House Call', cry: 'Consulta terminada.', cost: 54, power: 0, type: 'support', heal: 80, aoeHeal: true, cleanse: true, desc: 'Cura al equipo y limpia estados.' }
+            { id: 'takemi_house_call', name: 'House Call', cry: 'Consulta terminada.', cost: 54, power: 0, type: 'support', heal: 80, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura al equipo y limpia estados + 25 CP.' }
         ] },
         { id: 'futaba', name: 'Futaba Sakura', series: 'Persona 5 Royal', role: 'Support', roleTag: 'Oracle', type: 'psy', color: '#e67e22', transform: true, transformName: 'Necronomicon Awakened', skills: [
             { id: 'oracle_boost', name: 'Oracle Boost', cry: '¡Buff de datos!', cost: 28, power: 0, type: 'support', partyBuff: { atk: 1.35, def: 1.25, agi: 1.2 }, turns: 3, desc: 'Buff total del equipo.' },
             { id: 'position_hack', name: 'Position Hack', cry: '¡Te tengo!', cost: 30, power: 0, type: 'support', debuff: { agi: 0.55, def: 0.75 }, debuffTurns: 2, targetEnemy: true, desc: 'Hack táctico al enemigo.' },
-            { id: 'moral_support', name: 'Moral Support', cry: '¡No pierdas!', cost: 34, power: 0, type: 'support', heal: 90, aoeHeal: true, desc: 'Soporte remoto.' },
+            { id: 'moral_support', name: 'Moral Support', cry: '¡No pierdas!', cost: 34, power: 0, type: 'support', heal: 90, aoeHeal: true, restoreSp: 30, desc: 'Soporte remoto + 30 CP.' },
             { id: 'futaba_awaken', name: 'Necronomicon Awakened', cry: '¡Necronomicon!', cost: 58, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.35, transformAgi: 1.35, desc: 'TRANSFORM · Necronomicon despierta · permanece hasta quedarse sin CP.' }
         ], transformedSkills: [
             { id: 'oracle_barrage', name: 'Oracle Barrage', cry: '¡Datos!', cost: 34, power: 140, type: 'psy', hits: 3, desc: 'Bombardeo de datos ×3.' },
@@ -122,7 +122,7 @@ const UserCharacterExpansion = {
         ] },
         { id: 'gallica', name: 'Gallica', series: 'Metaphor: ReFantazio', role: 'Support', roleTag: 'Fairy Guide', type: 'support', color: '#aed6f1', accent: '#f9e79f', resist: ['wind'], weak: ['curse'], maxHp: 240, maxSp: 170, atk: 42, def: 26, agi: 46, luk: 34, skills: [
             { id: 'scout', name: 'Fairy Scout', cry: 'I see it!', cost: 26, power: 0, type: 'support', partyBuff: { agi: 1.35, luk: 1.35 }, turns: 3, desc: 'Exploración · AGI/LUK equipo ↑.' },
-            { id: 'fairy_dust', name: 'Fairy Dust', cry: 'Sprinkles!', cost: 30, power: 0, type: 'support', heal: 120, cleanse: true, desc: 'Polvo · cura + limpia.' },
+            { id: 'fairy_dust', name: 'Fairy Dust', cry: 'Sprinkles!', cost: 30, power: 0, type: 'support', heal: 120, cleanse: true, restoreSp: 25, desc: 'Polvo · cura + limpia + 25 CP.' },
             { id: 'hide_wings', name: 'Hide Wings', cry: 'Shh!', cost: 26, power: 0, type: 'support', buff: { def: 1.5, agi: 1.3 }, turns: 3, desc: 'Escondite · DEF/AGI ↑.' },
             { id: 'guide_wind', name: 'Guiding Wind', cry: 'This way!', cost: 24, power: 90, type: 'wind', desc: 'Viento guía.' }
         ] },

@@ -103,7 +103,7 @@ const BattleData = {
             skills: [
                 { id: 'heal_sakura', name: 'Shosen Jutsu', cry: '¡Te curo!', cost: 29, power: 0, type: 'support', heal: 145, desc: 'Gran cura a 1 aliado.' },
                 { id: 'cherry_punch', name: 'Cherry Blossom Impact', cry: 'CHA!', cost: 33, power: 125, type: 'strike', desc: 'Puño monstruo (byakugou).' },
-                { id: 'heal_all', name: 'Mystical Palm Wave', cry: '¡Todos arriba!', cost: 57, power: 0, type: 'support', heal: 95, aoeHeal: true, desc: 'Cura al equipo.' },
+                { id: 'heal_all', name: 'Mystical Palm Wave', cry: '¡Todos arriba!', cost: 57, power: 0, type: 'support', heal: 95, aoeHeal: true, restoreSp: 25, desc: 'Cura al equipo + 25 CP.' },
                 { id: 'strength_buff', name: 'Inner Sakura', cry: 'SHANNARO!', cost: 37, power: 0, type: 'support', allyBuff: { atk: 1.45, def: 1.25 }, turns: 3, targetAlly: true, desc: 'Buff a 1 aliado ATK/DEF ↑' }
             ]
         },
@@ -140,7 +140,7 @@ const BattleData = {
                 { id: 'dora_barrage', name: 'DORA Barrage', cry: 'DORARARARA!', cost: 34, power: 128, type: 'strike', hits: 6, desc: 'Aluvión de Crazy Diamond.' },
                 { id: 'fix_pulse', name: 'Restore Pulse', cry: '¡Arreglado!', cost: 36, power: 0, type: 'support', heal: 135, cleanse: true, desc: 'Cura fuerte + limpia debuffs.' },
                 { id: 'reflect_fix', name: 'Angy Fix', cry: 'Don\'t mess with the hair!', cost: 42, power: 140, type: 'strike', debuff: { atk: 0.75 }, debuffTurns: 2, desc: 'Golpe + ATK enemigo ↓' },
-                { id: 'team_restore', name: 'Group Restoration', cry: 'Crazy Diamond!', cost: 58, power: 0, type: 'support', heal: 100, aoeHeal: true, partyBuff: { def: 1.35 }, turns: 3, desc: 'Cura equipo + DEF ↑' }
+                { id: 'team_restore', name: 'Group Restoration', cry: 'Crazy Diamond!', cost: 58, power: 0, type: 'support', heal: 100, aoeHeal: true, partyBuff: { def: 1.35 }, turns: 3, restoreSp: 25, desc: 'Cura equipo + DEF ↑ + 25 CP.' }
             ]
         },
         {
@@ -208,7 +208,7 @@ const BattleData = {
                 { id: 'soten', name: 'Soten Kisshun', cry: 'SOTEN KISSHUN! I REJECT!', cost: 33, power: 0, type: 'support', heal: 170, desc: 'I reject · gran cura.' },
                 { id: 'santen', name: 'Santen Kesshun', cry: 'SANTEN KESSHUN! I REJECT!', cost: 29, power: 0, type: 'support', allyBuff: { def: 1.65 }, turns: 3, targetAlly: true, desc: 'Escudo · DEF ↑↑ a 1 aliado.' },
                 { id: 'koten', name: 'Koten Zanshun', cry: 'KOTEN ZANSHUN! I REJECT!', cost: 41, power: 120, type: 'bless', desc: 'Bendición · puede causar DOWN a THE 50/50.' },
-                { id: 'heal_wave', name: 'Shun Shun Rikka', cry: '¡Shun Shun Rikka!', cost: 61, power: 0, type: 'support', heal: 105, aoeHeal: true, cleanse: true, desc: 'Cura equipo + limpia debuffs.' }
+                { id: 'heal_wave', name: 'Shun Shun Rikka', cry: '¡Shun Shun Rikka!', cost: 61, power: 0, type: 'support', heal: 105, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura equipo + limpia + 25 CP.' }
             ]
         },
         // —— EXTRA ROSTER ——
@@ -227,7 +227,7 @@ const BattleData = {
                 { id: 'ifrit_kick', name: 'Ifrit Kick', cry: 'BURN!', cost: 42, power: 175, type: 'fire', desc: 'Patada infernal.' },
                 { id: 'spectre', name: 'Spectre', cry: 'Spectre!', cost: 46, power: 160, type: 'fire', hits: 3, desc: 'Combo flameante ×3.' },
                 { id: 'sky_walk_max', name: 'Blue Walk+', cry: 'Más rápido.', cost: 30, power: 0, type: 'support', buff: { agi: 1.7, atk: 1.25 }, turns: 3, desc: 'Velocidad máxima.' },
-                { id: 'party_food', name: 'Cuisine Extra', cry: 'Bon appétit!', cost: 48, power: 0, type: 'support', heal: 90, aoeHeal: true, desc: 'Cura al equipo (cocina).' }
+                { id: 'party_food', name: 'Cuisine Extra', cry: 'Bon appétit!', cost: 48, power: 0, type: 'support', heal: 90, aoeHeal: true, restoreSp: 35, desc: 'Cura al equipo + 35 CP (cocina).' }
             ]
         },
         {
@@ -446,9 +446,9 @@ const BattleData = {
             resist: ['bless', 'slash'], weak: ['curse'],
             maxHp: 460, maxSp: 175, atk: 60, def: 36, agi: 30, luk: 26,
             skills: [
-                { id: 'minazuki_heal', name: 'Minazuki', cry: 'Rest now.', cost: 36, power: 0, type: 'support', heal: 200, desc: 'Mantaraya · gran cura.' },
+                { id: 'minazuki_heal', name: 'Minazuki', cry: 'Rest now.', cost: 36, power: 0, type: 'support', heal: 200, restoreSp: 35, desc: 'Mantaraya · gran cura + 35 CP.' },
                 { id: 'blood_arts', name: 'Blood Arts', cry: '...', cost: 32, power: 165, type: 'slash', desc: 'Corte de la primera Kenpachi.' },
-                { id: 'pacifist', name: 'Pacifist Oath', cry: 'No more blood.', cost: 30, power: 0, type: 'support', heal: 60, aoeHeal: true, cleanse: true, desc: 'Voto · cura equipo + limpia.' },
+                { id: 'pacifist', name: 'Pacifist Oath', cry: 'No more blood.', cost: 30, power: 0, type: 'support', heal: 60, aoeHeal: true, cleanse: true, restoreSp: 35, desc: 'Voto · cura equipo + limpia + 35 CP.' },
                 { id: 'bloodlust', name: 'Bloodlust Unleashed', cry: 'DIE.', cost: 40, power: 0, type: 'support', once: true, buff: { atk: 1.8 }, turns: 4, hpCost: 40, desc: 'Sed de sangre · ATK ↑↑↑ a cambio de HP.' }
             ]
         },
@@ -547,7 +547,7 @@ const BattleData = {
             ],
             transformedSkills: [
                 { id: 'life_giver', name: 'Life Giver', cry: 'Gold Experience!', cost: 28, power: 0, type: 'support', heal: 250, cleanse: true, desc: 'Cura absurda + limpia debuffs.' },
-                { id: 'requiem_field', name: 'Requiem Field', cry: 'I have a dream.', cost: 48, power: 0, type: 'support', heal: 145, aoeHeal: true, partyBuff: { def: 1.55, atk: 1.2 }, turns: 3, cleanse: true, desc: 'Cura equipo masiva + DEF/ATK ↑ + limpia.' },
+                { id: 'requiem_field', name: 'Requiem Field', cry: 'I have a dream.', cost: 48, power: 0, type: 'support', heal: 145, aoeHeal: true, partyBuff: { def: 1.55, atk: 1.2 }, turns: 3, cleanse: true, restoreSp: 35, desc: 'Cura equipo masiva + DEF/ATK ↑ + limpia + 35 CP.' },
                 { id: 'return_to_zero', name: 'Return to Zero', cry: 'You will never reach the truth.', cost: 40, power: 0, type: 'support', buff: { def: 2.2 }, turns: 3, cover: true, coverHits: 5, heal: 80, desc: 'Nulifica el destino · cover 5 + autocura.' },
                 { id: 'muda_storm', name: 'MUDA Requiem', cry: 'MUDAMUDAMUDA!', cost: 34, power: 130, type: 'strike', hits: 7, heal: 50, desc: 'Barrage · cura al pegar.' }
             ]

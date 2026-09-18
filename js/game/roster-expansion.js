@@ -105,13 +105,13 @@
             skills: [
                 { id: 'heal_tsu', name: 'Creation Rebirth', cry: 'I won\'t let you die!', cost: 40, power: 0, type: 'support', heal: 140, desc: 'Gran cura.' },
                 { id: 'heaven_kick', name: 'Heavenly Kick', cry: 'CHA!', cost: 32, power: 135, type: 'strike', desc: 'Patada monstruosa.' },
-                { id: 'heal_all_tsu', name: 'Medical Corps', cry: 'Stand up!', cost: 55, power: 0, type: 'support', heal: 60, aoeHeal: true, desc: 'Cura equipo.' },
+                { id: 'heal_all_tsu', name: 'Medical Corps', cry: 'Stand up!', cost: 55, power: 0, type: 'support', heal: 60, aoeHeal: true, restoreSp: 30, desc: 'Cura equipo + 30 CP.' },
                 { id: 'byakugo', name: 'Byakugō no In', cry: 'Creation Rebirth — Strength of a Hundred!', cost: 66, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.45, transformDef: 1.2, transformHeal: 80, desc: 'TRANSFORM · Sello de los Cien · cura al activar.' }
             ],
             transformedSkills: [
                 { id: 'yin_seal_heal', name: 'Mitotic Regeneration', cry: 'I can still fight!', cost: 34, power: 0, type: 'support', heal: 160, desc: 'Regeneración masiva.' },
                 { id: 'heaven_punch', name: 'Monster Punch', cry: 'CHA!', cost: 40, power: 175, type: 'strike', desc: 'Puñetazo devastador.' },
-                { id: 'katsuyu_max', name: 'Katsuyu Field', cry: 'Katsuyu!', cost: 42, power: 0, type: 'support', heal: 70, aoeHeal: true, partyBuff: { def: 1.35 }, turns: 2, desc: 'Cura equipo + DEF ↑.' },
+                { id: 'katsuyu_max', name: 'Katsuyu Field', cry: 'Katsuyu!', cost: 42, power: 0, type: 'support', heal: 70, aoeHeal: true, partyBuff: { def: 1.35 }, turns: 2, restoreSp: 30, desc: 'Cura equipo + DEF ↑ + 30 CP.' },
                 { id: 'sozo_saisei', name: 'Sōzō Saisei', cry: 'Creation Rebirth!', cost: 58, power: 0, type: 'support', once: true, heal: 220, cleanse: true, desc: 'Cura extrema + limpia · 1 uso.' }
             ] },
         { id: 'brook', name: 'Brook', series: 'One Piece', role: 'Support', roleTag: 'Soul', color: '#d5dbdb',
@@ -396,12 +396,12 @@
             skills: [
                 { id: 'plankton_shot', name: 'Plankton Shot', cry: 'FF!', cost: 26, power: 100, type: 'pierce', hits: 3, desc: 'Balas de plancton.' },
                 { id: 'ff_heal', name: 'Wound Seal', cry: 'I got this!', cost: 32, power: 0, type: 'support', heal: 120, desc: 'Sella heridas.' },
-                { id: 'water_need', name: 'Water Supply', cry: 'Need water…', cost: 28, power: 0, type: 'support', partyBuff: { def: 1.2 }, turns: 2, heal: 40, aoeHeal: true, desc: 'Hidrata equipo.' },
+                { id: 'water_need', name: 'Water Supply', cry: 'Need water…', cost: 28, power: 0, type: 'support', partyBuff: { def: 1.2 }, turns: 2, heal: 40, aoeHeal: true, restoreSp: 25, desc: 'Hidrata equipo + 25 CP.' },
                 { id: 'ff_awaken', name: 'Plankton Swarm', cry: 'Foo Fighters!', cost: 50, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 10, transformAtk: 1.3, transformDef: 1.2, desc: 'TRANSFORM · enjambre.' }
             ],
             transformedSkills: [
                 { id: 'bullet_barrage', name: 'Plankton Barrage', cry: 'Fire!', cost: 34, power: 135, type: 'pierce', hits: 5, desc: 'Ráfaga ×5.' },
-                { id: 'ff_heal_max', name: 'Colony Heal', cry: 'Stay with me!', cost: 36, power: 0, type: 'support', heal: 100, aoeHeal: true, cleanse: true, desc: 'Cura equipo + limpia.' },
+                { id: 'ff_heal_max', name: 'Colony Heal', cry: 'Stay with me!', cost: 36, power: 0, type: 'support', heal: 100, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura equipo + limpia + 25 CP.' },
                 { id: 'invade', name: 'Invade Body', cry: 'Gotcha!', cost: 38, power: 145, type: 'water', debuff: { agi: 0.65 }, debuffTurns: 2, desc: 'Invade · AGI ↓' },
                 { id: 'ff_finale', name: 'Full Colony', cry: 'We are FF!', cost: 55, power: 160, type: 'water', aoe: true, desc: 'Colonia completa AoE.' }
             ] },

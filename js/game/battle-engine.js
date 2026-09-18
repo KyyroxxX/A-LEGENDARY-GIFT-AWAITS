@@ -828,13 +828,17 @@ const BattleEngine = {
                             }
                         });
                     }
-                    logs.push(`${t.name} recupera ${t.hp - before} HP.`);
+                    const cpNote = skill.restoreSp ? ` +${skill.restoreSp} CP` : '';
+                    logs.push(`${t.name} recupera ${t.hp - before} HP${cpNote}.`);
                 });
             } else {
                 const t = target || user;
                 const before = t.hp;
                 t.hp = Math.min(t.maxHp, t.hp + amount);
-                logs.push(`${t.name} recupera ${t.hp - before} HP.`);
+                // Single-target batteries (Gallica, Minazuki…) also restore CP.
+                if (skill.restoreSp) t.sp = Math.min(t.maxSp, (t.sp || 0) + skill.restoreSp);
+                const cpNote = skill.restoreSp ? ` +${skill.restoreSp} CP` : '';
+                logs.push(`${t.name} recupera ${t.hp - before} HP${cpNote}.`);
             }
         }
         if (skill.revive != null) {
