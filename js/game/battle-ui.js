@@ -1267,18 +1267,18 @@ const BattleUI = {
     },
 
     /**
-     * Ground every fighter on the same line WITHOUT resizing anyone.
-     * PNGs carry different transparent footroom, so `contain` bottom-anchored
-     * leaves some fighters floating. We measure each art's transparent rows
-     * at the bottom (alpha scan, cached per URL) and lift the fighter by
-     * exactly that displayed gap via negative margin. Sizes, boxes and
-     * backgrounds stay 100% as authored — only the baseline is equalized.
-     * No transforms involved (enemy flip + idle use transform — untouched).
+     * Equalize every fighter's VISUAL height and ground them on one line.
+     * PNGs carry different transparent padding, so `contain` shows some
+     * fighters tiny and others floating. We alpha-scan each art's real
+     * content box (cached per URL) and set `zoom` so all contents share one
+     * height — bounded (0.65–1.5) so nobody turns into a giant or an ant —
+     * then lift the fighter by its displayed footroom via negative margin.
+     * Boxes, backgrounds, flips and idle animations are never touched.
      */
     normalizeFighterHeights() {
         if (!this.root) return;
         try {
-            this._artPadCache = this._artPadCache || {};
+            this._artBoxCache = this._artBoxCache || {};
             this.root.querySelectorAll('.p5-fighter').forEach((fel) => {
                 const spr = fel.querySelector('.p5-sprite');
                 if (!spr) return;
@@ -1286,34 +1286,40 @@ const BattleUI = {
                 const m = /url\(['"]?([^'")]+)['"]?\)/.exec(bg);
                 if (!m) return;
                 const key = m[1];
-                const cached = this._artPadCache[key];
+                const cached = this._artBoxCache[key];
                 if (cached) {
-                    this.applyGrounding(fel, spr, cached);
+                    this.applyArtBox(fel, spr, cached);
                     return;
                 }
                 if (cached === null) return; // measuring already
-                this._artPadCache[key] = null;
+                this._artBoxCache[key] = null;
                 const img = new Image();
                 img.onload = () => {
-                    let pad = null;
+                    let box = null;
                     try {
-                        pad = this.measureFootPad(img);
+                        box = this.measureArtBox(img);
                     } catch (_) {
-                        pad = null;
+                        box = null;
                     }
-                    this._artPadCache[key] = pad || false;
-                    if (pad && spr.isConnected) this.applyGrounding(fel, spr, pad);
+                    this._artBoxCache[key] = box || false;
+                    if (box && spr.isConnected) this.applyArtBox(fel, spr, box);
                 };
                 img.onerror = () => {
-                    this._artPadCache[key] = false;
+                    this._artBoxCache[key] = false;
                 };
                 img.src = key;
             });
         } catch (_) { /* never break the battle render */ }
     },
 
-    /** Alpha-scan ONLY the bottom: transparent footroom rows in natural px. */
-    measureFootPad(img) {
+    /** Target visual height — mirrors the CSS sprite box so average size stays. */
+    normTargetH() {
+        const vh = (typeof window !== 'undefined' && window.innerHeight) || 800;
+        return Math.max(200, Math.min(360, Math.round(vh * 0.38)));
+    },
+
+    /** Alpha-scan the art: natural size + content rows (headroom + footroom). */
+    measureArtBox(img) {
         const w = img.naturalWidth;
         const h = img.naturalHeight;
         if (!w || !h) return null;
@@ -1337,28 +1343,43 @@ const BattleUI = {
             }
             return false;
         };
+        let top = -1;
         let bottom = -1;
+        for (let y = 0; y < ch; y += 2) {
+            if (rowHasInk(y)) {
+                top = y;
+                break;
+            }
+        }
         for (let y = ch - 1; y >= 0; y -= 2) {
             if (rowHasInk(y)) {
                 bottom = y;
                 break;
             }
         }
-        if (bottom < 0) return null;
-        const padRows = Math.max(0, (ch - 1 - bottom) * (h / ch));
-        return { w, h, padB: padRows };
+        if (top < 0 || bottom <= top) return null;
+        const sy = h / ch;
+        return {
+            w, h,
+            contentH: Math.max(1, Math.round((bottom - top + 1) * sy)),
+            padB: Math.max(0, Math.round((ch - 1 - bottom) * sy))
+        };
     },
 
-    /** Lift the whole fighter by its displayed footroom gap — sizes untouched. */
-    applyGrounding(fel, spr, pad) {
-        if (!fel || !spr || !pad || !pad.w || !pad.h) return;
+    /** Same content height for all + feet on the line. Boxes untouched. */
+    applyArtBox(fel, spr, box) {
+        if (!fel || !spr || !box || !box.w || !box.h || !box.contentH) return;
         try {
             const bw = spr.offsetWidth;
             const bh = spr.offsetHeight;
             if (!bw || !bh) return;
-            const s = Math.min(bw / pad.w, bh / pad.h);
-            const gap = Math.max(0, Math.round(pad.padB * s));
-            fel.style.setProperty('margin-bottom', `${-gap}px`, 'important');
+            // Displayed scale under `contain`, then zoom to the shared height.
+            const s = Math.min(bw / box.w, bh / box.h);
+            const shown = Math.max(1, box.contentH * s);
+            const zoom = Math.max(0.65, Math.min(1.5, this.normTargetH() / shown));
+            spr.style.zoom = zoom.toFixed(3);
+            const gap = Math.max(0, box.padB * s * zoom);
+            fel.style.setProperty('margin-bottom', `${-Math.round(gap)}px`, 'important');
         } catch (_) { /* ignore */ }
     },
 
