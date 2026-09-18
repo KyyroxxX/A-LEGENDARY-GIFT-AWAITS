@@ -1757,10 +1757,15 @@ const GachaScene = {
                 }], 7)}
                 <h4 class="gw-pool-h">Personajes 6★ <span>al perder el 50/50 celestial</span></h4>
                 ${this.poolGridHTML(six, 6, 'Sin 6★ en este banner')}
-                <h4 class="gw-pool-h">Personajes 5★ <span>al perder el 50/50 celestial</span></h4>
+                <h4 class="gw-pool-h">Personajes 5★ <span>${((b.rate5 || 0.02) * 100).toFixed(1)}% por tirada</span></h4>
                 ${this.poolGridHTML(five, 5, 'Sin 5★ en este banner')}
-                <h4 class="gw-pool-h">4★ / 3★</h4>
-                <p class="gw-pool-empty">${(b.pool4Names || []).join(' · ') || 'Fragmentos'} · ${(b.pool3Names || []).join(' · ') || 'Chikistrites'}</p>
+                <h4 class="gw-pool-h">Personajes 4★</h4>
+                ${this.poolGridHTML((b.pool4 || []).filter((cid) => typeof GachaRoster === 'undefined' || !GachaRoster.isUnitSealed?.(cid)).map((cid) => ({
+                    name: this.displayName(cid),
+                    art: this.charPortraitSrc(cid)
+                })), 4, (b.pool4Names || []).join(' · ') || 'Fragmentos')}
+                <h4 class="gw-pool-h">3★</h4>
+                <p class="gw-pool-empty">${(b.pool3Names || []).join(' · ') || 'Chikistrites'}</p>
                 ${(() => {
                     if (typeof GachaRoster === 'undefined' || !GachaRoster.legendaryBlockers) return '';
                     const bl = GachaRoster.legendaryBlockers();
@@ -1769,7 +1774,7 @@ const GachaScene = {
                     const ren = bl.renHave >= bl.renNeed ? `✓ Ren C${bl.renNeed - 1}` : `✗ Ren C${Math.max(0, bl.renHave - 1)}/C${bl.renNeed - 1}`;
                     return `<p class="gw-details-foot">Regalo: hard pity 7★ lo garantiza · ${boss} · ${ren}</p>`;
                 })()}
-                <p class="gw-details-foot">Gasta tiradas <strong>rojas</strong>. Garantía 7★ en ${b.hard7 || 80}. El regalo solo sale tras vencer a THE 50/50 con Ren al máximo. Contador: <strong id="details-pity">0</strong>.</p>`;
+                <p class="gw-details-foot">Gasta tiradas <strong>rojas</strong>. Garantía 7★ en ${b.hard7 || 80} · 5★ en ${b.hard5 || 50}. El regalo solo sale tras vencer a THE 50/50 con Ren al máximo. Contador: <strong id="details-pity">0</strong>.</p>`;
         }
 
         const pair = (typeof GachaRoster !== 'undefined' && GachaRoster.getFeaturedPair)

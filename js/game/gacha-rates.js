@@ -32,7 +32,8 @@ const GachaRates = {
     ratesBlurb(b) {
         if (b.isMetaphor) {
             const pct7 = ((b.rate7 || 0.008) * 100).toFixed(2);
-            return `7★ base ${pct7}% (soft ${b.soft7} · hard ${b.hard7}) · rate-up ${Math.round((b.featuredRate ?? 0.3) * 100)}%`;
+            const pct5 = ((b.rate5 || 0.02) * 100).toFixed(1);
+            return `7★ base ${pct7}% (soft ${b.soft7} · hard ${b.hard7}) · 5★ base ${pct5}% (soft ${b.soft5} · hard ${b.hard5}) · rate-up ${Math.round((b.featuredRate ?? 0.3) * 100)}%`;
         }
         const pct6 = ((b.rate6 || 0.003) * 100).toFixed(2);
         const pct5 = ((b.rate5 || 0.02) * 100).toFixed(1);
@@ -44,10 +45,12 @@ const GachaRates = {
     rateRows(b) {
         if (b.isMetaphor) {
             const r7 = b.rate7 || 0.008;
+            const r5 = b.rate5 || 0.02;
             const r4 = b.rate4 || 0.10;
-            const r3 = Math.max(0, 1 - r7 - r4);
+            const r3 = Math.max(0, 1 - r7 - r5 - r4);
             return [
                 { stars: 7, label: '7★', pct: (r7 * 100).toFixed(2), note: `soft ${b.soft7} · hard ${b.hard7}` },
+                { stars: 5, label: '5★', pct: (r5 * 100).toFixed(1), note: `soft ${b.soft5} · hard ${b.hard5}` },
                 { stars: 4, label: '4★', pct: (r4 * 100).toFixed(1), note: `hard pity ${b.hard4}` },
                 { stars: 3, label: '3★', pct: (r3 * 100).toFixed(1), note: 'resto del pool' }
             ];

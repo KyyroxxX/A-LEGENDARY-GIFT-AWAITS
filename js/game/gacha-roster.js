@@ -271,7 +271,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/metaphor-stage.webp',
             objectPosition: '48% 58%',
             accent: '#9b59b6',
-            rate7: 0.008, rate4: 0.10, soft7: 50, hard7: 80, hard4: 10,
+            rate7: 0.008, rate5: 0.02, rate4: 0.10, soft7: 50, hard7: 80, soft5: 35, hard5: 50, hard4: 10,
             featured5050: true,
             isMetaphor: true,
             pool6: ['basilio', 'eupha', 'louis'],
@@ -1229,10 +1229,14 @@ const GachaRoster = {
             const r7 = rates
                 ? rates.effectiveRate(b.rate7 || 0.008, b.soft7 || 50, b.hard7 || 80, st.pity7 - 1)
                 : (b.rate7 || 0.008);
+            const r5 = rates
+                ? rates.effectiveRate(b.rate5 || 0.02, b.soft5 || 35, b.hard5 || 50, st.pity5 - 1)
+                : (b.rate5 || 0.02);
             const roll = Math.random();
             let stars = 3;
             if (roll < r7 || st.pity7 >= (b.hard7 || 80)) stars = 7;
-            else if (st.pity4 >= b.hard4 || Math.random() < (b.rate4 || 0.10) / Math.max(0.001, 1 - r7)) stars = 4;
+            else if (roll < r7 + r5 || st.pity5 >= (b.hard5 || 50)) stars = 5;
+            else if (st.pity4 >= b.hard4 || Math.random() < (b.rate4 || 0.10) / Math.max(0.001, 1 - r7 - r5)) stars = 4;
 
             if (stars === 7) {
                 // Hard pity reached on THIS roll (before reset below).
@@ -1270,9 +1274,25 @@ const GachaRoster = {
                         result.featured = false;
                     }
                 }
+            } else if (stars === 5) {
+                st.pity5 = 0;
+                st.pity4 = 0;
+                // Maxed units still drop (they convert to Sellos Estelares).
+                const open5 = this.availablePool(b.pool5Std || [], true);
+                if (!open5.length) {
+                    result = this.shardResult(pick(b.pool5StdNames) || 'Destino Falso', 5);
+                    result.featured = false;
+                } else {
+                    result = this.characterResult(this.pickWithCollectionBias(open5, pick), 5, false);
+                }
             } else if (stars === 4) {
                 st.pity4 = 0;
-                result = this.shardResult(pick(b.pool4Names) || 'Fragmento Real', 4);
+                const open4 = this.availablePool(b.pool4 || [], true);
+                if (!open4.length) {
+                    result = this.shardResult(pick(b.pool4Names) || 'Fragmento Real', 4);
+                } else {
+                    result = this.characterResult(this.pickWithCollectionBias(open4, pick), 4, false);
+                }
             } else {
                     const itemName = pick(b.pool3Names) || 'Chispa de esperanza';
                     result = (typeof EquipmentSystem !== 'undefined' && EquipmentSystem.result(itemName)) || this.shardResult(itemName, 3);
