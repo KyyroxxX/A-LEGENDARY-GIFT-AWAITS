@@ -1783,18 +1783,18 @@ const BattleUI = {
         } catch (_) { /* la música nunca rompe el combate */ }
     },
 
-    /** Cut-in del despertar con el protagonista correcto: si faseó un enemigo,
-     *  lo protagoniza ÉL (no el atacante que lo tumbó). */
+    /** Cut-in del despertar con los protagonistas correctos: si fasean varios
+     *  enemigos a la vez, salen TODOS en cola (no solo el primero). */
     async playActionCutin(actor, sk, result) {
         if (!result || (!result.transformed && !result.secondPhase?.length)) return;
         if (result.secondPhase?.length) {
-            const foe = (result.secondPhase || [])
+            const foes = [...new Set(result.secondPhase || [])]
                 .map(id => this.unitForId(id, 'enemy') || (this.state?.enemies || []).find(e => e.id === id))
-                .find(Boolean);
-            if (foe) {
+                .filter(Boolean);
+            for (const foe of foes) {
                 await this.playTransformCutin(foe, null, result);
-                return;
             }
+            if (foes.length) return;
         }
         if (result.transformed && actor) await this.playTransformCutin(actor, sk, result);
     },
