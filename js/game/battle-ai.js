@@ -57,9 +57,10 @@ const BattleAI = {
         const weakHit = this.bestWeaknessPlay(skills, livingFoes);
         if (weakHit && Math.random() < 0.98) return pick(weakHit.skill, weakHit.target);
 
-        if (hpRatio < 0.5) {
+        // Curarse es la excepción, no la rutina: umbral bajo y sin spamear.
+        if (hpRatio < 0.38) {
             const heal = skills.find(s => s.heal && !s.power);
-            if (heal && Math.random() < 0.92) return pick(heal, enemy);
+            if (heal && Math.random() < 0.65) return pick(heal, enemy);
             const defBuff = skills.find(s => s.buff?.def || s.partyBuff?.def);
             if (defBuff && Math.random() < 0.8) return pick(defBuff, enemy);
         }
@@ -128,7 +129,7 @@ const BattleAI = {
             case 'bosslet':
             case 'final_boss': {
                 const phase = hpRatio <= 0.33 ? 3 : hpRatio <= 0.66 ? 2 : 1;
-                if (phase >= 2 && !enemy._usedHeal && hpRatio < 0.55) {
+                if (phase >= 2 && !enemy._usedHeal && hpRatio < 0.45) {
                     const heal = skills.find(s => s.id === 'heal_phase' || (s.heal && !s.power));
                     if (heal) { enemy._usedHeal = true; return pick(heal, enemy); }
                 }

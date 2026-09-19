@@ -104,7 +104,7 @@ const BattleEngine = {
             u.ai = u.ai || (u.transform ? 'bosslet' : 'tactical');
             const scaleSkill = (sk) => {
                 if (sk.heal) sk.heal = Math.round(
-                    sk.heal * (1.5 + diff * 0.12) * (encounter.enemyGlobalHealScale ?? standardTuning.heal) * (encounter.enemyHealScale ?? 1)
+                    sk.heal * (1.15 + diff * 0.08) * (encounter.enemyGlobalHealScale ?? standardTuning.heal) * (encounter.enemyHealScale ?? 1)
                 );
                 if (sk.power) sk.power = Math.round(
                     sk.power * (1.0 + (diff - 1) * 0.06) * (encounter.enemyGlobalSkillScale ?? standardTuning.skill) * (encounter.enemySkillScale ?? 1)
@@ -357,7 +357,7 @@ const BattleEngine = {
             this.setTransformationStage(unit, 1);
             unit.usedOnce = unit.usedOnce || {};
             unit.usedOnce[xf.id] = true;
-            const pct = 65;
+            const pct = 60;
             unit.hp = Math.max(1, Math.round(unit.maxHp * pct / 100));
             say(`☠ ¡${unit.name} se niega a caer!`);
             say(`★ SEGUNDA FASE · ${unit.name} libera ${unit.transformName || 'su forma final'} · HP al ${pct}% · ATK ↑↑`);
@@ -369,7 +369,7 @@ const BattleEngine = {
         } else {
             // Sin transformación (o aún con coraza): furia final + HP parcial.
             if (shelled) this.breakArmorShell(state, unit, { logs: [] });
-            const pct = 40;
+            const pct = 30;
             unit.hp = Math.max(1, Math.round(unit.maxHp * pct / 100));
             this.applyBuffMap(unit, { atk: 1.4, agi: 1.25 }, 99);
             say(`☠ ¡${unit.name} se niega a caer!`);
@@ -879,11 +879,13 @@ const BattleEngine = {
         if (skill.heal) {
             const scale = user.side === 'ally' ? (state.healScale || 1.55) : 1;
             const amount = Math.round(skill.heal * (1 + (user.healBonus || 0)) * scale);
+            // Tope anti-muro: un enemigo jamás recupera más del 30% de su HP máximo por cura.
+            const capGain = (t, raw) => user.side === 'enemy' ? Math.min(raw, Math.round(t.maxHp * 0.3)) : raw;
             if (skill.aoeHeal) {
                 const team = user.side === 'ally' ? state.party : state.enemies;
                 team.filter(u => u.hp > 0).forEach(t => {
                     const before = t.hp;
-                    t.hp = Math.min(t.maxHp, t.hp + amount);
+                    t.hp = Math.min(t.maxHp, t.hp + capGain(t, amount));
                     if (skill.restoreSp) t.sp = Math.min(t.maxSp, (t.sp || 0) + skill.restoreSp);
                     if (skill.cleanse) {
                         Object.keys(t.buffs || {}).forEach(k => {
@@ -899,7 +901,7 @@ const BattleEngine = {
             } else {
                 const t = target || user;
                 const before = t.hp;
-                t.hp = Math.min(t.maxHp, t.hp + amount);
+                t.hp = Math.min(t.maxHp, t.hp + capGain(t, amount));
                 // Single-target batteries (Gallica, Minazuki…) also restore CP.
                 if (skill.restoreSp) t.sp = Math.min(t.maxSp, (t.sp || 0) + skill.restoreSp);
                 const cpNote = skill.restoreSp ? ` +${skill.restoreSp} CP` : '';
