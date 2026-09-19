@@ -562,7 +562,7 @@ const BattleFlavor = {
     /** Diálogo Persona de la técnica: { setup, shout }. Determinista por skill. */
     skillDialogue(unit, sk) {
         if (!sk) return null;
-        if (sk.transform) {
+        if (sk.transform || sk.advanceTransform) {
             const d = this.transformDialogue(unit, sk);
             return { setup: d.vow, shout: d.cry };
         }

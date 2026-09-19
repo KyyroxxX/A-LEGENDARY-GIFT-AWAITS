@@ -92,6 +92,8 @@ const BattleUI = {
     },
 
     captureVitals() {
+        // Nueva época de animación: cualquier tween de barras anterior queda obsoleto.
+        this._vitalsToken = (this._vitalsToken || 0) + 1;
         const snap = {};
         [...(this.state?.party || []), ...(this.state?.enemies || [])].forEach((u) => {
             snap[u.id] = {
@@ -162,10 +164,22 @@ const BattleUI = {
         if (!this.root || !this.state) return;
         const unique = [...new Set((ids || []).filter(Boolean))];
         if (!unique.length) return;
+        // Si un render() repinta a mitad, este tween muere: el render ya deja los valores finales.
+        const token = this._vitalsToken || 0;
         const duration = 360;
         const start = performance.now();
         await new Promise((resolve) => {
             const tick = (now) => {
+                if (token !== (this._vitalsToken || 0)) {
+                    unique.forEach((id) => {
+                        const prev = before[id];
+                        const next = [...this.state.party, ...this.state.enemies].find((u) => u.id === id);
+                        if (!prev || !next) return;
+                        this.updateUnitVisual(id, Math.max(0, next.hp || 0), next.sp || 0);
+                    });
+                    resolve();
+                    return;
+                }
                 const t = Math.min(1, (now - start) / duration);
                 const ease = 1 - Math.pow(1 - t, 3);
                 unique.forEach((id) => {
@@ -1154,6 +1168,8 @@ const BattleUI = {
 
     render() {
         if (!this.state || !this.root) return;
+        // Repintado completo: invalida tweens de barras en vuelo (él ya deja valores finales).
+        this._vitalsToken = (this._vitalsToken || 0) + 1;
         const s = this.state;
         if (s.enemies.some(unit => unit.transformed)) Achievements.show('first_transform');
         const actor = BattleEngine.currentActor(s);
@@ -1812,7 +1828,7 @@ const BattleUI = {
                     : { vow: '¡Despierta!', cry: sk?.cry || `${formName}!` });
             const tag = opts.tag || (foe ? 'EL ENEMIGO DESPIERTA' : '¡DESPERTAR!');
             const who = (typeof this.fighterName === 'function') ? this.fighterName(actor) : actor.name;
-            const art = this.spriteBg(actor.id, this.formKind(actor));
+            const art = this.spriteBg(actor.id, opts.formKind || this.formKind(actor));
             const el = document.createElement('div');
             el.className = `p5-xform-cutin ${foe ? 'foe' : 'ally'}`;
             el.innerHTML = `
@@ -1924,16 +1940,19 @@ const BattleUI = {
         stage?.classList.remove('allout-rush');
         this.root?.querySelectorAll('.p5-fighter.attacking').forEach(el => el.classList.remove('attacking', 'fx-finisher', 'assault-squad'));
         if (r.ok) {
-            await this.animateVitalsFrom(before, [
+            // Cut-in A LA VEZ que los números del asalto.
+            const vitalsAllOut = this.animateVitalsFrom(before, [
                 ...this.state.enemies.map(e => e.id),
                 ...this.state.party.map(p => p.id)
             ]);
+            let cutinAllOut = null;
             if (r.secondPhase?.length) {
                 this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                 this.maybeTitanMusic();
-                this.render();
-                await this.playActionCutin(null, null, r);
+                cutinAllOut = this.playActionCutin(null, null, r);
             }
+            await vitalsAllOut;
+            if (cutinAllOut) await cutinAllOut;
             if (r.finisher?.length) await this.playFinisherSequence(r.finisher, { allOut: true });
             this.playDeathFx(this.state.enemies.filter(e => e.hp <= 0).map(e => e.id));
         }
@@ -2008,12 +2027,16 @@ const BattleUI = {
         this.render();
 
         const sk = BattleData.activeSkills(actor).find(s => s.id === action.skillId);
-        // Texto Y animación a la vez (no en serie): el banner sale con el ataque.
+        // Texto, animación Y cut-in a la vez (no en serie).
         const announced = this.announceAction(actor, action, sk);
+        // El transform se sabe de antemano: su cut-in corre con su animación.
+        let preCutin = null;
+        if (sk?.transform) preCutin = this.playTransformCutin(actor, sk, null, { formKind: 'transform' });
         this.setActionPhase((action.type === 'skill' && sk && !sk.power) || action.type === 'guard' ? 'CASTING' : 'ATTACKING');
         action.actorSide = actor.side;
         await this.playAttackAnim(actor.id, action, actor);
         await announced;
+        if (preCutin) await preCutin;
         const before = this.captureVitals();
         const result = this.runWithUiSfx(() => BattleEngine.execute(this.state, actor, action));
         this.checkCombatAchievements(result);
@@ -2032,16 +2055,20 @@ const BattleUI = {
             this.showDamageFloats(result.hits, action);
             if (result.armorBreak) {
                 this.showCry('¡CORAZA ROTA!', { family: 'transform', fxType: 'support' });
-                // Sasori must visually leave Hiruko on the first successful hit,
-                // before the damage timeline and the next turn continue.
-                this.render();
             }
             if (result.secondPhase?.length) {
                 this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                 this.maybeTitanMusic();
-                this.render();
             }
-            await this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
+            // Cut-in A LA VEZ que los números (ya se sabe el resultado).
+            const vitals = this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
+            let postCutin = null;
+            if (!preCutin) {
+                if (result.secondPhase?.length) postCutin = this.playActionCutin(actor, sk, result);
+                else if (this.skillDeservesCutin(sk)) postCutin = this.playSkillCutin(actor, sk);
+            }
+            await vitals;
+            if (postCutin) await postCutin;
             this.setActionPhase('DEATH_CHECK');
             if (actor.side === 'ally' && result.finisher?.length) {
                 await this.playFinisherSequence(result.finisher, { actor });
@@ -2052,10 +2079,6 @@ const BattleUI = {
             await this.animateVitalsFrom(before, [actor.id]);
             this.setActionPhase('DAMAGE_APPLIED');
             await this.wait(180);
-        }
-        await this.playActionCutin(actor, sk, result);
-        if (!result.secondPhase?.length && this.skillDeservesCutin(sk)) {
-            await this.playSkillCutin(actor, sk);
         }
         this.hideActionBanner();
         if (result.oneMore) {
@@ -2955,11 +2978,14 @@ const BattleUI = {
             };
 
             this.setActionPhase((sk && !sk.power) ? 'CASTING' : 'ATTACKING');
-            // Texto Y animación a la vez (no en serie): el banner sale con el ataque.
+            // Texto, animación Y cut-in a la vez (no en serie).
             const announcedFoe = this.announceAction(actor, action, sk);
+            let preCutinFoe = null;
+            if (sk?.transform) preCutinFoe = this.playTransformCutin(actor, sk, null, { formKind: 'transform' });
             action.actorSide = actor.side;
             await this.playAttackAnim(actor.id, action, actor);
             await announcedFoe;
+            if (preCutinFoe) await preCutinFoe;
             const before = this.captureVitals();
             const result = this.runWithUiSfx(() => BattleEngine.execute(this.state, actor, action));
             this.checkCombatAchievements(result);
@@ -2987,14 +3013,20 @@ const BattleUI = {
                 this.showDamageFloats(result.hits);
                 if (result.armorBreak) {
                     this.showCry('¡CORAZA ROTA!', { family: 'transform', fxType: 'support' });
-                    this.render();
                 }
                 if (result.secondPhase?.length) {
                     this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                     this.maybeTitanMusic();
-                    this.render();
                 }
-                await this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
+                // Cut-in A LA VEZ que los números (ya se sabe el resultado).
+                const vitalsFoe = this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
+                let postCutinFoe = null;
+                if (!preCutinFoe) {
+                    if (result.secondPhase?.length) postCutinFoe = this.playActionCutin(actor, sk, result);
+                    else if (this.skillDeservesCutin(sk)) postCutinFoe = this.playSkillCutin(actor, sk);
+                }
+                await vitalsFoe;
+                if (postCutinFoe) await postCutinFoe;
                 this.setActionPhase('DEATH_CHECK');
                 this.playDeathFx((result.hits || []).map(h => h.id));
                 await this.wait(220);
@@ -3002,10 +3034,6 @@ const BattleUI = {
                 await this.animateVitalsFrom(before, [actor.id]);
                 this.setActionPhase('DAMAGE_APPLIED');
                 await this.wait(180);
-            }
-            await this.playActionCutin(actor, sk, result);
-            if (!result.secondPhase?.length && this.skillDeservesCutin(sk)) {
-                await this.playSkillCutin(actor, sk);
             }
             this.hideActionBanner();
             this.setActionPhase('NEXT_TURN');

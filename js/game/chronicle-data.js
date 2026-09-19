@@ -607,7 +607,9 @@ const ChronicleData = {
                         enemyHpScale: 0.85,
                         enemyAtkScale: 1.06,
                         // El trío aguanta muerto hasta caer los 3: fase conjunta.
-                        finalTrio: true
+                        finalTrio: true,
+                        // …y al levantarse lo hacen al 100% de HP.
+                        phaseFullHp: true
                     } : {})
                 };
             });

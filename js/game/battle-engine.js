@@ -386,7 +386,8 @@ const BattleEngine = {
             this.setTransformationStage(unit, 1);
             unit.usedOnce = unit.usedOnce || {};
             unit.usedOnce[xf.id] = true;
-            const pct = 60;
+            // El trío final vuelve AL COMPLETO (60% +70% ≈ 100%).
+            const pct = state.encounter?.phaseFullHp ? 100 : 60;
             unit.hp = Math.max(1, Math.round(unit.maxHp * pct / 100));
             say(`☠ ¡${unit.name} se niega a caer!`);
             say(`★ SEGUNDA FASE · ${unit.name} libera ${unit.transformName || 'su forma final'} · HP al ${pct}% · ATK ↑↑`);
