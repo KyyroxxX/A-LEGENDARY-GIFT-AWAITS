@@ -1783,6 +1783,22 @@ const BattleUI = {
         } catch (_) { /* la música nunca rompe el combate */ }
     },
 
+    /** Cut-in del despertar con el protagonista correcto: si faseó un enemigo,
+     *  lo protagoniza ÉL (no el atacante que lo tumbó). */
+    async playActionCutin(actor, sk, result) {
+        if (!result || (!result.transformed && !result.secondPhase?.length)) return;
+        if (result.secondPhase?.length) {
+            const foe = (result.secondPhase || [])
+                .map(id => this.unitForId(id, 'enemy') || (this.state?.enemies || []).find(e => e.id === id))
+                .find(Boolean);
+            if (foe) {
+                await this.playTransformCutin(foe, null, result);
+                return;
+            }
+        }
+        if (result.transformed && actor) await this.playTransformCutin(actor, sk, result);
+    },
+
     /** Cut-in cinematográfico del despertar: retrato + diálogo estilo Persona. */
     async playTransformCutin(actor, sk, result = null) {
         if (!actor || !this.root || this._cutinPlaying) return;
@@ -1886,8 +1902,7 @@ const BattleUI = {
                 this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                 this.maybeTitanMusic();
                 this.render();
-                const first = this.unitForId(r.secondPhase[0], 'enemy');
-                if (first) await this.playTransformCutin(first, null, r);
+                await this.playActionCutin(null, null, r);
             }
             if (r.finisher?.length) await this.playFinisherSequence(r.finisher, { allOut: true });
             this.playDeathFx(this.state.enemies.filter(e => e.hp <= 0).map(e => e.id));
@@ -2006,9 +2021,7 @@ const BattleUI = {
             this.setActionPhase('DAMAGE_APPLIED');
             await this.wait(180);
         }
-        if (result.transformed || result.secondPhase?.length) {
-            await this.playTransformCutin(actor, sk, result);
-        }
+        await this.playActionCutin(actor, sk, result);
         this.hideActionBanner();
         if (result.oneMore) {
             this.flashOneMore();
@@ -2948,9 +2961,7 @@ const BattleUI = {
                 this.setActionPhase('DAMAGE_APPLIED');
                 await this.wait(180);
             }
-            if (result.transformed || result.secondPhase?.length) {
-                await this.playTransformCutin(actor, sk, result);
-            }
+            await this.playActionCutin(actor, sk, result);
             this.hideActionBanner();
             this.setActionPhase('NEXT_TURN');
             BattleEngine.advanceTurn(this.state);

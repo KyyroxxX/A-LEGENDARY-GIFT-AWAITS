@@ -36,9 +36,10 @@ const BattleEngine = {
                 || skills.some((skill) => skill.heal || skill.aoeHeal || skill.cover || skill.partyBuff || skill.allyBuff);
         });
         // Support composition is deliberately part of the difficulty curve.
-        // (Recortado para alta dificultad: menos colchón, la táctica decide.)
+        // (Recortado para alta dificultad: menos colchón, la táctica decide.
+        // Healers propios curan un 20% menos.)
         const partyHpMul = (partyHasSupport ? 2.1 : 1.9) * (encounter.partyHpScale ?? 1);
-        const healScale = (partyHasSupport ? 1.45 : 1.1) * (encounter.partyHealScale ?? 1);
+        const healScale = (partyHasSupport ? 1.16 : 0.88) * (encounter.partyHealScale ?? 1);
         party.forEach(u => {
             u.maxHp = Math.round(u.maxHp * partyHpMul);
             u.hp = u.maxHp;
@@ -82,7 +83,8 @@ const BattleEngine = {
                 ? { hp: 3.3, hpStep: 0.42, scale: 1.15, atk: 1.14, def: 1.10, skill: 1.18, heal: 1.15 }
                 : { hp: 3.2, hpStep: 0.42, scale: 1.15, atk: 1.12, def: 1.08, skill: 1.15, heal: 1.16 };
             const globalHard = encounter.enemyGlobalScale ?? standardTuning.scale;
-            const hpM = (standardTuning.hp + (diff - 1) * standardTuning.hpStep) * globalHard * (encounter.enemyHpScale ?? 1);
+            // Los enemigos aguantan un 33% más en general.
+            const hpM = (standardTuning.hp + (diff - 1) * standardTuning.hpStep) * globalHard * (encounter.enemyHpScale ?? 1) * 1.33;
             const atkM = (1.12 + (diff - 1) * 0.12)
                 * (partyHasSupport ? 1 : 1.12)
                 * (encounter.enemyGlobalAtkScale ?? standardTuning.atk)
