@@ -1660,15 +1660,15 @@ const BattleData = {
                     transform: true, transformName: 'Samehada Liberada',
                     ai: 'tactical',
                     skills: [
-                        { id: 'water_shark', name: 'Suiton: Shark Bomb', cry: 'Samehada!', power: 62, type: 'water' },
+                        { id: 'water_shark', name: 'Suiton: Shark Bomb', cry: 'Samehada!', power: 62, type: 'water', drainSp: 10 },
                         { id: 'water_prison', name: 'Water Prison', cry: 'Suiton!', power: 0, type: 'support', debuff: { agi: 0.55 }, debuffTurns: 2 },
-                        { id: 'great_shark', name: 'Great Shark Bullet', cry: 'SAMEHADA!', power: 78, type: 'water', aoe: true },
+                        { id: 'great_shark', name: 'Great Shark Bullet', cry: 'SAMEHADA!', power: 78, type: 'water', aoe: true, drainSp: 8 },
                         { id: 'samehada_unleash', name: 'Samehada Liberada', cry: '¡Devora su chakra!', power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.4, transformDef: 1.15 }
                     ],
                     transformedSkills: [
                         { id: 'samehada_drain', name: 'Samehada Drain', cry: '¡Chakra!', power: 88, type: 'slash', heal: 40, drainSp: 24 },
                         { id: 'water_dome', name: 'Water Dome', cry: 'Suiton!', power: 0, type: 'support', buff: { def: 1.4 }, turns: 2 },
-                        { id: 'shark_bomb_max', name: 'Shark Bomb Max', cry: 'Samehada!', power: 95, type: 'water', hits: 2 },
+                        { id: 'shark_bomb_max', name: 'Shark Bomb Max', cry: 'Samehada!', power: 95, type: 'water', hits: 2, drainSp: 6 },
                         { id: 'great_shark_max', name: 'Daikōdan', cry: 'SAMEHADA!', power: 105, type: 'water', aoe: true, drainSp: 14 }
                     ]
                 }
@@ -1788,7 +1788,12 @@ const BattleData = {
             tanjiro: { weak: ['curse', 'elec'], resist: ['water', 'slash', 'strike'], null: ['fire'] },
             rengoku: { weak: ['water', 'ice', 'curse'], resist: ['fire', 'strike', 'bless'], null: ['slash'] },
             itachi: { weak: ['bless', 'water', 'strike'], resist: ['fire', 'curse', 'psy'], null: ['wind'] },
-            kisame: { weak: ['elec', 'fire', 'bless'], resist: ['water', 'ice', 'slash'], null: ['curse'] }
+            kisame: { weak: ['elec', 'fire', 'bless'], resist: ['water', 'ice', 'slash'], null: ['curse'] },
+            hidan: { weak: ['bless', 'fire'], resist: ['curse'], null: [] },
+            konan: { weak: ['fire', 'elec'], resist: ['wind'], null: [] },
+            pain: { weak: ['bless', 'curse'], resist: ['strike'], null: [] },
+            tobi: { weak: ['bless', 'wind'], resist: ['curse'], null: [] },
+            madara: { weak: ['bless', 'wind'], resist: ['fire', 'curse'], null: [] }
         };
         const add = (target, key, values) => {
             const current = Array.isArray(target[key]) ? target[key] : [];
@@ -1799,15 +1804,45 @@ const BattleData = {
             target.weak = (target.weak || []).filter(type => !nulls.has(type));
             target.resist = (target.resist || []).filter(type => !nulls.has(type));
         };
+        const FALLBACK_WEAK = ['fire', 'bless', 'elec', 'wind', 'curse'];
+        const FALLBACK_RESIST = ['slash', 'strike', 'curse'];
         for (const encounter of Object.values(this.encounters || {})) {
             for (const enemy of encounter.enemies || []) {
                 const profile = profiles[enemy.id];
-                if (!profile) continue;
-                add(enemy, 'weak', profile.weak);
-                add(enemy, 'resist', profile.resist);
-                add(enemy, 'null', profile.null);
+                if (profile) {
+                    add(enemy, 'weak', profile.weak);
+                    add(enemy, 'resist', profile.resist);
+                    add(enemy, 'null', profile.null);
+                } else {
+                    // Fallback determinista: ningún enemigo se queda sin debilidades.
+                    if (!Array.isArray(enemy.weak) || !enemy.weak.length) {
+                        let h = 0;
+                        for (const c of String(enemy.id || '?')) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+                        const w1 = FALLBACK_WEAK[h % FALLBACK_WEAK.length];
+                        let w2 = FALLBACK_WEAK[(h >> 3) % FALLBACK_WEAK.length];
+                        if (w2 === w1) w2 = FALLBACK_WEAK[(h + 2) % FALLBACK_WEAK.length];
+                        add(enemy, 'weak', [w1, w2]);
+                    }
+                    if (!Array.isArray(enemy.resist)) enemy.resist = [];
+                    if (!Array.isArray(enemy.null)) enemy.null = [];
+                }
+                // Si el kit ya trae afinidades (FighterKits), no pisar: solo rellenar vacíos.
+                if (!Array.isArray(enemy.weak) || !enemy.weak.length) {
+                    add(enemy, 'weak', ['bless', 'fire']);
+                }
+                if (!Array.isArray(enemy.resist)) enemy.resist = [];
                 clean(enemy);
             }
+        }
+        // Aliados: nadie sin debilidad visible (parche para expansiones genéricas).
+        for (const ally of this.party || []) {
+            if (!Array.isArray(ally.weak) || !ally.weak.length) {
+                const t = (ally.skills || []).find(s => s.power)?.type;
+                const byType = { fire: 'water', water: 'elec', elec: 'wind', wind: 'ice', ice: 'fire', curse: 'bless', bless: 'curse', slash: 'fire', strike: 'psy', pierce: 'elec', psy: 'curse', almighty: 'almighty' };
+                const w = (t && byType[t]) || 'bless';
+                ally.weak = w === 'almighty' ? ['curse', 'bless'] : [w];
+            }
+            if (!Array.isArray(ally.resist)) ally.resist = [];
         }
     },
 
@@ -2080,6 +2115,7 @@ const BattleData = {
             facts.push(d);
         }
         if (sk.heal) facts.push(sk.aoeHeal ? `Cura ${sk.heal} HP al equipo` : `Cura ${sk.heal} HP (1 aliado)`);
+        if (sk.drainSp) facts.push(`🦈 Roba ${sk.drainSp} CP al enemigo (+${sk.drainSp} CP propio)`);
         if (sk.restoreSp) facts.push(`+${sk.restoreSp} SP al equipo`);
         if (sk.revive != null) facts.push(`Revive con ${Math.round(sk.revive * 100)}% HP`);
         if (sk.transform) {

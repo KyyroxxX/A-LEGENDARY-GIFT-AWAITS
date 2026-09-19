@@ -446,16 +446,20 @@ const ArenaScene = {
         }
         // Enemy portrait once revealed (never while sealed).
         let art = '';
+        let foeCount = 1;
         if (!locked) {
             try {
                 const enc = (typeof BattleData !== 'undefined' && BattleData.encounters) || {};
-                const foe = enc[m.encounter]?.enemies?.[0];
+                const foes = enc[m.encounter]?.enemies || [];
+                foeCount = Math.max(1, foes.length);
+                const foe = foes[0];
                 if (foe?.id && typeof StagedSprites !== 'undefined' && StagedSprites.normalUrl) {
                     const url = StagedSprites.normalUrl(foe.id);
                     if (url) art = `<span class="am-art" aria-hidden="true" style="background-image:url('${url}')"></span>`;
                 }
             } catch (_) { /* ignore */ }
         }
+        const foeBadge = foeCount > 1 ? `<span class="am-foes" aria-hidden="true">⚔×${foeCount}</span>` : '';
         const dayBadge = opts.dayLock ? `<span class="am-day" aria-hidden="true">DÍA ${index + 1}</span>` : '';
         return `
             <button type="button" class="arena-mission ${state}"
@@ -467,12 +471,13 @@ const ArenaScene = {
                 <span class="am-body">
                     <span class="am-top">
                         <span class="am-title">${dayBadge}${title}</span>
-                        <span class="am-top-end">
-                            ${cleared && !locked ? '<span class="am-cleared-stamp" aria-hidden="true">CLEAR</span>' : ''}
-                            ${locked
-                                ? ''
-                                : `<span class="am-reward${cleared ? ' is-farm' : ''}">${reward}</span>`}
-                        </span>
+                <span class="am-top-end">
+                        ${cleared && !locked ? '<span class="am-cleared-stamp" aria-hidden="true">CLEAR</span>' : ''}
+                        ${locked ? '' : foeBadge}
+                        ${locked
+                            ? ''
+                            : `<span class="am-reward${cleared ? ' is-farm' : ''}">${reward}</span>`}
+                    </span>
                     </span>
                     <span class="am-blurb">${blurb}</span>
                 </span>

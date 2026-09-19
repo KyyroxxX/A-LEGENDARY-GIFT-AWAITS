@@ -10,10 +10,10 @@
             transform: true, transformName: 'Samehada Liberada', resist: ['water'], weak: ['elec'],
             maxHp: 360, maxSp: 150, atk: 58, def: 42, agi: 24, luk: 14,
             skills: [
-                { id: 'water_shark', name: 'Suiton: Shark Bomb', cry: 'Samehada!', cost: 30, power: 120, type: 'water', desc: 'Bomba de agua.' },
+                { id: 'water_shark', name: 'Suiton: Shark Bomb', cry: 'Samehada!', cost: 30, power: 120, type: 'water', drainSp: 10, desc: 'Bomba de agua · roba 10 CP.' },
                 { id: 'water_prison', name: 'Water Prison', cry: 'Suiton!', cost: 32, power: 0, type: 'support', debuff: { agi: 0.55 }, debuffTurns: 2, targetEnemy: true, desc: 'AGI ↓↓.' },
-                { id: 'great_shark', name: 'Great Shark Bullet', cry: 'SAMEHADA!', cost: 52, power: 145, type: 'water', aoe: true, desc: 'Tiburón AoE.' },
-                { id: 'samehada_unleash', name: 'Samehada Liberada', cry: '¡Devora su chakra!', cost: 62, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.4, transformDef: 1.15, desc: 'TRANSFORM · Samehada desenvuelta · drena energía.' }
+                { id: 'great_shark', name: 'Great Shark Bullet', cry: 'SAMEHADA!', cost: 52, power: 145, type: 'water', aoe: true, drainSp: 8, desc: 'Tiburón AoE · roba 8 CP.' },
+                { id: 'samehada_unleash', name: 'Samehada Liberada', cry: '¡Devora su chakra!', cost: 62, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.4, transformDef: 1.15, desc: 'TRANSFORM · Samehada desenvuelta · todo golpe roba +6 CP extra.' }
             ],
             transformedSkills: [
                 { id: 'samehada_drain', name: 'Samehada Drain', cry: '¡Chakra!', cost: 34, power: 130, type: 'slash', heal: 45, drainSp: 28, desc: 'Absorbe HP + CP del enemigo.' },
@@ -286,32 +286,32 @@
             ],
             fromEnemy: true },
 
-        // Hidan — 6★ immortal ritual tank (regen each round)
+        // Hidan — 6★ ritual tank (nerfed: killable, counterable con bless/fuego)
         { id: 'hidan', name: 'Hidan', series: 'Naruto', role: 'Tank', roleTag: 'Jashin · Immortal', color: '#922b21', accent: '#ecf0f1',
             transform: true, transformName: 'Rito de Jashin',
-            resist: ['curse', 'slash', 'pierce'], weak: ['bless'],
-            damageTakenMul: 0.58,
-            hpRegenPct: 0.10,
-            maxHp: 520, maxSp: 150, atk: 54, def: 58, agi: 24, luk: 14,
+            resist: ['curse'], weak: ['bless', 'fire'],
+            damageTakenMul: 0.78,
+            hpRegenPct: 0.04,
+            maxHp: 380, maxSp: 150, atk: 54, def: 42, agi: 24, luk: 14,
             skills: [
                 { id: 'scythe_sweep', name: 'Triple-Bladed Scythe', cry: 'Die for Jashin!', cost: 28, power: 115, type: 'slash', hits: 2, desc: 'Guadaña ×2 · marca ritual.' },
-                { id: 'jashin_bulwark', name: 'Ritual Guard', cry: 'Jashin blesses me!', cost: 30, power: 0, type: 'support', buff: { def: 2.15 }, turns: 3, cover: true, coverHits: 5, heal: 70, desc: 'DEF ↑↑↑ · cover 5 · autocura.' },
+                { id: 'jashin_bulwark', name: 'Ritual Guard', cry: 'Jashin blesses me!', cost: 30, power: 0, type: 'support', buff: { def: 1.7 }, turns: 3, cover: true, coverHits: 3, heal: 50, desc: 'DEF ↑↑ · cover 3 · autocura.' },
                 { id: 'jashin_blood', name: 'Death Controlling Blood', cry: 'Feel my pain!', cost: 36, power: 0, type: 'support',
-                    reflectDamage: true, reflectMul: 1, turns: 3, cooldown: 3,
-                    desc: 'Rito de Jashin · 3 turnos: el daño que recibe Hidan se devuelve al atacante. CD 3.' },
+                    reflectDamage: true, reflectMul: 0.6, turns: 2, cooldown: 4,
+                    desc: 'Rito de Jashin · 2 turnos: devuelve 60% del daño al atacante. CD 4.' },
                 { id: 'immortal_rite', name: 'Jashin Immortality', cry: 'I can\'t die!', cost: 48, power: 0, type: 'support', once: true,
                     transform: true, transformPersistent: true, transformUpkeep: 10,
-                    transformDef: 1.35, transformAtk: 1.2, heal: 160,
-                    cover: true, coverHits: 6,
-                    desc: 'TRANSFORM · rito de Jashin · muro + gran cura · 1 uso.' }
+                    transformDef: 1.25, transformAtk: 1.2, heal: 100,
+                    cover: true, coverHits: 4,
+                    desc: 'TRANSFORM · rito de Jashin · muro + cura · 1 uso.' }
             ],
             transformedSkills: [
                 { id: 'scythe_frenzy', name: 'Scythe Frenzy', cry: 'More blood!', cost: 32, power: 130, type: 'slash', hits: 3, desc: 'Guadaña frenética ×3.' },
-                { id: 'jashin_bulwark_x', name: 'Jashin Bulwark', cry: 'Worship!', cost: 28, power: 0, type: 'support', buff: { def: 2.0 }, turns: 3, cover: true, coverHits: 4, heal: 50, desc: 'DEF ↑↑ · cover.' },
+                { id: 'jashin_bulwark_x', name: 'Jashin Bulwark', cry: 'Worship!', cost: 28, power: 0, type: 'support', buff: { def: 1.7 }, turns: 3, cover: true, coverHits: 3, heal: 40, desc: 'DEF ↑↑ · cover.' },
                 { id: 'jashin_blood_x', name: 'Death Controlling Blood Max', cry: 'Share my pain!', cost: 32, power: 0, type: 'support',
-                    reflectDamage: true, reflectMul: 1.25, turns: 3, cooldown: 3,
-                    desc: 'Rito máximo · 3 turnos: refleja 125% del daño al atacante. CD 3.' },
-                { id: 'jashin_judgment', name: 'Jashin\'s Judgment', cry: 'For Jashin!', cost: 55, power: 175, type: 'curse', once: true, desc: 'Juicio ritual · 1 uso.' }
+                    reflectDamage: true, reflectMul: 0.8, turns: 2, cooldown: 4,
+                    desc: 'Rito máximo · 2 turnos: refleja 80% del daño al atacante. CD 4.' },
+                { id: 'jashin_judgment', name: 'Jashin\'s Judgment', cry: 'For Jashin!', cost: 55, power: 165, type: 'curse', once: true, desc: 'Juicio ritual · 1 uso.' }
             ] },
 
         // —— JoJo lote (Stands / Hamon) ——
@@ -592,13 +592,18 @@
             ] }
     ];
 
-    const mk = (e) => ({
-        maxHp: 260, maxSp: 130, atk: 54, def: 22, agi: 32, luk: 18,
-        img: `assets/sprites/anim/${e.id}_idle.png`,
-        accent: '#f4d03f', role: 'DPS', roleTag: 'Destino',
-        resist: [], weak: [],
-        ...e
-    });
+    const mk = (e) => {
+        const base = {
+            maxHp: 260, maxSp: 130, atk: 54, def: 22, agi: 32, luk: 18,
+            img: `assets/sprites/anim/${e.id}_idle.png`,
+            accent: '#f4d03f', role: 'DPS', roleTag: 'Destino',
+            resist: [], weak: [],
+            ...e
+        };
+        if (!base.weak?.length) base.weak = ['bless'];
+        if (!Array.isArray(base.resist)) base.resist = [];
+        return base;
+    };
 
     extras.forEach(raw => {
         const p = mk(raw);

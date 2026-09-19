@@ -1,12 +1,39 @@
 const UserCharacterExpansion = {
     make(config) {
+        const affinityByType = (t) => {
+            const m = {
+                fire: { weak: ['water'], resist: ['fire'] },
+                water: { weak: ['elec'], resist: ['water', 'ice'] },
+                elec: { weak: ['wind', 'earth'], resist: ['elec'] },
+                wind: { weak: ['ice', 'elec'], resist: ['wind'] },
+                ice: { weak: ['fire'], resist: ['ice'] },
+                earth: { weak: ['water', 'wind'], resist: ['earth'] },
+                curse: { weak: ['bless'], resist: ['curse'] },
+                bless: { weak: ['curse'], resist: ['bless'] },
+                slash: { weak: ['fire'], resist: ['slash'] },
+                strike: { weak: ['psy', 'wind'], resist: ['strike'] },
+                pierce: { weak: ['elec', 'slash'], resist: ['pierce'] },
+                psy: { weak: ['curse', 'strike'], resist: ['psy'] },
+                almighty: { weak: ['curse'], resist: [] },
+                support: { weak: ['curse'], resist: [] }
+            };
+            return m[t] || { weak: ['bless'], resist: [] };
+        };
+        const auto = affinityByType(config.type || 'strike');
         const base = {
             maxHp: 290, maxSp: 145, atk: 62, def: 28, agi: 34, luk: 20,
             role: 'DPS', roleTag: config.name, color: config.color || '#c41e3a',
-            accent: config.accent || '#f4d03f', resist: [], weak: [],
+            accent: config.accent || '#f4d03f',
+            resist: config.resist || auto.resist.slice(),
+            weak: config.weak || auto.weak.slice(),
             img: `assets/sprites/anim/${config.id}_idle.png`,
             ...config
         };
+        // No dejar que ...config pise con arrays vacíos.
+        if (!config.resist || !config.resist.length) base.resist = auto.resist.slice();
+        if (!config.weak || !config.weak.length) base.weak = auto.weak.slice();
+        if (config.resist?.length) base.resist = config.resist.slice();
+        if (config.weak?.length) base.weak = config.weak.slice();
         base.skills = config.skills || [
             { id: `${config.id}_strike`, name: config.moves[0], cry: `${config.moves[0]}!`, cost: 26, power: 112, type: config.type || 'strike', desc: `${config.name} · técnica característica.` },
             { id: `${config.id}_burst`, name: config.moves[1], cry: `${config.moves[1]}!`, cost: 36, power: 138, type: config.type || 'strike', hits: config.hits || 2, desc: `${config.name} · ráfaga distintiva.` },

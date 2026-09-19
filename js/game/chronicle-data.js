@@ -426,20 +426,63 @@ const ChronicleData = {
     ],
 
     /** Stats por fase (escalado suave). */
-    statsFor(index, total, isBoss) {
+    statsAt(t, isBoss) {
         if (isBoss) {
             return { maxHp: 720, atk: 72, def: 30, agi: 22, luk: 26, color: '#c41e3a' };
         }
-        const t = index / Math.max(1, total - 1);
+        const c = Math.min(1, Math.max(0, t));
         return {
-            maxHp: Math.round(320 + t * 280),
-            atk: Math.round(52 + t * 22),
-            def: Math.round(18 + t * 12),
-            agi: Math.round(26 + t * 16),
-            luk: Math.round(14 + t * 10),
+            maxHp: Math.round(320 + c * 280),
+            atk: Math.round(52 + c * 22),
+            def: Math.round(18 + c * 12),
+            agi: Math.round(26 + c * 16),
+            luk: Math.round(14 + c * 10),
             color: '#c41e3c'
         };
     },
+
+    statsFor(index, total, isBoss) {
+        return this.statsAt(index / Math.max(1, total - 1), isBoss);
+    },
+
+    /**
+     * Dúos y tríos — combates contra varios enemigos a la vez.
+     * Frente al 1 contra 3 de la crónica normal, aquí cada rival baja
+     * stats por tamaño de grupo (ver packHp/packAtk en buildEncounters)
+     * para que el daño total entrante no se triplique.
+     */
+    TEAMUPS: [
+        { mid: 'arc3_art_duo', enc: 'ch3_art_duo', diff: 5, inv: 60, stage: 'akatsuki',
+            title: 'Archivo · Arte en pareja', blurb: 'Sasori hila, Deidara firma. Dos egos, cero piedad: baja primero al que cargue el AoE.',
+            foes: [{ enemy: 'sasori', name: 'Sasori' }, { enemy: 'deidara', name: 'Deidara' }] },
+        { mid: 'arc3_espada_duo', enc: 'ch3_espada_duo', diff: 6, inv: 62, stage: 'hueco',
+            title: 'Archivo · Doble Espada', blurb: 'La Sexta y la Cuarta cazan en manada. Separa sus turnos o te separan a ti.',
+            foes: [{ enemy: 'grimmjow', name: 'Grimmjow' }, { enemy: 'ulquiorra', name: 'Ulquiorra' }] },
+        { mid: 'arc3_disaster_duo', enc: 'ch3_disaster_duo', diff: 6, inv: 62, stage: 'jjk-volcano',
+            title: 'Archivo · Doble desastre', blurb: 'Fuego y alma podrida. Mahito juega; Jogo quema. Mata al que se ría más fuerte.',
+            foes: [{ enemy: 'jogo', name: 'Jogo' }, { enemy: 'mahito', name: 'Mahito' }] },
+        { mid: 'arc3_blood_duo', enc: 'ch3_blood_duo', diff: 6, inv: 60, stage: 'city',
+            title: 'Archivo · Doble filo', blurb: 'Bomba y katana en la misma calle. No te pongas en medio: ponte detrás del que caiga primero.',
+            foes: [{ enemy: 'katana', name: 'Katana Man' }, { enemy: 'reze', name: 'Reze' }] },
+        { mid: 'arc3_timekill_duo', enc: 'ch3_timekill_duo', diff: 7, inv: 66, stage: 'mansion',
+            title: 'Archivo · Tiempo muerto', blurb: 'Za Warudo y Killer Queen desayunan juntos. El tiempo no existe; tu HP tampoco, si dudas.',
+            foes: [{ enemy: 'dio', name: 'DIO' }, { enemy: 'kira', name: 'Yoshikage Kira' }] },
+        { mid: 'arc3_moon_duo', enc: 'ch3_moon_duo', diff: 7, inv: 66, stage: 'ice',
+            title: 'Archivo · Lunas gemelas', blurb: 'Compás y loto sobre hielo. Uno te mide, el otro te congela.',
+            foes: [{ enemy: 'akaza', name: 'Akaza' }, { enemy: 'doma', name: 'Doma' }] },
+        { mid: 'arc3_sharingan_trio', enc: 'ch3_sharingan_trio', diff: 7, inv: 74, stage: 'akatsuki',
+            title: 'Archivo · Trío carmesí', blurb: 'Genjutsu, tiburón y papel. Tres nubes rojas, un solo cielo para quemar.',
+            foes: [{ enemy: 'itachi', name: 'Itachi Uchiha' }, { enemy: 'kisame', name: 'Kisame' }, { enemy: 'konan', name: 'Konan' }] },
+        { mid: 'arc3_espada_trio', enc: 'ch3_espada_trio', diff: 8, inv: 78, stage: 'hueco',
+            title: 'Archivo · Tres Espadas', blurb: 'Sexta, Cuarta y ex-Tres. Hueco Mundo vota: tú pierdes por mayoría.',
+            foes: [{ enemy: 'grimmjow', name: 'Grimmjow' }, { enemy: 'ulquiorra', name: 'Ulquiorra' }, { enemy: 'nelliel', name: 'Nelliel' }] },
+        { mid: 'arc3_crimson_trio', enc: 'ch3_crimson_trio', diff: 8, inv: 80, stage: 'crimson',
+            title: 'Archivo · Trinidad carmesí', blurb: 'Tiempo detenido, tiempo borrado, tiempo acelerado. Elige tu veneno temporal.',
+            foes: [{ enemy: 'dio', name: 'DIO' }, { enemy: 'diavolo', name: 'Diavolo' }, { enemy: 'pucci', name: 'Enrico Pucci' }] },
+        { mid: 'arc3_founder_trio', enc: 'ch3_founder_trio', diff: 9, inv: 85, stage: 'akatsuki',
+            title: 'Archivo · Fundadores del fin', blurb: 'Los tres fantasmas de la guerra ninja. Esto no es un archivo: es un examen final.',
+            foes: [{ enemy: 'madara', name: 'Madara Uchiha' }, { enemy: 'tobi', name: 'Tobi' }, { enemy: 'pain', name: 'Pain (Tendo)' }] },
+    ],
 
     buildEncounters() {
         const out = {};
@@ -496,6 +539,35 @@ const ChronicleData = {
         };
         paint(this.STORY, true, 3);
         paint(this.ARCHIVES, false, 2);
+        // Team-ups: 2-3 foes share the stat budget so incoming damage
+        // doesn't just double/triple (lone-wolf bonus doesn't apply here).
+        // Mobs are also less coordinated than bosses (lower focus/AoE).
+        // Tuned by sim: duos ~ solo+half, trios hard but winnable.
+        const packHp = n => (n <= 1 ? 1 : n === 2 ? 0.40 : 0.22);
+        const packAtk = n => (n <= 1 ? 1 : n === 2 ? 0.68 : 0.44);
+        this.TEAMUPS.forEach((row) => {
+            const foes = row.foes || [];
+            const n = Math.max(1, foes.length);
+            const diff = row.diff ?? 6;
+            const st = this.statsAt(Math.min(1, Math.max(0, (diff - 2) / 7)), false);
+            const enemies = foes.map(f => this.mk(f.enemy, f.name, {
+                ...st,
+                maxHp: Math.round(st.maxHp * packHp(n)),
+                atk: Math.round(st.atk * packAtk(n)),
+            }));
+            const foeCount = enemies.length;
+            out[row.enc] = {
+                title: row.title,
+                difficulty: diff,
+                hint: row.blurb,
+                stage: row.stage,
+                isBoss: false,
+                enemies,
+                aiHealerFocus: foeCount > 2 ? 0.3 : 0.45,
+                aiAoEChance: 0.35,
+                rewardInvocations: this.pullRewardFor(row.inv) * 2,
+            };
+        });
         // Alias legacy boss key
         out.boss = out.ch_boss5050 || out[this.STORY[this.STORY.length - 1].enc];
         // Keep training sandbox
@@ -544,12 +616,26 @@ const ChronicleData = {
                     : `+${this.pullRewardFor(row.inv) * 2} equivalentes de tirada (primer clear)`
             };
         });
+        this.TEAMUPS.forEach((row) => {
+            const n = (row.foes || []).length;
+            missions[row.mid] = {
+                id: row.mid,
+                title: row.title,
+                sealedTitle: `✦ ARCHIVO · ??? ×${n}`,
+                sealedBlurb: 'Varias firmas en el mismo sello. No vengas solo... bueno, sí, trae equipo.',
+                blurb: `${row.blurb} (${n} enemigos)`,
+                encounter: row.enc,
+                optional: true,
+                flagClear: `${row.mid}_cleared`,
+                rewardText: `+${this.pullRewardFor(row.inv) * 2} equivalentes de tirada (primer clear)`
+            };
+        });
         return missions;
     },
 
     stageMap() {
         const map = { training: 'tower', boss: 'destiny' };
-        [...this.STORY, ...this.ARCHIVES].forEach((row) => {
+        [...this.STORY, ...this.ARCHIVES, ...this.TEAMUPS].forEach((row) => {
             map[row.enc] = row.stage;
             if (row.mid === 'gate_final') map.boss = row.stage;
         });
@@ -564,7 +650,8 @@ const ChronicleData = {
 
     totalFirstClearInv() {
         return this.STORY.reduce((s, r) => s + this.pullRewardFor(r.inv) * 3, 0)
-            + this.ARCHIVES.reduce((s, r) => s + this.pullRewardFor(r.inv) * 2, 0);
+            + this.ARCHIVES.reduce((s, r) => s + this.pullRewardFor(r.inv) * 2, 0)
+            + this.TEAMUPS.reduce((s, r) => s + this.pullRewardFor(r.inv) * 2, 0);
     },
 
     /** Day system: story mission N = day N. Moving to the next day needs
@@ -580,7 +667,7 @@ const ChronicleData = {
     sideClears() {
         if (typeof GameState === 'undefined') return 0;
         let n = 0;
-        this.ARCHIVES.forEach((r) => {
+        [...this.ARCHIVES, ...this.TEAMUPS].forEach((r) => {
             if (GameState.flag(`${r.mid}_cleared`)) n += 1;
         });
         return n;
@@ -622,7 +709,7 @@ const ChronicleData = {
     },
 
     archiveMissionList() {
-        return this.ARCHIVES.map((r) => StoryData.missions[r.mid]).filter(Boolean);
+        return [...this.ARCHIVES, ...this.TEAMUPS].map((r) => StoryData.missions[r.mid]).filter(Boolean);
     }
 };
 

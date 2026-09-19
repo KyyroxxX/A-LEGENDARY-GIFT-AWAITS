@@ -1346,6 +1346,13 @@
 .p5-dmg.crit { color: #ff6b6b; font-size: 1.7rem; }
 .p5-dmg.null { color: #888; font-size: 1rem; }
 .p5-dmg.miss { color: #8ed8ff; font-size: 1.08rem; letter-spacing: 0.08em; text-shadow: 0 0 12px #2f9ed0, 2px 2px 0 #05070d; }
+.p5-dmg.drain { color: #5dade2; font-size: 1.25rem; text-shadow: 0 0 12px #1a5276, 2px 2px 0 #05070d; top: 34%; }
+.p5-dmg.drain b { color: #aed6f1; font-size: 0.95rem; display: block; }
+.p5-dmg.drain-gain { color: #82e0aa; top: 44%; }
+.p5-dmg.drain-gain b { color: #abebc6; }
+/* Enemy CP bar (Samehada drain must be visible on foes too) */
+.p5ui-ebar-track.cp { height: 5px; opacity: 0.9; margin-top: 2px; }
+.p5ui-ebar-track.cp > i { background: linear-gradient(90deg, #1a5276, #5dade2) !important; }
 @keyframes p5Dmg {
     0% { opacity: 0; transform: translate(-50%, 10px) scale(0.6); }
     20% { opacity: 1; transform: translate(-50%, -8px) scale(1.2); }

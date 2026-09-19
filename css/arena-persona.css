@@ -902,6 +902,16 @@ img.arena-chip-ico {
     background: linear-gradient(90deg, #ffe9a0, #c9a227);
     padding: 0.2rem 0.45rem;
 }
+.am-foes {
+    flex-shrink: 0;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: #ffd9d9;
+    font-weight: 900;
+    background: linear-gradient(90deg, #7a1020, #c41e3a);
+    border: 1px solid rgba(255, 120, 120, 0.55);
+    padding: 0.2rem 0.45rem;
+}
 .arena-mission.cleared .am-reward {
     background: rgba(232, 199, 106, 0.2);
     color: var(--a-gold-bright);

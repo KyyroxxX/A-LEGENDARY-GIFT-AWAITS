@@ -294,7 +294,14 @@ const BattleEngine = {
     autoTransformEnemies(state) {
         if ((state.turnCount || 0) < 4 || state.finished || state._enemyTransformRound === state.turnCount) return;
         state._enemyTransformRound = state.turnCount;
-        state.enemies.filter(enemy => enemy.hp > 0 && !enemy.transformed).forEach(enemy => {
+        // One transformation per round: in multi-foe fights they take turns
+        // showing off instead of all bursting at once (that wiped parties).
+        // The most desperate (lowest HP fraction) goes first.
+        const candidates = state.enemies.filter(enemy => enemy.hp > 0 && !enemy.transformed);
+        candidates.sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
+        const next = candidates.slice(0, 1);
+        if (!next.length) return;
+        next.forEach(enemy => {
             const skills = (typeof BattleData !== 'undefined' && BattleData.activeSkills)
                 ? BattleData.activeSkills(enemy)
                 : (enemy.skills || []);
@@ -1184,12 +1191,32 @@ const BattleEngine = {
                 const gained = user.hp - before;
                 if (gained > 0) result.logs.push(`${user.name} absorbe ${gained} HP.`);
             }
-            if (dealt > 0 && skill.drainSp) {
-                const steal = Math.min(skill.drainSp, t.sp || 0);
-                if (steal > 0) t.sp = Math.max(0, (t.sp || 0) - steal);
-                const gain = skill.drainSp;
-                user.sp = Math.min(user.maxSp, (user.sp || 0) + gain);
-                result.logs.push(`${user.name} drena ${gain} CP${steal ? ` (−${steal} a ${t.name})` : ''}.`);
+            // Samehada / Preta / Mana Burn: CP drain must be LOUD on both sides.
+            // Victim loses CP (clamped to what they have), caster gains the full
+            // drain value, and both sides get floating combat text via hits.
+            let wantDrain = skill.drainSp || 0;
+            // Samehada pasiva: transformado drena +6 CP extra con cualquier golpe.
+            if (dealt > 0 && user.id === 'kisame' && user.transformed && !skill.drainSp) {
+                wantDrain = 6;
+            } else if (dealt > 0 && user.id === 'kisame' && user.transformed && skill.drainSp) {
+                wantDrain = skill.drainSp + 6;
+            }
+            if (dealt > 0 && wantDrain > 0) {
+                const victimSp = Math.max(0, t.sp || 0);
+                const steal = Math.min(wantDrain, victimSp);
+                t.sp = Math.max(0, victimSp - steal);
+                const beforeSp = user.sp || 0;
+                user.sp = Math.min(user.maxSp || 999, beforeSp + wantDrain);
+                const gained = Math.max(0, (user.sp || 0) - beforeSp);
+                // Floating text hooks for battle-ui (rendered as blue CP floats).
+                hits.push({ id: t.id, side: t.side, damage: 0, tag: 'DRAIN', drain: steal, want: wantDrain });
+                if (gained > 0) hits.push({ id: user.id, side: user.side, damage: 0, tag: 'DRAIN_GAIN', drain: gained });
+                result.drained = true;
+                if (steal > 0) {
+                    result.logs.push(`🦈 ${user.name} arranca ${steal} CP a ${t.name} (+${gained} CP para ${user.name}).`);
+                } else {
+                    result.logs.push(`🦈 ${user.name} muerde el CP de ${t.name}… pero no le queda CP (+${gained} CP igual por Samehada).`);
+                }
             }
 
             if (dmg.down && t.hp > 0) {

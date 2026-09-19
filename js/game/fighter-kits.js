@@ -200,7 +200,11 @@ const FighterKits = {
                 if (sk.cost == null && sk.power) sk.cost = Math.max(12, Math.round(sk.power * 0.28));
                 if (sk.cost == null) sk.cost = 20;
             });
-            return { ...encEnemy, skills, maxSp: encEnemy.maxSp || 120 };
+            const out = { ...encEnemy, skills, maxSp: encEnemy.maxSp || 120 };
+            if (!Array.isArray(out.weak) || !out.weak.length) out.weak = ['bless', 'fire'];
+            if (!Array.isArray(out.resist)) out.resist = [];
+            if (!Array.isArray(out.null)) out.null = [];
+            return out;
         }
 
         const powerMul = opts.powerMul ?? 0.58;

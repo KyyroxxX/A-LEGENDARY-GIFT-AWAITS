@@ -1189,6 +1189,7 @@ const BattleUI = {
         if (enemyHud) {
             enemyHud.innerHTML = s.enemies.map(e => {
                 const pct = Math.max(0, e.hp / Math.max(1, e.maxHp) * 100);
+                const spPct = Math.max(0, (e.sp || 0) / Math.max(1, e.maxSp || 1) * 100);
                 const badges = this.statusBadgesHtml(e, { compact: true, limit: 3 });
                 const aff = this.affinityChipsHtml(e);
                 return `
@@ -1198,6 +1199,8 @@ const BattleUI = {
                             <strong>${e.name}</strong>
                             <div class="p5ui-ebar-track"><i data-unit-hp="${e.id}" style="width:${pct}%"></i></div>
                             <span data-unit-hp-text="${e.id}">HP ${Math.max(0, e.hp)} / ${e.maxHp}</span>
+                            <div class="p5ui-ebar-track cp"><i data-unit-sp="${e.id}" style="width:${spPct}%"></i></div>
+                            <span data-unit-sp-text="${e.id}">CP ${Math.max(0, Math.round(e.sp || 0))} / ${e.maxSp || 0}</span>
                             ${aff}
                             ${badges ? `<div class="p5-status-row compact">${badges}</div>` : ''}
                         </div>
@@ -2501,6 +2504,19 @@ const BattleUI = {
         hits.forEach((h, i) => {
             const fighter = this.fighterEl(h.id, h.side);
             if (!fighter) return;
+            // CP drain floats: blue, always visible even with 0 steal.
+            if (h.tag === 'DRAIN' || h.tag === 'DRAIN_GAIN') {
+                const n = document.createElement('div');
+                const loss = h.tag === 'DRAIN';
+                n.className = `p5-dmg drain ${loss ? 'drain-loss' : 'drain-gain'}`;
+                const v = Number(h.drain || 0);
+                n.innerHTML = loss
+                    ? `<b>🦈 CP</b><span>−${v.toLocaleString('es-ES')} CP</span>`
+                    : `<b>🦈 +CP</b><span>+${v.toLocaleString('es-ES')} CP</span>`;
+                fighter.appendChild(n);
+                setTimeout(() => n.remove(), 1100 + i * 40);
+                return;
+            }
             const n = document.createElement('div');
             const affinity = h.affinity || h.tag;
             n.className = `p5-dmg ${affinity === 'WEAK' ? 'weak' : ''} ${affinity === 'RESIST' ? 'resist' : ''} ${h.crit ? 'crit' : ''} ${h.tag === 'NULL' ? 'null' : ''} ${h.tag === 'MISS' ? 'miss' : ''}`;
@@ -2511,7 +2527,7 @@ const BattleUI = {
                     : `${h.crit ? '<b>¡CRÍTICO!</b>' : ''}${affinity === 'WEAK' ? '<b>¡DÉBIL!</b>' : ''}${affinity === 'RESIST' ? '<b>RESISTE</b>' : ''}<span>${Number(h.damage || 0).toLocaleString('es-ES')}</span>`;
             fighter.appendChild(n);
             setTimeout(() => n.remove(), 900 + i * 40);
-            if (h.tag !== 'NULL' && h.damage > 0) {
+            if (h.tag !== 'NULL' && h.tag !== 'DRAIN' && h.tag !== 'DRAIN_GAIN' && h.damage > 0) {
                 dealt += h.damage;
                 landed += 1;
             }
