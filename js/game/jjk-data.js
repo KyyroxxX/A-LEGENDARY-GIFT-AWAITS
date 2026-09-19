@@ -67,12 +67,12 @@ const JJKData = {
             id: 'nobara', name: 'Nobara Kugisaki', series: 'Jujutsu Kaisen', role: 'Caster', roleTag: 'Straw Doll',
             img: 'assets/sprites/anim/nobara_idle.png', color: '#c0392b', accent: '#f9e79f',
             resist: ['pierce'], weak: ['slash'],
-            maxHp: 220, maxSp: 148, atk: 54, def: 18, agi: 34, luk: 30,
+            maxHp: 280, maxSp: 160, atk: 64, def: 24, agi: 36, luk: 30,
             skills: [
-                { id: 'resonance', name: 'Resonance', cry: 'Resonance!', cost: 30, power: 115, type: 'curse', desc: 'Clavo · Resonancia.' },
-                { id: 'hairpin', name: 'Hairpin', cry: 'Hairpin!', cost: 34, power: 125, type: 'fire', desc: 'Explosión de clavos.' },
+                { id: 'resonance', name: 'Resonance', cry: 'Resonance!', cost: 30, power: 130, type: 'curse', desc: 'Clavo · Resonancia.' },
+                { id: 'hairpin', name: 'Hairpin', cry: 'Hairpin!', cost: 34, power: 140, type: 'fire', desc: 'Explosión de clavos.' },
                 { id: 'straw_debuff', name: 'Straw Doll Technique', cry: '¡Te tengo!', cost: 26, power: 0, type: 'support', debuff: { def: 0.7, atk: 0.8 }, debuffTurns: 3, targetEnemy: true, desc: 'DEF/ATK enemigo ↓.' },
-                { id: 'black_flash_n', name: 'Black Flash', cry: 'BLACK FLASH!', cost: 58, power: 168, type: 'strike', critBonus: 0.4, desc: 'Black Flash con martillo.' }
+                { id: 'black_flash_n', name: 'Black Flash', cry: 'BLACK FLASH!', cost: 58, power: 180, type: 'strike', critBonus: 0.4, desc: 'Black Flash con martillo.' }
             ]
         },
         {

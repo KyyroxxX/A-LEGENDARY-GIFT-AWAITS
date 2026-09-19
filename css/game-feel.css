@@ -359,6 +359,16 @@ body::after {
 .arena-mission {
     border-radius: 0 !important;
     border-left: 6px solid #c41e3a !important;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 64px;
+}
+
+/* Listas pesadas: el navegador salta el render fuera de pantalla */
+.convene-grid .convene-card,
+.psel-grid .psel-chip,
+.p5ui-cards .p5ui-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 240px;
 }
 
 /* Gacha chrome goes P5 */
@@ -387,3 +397,4 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
     body::before, .intro-content::before { animation: none !important; }
 }
+

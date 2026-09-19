@@ -1799,16 +1799,18 @@ const BattleUI = {
         if (result.transformed && actor) await this.playTransformCutin(actor, sk, result);
     },
 
-    /** Cut-in cinematográfico del despertar: retrato + diálogo estilo Persona. */
-    async playTransformCutin(actor, sk, result = null) {
+    /** Cut-in cinematográfico: retrato + diálogo estilo Persona (transforms y finishers). */
+    async playTransformCutin(actor, sk, result = null, opts = {}) {
         if (!actor || !this.root || this._cutinPlaying) return;
         this._cutinPlaying = true;
         try {
             const foe = actor.side === 'enemy';
             const formName = actor.transformName || sk?.transformName || sk?.name || 'Forma final';
-            const dlg = (typeof BattleFlavor !== 'undefined' && BattleFlavor.transformDialogue)
-                ? BattleFlavor.transformDialogue(actor, sk)
-                : { vow: '¡Despierta!', cry: sk?.cry || `${formName}!` };
+            const dlg = opts.dialogue
+                || ((typeof BattleFlavor !== 'undefined' && BattleFlavor.transformDialogue)
+                    ? BattleFlavor.transformDialogue(actor, sk)
+                    : { vow: '¡Despierta!', cry: sk?.cry || `${formName}!` });
+            const tag = opts.tag || (foe ? 'EL ENEMIGO DESPIERTA' : '¡DESPERTAR!');
             const who = (typeof this.fighterName === 'function') ? this.fighterName(actor) : actor.name;
             const art = this.spriteBg(actor.id, this.formKind(actor));
             const el = document.createElement('div');
@@ -1818,7 +1820,7 @@ const BattleUI = {
                 <div class="xform-body">
                     <div class="xform-face" style="background-image:${art}"></div>
                     <div class="xform-text">
-                        <em>${foe ? 'EL ENEMIGO DESPIERTA' : '¡DESPERTAR!'}</em>
+                        <em>${tag}</em>
                         <strong></strong>
                         <span class="xform-line1"></span>
                         <span class="xform-line2"></span>
@@ -1835,16 +1837,36 @@ const BattleUI = {
                 if (app && typeof screenShake === 'function') screenShake(app, 1.1);
             } catch (_) { /* ignore */ }
             el.querySelector('.xform-line1').textContent = `“${dlg.vow}”`;
-            await this.wait(680);
+            await this.wait(850);
             el.querySelector('.xform-line2').textContent = `“${dlg.cry}”`;
             this.showCry(dlg.cry, { family: 'finisher', fxType: sk?.type || 'almighty' });
-            await this.wait(680);
+            await this.wait(850);
             el.classList.add('out');
-            await this.wait(300);
+            await this.wait(350);
             el.remove();
         } finally {
             this._cutinPlaying = false;
         }
+    },
+
+    /** Cut-in de técnica definitiva (finishers con poder): mismo cine, otro rótulo. */
+    async playSkillCutin(actor, sk) {
+        if (!actor || !sk || !this.root || this._cutinPlaying) return;
+        const dlg = (typeof BattleFlavor !== 'undefined' && BattleFlavor.skillDialogue)
+            ? BattleFlavor.skillDialogue(actor, sk)
+            : { setup: sk.name || 'Técnica', shout: sk.cry || `${sk.name || 'Técnica'}!` };
+        await this.playTransformCutin(actor, sk, null, {
+            tag: actor.side === 'enemy' ? 'TÉCNICA ENEMIGA' : '¡TÉCNICA DEFINITIVA!',
+            dialogue: { vow: dlg.setup, cry: dlg.shout }
+        });
+    },
+
+    /** ¿Merece cut-in completo? Finishers (1 uso o 185+ poder) o avances de forma. */
+    skillDeservesCutin(sk) {
+        if (!sk) return false;
+        if (sk.advanceTransform) return true;
+        if (!sk.power) return false;
+        return !!sk.once || sk.power >= 185;
     },
 
     async playAllOutSequence() {
@@ -2022,6 +2044,9 @@ const BattleUI = {
             await this.wait(180);
         }
         await this.playActionCutin(actor, sk, result);
+        if (!result.secondPhase?.length && this.skillDeservesCutin(sk)) {
+            await this.playSkillCutin(actor, sk);
+        }
         this.hideActionBanner();
         if (result.oneMore) {
             this.flashOneMore();
@@ -2811,6 +2836,9 @@ const BattleUI = {
         } else if (sk) {
             title = sk.name || 'Técnica';
             detail = `${this.fighterName(actor)} · ${sk.desc || BattleData.skillFacts(sk).slice(0, 1)[0] || BattleData.typeLabel(sk.type)}`;
+            const dlg = (typeof BattleFlavor !== 'undefined' && BattleFlavor.skillDialogue)
+                ? BattleFlavor.skillDialogue(actor, sk) : null;
+            if (dlg?.setup) detail += `<span class="p5-action-quote">“${dlg.setup}”</span>`;
             tag = profile.family === 'finisher' ? 'ULTIMATE'
                 : profile.supportMode === 'transform' ? 'TRANSFORM'
                     : profile.supportMode === 'heal' ? 'HEAL'
@@ -2842,7 +2870,8 @@ const BattleUI = {
             </div>
         `;
 
-        await this.wait(finisher ? 280 : (actor.side === 'enemy' ? 240 : 180));
+        const isTransform = profile.supportMode === 'transform' || !!sk?.transform;
+        await this.wait(finisher || isTransform ? 800 : 520);
     },
 
     hideActionBanner() {
@@ -2962,6 +2991,9 @@ const BattleUI = {
                 await this.wait(180);
             }
             await this.playActionCutin(actor, sk, result);
+            if (!result.secondPhase?.length && this.skillDeservesCutin(sk)) {
+                await this.playSkillCutin(actor, sk);
+            }
             this.hideActionBanner();
             this.setActionPhase('NEXT_TURN');
             BattleEngine.advanceTurn(this.state);

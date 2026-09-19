@@ -116,11 +116,12 @@
             ] },
         { id: 'brook', name: 'Brook', series: 'One Piece', role: 'Support', roleTag: 'Soul', color: '#d5dbdb',
             resist: ['ice', 'slash'], weak: ['fire', 'bless'],
+            maxHp: 300, maxSp: 150, atk: 60, def: 28, agi: 34, luk: 20,
             skills: [
                 { id: 'soul_solid', name: 'Soul Solid', cry: 'Yohohoho!', cost: 28, power: 105, type: 'slash', desc: 'Corte helado.' },
                 { id: 'party_music', name: 'Party Music', cry: 'Listen!', cost: 30, power: 0, type: 'support', partyBuff: { atk: 1.25, agi: 1.25 }, turns: 3, desc: 'Buff musical.' },
                 { id: 'three_song', name: 'Three-Verse Humming', cry: '♪', cost: 34, power: 90, type: 'ice', aoe: true, desc: 'Hielo AoE.' },
-                { id: 'soul_king', name: 'Soul King', cry: 'SKULLJOKER!', cost: 50, power: 150, type: 'slash', desc: 'Concierto mortal.' }
+                { id: 'soul_king', name: 'Soul King', cry: 'SKULLJOKER!', cost: 50, power: 165, type: 'slash', desc: 'Concierto mortal.' }
             ] },
         { id: 'franky', name: 'Franky', series: 'One Piece', role: 'Tank', roleTag: 'Cyborg', color: '#2980b9',
             maxHp: 380, maxSp: 125, atk: 54, def: 44, agi: 24, luk: 14,
@@ -148,11 +149,12 @@
             ] },
         { id: 'usopp', name: 'Usopp', series: 'One Piece', role: 'Debuffer', roleTag: 'Sniper', color: '#d35400',
             resist: ['pierce'], weak: ['slash', 'elec'],
+            maxHp: 300, maxSp: 145, atk: 62, def: 26, agi: 36, luk: 28,
             skills: [
                 { id: 'usopp_star', name: 'Green Star', cry: 'Usopp Star!', cost: 24, power: 95, type: 'pierce', desc: 'Disparo preciso.' },
                 { id: 'smoke_star', name: 'Smoke Star', cry: '!', cost: 22, power: 0, type: 'support', debuff: { luk: 0.6 }, debuffTurns: 2, targetEnemy: true, desc: 'Humo · LUK ↓.' },
                 { id: 'fire_bird', name: 'Fire Bird Star', cry: 'FIRE!', cost: 34, power: 120, type: 'fire', desc: 'Pájaro de fuego.' },
-                { id: 'god_usopp', name: 'God Usopp Shot', cry: 'I am a brave warrior!', cost: 50, power: 155, type: 'pierce', critBonus: 0.35, desc: 'Disparo divino.' }
+                { id: 'god_usopp', name: 'God Usopp Shot', cry: 'I am a brave warrior!', cost: 50, power: 170, type: 'pierce', critBonus: 0.35, desc: 'Disparo divino.' }
             ] },
         { id: 'kenpachi', name: 'Kenpachi Zaraki', series: 'Bleach', role: 'DPS', roleTag: 'Captain', color: '#c0392b', accent: '#ecf0f1',
             transform: true, transformName: 'Bankai · Nozarashi', resist: ['slash', 'strike'], weak: ['curse', 'psy'],
@@ -186,19 +188,21 @@
             ] },
         { id: 'shanks', name: 'Shanks', series: 'One Piece', role: 'DPS', roleTag: 'Emperor', color: '#922b21',
             resist: ['slash', 'curse'], weak: ['bless', 'elec'],
+            maxHp: 330, maxSp: 155, atk: 68, def: 28, agi: 38, luk: 26,
             skills: [
-                { id: 'divine_departure', name: 'Divine Departure', cry: '…', cost: 45, power: 160, type: 'slash', desc: 'Haki del conquistador cortante.' },
+                { id: 'divine_departure', name: 'Divine Departure', cry: '…', cost: 45, power: 175, type: 'slash', desc: 'Haki del conquistador cortante.' },
                 { id: 'obs_haki', name: 'Observation Haki', cry: 'I see it.', cost: 28, power: 0, type: 'support', buff: { luk: 1.5, agi: 1.3 }, turns: 3, desc: 'LUK/AGI ↑.' },
                 { id: 'haki_slash', name: 'Haki Slash', cry: '!', cost: 32, power: 125, type: 'slash', desc: 'Corte impregnado.' },
                 { id: 'conqueror', name: 'Conqueror\'s Burst', cry: 'Stand down.', cost: 55, power: 140, type: 'curse', aoe: true, desc: 'Haki AoE.' }
             ] },
         { id: 'mihawk', name: 'Dracule Mihawk', series: 'One Piece', role: 'Slasher', roleTag: 'Warlord', color: '#1c2833',
             resist: ['slash'], weak: ['fire', 'curse'],
+            maxHp: 330, maxSp: 150, atk: 70, def: 30, agi: 36, luk: 24,
             skills: [
-                { id: 'kokuto', name: 'Kokuto Slash', cry: '…', cost: 30, power: 130, type: 'slash', desc: 'Yoru.' },
+                { id: 'kokuto', name: 'Kokuto Slash', cry: '…', cost: 30, power: 140, type: 'slash', desc: 'Yoru.' },
                 { id: 'black_blade', name: 'Black Blade Wave', cry: 'Hmph.', cost: 40, power: 145, type: 'slash', aoe: true, desc: 'Onda negra.' },
                 { id: 'eagle_eye', name: 'Eagle Eye', cry: 'Predictable.', cost: 26, power: 0, type: 'support', buff: { luk: 1.6, atk: 1.25 }, turns: 3, desc: 'Precisión ↑.' },
-                { id: 'world_slash', name: 'World\'s Strongest Slash', cry: 'Fall.', cost: 65, power: 185, type: 'slash', desc: 'Corte definitivo.' }
+                { id: 'world_slash', name: 'World\'s Strongest Slash', cry: 'Fall.', cost: 65, power: 200, type: 'slash', desc: 'Corte definitivo.' }
             ] },
         { id: 'aizen', name: 'Sosuke Aizen', series: 'Bleach', role: 'Caster', roleTag: 'Kyoka Suigetsu', color: '#7d3c98', accent: '#d7bde2',
             transform: true, transformName: 'Hogyoku', resist: ['psy', 'curse'], weak: ['fire'], null: ['bless'],

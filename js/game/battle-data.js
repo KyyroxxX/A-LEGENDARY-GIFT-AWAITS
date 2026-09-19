@@ -246,10 +246,10 @@ const BattleData = {
             id: 'law', name: 'Trafalgar Law', series: 'One Piece', role: 'Caster', roleTag: 'Surgeon',
             img: 'assets/sprites/anim/law_idle.png', color: '#f4d03f', accent: '#1a5276',
             resist: ['slash'], weak: ['elec'],
-            maxHp: 255, maxSp: 157, atk: 58, def: 20, agi: 34, luk: 16,
+            maxHp: 320, maxSp: 170, atk: 66, def: 26, agi: 36, luk: 20,
             skills: [
-                { id: 'shambles', name: 'Shambles', cry: 'SHAMBLES!', cost: 33, power: 100, type: 'slash', desc: 'Corte Room.' },
-                { id: 'injection', name: 'Injection Shot', cry: 'Injection Shot!', cost: 41, power: 125, type: 'pierce', desc: 'Disparo quirúrgico.' },
+                { id: 'shambles', name: 'Shambles', cry: 'SHAMBLES!', cost: 33, power: 115, type: 'slash', desc: 'Corte Room.' },
+                { id: 'injection', name: 'Injection Shot', cry: 'Injection Shot!', cost: 41, power: 140, type: 'pierce', desc: 'Disparo quirúrgico.' },
                 { id: 'room', name: 'ROOM', cry: 'ROOM!', cost: 37, power: 0, type: 'support', partyBuff: { atk: 1.25, agi: 1.2 }, turns: 3, desc: 'Room · ATK/AGI equipo ↑' },
                 { id: 'scan', name: 'Scan', cry: 'Scan.', cost: 25, power: 0, type: 'support', debuff: { def: 0.65 }, debuffTurns: 3, targetEnemy: true, desc: 'Analiza · DEF enemigo ↓' }
             ]
@@ -295,15 +295,15 @@ const BattleData = {
             img: 'assets/sprites/anim/itachi_idle.png', color: '#1c2833', accent: '#c0392b',
             transform: true, transformName: 'Sharingan',
             resist: ['fire', 'curse'], weak: ['bless'],
-            maxHp: 240, maxSp: 168, atk: 52, def: 20, agi: 40, luk: 24,
+            maxHp: 300, maxSp: 175, atk: 62, def: 24, agi: 42, luk: 26,
             skills: [
-                { id: 'amaterasu', name: 'Amaterasu', cry: '¡Amaterasu!', cost: 45, power: 115, type: 'curse', desc: 'Presión genjutsu (sin spoilers).' },
+                { id: 'amaterasu', name: 'Amaterasu', cry: '¡Amaterasu!', cost: 45, power: 130, type: 'curse', desc: 'Presión genjutsu (sin spoilers).' },
                 { id: 'katon_i', name: 'Katon: Gran Bola de Fuego', cry: '¡Katon!', cost: 33, power: 100, type: 'fire', aoe: true, desc: 'Bola de fuego AoE.' },
                 { id: 'tsukuyomi', name: 'Genjutsu Sharingan', cry: '¡Genjutsu!', cost: 48, power: 0, type: 'support', once: true, debuff: { atk: 0.55, agi: 0.55 }, debuffTurns: 3, targetEnemy: true, desc: 'Genjutsu · ATK/AGI ↓↓ · 1 uso/combate' },
                 { id: 'sharingan_i', name: 'Sharingan', cry: '¡SHARINGAN!', cost: 55, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformStages: 2, transformStageNames: ['Sharingan', 'Susanoo'], transformStageAtk: [1.45, 1.8], transformStageAgi: [1.3, 1.5], transformStageDef: [1, 1.35], transformStageUpkeep: [12, 18], transformUpkeep: 12, transformAtk: 1.45, transformAgi: 1.3, desc: 'TRANSFORM · Sharingan · luego Susanoo (2ª etapa).' }
             ],
             transformedSkills: [
-                { id: 'amaterasu_x', name: 'Amaterasu · Focus', cry: '¡Amaterasu!', cost: 40, power: 145, type: 'curse', desc: 'Llamas negras concentradas.' },
+                { id: 'amaterasu_x', name: 'Amaterasu · Focus', cry: '¡Amaterasu!', cost: 40, power: 155, type: 'curse', desc: 'Llamas negras concentradas.' },
                 { id: 'katon_x', name: 'Katon · Barrage', cry: '¡Katon!', cost: 36, power: 125, type: 'fire', aoe: true, desc: 'Fuego AoE potenciado.' },
                 { id: 'genjutsu_x', name: 'Genjutsu · Deep', cry: '…', cost: 42, power: 0, type: 'support', debuff: { atk: 0.5, agi: 0.5 }, debuffTurns: 3, targetEnemy: true, desc: 'Genjutsu profundo · ATK/AGI ↓↓.' },
                 { id: 'feint_x', name: 'Crow Feint', cry: '…', cost: 30, power: 0, type: 'support', partyBuff: { luk: 1.45, agi: 1.2 }, turns: 2, desc: 'Cuervos · LUK/AGI equipo ↑.' },

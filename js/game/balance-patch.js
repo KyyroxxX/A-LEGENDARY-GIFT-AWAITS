@@ -52,6 +52,15 @@ const BalancePatch = {
             if (!s) return;
             Object.assign(unit, { ...s, hp: s.maxHp, sp: s.maxSp });
         });
+        // Buff global del plantel: +25% HP y +50% CP para TODOS (una sola vez).
+        BattleData.party.forEach((unit) => {
+            if (!unit || unit._poolBuffed) return;
+            unit._poolBuffed = true;
+            unit.maxHp = Math.round((unit.maxHp || 280) * 1.25);
+            unit.maxSp = Math.round((unit.maxSp || 130) * 1.5);
+            unit.hp = unit.maxHp;
+            unit.sp = unit.maxSp;
+        });
     }
 };
 
