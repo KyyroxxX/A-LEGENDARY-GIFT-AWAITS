@@ -85,7 +85,22 @@ const UserCharacterExpansion = {
         { id: 'junah', name: 'Junah', series: 'Metaphor: ReFantazio', role: 'Caster', roleTag: 'Masked Dancer', type: 'fire', color: '#c0392b', transform: true, transformName: 'Royal Masked Dancer', moves: ['Masked Flame', 'Song of Synthesis', "Dancer's Step"], xMoves: ['Royal Masquerade', 'Elemental Encore', 'Dance of Weakness', 'Finale of the Hero'] },
         { id: 'eupha', name: 'Eupha', series: 'Metaphor: ReFantazio', role: 'Healer', roleTag: 'Summoner Archetype', type: 'wind', color: '#27ae60', transform: true, transformName: 'Royal Summoner', moves: ['Summon Wind', 'Island Prayer', 'Trance Chant'], xMoves: ['Royal Invocation', 'Storm Eidolon', 'Blessing Chorus', 'Great Summon'] },
         { id: 'basilio', name: 'Basilio', series: 'Metaphor: ReFantazio', role: 'Tank', roleTag: 'Berserker Archetype', type: 'strike', color: '#566573', transform: true, transformName: 'Royal Berserker', moves: ['Beast Claw', 'Brutal Roar', 'Brotherhood Guard'], xMoves: ['Royal Beast', 'Raging Impact', 'Berserker Wall', 'Grand Beast Ruin'] },
-        { id: 'ren', name: 'Ren Amamiya', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Joker · Wild Card', type: 'curse', color: '#c41e3a', transform: true, transformName: 'Arsène Awakened', moves: ['Eiha', 'Gunslinger', 'Rebellion'], xMoves: ['Riot Gun', 'Maeigaon', 'Rebellion Encore', 'Cocytus of Arsène'] },
+        { id: 'ren', name: 'Ren Amamiya', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Joker · Wild Card', type: 'curse', color: '#c41e3a', accent: '#f4d03f',
+            transform: true, transformName: 'Arsène',
+            resist: ['curse', 'psy'], weak: ['bless'],
+            maxHp: 340, maxSp: 175, atk: 74, def: 28, agi: 44, luk: 30,
+            skills: [
+                { id: 'ren_strike', name: 'Eigaon', cry: 'Eigaon!', cost: 38, power: 150, type: 'curse', desc: 'Maldición pesada del Comodín.' },
+                { id: 'ren_burst', name: 'Riot Gun', cry: 'Bang. Bang.', cost: 42, power: 150, type: 'gun', hits: 5, critBonus: 0.15, desc: 'Descarga del Joker ×5 · crit alto.' },
+                { id: 'ren_guard', name: 'Rebellion', cry: 'Showtime!', cost: 30, power: 0, type: 'support', partyBuff: { atk: 1.35, luk: 1.25 }, turns: 3, desc: 'Rebelión · ATK/LUK equipo ↑.' },
+                { id: 'ren_transform', name: 'Arsène Awakened', cry: 'Arsène!', cost: 60, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformStages: 2, transformStageNames: ['Arsène', 'Satanael'], transformStageAtk: [1.55, 1.9], transformStageAgi: [1.3, 1.5], transformStageDef: [1, 1.3], transformStageUpkeep: [12, 18], transformUpkeep: 12, transformAtk: 1.55, transformAgi: 1.3, desc: 'TRANSFORM · Arsène · luego Satanael, el dios rebelde.' }
+            ],
+            transformedSkills: [
+                { id: 'ren_x_strike', name: 'Maeigaon', cry: 'Maeigaon!', cost: 46, power: 175, type: 'curse', aoe: true, desc: 'Maldición extrema AoE.' },
+                { id: 'ren_x_burst', name: 'Sinful Shell', cry: 'This is my answer!', cost: 55, power: 200, type: 'almighty', critBonus: 0.25, desc: 'Bala del pecado · crit brutal.' },
+                { id: 'ren_x_guard', name: 'Satanael Rise', cry: 'Behold!', cost: 42, power: 0, type: 'support', once: true, advanceTransform: true, transformAtk: 1.9, transformAgi: 1.5, transformDef: 1.3, transformUpkeep: 18, transformStageName: 'Satanael', minTransformStage: 1, maxTransformStage: 1, desc: 'Satanael, dios de la rebelión · 2ª etapa · upkeep alto.' },
+                { id: 'ren_x_finisher', name: 'Morning Star', cry: 'Morning Star!', cost: 68, power: 215, type: 'almighty', aoe: true, once: true, minTransformStage: 2, desc: 'Estrella del alba AoE · 1 uso · solo Satanael.' }
+            ] },
         { id: 'goro', name: 'Goro Akechi', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Crow', type: 'bless', color: '#ecf0f1', transform: true, transformName: 'Black Mask', moves: ['Kouha', 'Rapier Feint', 'Detective Insight'], xMoves: ['Megidola', 'Laevateinn', 'Black Mask Counter', 'Robin Hood Collapse'] },
         { id: 'ann', name: 'Ann Takamaki', series: 'Persona 5 Royal', role: 'Caster', roleTag: 'Panther', type: 'fire', color: '#c0392b', transform: true, transformName: 'Carmen Awakened', moves: ['Agi', 'Whip Rush', 'Tarunda'], xMoves: ['Maragion', 'High Energy', "Carmen's Fire", 'Blazing Panther'] },
         { id: 'sumire', name: 'Kasumi Yoshizawa', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Violet', type: 'bless', color: '#922b21', transform: true, transformName: 'Sumire · Violet', moves: ['Assault Dive', 'Brave Step', 'Sword Ballet'], xMoves: ['Masquerade', 'Sword Dance', 'Violet Focus', 'Sword of Liberation'] },

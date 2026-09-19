@@ -27,6 +27,18 @@ const BattleAI = {
         const strongest = livingFoes.reduce((a, b) => ((a.atk * (a.buffs.atk || 1)) >= (b.atk * (b.buffs.atk || 1)) ? a : b));
         const pick = (skill, target) => ({ skill: skill || basic, target: target || lowest });
 
+        // Sin CP no hay técnicas: atrincherarse y recuperar la mitad del CP
+        // en vez de pegar básicos para siempre (con enfriamiento anti-bucle).
+        // (spRatio ya viene calculado arriba.)
+        if (spRatio < 0.35 && (enemy.skillCooldowns?.['second_wind'] || 0) <= 0 && Math.random() < 0.6) {
+            return pick({
+                id: 'second_wind', name: 'Second Wind', cry: 'Not yet!',
+                cost: 0, power: 0, type: 'support',
+                buff: { def: 1.25 }, turns: 2, cooldown: 2, restoreSpPct: 0.5,
+                desc: 'Se atrinchera · recupera la mitad del CP.'
+            }, enemy);
+        }
+
         const mercy = skills.find(s => s.id === 'guaranteed');
         if (enemy.id === 'boss5050' && mercy && (state.turnCount || 1) % 4 === 0) {
             return pick(mercy, enemy);

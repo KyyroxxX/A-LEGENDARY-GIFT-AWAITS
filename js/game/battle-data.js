@@ -2117,6 +2117,7 @@ const BattleData = {
         if (sk.heal) facts.push(sk.aoeHeal ? `Cura ${sk.heal} HP al equipo` : `Cura ${sk.heal} HP (1 aliado)`);
         if (sk.drainSp) facts.push(`🦈 Roba ${sk.drainSp} CP al enemigo (+${sk.drainSp} CP propio)`);
         if (sk.restoreSp) facts.push(`+${sk.restoreSp} SP al equipo`);
+        if (sk.restoreSpPct) facts.push(`Recupera ${Math.round(sk.restoreSpPct * 100)}% del CP máximo`);
         if (sk.revive != null) facts.push(`Revive con ${Math.round(sk.revive * 100)}% HP`);
         if (sk.transform) {
             const bits = ['TRANSFORMACIÓN'];

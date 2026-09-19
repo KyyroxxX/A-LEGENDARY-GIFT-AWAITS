@@ -123,8 +123,8 @@ const ChronicleData = {
             metaphor: true },
 
         { mid: 'gate_final', enc: 'boss', enemy: 'boss5050', name: 'THE 50/50', stage: 'destiny', inv: 60,
-            title: 'FINAL · THE 50/50',
-            blurb: 'El Joker del destino. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3), da igual la historia. Victoria = +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
+            title: 'FINAL · THE 50/50 & Shadow Joker',
+            blurb: 'El Joker del destino. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3), da igual la historia. Ha robado la sombra de Ren Amamiya: el Comodín pelea por ÉL. Victoria = +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
             sealed: '✦ THE 50/50 · SELLADO — COLECCIÓN INCOMPLETA',
             sealedBlurb: 'Sellado: consigue TODOS los personajes con TODOS sus dupes (4★ C6 · 5★/6★ C3). La historia no importa. Gojo no abre nada.',
             isFinal: true }
@@ -580,6 +580,13 @@ const ChronicleData = {
                             atk: Math.round(st.atk * al.atkF),
                         }));
                     });
+                } else {
+                    // THE 50/50 invoca la sombra del Comodín: Ren Amamiya pelea por el Joker.
+                    enemies.push(this.mk('ren', nameOf('ren'), {
+                        ...st,
+                        maxHp: Math.round(st.maxHp * 0.6),
+                        atk: Math.round(st.atk * 0.85),
+                    }));
                 }
 
                 out[row.enc] = {

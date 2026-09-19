@@ -859,6 +859,15 @@ const BattleEngine = {
                 logs.push(`${t.name} recupera ${t.hp - before} HP${cpNote}.`);
             }
         }
+        // Batería porcentual (Second Wind enemigo): recupera una fracción del CP máximo.
+        if (skill.restoreSpPct) {
+            const t = target || user;
+            const amount = Math.round((t.maxSp || 0) * skill.restoreSpPct);
+            const before = t.sp || 0;
+            t.sp = Math.min(t.maxSp || 0, before + amount);
+            const gained = Math.max(0, (t.sp || 0) - before);
+            if (gained > 0) logs.push(`★ ${t.name} recupera +${gained} CP.`);
+        }
         if (skill.revive != null) {
             const t = target || state.party.find(u => u.hp <= 0);
             if (t && t.hp <= 0) {
