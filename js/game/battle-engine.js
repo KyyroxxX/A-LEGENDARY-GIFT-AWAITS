@@ -710,6 +710,9 @@ const BattleEngine = {
         base *= attacker.buffs.damage || 1;
         base *= 1 + (attacker.damageBonus || 0) + (attacker.buffs.damageBonus || 0) + (skill.damageBonus || 0);
         if (skill.pierce) base *= 1.12;
+        // Ritmo rápido: el plantel pega +50% y los enemigos +25%.
+        // Los topes de cappedDamage siguen evitando one-shots.
+        base *= attacker.side === 'ally' ? 1.5 : 1.25;
         if (attacker.charged) {
             base *= 1.45;
             attacker.charged = false;
@@ -1357,6 +1360,7 @@ const BattleEngine = {
             attackers.forEach(a => {
                 total += Math.floor((a.atk * (a.buffs.atk || 1)) * (1.2 + Math.random() * 0.5));
             });
+            total = Math.floor(total * 1.5);
             const boss = /boss|final/i.test(e.ai || '');
             total = Math.min(total, Math.max(1, Math.floor(e.maxHp * (boss ? 0.35 : 0.5))));
             const tacticalHold = this.holdLastEnemy(state, e, total);
