@@ -457,6 +457,17 @@ const BattleEngine = {
                 );
             }
         }
+        // Los enemigos también recuperan CP cada ronda — sin esto se secan
+        // en ~5 turnos y spamean básicos para siempre. El drenaje de Samehada
+        // sigue doliendo (niega ~2 rondas) pero ya no los deja secos del todo.
+        if (!state.encounter?.training) {
+            const foeRegen = state.encounter?.enemySpRegen
+                ?? (state.encounter?.isBoss ? 16 : 14);
+            state.enemies.forEach(u => {
+                if (u.hp <= 0) return;
+                u.sp = Math.min(u.maxSp || 0, (u.sp || 0) + foeRegen);
+            });
+        }
         this.tickBuffs(state);
         this.advanceTransformStages(state);
         this.buildTurnOrder(state);

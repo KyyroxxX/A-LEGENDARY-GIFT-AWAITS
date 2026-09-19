@@ -1,7 +1,7 @@
 /**
  * Crónica del Destino — campaña única.
  * Reglas: cada misión = 1 mapa único; lo normal es pelear en manada
- * (dúos, tríos al final). Solo van solos Aizen, Makima, Sukuna y THE 50/50.
+ * (dúos, tríos al final). Solo van solos los pesos pesados (SOLO_BOSSES).
  * First clears are intentionally scarce. Repeating difficult missions is the farm loop.
  */
 const ChronicleData = {
@@ -487,17 +487,24 @@ const ChronicleData = {
 
     /**
      * Manada por defecto — lo normal es pelear contra varios.
-     * Solo van solos: Aizen, Makima, Sukuna y THE 50/50 (sin entrada aquí).
-     * Historia: rotación dentro del cast del acto (dúos I–IV, tríos V–VI).
+     * Solo van solos los pesos pesados (SOLO_BOSSES): sin escoltas
+     * en su misión y jamás escoltan a nadie.
+     * Historia: rotación dentro del cast del acto (dúos I–II y IV, tríos V).
      */
+    SOLO_BOSSES: new Set([
+        'aizen', 'makima', 'sukuna', 'boss5050',
+        'madara', 'kira', 'pucci', 'dio', 'diavolo',
+        'pain', 'tobi', 'kaido', 'muzan', 'kokushibo',
+        'doflamingo', 'louis', 'yamamoto', 'yourichi',
+        'gojo', 'geto', 'ulquiorra', 'grimmjow',
+    ]),
+
     STORY_ALLIES: {
         ch_crocodile: ['enel'], ch_enel: ['zabuza'], ch_zabuza: ['lucci'], ch_lucci: ['crocodile'],
         ch_sasori: ['orochimaru'], ch_orochimaru: ['kisame'], ch_kisame: ['sasori'],
-        ch_kira: ['grimmjow'], ch_grimmjow: ['ulquiorra'], ch_ulquiorra: ['kira'],
-        ch_mahito: ['jogo'], ch_jogo: ['geto'], ch_geto: ['mahito'],
+        ch_mahito: ['jogo'], ch_jogo: ['mahito'],
         ch_daki: ['akaza', 'reze'], ch_akaza: ['reze', 'power'],
         ch_reze: ['power', 'daki'], ch_power: ['daki', 'akaza'],
-        ch_diavolo: ['dio', 'kira'],
     },
 
     /** Archivos con inv >= esto son duros → trío; el resto dúo (encadenado al siguiente archivo). */
@@ -511,14 +518,20 @@ const ChronicleData = {
             return r ? r.name : id;
         };
         // Escoltas de una misión: el jefe mantiene sus stats, los escoltas van pack-escalados.
+        // Los SOLO_BOSSES van solos a su misión y jamás escoltan a nadie.
         const alliesFor = (row, i, asStory) => {
+            const solo = (id) => this.SOLO_BOSSES.has(id);
+            if (solo(row.enemy)) return { ids: [], hpF: 1, atkF: 1 };
             let ids = [];
             if (asStory) {
-                ids = this.STORY_ALLIES[row.enc] || [];
+                ids = (this.STORY_ALLIES[row.enc] || []).filter(id => id !== row.enemy && !solo(id));
             } else {
                 const hard = (row.inv || 0) >= this.HARD_ARCHIVE_INV;
                 const k = hard ? 2 : 1;
-                for (let j = 1; j <= k; j++) ids.push(this.ARCHIVES[(i + j) % this.ARCHIVES.length].enemy);
+                for (let j = 1; ids.length < k && j < this.ARCHIVES.length * 2; j++) {
+                    const cand = this.ARCHIVES[(i + j) % this.ARCHIVES.length].enemy;
+                    if (cand !== row.enemy && !solo(cand) && !ids.includes(cand)) ids.push(cand);
+                }
             }
             const n = 1 + ids.length;
             const hpF = n <= 1 ? 1 : n === 2 ? 0.45 : 0.3;

@@ -11,7 +11,14 @@ const BattleAI = {
             return null;
         }
 
-        const skills = this.usableSkills(enemy, state);
+        let skills = this.usableSkills(enemy, state);
+        // Sin maná no hay spam: con la reserva bajo el 25% la IA economiza
+        // (daño barato o utilidad) hasta que la regen la recupera.
+        const spRatio = (enemy.sp || 0) / Math.max(1, enemy.maxSp || 1);
+        if (spRatio < 0.25) {
+            const cheap = skills.filter(s => (s.cost || 0) <= 26 || !s.power);
+            if (cheap.some(s => s.power > 0)) skills = cheap;
+        }
         const basic = skills.find(s => s.power > 0) || { id: 'basic', name: 'Attack', power: 28, type: 'strike', cost: 0 };
         const hpRatio = enemy.hp / enemy.maxHp;
         const lowest = livingFoes.reduce((a, b) => (a.hp / a.maxHp <= b.hp / b.maxHp ? a : b));
