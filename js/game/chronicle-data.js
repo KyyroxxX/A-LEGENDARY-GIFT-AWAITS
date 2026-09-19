@@ -126,7 +126,7 @@ const ChronicleData = {
             title: 'FINAL · THE 50/50',
             blurb: 'Detrás del Joker del destino hay tres sillas: Eren Yeager, Griffith y Mob. Tienen a Ren Amamiya encarcelado para alimentar el 50/50… y usan a Mob en contra de su voluntad. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3). Victoria = trío en C3 + +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
             sealed: '✦ THE 50/50 · SELLADO — COLECCIÓN INCOMPLETA',
-            sealedBlurb: 'Sellado: consigue TODOS los personajes coleccionables. Los sellados no cuentan y la historia no importa.',
+            sealedBlurb: 'Sellado: consigue TODOS los personajes con TODOS sus dupes (4★ C6 · 5★/6★ C3). Los sellados no cuentan. La historia no importa.',
             isFinal: true }
     ],
 

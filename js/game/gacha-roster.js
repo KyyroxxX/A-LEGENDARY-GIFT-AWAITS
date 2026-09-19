@@ -687,10 +687,6 @@ const GachaRoster = {
     /** THE 50/50: se desbloquea con TODOS los personajes al máximo de dupes.
      *  4★ C6 · 5★/6★ C3. Da igual el progreso de historia. Gojo no abre nada. */
     bossRequirement() {
-        if (typeof CharProgress !== 'undefined' && CharProgress.bossGateProgress) {
-            const p = CharProgress.bossGateProgress();
-            return { copiesHave: p.have, copiesTotal: p.total, chars: p.chars };
-        }
         if (typeof CharProgress !== 'undefined') {
             const p = CharProgress.collectionDupesProgress();
             return { copiesHave: p.have, copiesTotal: p.total, chars: p.chars };
@@ -701,14 +697,13 @@ const GachaRoster = {
     },
 
     bossUnlockedByCollection() {
-        if (typeof CharProgress !== 'undefined' && CharProgress.bossGateReady) return CharProgress.bossGateReady();
         if (typeof CharProgress !== 'undefined') return CharProgress.allMaxed();
         return this.playableIds().length > 0 && this.remainingPool().length === 0;
     },
 
     bossRequirementText() {
         const r = this.bossRequirement();
-        return `THE 50/50 exige TODA la colección: ${r.copiesHave}/${r.copiesTotal} personajes. Los sellados no cuentan. La historia no importa.`;
+        return `THE 50/50 exige TODA la colección al máximo: ${r.copiesHave}/${r.copiesTotal} copias (${r.chars} personajes · 4★ C6 · 5★/6★ C3). Los sellados no cuentan. La historia no importa.`;
     },
 
     isBannerUnlocked(bannerId) {
