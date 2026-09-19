@@ -153,6 +153,21 @@ const CharProgress = {
         return { have, total, chars: ids.length };
     },
 
+    /**
+     * Puerta del 50/50: TENERLOS todos (los dupes dan igual, son poder).
+     * playableBannerIds ya excluye sellados y exclusivos: jamás cuentan ni se nombran.
+     */
+    bossGateProgress() {
+        const ids = this.playableBannerIds();
+        const have = ids.filter((id) => (this.copiesOf(id) || 0) >= 1).length;
+        return { have, total: ids.length, chars: ids.length };
+    },
+
+    bossGateReady() {
+        const p = this.bossGateProgress();
+        return p.total > 0 && p.have >= p.total;
+    },
+
     worstCasePullsNeeded() {
         if (typeof GachaRoster === 'undefined') return 2700;
         // Gift budget: first copy of each high-pool id at soft pity.

@@ -687,6 +687,10 @@ const GachaRoster = {
     /** THE 50/50: se desbloquea con TODOS los personajes al máximo de dupes.
      *  4★ C6 · 5★/6★ C3. Da igual el progreso de historia. Gojo no abre nada. */
     bossRequirement() {
+        if (typeof CharProgress !== 'undefined' && CharProgress.bossGateProgress) {
+            const p = CharProgress.bossGateProgress();
+            return { copiesHave: p.have, copiesTotal: p.total, chars: p.chars };
+        }
         if (typeof CharProgress !== 'undefined') {
             const p = CharProgress.collectionDupesProgress();
             return { copiesHave: p.have, copiesTotal: p.total, chars: p.chars };
@@ -697,13 +701,14 @@ const GachaRoster = {
     },
 
     bossUnlockedByCollection() {
+        if (typeof CharProgress !== 'undefined' && CharProgress.bossGateReady) return CharProgress.bossGateReady();
         if (typeof CharProgress !== 'undefined') return CharProgress.allMaxed();
         return this.playableIds().length > 0 && this.remainingPool().length === 0;
     },
 
     bossRequirementText() {
         const r = this.bossRequirement();
-        return `THE 50/50 exige TODA la colección al máximo: ${r.copiesHave}/${r.copiesTotal} copias (${r.chars} personajes · 4★ C6 · 5★/6★ C3). La historia no importa.`;
+        return `THE 50/50 exige TODA la colección: ${r.copiesHave}/${r.copiesTotal} personajes. Los sellados no cuentan. La historia no importa.`;
     },
 
     isBannerUnlocked(bannerId) {
@@ -1195,6 +1200,17 @@ const GachaRoster = {
             : { six: this.getFeatured(bannerId), five: this.getFeatured(bannerId) };
         // Picked/default featured takes half of its tier drops (5★ and 6★ independent).
         const featChance = 0.5;
+        // Tras vencer al 50/50, Ren sale al 75% en los 6★ de su banner (respeta pick explícito).
+        let renBoost = false;
+        try {
+            const beaten = !!(GameState.get('bossDefeated') || GameState.flag('gate_final_cleared'));
+            const st0 = this.getState(bannerId);
+            if (beaten && bannerId === 'persona5royal' && !st0.featuredPick6
+                && (b.pool6 || []).includes('ren') && this.getTemplate('ren')) {
+                featPair.six = { id: 'ren', stars: 6, picked: false };
+                renBoost = true;
+            }
+        } catch (_) { /* sin boost no se rompe nada */ }
 
         const rollHigh = (starsTarget) => {
             let charId = null;
@@ -1209,7 +1225,7 @@ const GachaRoster = {
                 && featStars === starsTarget
                 && this.getTemplate(featId);
 
-            const featuredChance = featOpen ? featChance : 0;
+            const featuredChance = featOpen ? (starsTarget >= 6 && renBoost ? 0.75 : featChance) : 0;
             if (featOpen && Math.random() < featuredChance) {
                 charId = featId;
                 featured = true;
