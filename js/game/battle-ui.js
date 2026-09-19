@@ -1744,6 +1744,10 @@ const BattleUI = {
                 ...this.state.enemies.map(e => e.id),
                 ...this.state.party.map(p => p.id)
             ]);
+            if (r.secondPhase?.length) {
+                this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
+                this.render();
+            }
             if (r.finisher?.length) await this.playFinisherSequence(r.finisher, { allOut: true });
             this.playDeathFx(this.state.enemies.filter(e => e.hp <= 0).map(e => e.id));
         }
@@ -1842,6 +1846,10 @@ const BattleUI = {
                 this.showCry('¡CORAZA ROTA!', { family: 'transform', fxType: 'support' });
                 // Sasori must visually leave Hiruko on the first successful hit,
                 // before the damage timeline and the next turn continue.
+                this.render();
+            }
+            if (result.secondPhase?.length) {
+                this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                 this.render();
             }
             await this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
@@ -2779,6 +2787,10 @@ const BattleUI = {
                 this.showDamageFloats(result.hits);
                 if (result.armorBreak) {
                     this.showCry('¡CORAZA ROTA!', { family: 'transform', fxType: 'support' });
+                    this.render();
+                }
+                if (result.secondPhase?.length) {
+                    this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                     this.render();
                 }
                 await this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);

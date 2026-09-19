@@ -36,8 +36,9 @@ const BattleEngine = {
                 || skills.some((skill) => skill.heal || skill.aoeHeal || skill.cover || skill.partyBuff || skill.allyBuff);
         });
         // Support composition is deliberately part of the difficulty curve.
-        const partyHpMul = (partyHasSupport ? 2.3 : 2.05) * (encounter.partyHpScale ?? 1);
-        const healScale = (partyHasSupport ? 1.6 : 1.2) * (encounter.partyHealScale ?? 1);
+        // (Recortado para alta dificultad: menos colchón, la táctica decide.)
+        const partyHpMul = (partyHasSupport ? 2.1 : 1.9) * (encounter.partyHpScale ?? 1);
+        const healScale = (partyHasSupport ? 1.45 : 1.1) * (encounter.partyHealScale ?? 1);
         party.forEach(u => {
             u.maxHp = Math.round(u.maxHp * partyHpMul);
             u.hp = u.maxHp;
@@ -78,11 +79,11 @@ const BattleEngine = {
             // Raw unbuffed attacks fall off — buffs, debuffs, weaknesses,
             // guards and team comp decide fights, without bricking progress.
             const standardTuning = encounter.isBoss
-                ? { hp: 3.3, hpStep: 0.42, scale: 1.15, atk: 1.14, def: 1.10, skill: 1.12, heal: 1.15 }
-                : { hp: 3.2, hpStep: 0.42, scale: 1.15, atk: 1.12, def: 1.08, skill: 1.10, heal: 1.16 };
+                ? { hp: 3.3, hpStep: 0.42, scale: 1.15, atk: 1.14, def: 1.10, skill: 1.18, heal: 1.15 }
+                : { hp: 3.2, hpStep: 0.42, scale: 1.15, atk: 1.12, def: 1.08, skill: 1.15, heal: 1.16 };
             const globalHard = encounter.enemyGlobalScale ?? standardTuning.scale;
             const hpM = (standardTuning.hp + (diff - 1) * standardTuning.hpStep) * globalHard * (encounter.enemyHpScale ?? 1);
-            const atkM = (1.05 + (diff - 1) * 0.10)
+            const atkM = (1.12 + (diff - 1) * 0.12)
                 * (partyHasSupport ? 1 : 1.12)
                 * (encounter.enemyGlobalAtkScale ?? standardTuning.atk)
                 * (encounter.enemyAtkScale ?? 1);
@@ -291,53 +292,97 @@ const BattleEngine = {
         state.turnCount++;
     },
 
-    autoTransformEnemies(state) {
-        if ((state.turnCount || 0) < 4 || state.finished || state._enemyTransformRound === state.turnCount) return;
-        state._enemyTransformRound = state.turnCount;
-        // One transformation per round: in multi-foe fights they take turns
-        // showing off instead of all bursting at once (that wiped parties).
-        // The most desperate (lowest HP fraction) goes first.
-        const candidates = state.enemies.filter(enemy => enemy.hp > 0 && !enemy.transformed);
-        candidates.sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
-        const next = candidates.slice(0, 1);
-        if (!next.length) return;
-        next.forEach(enemy => {
-            const skills = (typeof BattleData !== 'undefined' && BattleData.activeSkills)
-                ? BattleData.activeSkills(enemy)
-                : (enemy.skills || []);
-            let transform = skills.find(skill => skill && skill.transform)
-                || (enemy.skills || []).find(skill => skill && skill.transform);
-            if (!transform && enemy.transform) {
-                transform = {
-                    id: `${enemy.id}_round4_transform`,
-                    name: enemy.transformName || 'Transformación',
-                    cry: enemy.transformName || 'TRANSFORM!',
-                    cost: 0,
-                    power: 0,
-                    type: 'support',
-                    transform: true,
-                    transformPersistent: true,
-                    transformUpkeep: 0,
-                    transformAtk: 1.45,
-                    transformAgi: 1.2
-                };
-                enemy.skills = [...(enemy.skills || []), transform];
-            }
-            if (!transform) return;
+    /**
+     * SEGUNDA FASE — al matar a un enemigo, en vez de morir entra en fase 2
+     * (una vez por combate y enemigo): con kit de transformación la libera
+     * de verdad; si no tiene se enfurece (cura parcial + buffs hasta el final).
+     * Entrenamiento y muñecos nunca fasean. Los aliados jamás fasean.
+     */
+    secondPhaseEligible(unit, state) {
+        if (!unit || unit.side !== 'enemy' || unit.secondPhased) return false;
+        if (unit.hp > 0 || unit.isDead) return false;
+        if (state?.encounter?.training || unit.ai === 'dummy' || unit.id === 'dummy') return false;
+        return true;
+    },
 
-            if (enemy.id === 'sasori' && enemy.armorShell && !enemy.armorBroken) {
-                this.breakArmorShell(state, enemy, { logs: [] });
+    triggerSecondPhase(state, unit, result = null) {
+        if (!this.secondPhaseEligible(unit, state)) return false;
+        unit.secondPhased = true;
+        const logs = result?.logs || state.log;
+        const say = (line) => logs.push(line);
+
+        // Limpieza total: la fase 2 empieza de cero (sin venenos, stuns, downs ni debuffs).
+        unit.dots = [];
+        unit.buffs = {};
+        unit.guard = false;
+        unit.cover = false;
+        unit.coverHits = 0;
+        unit.charged = false;
+        unit.down = false;
+        unit.downImmunity = false;
+        unit.stunTurns = 0;
+        unit._skip = false;
+        unit.reflectDamageTurns = 0;
+        unit.reflectDamageMul = 0;
+        unit.skillCooldowns = {};
+        unit.sp = unit.maxSp || 0;
+        state.downedEnemies?.delete(unit.id);
+
+        const skills = [...(unit.skills || []), ...(unit.transformedSkills || [])];
+        const xf = skills.find(s => s && s.transform);
+        const shelled = unit.armorShell && !unit.armorBroken;
+        if (xf && !unit.transformed && !shelled) {
+            // Libera su transformación de verdad (sin puerta de rondas: la fase manda).
+            unit.transformed = true;
+            unit.transformUsed = true;
+            unit.transformTurns = 0;
+            unit.transformUpkeep = 0;
+            unit.transformPersistent = true;
+            unit.transformStages = xf.transformStages || 1;
+            unit.transformStageNames = xf.transformStageNames ? [...xf.transformStageNames] : null;
+            if (unit.transformStageNames?.[0]) unit.transformName = unit.transformStageNames[0];
+            unit.transformProfile = {
+                atk: xf.transformStageAtk,
+                def: xf.transformStageDef,
+                agi: xf.transformStageAgi,
+                upkeep: xf.transformStageUpkeep,
+                defaultAtk: xf.transformAtk || 1.5,
+                defaultDef: xf.transformDef || 1.1,
+                defaultAgi: xf.transformAgi || 1.25,
+                defaultUpkeep: 0
+            };
+            unit.baseAtk = unit.baseAtk || unit.atk;
+            unit.baseDef = unit.baseDef || unit.def;
+            unit.baseAgi = unit.baseAgi || unit.agi;
+            this.setTransformationStage(unit, 1);
+            unit.usedOnce = unit.usedOnce || {};
+            unit.usedOnce[xf.id] = true;
+            const pct = 65;
+            unit.hp = Math.max(1, Math.round(unit.maxHp * pct / 100));
+            say(`☠ ¡${unit.name} se niega a caer!`);
+            say(`★ SEGUNDA FASE · ${unit.name} libera ${unit.transformName || 'su forma final'} · HP al ${pct}% · ATK ↑↑`);
+            if (result) {
+                result.secondPhase = result.secondPhase || [];
+                result.secondPhase.push(unit.id);
+                result.transformed = result.transformed || unit.id;
             }
-            if (enemy.transformUsed) {
-                enemy.transformUsed = false;
-                enemy.usedOnce = {};
+        } else {
+            // Sin transformación (o aún con coraza): furia final + HP parcial.
+            if (shelled) this.breakArmorShell(state, unit, { logs: [] });
+            const pct = 40;
+            unit.hp = Math.max(1, Math.round(unit.maxHp * pct / 100));
+            this.applyBuffMap(unit, { atk: 1.4, agi: 1.25 }, 99);
+            say(`☠ ¡${unit.name} se niega a caer!`);
+            say(`★ SEGUNDA FASE · ${unit.name} enfurece · HP al ${pct}% · ATK/AGI ↑ hasta el final`);
+            if (result) {
+                result.secondPhase = result.secondPhase || [];
+                result.secondPhase.push(unit.id);
             }
-            enemy.sp = Math.max(enemy.sp || 0, transform.cost || 0);
-            const result = this.execute(state, enemy, { type: 'skill', skillId: transform.id, targetId: enemy.id });
-            if (result.ok && enemy.transformed) {
-                state.log.push(`★ RONDA 4 · ${enemy.name} entra en ${enemy.transformName || 'su forma transformada'}.`);
-            }
-        });
+        }
+        unit.isDead = false;
+        unit.isTargetable = true;
+        unit.canAct = true;
+        return true;
     },
 
     currentActor(state) {
@@ -471,7 +516,7 @@ const BattleEngine = {
         this.tickBuffs(state);
         this.advanceTransformStages(state);
         this.buildTurnOrder(state);
-        this.autoTransformEnemies(state);
+        // Sin transforms temporizados: los enemigos fasean al morir (triggerSecondPhase).
     },
 
     setTransformationStage(unit, stage) {
@@ -617,7 +662,9 @@ const BattleEngine = {
                     u.hp = hold ? 1 : Math.max(0, u.hp - d.amount);
                     state.log.push(`${u.name} sufre ${Math.max(0, before - u.hp)} por ${d.name}.`);
                     if (u.hp <= 0) {
-                        this.markDead(state, u, `${u.name} cae por ${d.name}.`);
+                        if (!(u.side === 'enemy' && this.triggerSecondPhase(state, u, null))) {
+                            this.markDead(state, u, `${u.name} cae por ${d.name}.`);
+                        }
                     } else if (hold) {
                         state.log.push(`★ Aguanta con 1 HP (ventana táctica).`);
                     }
@@ -763,7 +810,7 @@ const BattleEngine = {
         if (attacker.side === 'enemy' && target.side === 'ally') {
             // Hits chunk — guard, debuff their ATK or erase them first.
             const supportGap = state.partyHasSupport ? 0 : 0.08;
-            const ratio = (crit ? 0.44 : 0.36) + supportGap;
+            const ratio = (crit ? 0.50 : 0.42) + supportGap;
             return Math.min(damage, Math.max(1, Math.floor(target.maxHp * ratio)));
         }
         if (attacker.side === 'ally' && target.side === 'enemy') {
@@ -1184,8 +1231,12 @@ const BattleEngine = {
                 result.logs.push(`☠ Rito de Jashin: ${user.name} recibe ${bounced} de vuelta!`);
                 hits.push({ id: user.id, side: user.side, damage: bounced, tag: 'REFLECT', crit: false, reflect: true });
                 if (user.hp <= 0) {
-                    this.markDead(state, user, `${user.name} cae por el rito de Jashin.`);
-                    result.logs.push(`${user.name} derrotado por el rito.`);
+                    if (user.side === 'enemy' && this.triggerSecondPhase(state, user, result)) {
+                        result.logs.push(`☠ ¡${user.name} fasea entre el rito!`);
+                    } else {
+                        this.markDead(state, user, `${user.name} cae por el rito de Jashin.`);
+                        result.logs.push(`${user.name} derrotado por el rito.`);
+                    }
                 } else if (holdAtk) {
                     result.logs.push(`★ Aguanta con 1 HP (ventana táctica).`);
                 }
@@ -1254,12 +1305,16 @@ const BattleEngine = {
                 result.logs.push(`${t.name} mantiene el equilibrio y no puede caer dos veces seguidas.`);
                 if (!state._sfxFromUi) AudioManager.combat.attack();
             } else if (t.hp <= 0) {
-                this.markDead(state, t);
-                result.logs.push(`${t.name} derrotado.`);
-                if (user.side === 'ally' && t.side === 'enemy' && t.hp <= 0) {
-                    result.finisher.push({ id: t.id, side: t.side });
+                if (t.side === 'enemy' && this.triggerSecondPhase(state, t, result)) {
+                    if (!state._sfxFromUi) AudioManager.combat.impact("down");
+                } else {
+                    this.markDead(state, t);
+                    result.logs.push(`${t.name} derrotado.`);
+                    if (user.side === 'ally' && t.side === 'enemy' && t.hp <= 0) {
+                        result.finisher.push({ id: t.id, side: t.side });
+                    }
+                    if (!state._sfxFromUi) AudioManager.combat.death({ heavy: true });
                 }
-                if (!state._sfxFromUi) AudioManager.combat.death({ heavy: true });
             } else {
                 if (!state._sfxFromUi) AudioManager.combat.attack();
             }
@@ -1293,6 +1348,7 @@ const BattleEngine = {
         const logs = ['★ ALL-OUT ATTACK!'];
         const hits = [];
         const finisher = [];
+        const secondPhase = [];
         const attackers = this.living(state.party);
         livingE.forEach(e => {
             let total = 0;
@@ -1310,8 +1366,11 @@ const BattleEngine = {
             hits.push({ id: e.id, side: e.side, damage: beforeHp - e.hp, tag: 'ASSAULT', crit: false });
             logs.push(`${e.name} sufre ${beforeHp - e.hp} de daño combinado!`);
             if (e.hp <= 0) {
-                this.markDead(state, e, `${e.name} cae ante el Asalto.`);
-                finisher.push({ id: e.id, side: e.side });
+                const pr = { logs, secondPhase };
+                if (!this.triggerSecondPhase(state, e, pr)) {
+                    this.markDead(state, e, `${e.name} cae ante el Asalto.`);
+                    finisher.push({ id: e.id, side: e.side });
+                }
             }
             if (tacticalHold) logs.push('★ La ventana táctica lo mantiene con 1 HP hasta la cuarta ronda.');
         });
@@ -1321,7 +1380,7 @@ const BattleEngine = {
             screenShake(document.getElementById('app'), 1.5);
         }
         this.checkEnd(state);
-        return { ok: true, logs, hits, finisher };
+        return { ok: true, logs, hits, finisher, secondPhase };
     },
 
     advanceTurn(state, consumedOneMore = false) {

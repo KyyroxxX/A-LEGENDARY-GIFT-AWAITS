@@ -44,9 +44,9 @@ const BattleAI = {
             return pick(mercy, enemy);
         }
 
-        // Transform as soon as it's a real threat / phase break
-        const transformPlay = this.pickTransform(enemy, skills, hpRatio, state);
-        if (transformPlay) return pick(transformPlay, enemy);
+        // Sin transforms manuales: los enemigos solo transforman al fasear al morir.
+        // (pickTransform queda anulado abajo; la rama advanceTransform sí sigue
+        // valiendo una vez faseado.)
 
         // Advance multi-stage transforms (Lee drunken fist, etc.)
         const advance = skills.find(s => s.advanceTransform);
@@ -168,16 +168,7 @@ const BattleAI = {
     },
 
     pickTransform(enemy, skills, hpRatio, state) {
-        if (enemy.transformed || enemy.transformUsed) return null;
-        if (typeof BattleEngine !== 'undefined' && !BattleEngine.transformReady(state, enemy)) return null;
-        const xf = skills.find(s => s.transform) || (enemy.skills || []).find(s => s && s.transform);
-        if (!xf) return null;
-        const diff = state?.encounter?.difficulty || 1;
-        // Harder fights transform sooner after the shared unlock gate
-        const threshold = diff >= 6 ? 0.92 : diff >= 4 ? 0.86 : 0.78;
-        if (hpRatio <= threshold) return xf;
-        // Low HP emergency awaken (still respects unlock round via usableSkills)
-        if (hpRatio < 0.45) return xf;
+        // Anulado: los enemigos solo transforman al fasear al morir (triggerSecondPhase).
         return null;
     },
 
