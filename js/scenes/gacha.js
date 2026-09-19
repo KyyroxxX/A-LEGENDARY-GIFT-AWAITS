@@ -1826,13 +1826,13 @@ const GachaScene = {
             <p class="gw-details-lead"><strong>${b.series}</strong> — pool jugable. Destacados: <em>${leadFeat}</em>.</p>
             ${this.rateTableHTML(b)}
             ${this.featuredPickerHTML(id)}
-            <h4 class="gw-pool-h">Personajes 6★ <span>${((b.rate6 || 0.003) * 100).toFixed(2)}%</span></h4>
+            <h4 class="gw-pool-h">Personajes 6★ <span>${((b.rate6 || 0.005) * 100).toFixed(2)}%</span></h4>
             ${this.poolGridHTML(six, 6, 'Sin 6★ en este banner')}
             <h4 class="gw-pool-h">Personajes 5★ <span>${((b.rate5 || 0.02) * 100).toFixed(1)}%</span></h4>
             ${this.poolGridHTML(five, 5)}
             <h4 class="gw-pool-h">Personajes 4★ <span>${((b.rate4 || 0.12) * 100).toFixed(1)}%</span></h4>
             ${this.poolGridHTML(four, 4)}
-            <h4 class="gw-pool-h">3★ <span>${((Math.max(0, 1 - (b.rate6 || 0.003) - (b.rate5 || 0.02) - (b.rate4 || 0.12))) * 100).toFixed(1)}%</span></h4>
+            <h4 class="gw-pool-h">3★ <span>${((Math.max(0, 1 - (b.rate6 || 0.005) - (b.rate5 || 0.02) - (b.rate4 || 0.12))) * 100).toFixed(1)}%</span></h4>
             ${this.poolGridHTML(three.concat(threeNames), 3, 'Objetos equipables')}
             ${id === 'jjk' ? '<p class="gw-details-foot"><strong>Gojo 6★</strong> · Vacío Infinito. Ya no desbloquea nada: THE 50/50 exige la colección completa al máximo.</p>' : ''}
             ${id === 'persona5royal' && !open('ren') ? '<p class="gw-details-foot"><strong>Ren Amamiya</strong> solo sale en este banner tras vencer a THE 50/50. No cuenta para desbloquearlo.</p>' : ''}

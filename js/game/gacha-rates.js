@@ -35,7 +35,7 @@ const GachaRates = {
             const pct5 = ((b.rate5 || 0.02) * 100).toFixed(1);
             return `7★ base ${pct7}% (soft ${b.soft7} · hard ${b.hard7}) · 5★ base ${pct5}% (soft ${b.soft5} · hard ${b.hard5}) · rate-up ${Math.round((b.featuredRate ?? 0.3) * 100)}%`;
         }
-        const pct6 = ((b.rate6 || 0.003) * 100).toFixed(2);
+        const pct6 = ((b.rate6 || 0.005) * 100).toFixed(2);
         const pct5 = ((b.rate5 || 0.02) * 100).toFixed(1);
         const pct4 = ((b.rate4 || 0.12) * 100).toFixed(1);
         return `6★ ${pct6}% (soft ${b.soft6} · hard ${b.hard6}) · 5★ ${pct5}% · 4★ ${pct4}%`;
@@ -55,7 +55,7 @@ const GachaRates = {
                 { stars: 3, label: '3★', pct: (r3 * 100).toFixed(1), note: 'resto del pool' }
             ];
         }
-        const r6 = b.rate6 || 0.003;
+        const r6 = b.rate6 || 0.005;
         const r5 = b.rate5 || 0.02;
         const r4 = b.rate4 || 0.12;
         const r3 = Math.max(0, 1 - r6 - r5 - r4);

@@ -99,7 +99,7 @@ const GachaRoster = {
 
     /** Shared anime-banner rates (gift-game friendly). */
     SERIES_RATES: {
-        rate6: 0.003,
+        rate6: 0.005,
         soft6: 55,
         hard6: 80,
         rate5: 0.02,
@@ -142,7 +142,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/onepiece-stage.webp',
             objectPosition: '50% 30%',
             accent: '#e74c3c',
-            rate6: 0.003, soft6: 55, hard6: 80,
+            rate6: 0.005, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -168,7 +168,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/naruto-stage.webp',
             objectPosition: '45% 58%',
             accent: '#f39c12',
-            rate6: 0.003, soft6: 55, hard6: 80,
+            rate6: 0.005, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -194,7 +194,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/jojo-stage.webp',
             objectPosition: '52% 38%',
             accent: '#9b59b6',
-            rate6: 0.003, soft6: 55, hard6: 80,
+            rate6: 0.005, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -219,7 +219,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/bleach-stage.webp',
             objectPosition: '70% 42%',
             accent: '#c0392b',
-            rate6: 0.003, soft6: 55, hard6: 80,
+            rate6: 0.005, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -245,7 +245,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/jjk-stage.webp',
             objectPosition: '50% 55%',
             accent: '#5dade2',
-            rate6: 0.003, soft6: 55, hard6: 80,
+            rate6: 0.005, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -297,7 +297,7 @@ const GachaRoster = {
             banner: 'assets/gacha/banners/persona5royal-stage.png',
             objectPosition: '50% 50%',
             accent: '#c41e3a',
-            rate6: 0.003, soft6: 55, hard6: 80,
+            rate6: 0.005, soft6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, soft5: 35, hard5: 50, hard4: 8,
             featuredRate: 0.3,
             pool6: ['ren', 'goro', 'sumire', 'yusuke'],
@@ -322,7 +322,7 @@ const GachaRoster = {
             banner: 'assets/gacha/sourced/kimetsu-stage.webp',
             objectPosition: '50% 42%',
             accent: '#c0392b',
-            rate6: 0.003, pity6: 55, hard6: 80,
+            rate6: 0.005, pity6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, pity5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -349,7 +349,7 @@ const GachaRoster = {
             banner: 'assets/gacha/sourced/chainsaw-stage.webp',
             objectPosition: '58% 48%',
             accent: '#c0392b',
-            rate6: 0.003, pity6: 55, hard6: 80,
+            rate6: 0.005, pity6: 55, hard6: 80,
             rate5: 0.02, rate4: 0.12, pity5: 35, hard5: 50, hard4: 8,
             featured5050: true,
             featuredRate: 0.3,
@@ -1299,8 +1299,8 @@ const GachaRoster = {
             }
         } else {
             const r6 = rates
-                ? rates.effectiveRate(b.rate6 || 0.003, b.soft6 || 55, b.hard6 || 80, st.pity6 - 1)
-                : (b.rate6 || 0.003);
+                ? rates.effectiveRate(b.rate6 || 0.005, b.soft6 || 55, b.hard6 || 80, st.pity6 - 1)
+                : (b.rate6 || 0.005);
             const r5 = rates
                 ? rates.effectiveRate(b.rate5 || 0.02, b.soft5 || 35, b.hard5 || 50, st.pity5 - 1)
                 : (b.rate5 || 0.02);
@@ -1424,25 +1424,26 @@ const GachaRoster = {
                 }
             }
 
-            // Soft double-5★ gift on multis: exciting, not free every time.
-            // ~40% when exactly one 5★ landed → frequent doubles without flooding.
+            // Soft double gifts on multis: exciting, not free every time.
+            // Double 6★ (~25% when exactly one landed) hits less often than double 5★ (~40%).
             const b = this.BANNERS[bannerId];
             if (b && !b.isMetaphor) {
-                const fiveSlots = planned
-                    .map((r, i) => ((r.stars || 0) >= 5 || r.rarity === 'epic' || r.rarity === 'legendary') ? i : -1)
+                const isSix = (r) => ((r.stars || 0) >= 6 || r.rarity === 'mythic' || r.rarity === 'legendary');
+                const sixSlots = planned
+                    .map((r, i) => (isSix(r) ? i : -1))
                     .filter((i) => i >= 0);
-                if (fiveSlots.length === 1 && Math.random() < 0.40) {
-                    const slot = planned.findIndex((r, i) => !fiveSlots.includes(i) && (r.stars || 0) < 5);
+                if (sixSlots.length === 1 && Math.random() < 0.25) {
+                    const slot = planned.findIndex((r, i) => !sixSlots.includes(i) && !isSix(r));
                     if (slot >= 0) {
                         const st = this.getState(bannerId);
                         const dFeat = (typeof this.getFeaturedFor === 'function')
-                            ? this.getFeaturedFor(bannerId, 5)
+                            ? this.getFeaturedFor(bannerId, 6)
                             : this.getFeatured(bannerId);
                         const featOpen = dFeat.id
-                            && dFeat.stars === 5
+                            && dFeat.stars === 6
                             && this.getTemplate(dFeat.id);
                         const stdOpen = this.availablePool(
-                            (b.pool5Std || []).filter((id) => id !== dFeat.id), true);
+                            (b.pool6 || []).filter((id) => id !== dFeat.id), true);
                         let charId = null;
                         let featured = false;
                         if (featOpen && Math.random() < 0.5) {
@@ -1455,12 +1456,50 @@ const GachaRoster = {
                             featured = true;
                         }
                         if (charId) {
-                            planned[slot] = this.characterResult(charId, 5, featured);
+                            planned[slot] = this.characterResult(charId, 6, featured);
                             planned[slot].bannerId = bannerId;
                             planned[slot].doubleBoost = true;
+                            st.pity6 = 0;
                             st.pity5 = 0;
                             st.pity4 = 0;
                             this.saveState(bannerId, st);
+                        }
+                    }
+                } else {
+                    const fiveSlots = planned
+                        .map((r, i) => (((r.stars || 0) === 5 || r.rarity === 'epic') && !isSix(r)) ? i : -1)
+                        .filter((i) => i >= 0);
+                    if (fiveSlots.length === 1 && sixSlots.length === 0 && Math.random() < 0.40) {
+                        const slot = planned.findIndex((r, i) => !fiveSlots.includes(i) && (r.stars || 0) < 5);
+                        if (slot >= 0) {
+                            const st = this.getState(bannerId);
+                            const dFeat = (typeof this.getFeaturedFor === 'function')
+                                ? this.getFeaturedFor(bannerId, 5)
+                                : this.getFeatured(bannerId);
+                            const featOpen = dFeat.id
+                                && dFeat.stars === 5
+                                && this.getTemplate(dFeat.id);
+                            const stdOpen = this.availablePool(
+                                (b.pool5Std || []).filter((id) => id !== dFeat.id), true);
+                            let charId = null;
+                            let featured = false;
+                            if (featOpen && Math.random() < 0.5) {
+                                charId = dFeat.id;
+                                featured = true;
+                            } else if (stdOpen.length) {
+                                charId = stdOpen[Math.floor(Math.random() * stdOpen.length)];
+                            } else if (featOpen) {
+                                charId = dFeat.id;
+                                featured = true;
+                            }
+                            if (charId) {
+                                planned[slot] = this.characterResult(charId, 5, featured);
+                                planned[slot].bannerId = bannerId;
+                                planned[slot].doubleBoost = true;
+                                st.pity5 = 0;
+                                st.pity4 = 0;
+                                this.saveState(bannerId, st);
+                            }
                         }
                     }
                 }
