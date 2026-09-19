@@ -4,7 +4,9 @@
  */
 const GachaRoster = {
     STARTERS: ['luffy', 'naruto', 'jotaro'],
-    EXCLUDED: new Set(['dummy', 'boss5050', 'eren', 'griffith', 'mob']),
+    // OJO: el trío final NO va aquí — EXCLUDED los borraría de owned().
+    // Su anti-spoiler es no estar en ningún pool (ver BOSS_EXCLUSIVE_6).
+    EXCLUDED: new Set(['dummy', 'boss5050']),
     /** Exclusivos del boss final: 6★ que jamás salen en banners (desbloqueo por victoria). */
     BOSS_EXCLUSIVE_6: new Set(['eren', 'griffith', 'mob']),
     GOJO_ID: 'gojo',
