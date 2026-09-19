@@ -14,7 +14,7 @@
 .p5-stage-bg.stage-enies_lobby{background-image:url('../assets/stages/stage_onepiece_enies_lobby.png?v=1');filter:saturate(1.15)}
 .p5-stage-bg.stage-alabasta{background-image:url('../assets/stages/stage_onepiece_alabasta.png?v=1');filter:saturate(1.15)}
 .p5-stage-bg.stage-op-onepiece_port-v1{background-image:url('../assets/stages/stage_onepiece_port.png?v=1');filter:saturate(1.25) hue-rotate(313deg)}
-.p5-stage-bg.stage-op-sea-v1{background-image:url('../assets/stages/stage_sea.png?v=1');filter:saturate(1.25) hue-rotate(0deg)}
+.p5-stage-bg.stage-op-sea-v1{background-image:url('../assets/stages/stage_storm.png?v=1');filter:saturate(1.3) hue-rotate(195deg) brightness(.95)}
 .p5-stage-bg.stage-op-sanji_galley-v1{background-image:url('../assets/stages/stage_sanji_galley.png?v=1');filter:saturate(1.25) hue-rotate(47deg)}
 .p5-stage-bg.stage-op-law_room-v1{background-image:url('../assets/stages/stage_law_room.png?v=1');filter:saturate(1.25) hue-rotate(94deg)}
 .p5-stage-bg.stage-op-onepiece_marineford-v1{background-image:url('../assets/stages/stage_onepiece_marineford.png?v=1');filter:saturate(1.25) hue-rotate(141deg)}
