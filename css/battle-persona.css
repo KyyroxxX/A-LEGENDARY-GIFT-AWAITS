@@ -1359,6 +1359,28 @@
     100% { opacity: 0; transform: translate(-50%, -40px) scale(1); }
 }
 
+/* Transform awakening cut-in — fullscreen ceremony, Persona dialogue */
+.p5-xform-cutin { position: absolute; inset: 0; z-index: 40; pointer-events: none; opacity: 0; }
+.p5-xform-cutin.show { opacity: 1; }
+.p5-xform-cutin.out { opacity: 0; transition: opacity 0.28s ease; }
+.p5-xform-cutin .xform-bars i { position: absolute; left: 0; right: 0; height: 0; background: #000; transition: height 0.3s ease; }
+.p5-xform-cutin .xform-bars i:first-child { top: 0; }
+.p5-xform-cutin .xform-bars i:last-child { bottom: 0; }
+.p5-xform-cutin.show .xform-bars i { height: 9%; }
+.p5-xform-cutin .xform-body { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%) translateX(-60px); opacity: 0; display: flex; align-items: center; gap: 1rem; padding: 0.8rem 1.4rem; background: linear-gradient(90deg, rgba(10,10,18,0.94), rgba(196,30,58,0.55) 60%, transparent); transition: transform 0.3s ease, opacity 0.3s ease; }
+.p5-xform-cutin.foe .xform-body { flex-direction: row-reverse; text-align: right; background: linear-gradient(-90deg, rgba(10,10,18,0.94), rgba(142,68,173,0.6) 60%, transparent); }
+.p5-xform-cutin.show .xform-body { transform: translateY(-50%) translateX(0); opacity: 1; }
+.p5-xform-cutin .xform-face { width: 150px; height: 190px; background-size: contain; background-repeat: no-repeat; background-position: center; filter: drop-shadow(0 0 18px rgba(244,208,63,0.85)); flex-shrink: 0; }
+.p5-xform-cutin.foe .xform-face { filter: drop-shadow(0 0 18px rgba(169,109,255,0.9)); }
+.p5-xform-cutin .xform-text em { display: block; font-style: normal; font-weight: 900; letter-spacing: 0.2em; font-size: 0.8rem; color: #f4d03f; }
+.p5-xform-cutin.foe .xform-text em { color: #d7bde2; }
+.p5-xform-cutin .xform-text strong { display: block; font-family: 'Cinzel', sans-serif; font-weight: 900; font-size: 1.5rem; color: #fff; text-shadow: 2px 2px 0 #000; }
+.p5-xform-cutin .xform-line1, .p5-xform-cutin .xform-line2 { display: block; font-size: 1.05rem; color: #fff; text-shadow: 1px 1px 0 #000; margin-top: 0.15rem; }
+.p5-xform-cutin .xform-line2 { color: #ffd76a; font-weight: 900; font-size: 1.25rem; }
+.p5-xform-cutin .xform-flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+.p5-xform-cutin.show .xform-flash { animation: xformFlash 0.55s ease-out; }
+@keyframes xformFlash { 0% { opacity: 0.85; } 100% { opacity: 0; } }
+
 .p5-fx {
     position: absolute; inset: 0; pointer-events: none; z-index: 4;
     opacity: 0; transition: opacity 0.15s;

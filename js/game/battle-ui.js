@@ -1726,6 +1726,54 @@ const BattleUI = {
         } catch (_) { /* la música nunca rompe el combate */ }
     },
 
+    /** Cut-in cinematográfico del despertar: retrato + diálogo estilo Persona. */
+    async playTransformCutin(actor, sk, result = null) {
+        if (!actor || !this.root || this._cutinPlaying) return;
+        this._cutinPlaying = true;
+        try {
+            const foe = actor.side === 'enemy';
+            const formName = actor.transformName || sk?.transformName || sk?.name || 'Forma final';
+            const dlg = (typeof BattleFlavor !== 'undefined' && BattleFlavor.transformDialogue)
+                ? BattleFlavor.transformDialogue(actor, sk)
+                : { vow: '¡Despierta!', cry: sk?.cry || `${formName}!` };
+            const who = (typeof this.fighterName === 'function') ? this.fighterName(actor) : actor.name;
+            const art = this.spriteBg(actor.id, this.formKind(actor));
+            const el = document.createElement('div');
+            el.className = `p5-xform-cutin ${foe ? 'foe' : 'ally'}`;
+            el.innerHTML = `
+                <div class="xform-bars"><i></i><i></i></div>
+                <div class="xform-body">
+                    <div class="xform-face" style="background-image:${art}"></div>
+                    <div class="xform-text">
+                        <em>${foe ? 'EL ENEMIGO DESPIERTA' : '¡DESPERTAR!'}</em>
+                        <strong></strong>
+                        <span class="xform-line1"></span>
+                        <span class="xform-line2"></span>
+                    </div>
+                </div>
+                <div class="xform-flash"></div>`;
+            el.querySelector('strong').textContent = `${who} · ${formName}`;
+            this.root.appendChild(el);
+            void el.offsetWidth;
+            el.classList.add('show');
+            try { AudioManager.combat.ultimate(); } catch (_) { /* sfx opcional */ }
+            try {
+                const app = document.getElementById('app');
+                if (app && typeof screenShake === 'function') screenShake(app, 1.1);
+            } catch (_) { /* ignore */ }
+            el.querySelector('.xform-line1').textContent = `“${dlg.vow}”`;
+            await this.wait(680);
+            el.querySelector('.xform-line2').textContent = `“${dlg.cry}”`;
+            this.showCry(dlg.cry, { family: 'finisher', fxType: sk?.type || 'almighty' });
+            await this.wait(680);
+            el.classList.add('out');
+            await this.wait(300);
+            el.remove();
+        } finally {
+            this._cutinPlaying = false;
+        }
+    },
+
     async playAllOutSequence() {
         if (!this.state || !this.allOutReady) return;
         // The DOWN may have expired (foe stood up) before pressing Asalto.
@@ -1781,6 +1829,8 @@ const BattleUI = {
                 this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
                 this.maybeTitanMusic();
                 this.render();
+                const first = this.unitForId(r.secondPhase[0], 'enemy');
+                if (first) await this.playTransformCutin(first, null, r);
             }
             if (r.finisher?.length) await this.playFinisherSequence(r.finisher, { allOut: true });
             this.playDeathFx(this.state.enemies.filter(e => e.hp <= 0).map(e => e.id));
@@ -1898,6 +1948,9 @@ const BattleUI = {
             await this.animateVitalsFrom(before, [actor.id]);
             this.setActionPhase('DAMAGE_APPLIED');
             await this.wait(180);
+        }
+        if (result.transformed || result.secondPhase?.length) {
+            await this.playTransformCutin(actor, sk, result);
         }
         this.hideActionBanner();
         if (result.oneMore) {
@@ -2837,6 +2890,9 @@ const BattleUI = {
                 await this.animateVitalsFrom(before, [actor.id]);
                 this.setActionPhase('DAMAGE_APPLIED');
                 await this.wait(180);
+            }
+            if (result.transformed || result.secondPhase?.length) {
+                await this.playTransformCutin(actor, sk, result);
             }
             this.hideActionBanner();
             this.setActionPhase('NEXT_TURN');

@@ -383,6 +383,7 @@ const AudioManager = {
             console.warn('Web Audio not available');
         }
         this._ensureYtApi();
+        this._startMusicWatchdog();
     },
 
     _ensureBuses() {
@@ -844,6 +845,13 @@ const AudioManager = {
                 resolve(ok);
             };
             const onOk = () => {
+                // La pista local es exclusiva: jamás bajo YouTube sonando.
+                try {
+                    if (this.ytPlayer) {
+                        try { this.ytPlayer.destroy(); } catch (_) { /* */ }
+                        this.ytPlayer = null;
+                    }
+                } catch (_) { /* */ }
                 a.loop = loop;
                 a.play().then(() => done(true)).catch(() => done(false));
             };
@@ -1266,7 +1274,30 @@ const AudioManager = {
             this._startSynthTheme('konoha');
             this._upgradeToTracks(this.PLAYLIST.konoha || [], { loop: true, gen, preferYoutube: true });
         };
-        handoff();
+        // Handoffs en serie: dos cambios rápidos jamás entrelazan sus stop/start.
+        this._themeChain = (this._themeChain || Promise.resolve()).then(() => handoff(), () => handoff());
+    },
+
+    /** Red de seguridad: archivo local y YouTube jamás suenan a la vez (manda YouTube). */
+    _startMusicWatchdog() {
+        if (this._musicWatchdog) return;
+        this._musicWatchdog = setInterval(() => {
+            try {
+                if (!this.enabled) return;
+                let yt = false;
+                try {
+                    const s = this.ytPlayer && typeof this.ytPlayer.getPlayerState === 'function'
+                        ? this.ytPlayer.getPlayerState() : -1;
+                    yt = s === 1 || s === 3;
+                } catch (_) { yt = false; }
+                const file = !!(this.htmlAudio && !this.htmlAudio.paused && !!this.htmlAudio.currentSrc);
+                if (yt && file) {
+                    this.htmlAudio.pause();
+                    this.htmlAudio.removeAttribute('src');
+                    try { this.htmlAudio.load(); } catch (_) { /* */ }
+                }
+            } catch (_) { /* el watchdog nunca rompe nada */ }
+        }, 5000);
     },
 
     async _upgradeToTracks(tracks, {
@@ -2457,7 +2488,7 @@ const AudioManager = {
         anomaly() { AudioManager.sfx.anomaly(); },
         revealDone() { AudioManager.sfx.reveal(); },
         async enterConvene() {
-            /* Keep banner OST playing during the pull — only duck it under SFX */
+            /* La música se DETIENE durante la tirada — solo SFX/cut-in, sin BGM de fondo */
             if (!AudioManager.enabled) return;
             if (AudioManager._conveneSavedTheme == null) {
                 AudioManager._conveneSavedTheme = AudioManager.currentTheme || 'menu_op';
@@ -2466,10 +2497,7 @@ const AudioManager = {
                 ? AudioManager._targetMusicVol
                 : 1;
             try {
-                await AudioManager._fadeMusicTo(
-                    Math.max(0.28, (AudioManager._conveneMusicNorm || 1) * 0.42),
-                    500
-                );
+                AudioManager.stopMusic();
             } catch (_) { /* */ }
         },
         async exitConvene() {

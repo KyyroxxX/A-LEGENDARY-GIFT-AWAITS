@@ -323,6 +323,64 @@ const BattleFlavor = {
         return 'El destino pide sangre.';
     },
 
+    /** Votos icónicos al despertar (cut-in de transform). */
+    transformVows: {
+        luffy: '¡El Rey de los Piratas no conoce techo!',
+        naruto: '¡El Kyubi ruge CONMIGO, no contra mí!',
+        ichigo: '¡Si para protegerlos debo ser un monstruo… LO SERÉ!',
+        jotaro: 'Yare yare… ahora va en serio.',
+        dio: '¡El mundo se detiene ante MÍ!',
+        gojo: 'Nah… es hora de ganar.',
+        sukuna: 'Abre el santuario, insecto.',
+        ren: '¡Arsène… préstame tu rebelión!',
+        eren: '¡Si no peleas, no ganas. TATAKAE!',
+        griffith: 'Mi sueño exige alas.',
+        mob: '…100%. Lo siento.',
+        gai: '¡LA NOCHE DE GUY!',
+        aizen: 'Todo… según el plan.',
+        kakashi: 'Copiado. Mejorado. Desatado.',
+        sasuke: 'El odio también es poder.',
+        giorno: '¡Esto… es Réquiem!',
+        itachi: 'Perdóname una vez más.',
+        madara: 'Baila conmigo bajo la luna.'
+    },
+
+    /** Votos genéricos de aliado al despertar. */
+    transformVowPool: [
+        '¡Contempla mi verdadera forma!',
+        '¡El destino se reescribe… AHORA!',
+        '¡Esto es lo que soy de verdad!',
+        '¡Más allá del límite!',
+        '¡Despierta… poder dormido!',
+        '¡Que tiemble el campo!'
+    ],
+
+    /** Burlas genéricas de enemigo al fasear. */
+    transformTauntPool: [
+        '¡Mírame ahora, insecto!',
+        '¿Creías que había terminado?',
+        'Mi verdadero poder… ¡liberado!',
+        'Interesante… pero inútil.',
+        '¡Arrodíllate ante mi forma final!',
+        'Jajaja… GRACIAS por calentarme.'
+    ],
+
+    /** Diálogo Persona del despertar: { vow, cry }. Determinista por personaje. */
+    transformDialogue(unit, sk) {
+        const id = unit?.id || '';
+        const foe = unit?.side === 'enemy';
+        let vow = this.transformVows[id];
+        if (!vow) {
+            const pool = foe ? this.transformTauntPool : this.transformVowPool;
+            let h = 0;
+            for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+            vow = pool[h % pool.length];
+        }
+        let cry = (sk?.cry && !this.WEAK_CRIES.has(sk.cry)) ? sk.cry : null;
+        if (!cry) cry = `${unit?.transformName || sk?.transformName || sk?.name || 'DESPIERTA'}!`;
+        return { vow, cry };
+    },
+
     /** Mejora gritos genéricos con voz del kit. */
     spiceCry(unit, sk) {
         if (!sk) return '';

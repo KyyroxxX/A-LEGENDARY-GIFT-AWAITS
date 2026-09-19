@@ -2581,9 +2581,6 @@ const GachaScene = {
         const skipBtn = overlay.querySelector('#pull-skip');
         if (!video || !source) return false;
 
-        const normalMusic = Number.isFinite(AudioManager?._conveneMusicNorm)
-            ? AudioManager._conveneMusicNorm
-            : 1;
         let settled = false;
         let timeout = null;
         let endHold = null;
@@ -2594,7 +2591,7 @@ const GachaScene = {
         video.src = `${source}?v=${this.CACHE}`;
         video.load();
         if (skipBtn) skipBtn.classList.remove('hidden');
-        try { AudioManager._fadeMusicTo?.(0.03, 220); } catch (_) { /* */ }
+        try { AudioManager.gacha.enterConvene?.(); } catch (_) { /* */ }
 
         return new Promise((resolve) => {
             const finish = async () => {
@@ -2618,7 +2615,6 @@ const GachaScene = {
                     const id = setTimeout(resolve, 240);
                     this._timers.push(id);
                 });
-                try { AudioManager._fadeMusicTo?.(Math.max(0.28, normalMusic), 260); } catch (_) { /* */ }
                 this.resetPullOverlay();
                 resolve(true);
             };
