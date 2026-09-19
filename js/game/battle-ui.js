@@ -1869,6 +1869,14 @@ const BattleUI = {
         return !!sk.once || sk.power >= 185;
     },
 
+    /** Grito de la fase conjunta si la disparó un veneno (sin resultado propio). */
+    consumeFinalStandFx() {
+        if (!this.state?._finalStandPending) return;
+        this.state._finalStandPending = false;
+        this.showCry('¡LOS TRES SE LEVANTAN!', { family: 'finisher', fxType: 'almighty' });
+        this.maybeTitanMusic();
+    },
+
     async playAllOutSequence() {
         if (!this.state || !this.allOutReady) return;
         // The DOWN may have expired (foe stood up) before pressing Asalto.
@@ -2000,10 +2008,12 @@ const BattleUI = {
         this.render();
 
         const sk = BattleData.activeSkills(actor).find(s => s.id === action.skillId);
-        await this.announceAction(actor, action, sk);
+        // Texto Y animación a la vez (no en serie): el banner sale con el ataque.
+        const announced = this.announceAction(actor, action, sk);
         this.setActionPhase((action.type === 'skill' && sk && !sk.power) || action.type === 'guard' ? 'CASTING' : 'ATTACKING');
         action.actorSide = actor.side;
         await this.playAttackAnim(actor.id, action, actor);
+        await announced;
         const before = this.captureVitals();
         const result = this.runWithUiSfx(() => BattleEngine.execute(this.state, actor, action));
         this.checkCombatAchievements(result);
@@ -2884,6 +2894,7 @@ const BattleUI = {
 
     async continueFlow() {
         if (!this.state || this.state.finished) return;
+        this.consumeFinalStandFx();
         let guard = 0;
         while (!this.state.finished && guard++ < 40) {
             const actor = BattleEngine.currentActor(this.state);
@@ -2944,9 +2955,11 @@ const BattleUI = {
             };
 
             this.setActionPhase((sk && !sk.power) ? 'CASTING' : 'ATTACKING');
-            await this.announceAction(actor, action, sk);
+            // Texto Y animación a la vez (no en serie): el banner sale con el ataque.
+            const announcedFoe = this.announceAction(actor, action, sk);
             action.actorSide = actor.side;
             await this.playAttackAnim(actor.id, action, actor);
+            await announcedFoe;
             const before = this.captureVitals();
             const result = this.runWithUiSfx(() => BattleEngine.execute(this.state, actor, action));
             this.checkCombatAchievements(result);
@@ -3008,6 +3021,7 @@ const BattleUI = {
 
     afterAction(result, advance) {
         this.checkCombatAchievements(result);
+        this.consumeFinalStandFx();
         this.render();
         if (this.state.finished) { setTimeout(() => this.showResult(this.state.victory), 600); return; }
         if (advance !== false) BattleEngine.advanceTurn(this.state);

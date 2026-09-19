@@ -518,3 +518,11 @@
 .p5-action-banner .p5-action-tag {
     text-shadow: 1px 1px 0 #000 !important;
 }
+.p5-action-banner .p5-action-quote {
+    display: block;
+    color: #ffe08a !important;
+    font-style: italic;
+    font-size: 0.85rem;
+    text-shadow: 1px 1px 0 #000 !important;
+    margin-top: 0.15rem;
+}

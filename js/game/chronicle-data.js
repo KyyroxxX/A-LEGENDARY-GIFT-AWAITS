@@ -605,7 +605,9 @@ const ChronicleData = {
                         partySpRegen: 18,
                         partyHpRegenPct: 0.04,
                         enemyHpScale: 0.85,
-                        enemyAtkScale: 1.06
+                        enemyAtkScale: 1.06,
+                        // El trío aguanta muerto hasta caer los 3: fase conjunta.
+                        finalTrio: true
                     } : {})
                 };
             });

@@ -309,6 +309,33 @@ const BattleEngine = {
 
     triggerSecondPhase(state, unit, result = null) {
         if (!this.secondPhaseEligible(unit, state)) return false;
+        // FINAL 50/50: aguantan muertos hasta caer los 3 → se levantan JUNTOS.
+        if (state.encounter?.finalTrio && !unit.secondPhased && (state.enemies || []).length > 1) {
+            const othersAlive = (state.enemies || []).some(e => e !== unit && (e.hp || 0) > 0 && !e.isDead);
+            if (othersAlive) return false;
+            const logs = result?.logs || state.log;
+            logs.push('💀 ¡LOS TRES HAN CAÍDO!');
+            logs.push('★ ¡EL 50/50 NO CONOCE LA MUERTE: EREN, GRIFFITH Y MOB SE LEVANTAN JUNTOS!');
+            const res = result || { logs, secondPhase: [] };
+            let first = true;
+            for (const foe of (state.enemies || [])) {
+                if (foe.secondPhased) continue;
+                foe.hp = 0;
+                foe.isDead = false;
+                this.applyPhaseBody(state, foe, res);
+                if (first) {
+                    res.transformed = res.transformed || foe.id;
+                    first = false;
+                }
+            }
+            if (!result) state._finalStandPending = true;
+            return true;
+        }
+        return this.applyPhaseBody(state, unit, result);
+    },
+
+    /** Cuerpo de la fase: limpia, transforma o enfurece, y deja listo para pelear. */
+    applyPhaseBody(state, unit, result = null) {
         unit.secondPhased = true;
         const logs = result?.logs || state.log;
         const say = (line) => logs.push(line);
