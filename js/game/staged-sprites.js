@@ -18,8 +18,8 @@ const StagedSprites = {
      * Itachi / most new cutouts face RIGHT — not listed here.
      */
     FACES_LEFT_SEED: [
-        'abbacchio', 'akaza', 'aki', 'brook', 'denji', 'diavolo', 'dio', 'enel',
-        'gai', 'gantenbainne', 'geto', 'ginjo', 'gojo', 'gyomei', 'hakari', 'hidan',
+        'abbacchio', 'akaza', 'aki', 'brook', 'denji', 'diavolo', 'dio', 'enel', 'eren',
+        'gai', 'gantenbainne', 'geto', 'ginjo', 'gojo', 'griffith', 'gyomei', 'hakari', 'hidan',
         'ichigo', 'jogo', 'joseph', 'kira', 'kisame', 'lee', 'mahito', 'megumi',
         'mihawk', 'minato', 'mista', 'mitsuri', 'nami', 'neji', 'obanai',
         'okuyasu', 'orihime', 'pain', 'polnareff', 'power', 'rengoku', 'risotto',
