@@ -443,7 +443,8 @@ const ChronicleData = {
 
     buildEncounters() {
         const out = {};
-        const paint = (list, asStory) => {
+        // First-clear generosity: story ×3, archives ×2 (pull-equivalents).
+        const paint = (list, asStory, mult = 1) => {
             list.forEach((row, i) => {
                 const isBoss = row.enemy === 'boss5050';
                 const st = this.statsFor(i, list.length, isBoss);
@@ -481,7 +482,7 @@ const ChronicleData = {
                     stage: row.stage,
                     isBoss: !!isBoss,
                     enemies: [enemy],
-                    rewardInvocations: this.pullRewardFor(row.inv),
+                    rewardInvocations: this.pullRewardFor(row.inv) * mult,
                     ...(isBoss ? {
                         partyHpScale: 1.08,
                         partySpScale: 1.18,
@@ -493,8 +494,8 @@ const ChronicleData = {
                 };
             });
         };
-        paint(this.STORY, true);
-        paint(this.ARCHIVES, false);
+        paint(this.STORY, true, 3);
+        paint(this.ARCHIVES, false, 2);
         // Alias legacy boss key
         out.boss = out.ch_boss5050 || out[this.STORY[this.STORY.length - 1].enc];
         // Keep training sandbox
@@ -524,8 +525,8 @@ const ChronicleData = {
                 flagClear: `${row.mid}_cleared`,
                 isFinal: !!row.isFinal,
                     rewardText: row.metaphor
-                    ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +200 Metaphor`
-                    : (row.isFinal ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +200 Metaphor (cierre)` : `+${this.pullRewardFor(row.inv)} equivalentes de tirada (primer clear)`)
+                    ? `+${this.pullRewardFor(row.inv) * 3} equivalentes de tirada · +200 Metaphor`
+                    : (row.isFinal ? `+${this.pullRewardFor(row.inv) * 3} equivalentes de tirada · +200 Metaphor (cierre)` : `+${this.pullRewardFor(row.inv) * 3} equivalentes de tirada (primer clear)`)
             };
         });
         this.ARCHIVES.forEach((row) => {
@@ -539,8 +540,8 @@ const ChronicleData = {
                 optional: true,
                 flagClear: `${row.mid}_cleared`,
                 rewardText: row.metaphor
-                    ? `+${this.pullRewardFor(row.inv)} equivalentes de tirada · +200 Metaphor`
-                    : `+${this.pullRewardFor(row.inv)} equivalentes de tirada (primer clear)`
+                    ? `+${this.pullRewardFor(row.inv) * 2} equivalentes de tirada · +200 Metaphor`
+                    : `+${this.pullRewardFor(row.inv) * 2} equivalentes de tirada (primer clear)`
             };
         });
         return missions;
@@ -562,7 +563,8 @@ const ChronicleData = {
     },
 
     totalFirstClearInv() {
-        return [...this.STORY, ...this.ARCHIVES].reduce((s, r) => s + this.pullRewardFor(r.inv), 0);
+        return this.STORY.reduce((s, r) => s + this.pullRewardFor(r.inv) * 3, 0)
+            + this.ARCHIVES.reduce((s, r) => s + this.pullRewardFor(r.inv) * 2, 0);
     },
 
     /** Day system: story mission N = day N. Moving to the next day needs
@@ -641,7 +643,7 @@ const ChronicleData = {
         StoryData.prologue = [
             { speaker: 'Sistema', text: 'OPERATION CHIKITRISKIS — CRÓNICA DEL DESTINO.' },
             { speaker: 'Narrador', text: 'Grietas entre mundos. Cada frente es único: un enemigo, un mapa, sin refritos.' },
-            { speaker: 'Narrador', text: '22 sellos de historia + archivos opcionales. Las primeras recompensas son escasas: repetir frentes difíciles y farmear Chiki es parte del viaje.' },
+                { speaker: 'Narrador', text: '22 sellos de historia + archivos opcionales. La historia paga triple y los archivos doble: repetir frentes también paga triple.' },
             { speaker: 'Sistema', text: 'THE 50/50 exige TODA la colección al máximo (dupes). Solo entonces sale el regalo del banner.' }
         ];
     }

@@ -59,13 +59,14 @@ const GameManager = {
         }
 
         if (alreadyCleared) {
-            chikiGain = rate * 10;
+            // Repeats pay triple (30 pull-equivalents + 60 red tickets).
+            chikiGain = rate * 30;
             GameState.addChikistrites(chikiGain);
-            // Farmeo Metaphor/P5R: cada repetido da +20 tickets rojos (el regalo
+            // Farmeo Metaphor/P5R: cada repetido da +60 tickets rojos (el regalo
             // solo sale del banner tras vencer a THE 50/50 con Ren al máximo).
             if (typeof GameState.addMetaphorTicket === 'function' && !GameState.get('legendaryObtained')) {
-                GameState.addMetaphorTicket(20);
-                metaGain += 20;
+                GameState.addMetaphorTicket(60);
+                metaGain += 60;
             }
         } else {
             const earned = GameState.get('invocationsEarned') || 0;
