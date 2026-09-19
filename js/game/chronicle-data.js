@@ -1,6 +1,7 @@
 /**
  * Crónica del Destino — campaña única.
- * Reglas: cada misión = 1 enemigo único + 1 mapa único. Sin refritos.
+ * Reglas: cada misión = 1 mapa único; lo normal es pelear en manada
+ * (dúos, tríos al final). Solo van solos Aizen, Makima, Sukuna y THE 50/50.
  * First clears are intentionally scarce. Repeating difficult missions is the farm loop.
  */
 const ChronicleData = {
@@ -484,8 +485,46 @@ const ChronicleData = {
             foes: [{ enemy: 'madara', name: 'Madara Uchiha' }, { enemy: 'tobi', name: 'Tobi' }, { enemy: 'pain', name: 'Pain (Tendo)' }] },
     ],
 
+    /**
+     * Manada por defecto — lo normal es pelear contra varios.
+     * Solo van solos: Aizen, Makima, Sukuna y THE 50/50 (sin entrada aquí).
+     * Historia: rotación dentro del cast del acto (dúos I–IV, tríos V–VI).
+     */
+    STORY_ALLIES: {
+        ch_crocodile: ['enel'], ch_enel: ['zabuza'], ch_zabuza: ['lucci'], ch_lucci: ['crocodile'],
+        ch_sasori: ['orochimaru'], ch_orochimaru: ['kisame'], ch_kisame: ['sasori'],
+        ch_kira: ['grimmjow'], ch_grimmjow: ['ulquiorra'], ch_ulquiorra: ['kira'],
+        ch_mahito: ['jogo'], ch_jogo: ['geto'], ch_geto: ['mahito'],
+        ch_daki: ['akaza', 'reze'], ch_akaza: ['reze', 'power'],
+        ch_reze: ['power', 'daki'], ch_power: ['daki', 'akaza'],
+        ch_diavolo: ['dio', 'kira'],
+    },
+
+    /** Archivos con inv >= esto son duros → trío; el resto dúo (encadenado al siguiente archivo). */
+    HARD_ARCHIVE_INV: 74,
+
     buildEncounters() {
         const out = {};
+        // Nombre visible de un enemigo por id (para escoltas).
+        const nameOf = (id) => {
+            const r = [...this.STORY, ...this.ARCHIVES].find(x => x.enemy === id);
+            return r ? r.name : id;
+        };
+        // Escoltas de una misión: el jefe mantiene sus stats, los escoltas van pack-escalados.
+        const alliesFor = (row, i, asStory) => {
+            let ids = [];
+            if (asStory) {
+                ids = this.STORY_ALLIES[row.enc] || [];
+            } else {
+                const hard = (row.inv || 0) >= this.HARD_ARCHIVE_INV;
+                const k = hard ? 2 : 1;
+                for (let j = 1; j <= k; j++) ids.push(this.ARCHIVES[(i + j) % this.ARCHIVES.length].enemy);
+            }
+            const n = 1 + ids.length;
+            const hpF = n <= 1 ? 1 : n === 2 ? 0.45 : 0.3;
+            const atkF = n <= 1 ? 1 : n === 2 ? 0.7 : 0.55;
+            return { ids, hpF, atkF };
+        };
         // First-clear generosity: story ×3, archives ×2 (pull-equivalents).
         const paint = (list, asStory, mult = 1) => {
             list.forEach((row, i) => {
@@ -517,6 +556,18 @@ const ChronicleData = {
                         ]
                     }
                     : this.mk(row.enemy, row.name, st);
+                const enemies = [enemy];
+                if (!isBoss) {
+                    const al = alliesFor(row, i, asStory);
+                    al.ids.forEach(pid => {
+                        if (pid === row.enemy) return;
+                        enemies.push(this.mk(pid, nameOf(pid), {
+                            ...st,
+                            maxHp: Math.round(st.maxHp * al.hpF),
+                            atk: Math.round(st.atk * al.atkF),
+                        }));
+                    });
+                }
 
                 out[row.enc] = {
                     title: row.title,
@@ -524,7 +575,7 @@ const ChronicleData = {
                     hint: row.blurb,
                     stage: row.stage,
                     isBoss: !!isBoss,
-                    enemies: [enemy],
+                    enemies,
                     rewardInvocations: this.pullRewardFor(row.inv) * mult,
                     ...(isBoss ? {
                         partyHpScale: 1.08,
