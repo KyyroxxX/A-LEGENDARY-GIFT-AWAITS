@@ -392,26 +392,6 @@ const BattleUI = {
         const partyIds = (saved && saved.length)
             ? saved.filter(id => owned.includes(id))
             : ['luffy', 'naruto', 'jotaro'].filter(id => owned.includes(id));
-        // Lore del FINAL (una vez): Ren encarcelado, Mob contra su voluntad.
-        if (runKey === 'boss' && !GameState.flag('boss5050_intro_seen')) {
-            DialogueScene.open({
-                title: 'FINAL · THE 50/50',
-                lines: [
-                    { speaker: 'Narrador', text: 'El Destino deja de esconderse. Ante ti, tres sillas. Tres monstruos. Y una jaula al fondo.' },
-                    { speaker: 'Eren', text: 'Tú también encadenas tu mundo a un regalo, ¿verdad? Yo solo seguí andando. El Retumbar no pide permiso.' },
-                    { speaker: 'Griffith', text: 'Qué hermoso… otro soñador dispuesto a sacrificarlo todo. Yo ya sacrifiqué a los míos. No mires atrás.' },
-                    { speaker: 'Mob', text: 'Yo… no quiero pelear. Algo me obliga a obedecer. ¿Puedes… romper lo que me ata? Por favor… duele.' },
-                    { speaker: 'Ren', text: '¡No les escuches! Me tienen encerrado para alimentar el 50/50 con mi Wild Card… ¡Tú eres mi última carta!' },
-                    { speaker: 'Eren', text: 'Mátanos a los tres… si puedes. Y cuando creas que ha terminado… verás por qué nos llaman calamidades.' },
-                    { speaker: 'Sistema', text: 'THE 50/50 · Eren Yeager + Griffith + Mob. Ojo: al caer, FASEAN.' }
-                ],
-                onComplete: () => {
-                    GameState.setFlag('boss5050_intro_seen');
-                    this.showPartySelect(container, runKey, partyIds);
-                }
-            });
-            return;
-        }
         this.showPartySelect(container, runKey, partyIds);
     },
 
@@ -673,6 +653,11 @@ const BattleUI = {
         }
         this.renderedForms = {};
         this.state = BattleEngine.createState(runKey, partyIds);
+        // Medir antes de pintar: sin esto salen gigantes y el tamaño salta al tocar algo.
+        this._artBoxCache = this._artBoxCache || {};
+        try {
+            await this.warmArtBoxes([...this.state.party, ...this.state.enemies].map(u => u.id));
+        } catch (_) { /* fallback: zoom on the fly */ }
         if (typeof BattleRig !== 'undefined') {
             [...this.state.party, ...this.state.enemies].forEach(unit => {
                 BattleRig.preloadFighter(unit.id, (id, kind) => this.spriteBg(id, kind));
@@ -707,6 +692,28 @@ const BattleUI = {
                 this.showCry(BattleFlavor.taglineOf(lead.id, lead), { family: '', fxType: 'support' });
             }
         } catch (_) { /* ignore */ }
+        // Lore del FINAL, DENTRO del combate (sin spoilers fuera): Ren encarcelado, Mob contra su voluntad.
+        if (runKey === 'boss') {
+            await new Promise((resolve) => {
+                try {
+                    DialogueScene.open({
+                        title: 'FINAL · THE 50/50',
+                        lines: [
+                            { speaker: 'Narrador', text: 'El Destino deja de esconderse. Tres sillas. Tres monstruos. Y una jaula al fondo.' },
+                            { speaker: 'Eren', text: 'Tú también lo sabes. Si dejas de avanzar, te comen. ¡Yo SEGUÍ andando! ¡El Retumbar no pide permiso!' },
+                            { speaker: 'Griffith', text: 'Otro soñador con las manos manchadas… Qué hermoso. Yo ofrecí a los míos por mi sueño. ¿Tú qué vas a ofrecer?' },
+                            { speaker: 'Mob', text: 'Yo… no quiero hacer esto. Hay algo agarrándome por dentro. Si me descontrolo… huye. Por favor.' },
+                            { speaker: 'Ren', text: '¡Eh! ¡El de ahí! Soy Ren, el Comodín original. Me tienen encerrado para dar de comer al 50/50… ¡Sácame de aquí y te deberé una!' },
+                            { speaker: 'Griffith', text: 'El pajarito canta desde su jaula. Qué vulgar… Empecemos.' },
+                            { speaker: 'Eren', text: '¡VENID! ¡TATAKAE!' },
+                            { speaker: 'Sistema', text: 'THE 50/50 · Eren Yeager + Griffith + Mob.' }
+                        ],
+                        onComplete: () => resolve()
+                    });
+                } catch (_) { resolve(); }
+            });
+            try { AudioManager.setTheme(bgm); } catch (_) { /* vuelve el BGM del boss */ }
+        }
         setTimeout(() => {
             try { TutorialSpotlight?.onScene('battle'); } catch (_) { /* ignore */ }
         }, 500);
@@ -1295,7 +1302,7 @@ const BattleUI = {
      * PNGs carry different transparent padding, so `contain` shows some
      * fighters tiny and others floating. We alpha-scan each art's real
      * content box (cached per URL) and set `zoom` so all contents share one
-     * height — bounded (0.65–1.5) so nobody turns into a giant or an ant —
+     * height — bounded (0.65–2.0) so nobody turns into a giant or an ant —
      * then lift the fighter by its displayed footroom via negative margin.
      * Boxes, backgrounds, flips and idle animations are never touched.
      */
@@ -1318,6 +1325,13 @@ const BattleUI = {
                 if (cached === null) return; // measuring already
                 this._artBoxCache[key] = null;
                 const img = new Image();
+                let settled = false;
+                const finishMeasure = (box) => {
+                    if (settled) return;
+                    settled = true;
+                    this._artBoxCache[key] = box || false;
+                    if (box && spr.isConnected) this.applyArtBox(fel, spr, box);
+                };
                 img.onload = () => {
                     let box = null;
                     try {
@@ -1325,15 +1339,52 @@ const BattleUI = {
                     } catch (_) {
                         box = null;
                     }
-                    this._artBoxCache[key] = box || false;
-                    if (box && spr.isConnected) this.applyArtBox(fel, spr, box);
+                    finishMeasure(box);
                 };
-                img.onerror = () => {
-                    this._artBoxCache[key] = false;
-                };
+                img.onerror = () => finishMeasure(null);
+                // Stalled loads must not pin `null` forever (size would never fix itself).
+                setTimeout(() => finishMeasure(this._artBoxCache[key] || null), 4000);
                 img.src = key;
             });
         } catch (_) { /* never break the battle render */ }
+    },
+
+    /** Preload + measure art boxes so first paint already has correct zoom.
+     *  Without this, fighters render huge until their art loads and the size
+     *  "snaps" on the next interaction. Covers idle + transform forms so
+     *  transforming never changes size unexpectedly either. */
+    warmArtBoxes(ids = []) {
+        this._artBoxCache = this._artBoxCache || {};
+        const urls = new Set();
+        (ids || []).forEach((id) => {
+            ['idle', 'transform', 'transform_2', 'reveal'].forEach((kind) => {
+                try {
+                    const u = this.spriteUrl(id, kind);
+                    if (u) urls.add(u);
+                } catch (_) { /* ignore */ }
+            });
+        });
+        const jobs = [...urls].filter((u) => this._artBoxCache[u] === undefined).map((u) => new Promise((resolve) => {
+            let done = false;
+            const finish = (box) => {
+                if (done) return;
+                done = true;
+                this._artBoxCache[u] = box || false;
+                resolve();
+            };
+            try {
+                const img = new Image();
+                img.onload = () => {
+                    let box = null;
+                    try { box = this.measureArtBox(img); } catch (_) { box = null; }
+                    finish(box);
+                };
+                img.onerror = () => finish(null);
+                setTimeout(() => finish(this._artBoxCache[u] || null), 4000);
+                img.src = u;
+            } catch (_) { finish(null); }
+        }));
+        return Promise.all(jobs).then(() => {});
     },
 
     /** Target visual height — mirrors the CSS sprite box so average size stays. */
@@ -1400,7 +1451,7 @@ const BattleUI = {
             // Displayed scale under `contain`, then zoom to the shared height.
             const s = Math.min(bw / box.w, bh / box.h);
             const shown = Math.max(1, box.contentH * s);
-            const zoom = Math.max(0.65, Math.min(1.5, this.normTargetH() / shown));
+            const zoom = Math.max(0.65, Math.min(2.0, this.normTargetH() / shown));
             spr.style.zoom = zoom.toFixed(3);
             const gap = Math.max(0, box.padB * s * zoom);
             fel.style.setProperty('margin-bottom', `${-Math.round(gap)}px`, 'important');
