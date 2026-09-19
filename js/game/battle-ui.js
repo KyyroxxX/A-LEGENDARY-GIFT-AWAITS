@@ -1837,12 +1837,12 @@ const BattleUI = {
                 if (app && typeof screenShake === 'function') screenShake(app, 1.1);
             } catch (_) { /* ignore */ }
             el.querySelector('.xform-line1').textContent = `“${dlg.vow}”`;
-            await this.wait(850);
+            await this.wait(600);
             el.querySelector('.xform-line2').textContent = `“${dlg.cry}”`;
             this.showCry(dlg.cry, { family: 'finisher', fxType: sk?.type || 'almighty' });
-            await this.wait(850);
+            await this.wait(600);
             el.classList.add('out');
-            await this.wait(350);
+            await this.wait(250);
             el.remove();
         } finally {
             this._cutinPlaying = false;
@@ -2871,7 +2871,7 @@ const BattleUI = {
         `;
 
         const isTransform = profile.supportMode === 'transform' || !!sk?.transform;
-        await this.wait(finisher || isTransform ? 800 : 520);
+        await this.wait(finisher || isTransform ? 550 : 350);
     },
 
     hideActionBanner() {
