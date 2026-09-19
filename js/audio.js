@@ -384,6 +384,42 @@ const AudioManager = {
         }
         this._ensureYtApi();
         this._startMusicWatchdog();
+        // Precalienta el iframe de YouTube en espera: el primer tema arranca
+        // por reutilización (rápido) en vez de bootear iframe (lento).
+        try {
+            this._ensureYtApi().then(() => this._warmYtPlayer()).catch(() => {});
+        } catch (_) { /* ignore */ }
+    },
+
+    /** Iframe YT en espera (mudo, sin vídeo): se cede al primer tema real. */
+    _warmYtPlayer() {
+        if (this._ytWarm || !this.enabled) return;
+        this._ytWarm = true;
+        try {
+            if (this.ytPlayer || !window.YT || !window.YT.Player) return;
+            const elId = this._ensureYtHost();
+            const standby = new window.YT.Player(elId, {
+                width: 1, height: 1,
+                playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1, rel: 0 }
+            });
+            const claim = () => {
+                try {
+                    if (!this.enabled) { try { standby.destroy(); } catch (_) { /* */ } return; }
+                    if (!this.ytPlayer) this.ytPlayer = standby;
+                    else { try { standby.destroy(); } catch (_) { /* */ } }
+                } catch (_) { /* ignore */ }
+            };
+            // Reclama cuando esté listo; si un tema real ganó la carrera, se destruye.
+            const probe = setInterval(() => {
+                try {
+                    if (standby && typeof standby.getPlayerState === 'function') {
+                        clearInterval(probe);
+                        claim();
+                    }
+                } catch (_) { clearInterval(probe); }
+            }, 300);
+            setTimeout(() => { try { clearInterval(probe); } catch (_) { /* */ } }, 10000);
+        } catch (_) { /* ignore */ }
     },
 
     _ensureBuses() {
@@ -555,6 +591,7 @@ const AudioManager = {
             this.ctx.resume().catch(() => {});
         }
         this._ensureYtApi();
+        try { this._ensureYtApi().then(() => this._warmYtPlayer()).catch(() => {}); } catch (_) { /* ignore */ }
         this.setVolume(this.masterVolume);
         const firstGesture = !this._unlocked;
         this._unlocked = true;
