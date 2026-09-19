@@ -123,8 +123,8 @@ const ChronicleData = {
             metaphor: true },
 
         { mid: 'gate_final', enc: 'boss', enemy: 'boss5050', name: 'THE 50/50', stage: 'destiny', inv: 60,
-            title: 'FINAL · THE 50/50 & Shadow Joker',
-            blurb: 'El Joker del destino. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3), da igual la historia. Ha robado la sombra de Ren Amamiya: el Comodín pelea por ÉL. Victoria = +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
+            title: 'FINAL · THE 50/50',
+            blurb: 'Detrás del Joker del destino hay tres sillas: Eren Yeager, Griffith y Mob. Tienen a Ren Amamiya encarcelado para alimentar el 50/50… y usan a Mob en contra de su voluntad. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3). Victoria = trío en C3 + +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
             sealed: '✦ THE 50/50 · SELLADO — COLECCIÓN INCOMPLETA',
             sealedBlurb: 'Sellado: consigue TODOS los personajes con TODOS sus dupes (4★ C6 · 5★/6★ C3). La historia no importa. Gojo no abre nada.',
             isFinal: true }
@@ -569,7 +569,8 @@ const ChronicleData = {
                         ]
                     }
                     : this.mk(row.enemy, row.name, st);
-                const enemies = [enemy];
+                // El boss NO lleva al Joker: son solo Eren, Griffith y Mob.
+                const enemies = isBoss ? [] : [enemy];
                 if (!isBoss) {
                     const al = alliesFor(row, i, asStory);
                     al.ids.forEach(pid => {
@@ -581,12 +582,12 @@ const ChronicleData = {
                         }));
                     });
                 } else {
-                    // THE 50/50 invoca la sombra del Comodín: Ren Amamiya pelea por el Joker.
-                    enemies.push(this.mk('ren', nameOf('ren'), {
-                        ...st,
-                        maxHp: Math.round(st.maxHp * 0.6),
-                        atk: Math.round(st.atk * 0.85),
-                    }));
+                    // THE 50/50 son ELLOS: Eren, Griffith y Mob. Ren está encarcelado,
+                    // no pelea. Cada uno fasea al morir (segunda fase del motor).
+                    const trioBase = { maxHp: 440, atk: 68, def: 28, agi: 32, luk: 24, color: '#c41e3a' };
+                    enemies.push(this.mk('eren', 'Eren Yeager', { ...st, ...trioBase }));
+                    enemies.push(this.mk('griffith', 'Griffith', { ...st, ...trioBase }));
+                    enemies.push(this.mk('mob', 'Mob', { ...st, ...trioBase }));
                 }
 
                 out[row.enc] = {

@@ -105,6 +105,12 @@ const CharacterRegistry = {
                 // Enemy EX alone → 4★; if also on a higher banner, keep highest.
                 bump(id, 4);
             });
+            // Exclusivos del boss final: 6★ sin banner (jamás spoileados en pools).
+            try {
+                (GachaRoster.BOSS_EXCLUSIVE_6 || []).forEach((id) => {
+                    if (!map.has(id)) map.set(id, 6);
+                });
+            } catch (_) { /* ignore */ }
         }
         return map;
     },

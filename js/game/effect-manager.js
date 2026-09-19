@@ -48,7 +48,8 @@ const EffectManager = {
         caesar: ['#d9f3ff', '#5796ca'], rohan: ['#dceaff', '#5b4a96'], risotto: ['#e5e8ee', '#4e5969'],
         ff: ['#d5fff3', '#35aa88'], mista: ['#d9ebff', '#4e79bd'], narancia: ['#eedcff', '#9a58a4'],
         weather: ['#d8f4ff', '#659fc8'], trish: ['#ffe0ef', '#d95291'], shunsui: ['#dbe7fa', '#9d4e62'],
-        urahara: ['#e1ffd9', '#4d9a62'], ginjo: ['#ddf8e7', '#3c9c68'], gantenbainne: ['#dceeff', '#5f91bd']
+        urahara: ['#e1ffd9', '#4d9a62'], ginjo: ['#ddf8e7', '#3c9c68'], gantenbainne: ['#dceeff', '#5f91bd'],
+        eren: ['#ffe9c4', '#b3541e'], griffith: ['#f2e4ff', '#7d3fb0'], mob: ['#dcffe9', '#2fa36b']
     },
 
     palette: {

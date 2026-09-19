@@ -338,6 +338,12 @@ const AudioManager = {
             { youtube: 'ZNGqBDRJgvo', weight: 3, label: 'Last Surprise (OST oficial)' },
             { youtube: 'Flysqk6WfQE', weight: 2.5, label: 'We Are (oficial)' },
             { youtube: 'M2cckDmNLMI', weight: 2.5, label: 'KICK BACK (oficial)' }
+        ],
+
+        battle_titan: [
+            { youtube: 'H76_uW1Fnso', weight: 4, label: 'Vogel im Käfig · Sawano (OST oficial)' },
+            { youtube: 'JXvRKs2C1B4', weight: 3.5, label: 'ətˈæk 0N tάɪtn · Sawano (oficial)' },
+            { youtube: 'LKP-vZvjbh8', weight: 3.5, label: 'Shinzou wo Sasageyo · Linked Horizon (oficial)' }
         ]
     },
 

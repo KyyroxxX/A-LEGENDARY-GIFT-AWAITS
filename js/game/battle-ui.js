@@ -392,6 +392,26 @@ const BattleUI = {
         const partyIds = (saved && saved.length)
             ? saved.filter(id => owned.includes(id))
             : ['luffy', 'naruto', 'jotaro'].filter(id => owned.includes(id));
+        // Lore del FINAL (una vez): Ren encarcelado, Mob contra su voluntad.
+        if (runKey === 'boss' && !GameState.flag('boss5050_intro_seen')) {
+            DialogueScene.open({
+                title: 'FINAL · THE 50/50',
+                lines: [
+                    { speaker: 'Narrador', text: 'El Destino deja de esconderse. Ante ti, tres sillas. Tres monstruos. Y una jaula al fondo.' },
+                    { speaker: 'Eren', text: 'Tú también encadenas tu mundo a un regalo, ¿verdad? Yo solo seguí andando. El Retumbar no pide permiso.' },
+                    { speaker: 'Griffith', text: 'Qué hermoso… otro soñador dispuesto a sacrificarlo todo. Yo ya sacrifiqué a los míos. No mires atrás.' },
+                    { speaker: 'Mob', text: 'Yo… no quiero pelear. Algo me obliga a obedecer. ¿Puedes… romper lo que me ata? Por favor… duele.' },
+                    { speaker: 'Ren', text: '¡No les escuches! Me tienen encerrado para alimentar el 50/50 con mi Wild Card… ¡Tú eres mi última carta!' },
+                    { speaker: 'Eren', text: 'Mátanos a los tres… si puedes. Y cuando creas que ha terminado… verás por qué nos llaman calamidades.' },
+                    { speaker: 'Sistema', text: 'THE 50/50 · Eren Yeager + Griffith + Mob. Ojo: al caer, FASEAN.' }
+                ],
+                onComplete: () => {
+                    GameState.setFlag('boss5050_intro_seen');
+                    this.showPartySelect(container, runKey, partyIds);
+                }
+            });
+            return;
+        }
         this.showPartySelect(container, runKey, partyIds);
     },
 
@@ -666,6 +686,7 @@ const BattleUI = {
         this.setActionPhase('PLAYER_SELECTING');
         this.pendingOneMore = false;
         this.allOutReady = false;
+        this._titanMusic = false;
         this.chainCount = 0;
         const bgm = BattleData.musicFor(runKey);
         AudioManager.setTheme(bgm);
@@ -1693,6 +1714,18 @@ const BattleUI = {
         });
     },
 
+    /** Al fasear en el FINAL: entra la música épica (una vez por combate). */
+    maybeTitanMusic() {
+        if (this._titanMusic) return;
+        if (this.state?.runKey !== 'boss' && !this.state?.encounter?.isBoss) return;
+        this._titanMusic = true;
+        try {
+            if (typeof AudioManager !== 'undefined' && AudioManager.setTheme) {
+                AudioManager.setTheme('battle_titan');
+            }
+        } catch (_) { /* la música nunca rompe el combate */ }
+    },
+
     async playAllOutSequence() {
         if (!this.state || !this.allOutReady) return;
         // The DOWN may have expired (foe stood up) before pressing Asalto.
@@ -1746,6 +1779,7 @@ const BattleUI = {
             ]);
             if (r.secondPhase?.length) {
                 this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
+                this.maybeTitanMusic();
                 this.render();
             }
             if (r.finisher?.length) await this.playFinisherSequence(r.finisher, { allOut: true });
@@ -1850,6 +1884,7 @@ const BattleUI = {
             }
             if (result.secondPhase?.length) {
                 this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
+                this.maybeTitanMusic();
                 this.render();
             }
             await this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
@@ -2791,6 +2826,7 @@ const BattleUI = {
                 }
                 if (result.secondPhase?.length) {
                     this.showCry('¡SEGUNDA FASE!', { family: 'finisher', fxType: 'curse' });
+                    this.maybeTitanMusic();
                     this.render();
                 }
                 await this.animateVitalsFrom(before, [...result.hits.map(h => h.id), actor.id]);
@@ -2858,9 +2894,18 @@ const BattleUI = {
                     GameState.set('storyComplete', true);
                     const inv = GameState.get('invocations') || 0;
                     const meta = GameState.get('metaphorTickets') || 0;
+                    const isFinalTrio = this.state.runKey === 'boss';
                     DialogueScene.open({
                         title: 'VICTORIA DE HISTORIA',
                         lines: [
+                            ...(isFinalTrio ? [
+                                { speaker: 'Sistema', text: 'THE 50/50 se rompe. Las cadenas de Ren caen al suelo.' },
+                                { speaker: 'Ren', text: '…¡Libre! Mi Wild Card vuelve a ser mía. Gracias… de verdad.' },
+                                { speaker: 'Mob', text: 'Se acabó… el dolor. Gracias por contenerme sin destruirme.' },
+                                { speaker: 'Griffith', text: 'Ni siquiera el 50/50 pudo comprar mi sueño. Pelearé por ti… hasta que dejes de ser interesante.' },
+                                { speaker: 'Eren', text: 'Tatakae. Sigue avanzando. Eso es lo único que importa.' },
+                                { speaker: 'Sistema', text: 'Eren Yeager, Griffith y Mob se unen en C3 (6★ max).' }
+                            ] : []),
                             { speaker: 'Sistema', text: mission?.rewardText || 'DESTINY HAS BEEN DEFEATED.' },
                             { speaker: 'Narrador', text: `Tienes ${meta} tiradas Metaphor (rojas). Conviértelas en el banner Metaphor. Las INV se compran con Chikistrites (${typeof GameState.chikiPerInv === 'function' ? GameState.chikiPerInv() : 160} = 1).` },
                             { speaker: 'Sistema', text: 'Gasta las tiradas rojas en el banner Metaphor. Ahí sale el juego.' }

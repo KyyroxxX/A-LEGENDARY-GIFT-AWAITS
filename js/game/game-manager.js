@@ -36,6 +36,19 @@ const GameManager = {
             GameState.setFlag('gate_final_cleared', true);
             GameState.set('storyComplete', true);
             if (typeof Achievements !== 'undefined') Achievements.show('boss_5050');
+            // El trío final se une en C3 (6★ max): Eren, Griffith y Mob.
+            try {
+                const trio = ['eren', 'griffith', 'mob'];
+                const owned = new Set(GameState.get('ownedCharacters') || []);
+                const copies = { ...(GameState.get('charCopies') || {}) };
+                trio.forEach((id) => {
+                    owned.add(id);
+                    copies[id] = Math.max(copies[id] || 0, 4);
+                });
+                GameState.set('ownedCharacters', [...owned]);
+                GameState.set('charCopies', copies);
+                if (typeof Achievements !== 'undefined') Achievements.show('six_star');
+            } catch (_) { /* el desbloqueo nunca rompe la victoria */ }
         }
 
         GameState.set('pendingMission', null);

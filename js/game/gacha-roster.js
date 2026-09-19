@@ -4,7 +4,9 @@
  */
 const GachaRoster = {
     STARTERS: ['luffy', 'naruto', 'jotaro'],
-    EXCLUDED: new Set(['dummy', 'boss5050']),
+    EXCLUDED: new Set(['dummy', 'boss5050', 'eren', 'griffith', 'mob']),
+    /** Exclusivos del boss final: 6★ que jamás salen en banners (desbloqueo por victoria). */
+    BOSS_EXCLUSIVE_6: new Set(['eren', 'griffith', 'mob']),
     GOJO_ID: 'gojo',
     /** Ren only enters the gacha after beating THE 50/50 (never required for it). */
     SEALED_ID: 'ren',
@@ -753,6 +755,7 @@ const GachaRoster = {
     bannerStars(id) {
         const stars = new Set();
         if (!id) return [];
+        if (this.BOSS_EXCLUSIVE_6?.has(id)) return [6];
         Object.values(this.BANNERS).forEach((b) => {
             const featStars = b.featuredStars || 5;
             if (b.featuredId === id) stars.add(featStars);
