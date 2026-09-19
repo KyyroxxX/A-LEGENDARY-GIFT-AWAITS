@@ -1264,11 +1264,13 @@ const BattleEngine = {
             result.logs.push(`${user.name} recupera +${gain} CP.`);
         }
 
-        // All-Out ready if all living enemies are down
+        // All-Out ready if ANY living enemy is down (hits only DOWN foes —
+        // requiring all-down at once made assault impossible in 3-foe fights).
         const livingE = this.living(state.enemies);
-        if (livingE.length && livingE.every(e => e.down)) {
+        const downN = livingE.filter(e => e.down).length;
+        if (downN > 0) {
             result.allOutReady = true;
-            result.logs.push('★ ALL-OUT ATTACK disponible!');
+            result.logs.push(`★ ALL-OUT ATTACK disponible! (${downN} DOWN)`);
         }
 
         state.log.push(...result.logs);

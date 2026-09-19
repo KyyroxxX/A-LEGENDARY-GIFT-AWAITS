@@ -1695,6 +1695,13 @@ const BattleUI = {
 
     async playAllOutSequence() {
         if (!this.state || !this.allOutReady) return;
+        // The DOWN may have expired (foe stood up) before pressing Asalto.
+        const stillDown = BattleEngine.living(this.state.enemies).some(e => e.down);
+        if (!stillDown) {
+            this.allOutReady = false;
+            this.render();
+            return;
+        }
         this.mode = 'enemy';
         this.setActionPhase('ATTACKING');
         this.hideActionBanner();
