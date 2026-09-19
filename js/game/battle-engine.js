@@ -37,9 +37,9 @@ const BattleEngine = {
         });
         // Support composition is deliberately part of the difficulty curve.
         // (Recortado para alta dificultad: menos colchón, la táctica decide.
-        // Healers propios curan un 20% menos.)
+        // Healers propios curan un 33% menos.)
         const partyHpMul = (partyHasSupport ? 2.1 : 1.9) * (encounter.partyHpScale ?? 1);
-        const healScale = (partyHasSupport ? 1.16 : 0.88) * (encounter.partyHealScale ?? 1);
+        const healScale = (partyHasSupport ? 0.97 : 0.74) * (encounter.partyHealScale ?? 1);
         party.forEach(u => {
             u.maxHp = Math.round(u.maxHp * partyHpMul);
             u.hp = u.maxHp;
