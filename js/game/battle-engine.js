@@ -814,7 +814,7 @@ const BattleEngine = {
         if (attacker.side === 'enemy' && target.side === 'ally') {
             // Hits chunk — guard, debuff their ATK or erase them first.
             const supportGap = state.partyHasSupport ? 0 : 0.08;
-            const ratio = (crit ? 0.50 : 0.42) + supportGap;
+            const ratio = (crit ? 0.38 : 0.30) + supportGap;
             return Math.min(damage, Math.max(1, Math.floor(target.maxHp * ratio)));
         }
         if (attacker.side === 'ally' && target.side === 'enemy') {
