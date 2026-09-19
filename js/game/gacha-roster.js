@@ -1505,6 +1505,54 @@ const GachaRoster = {
                 }
             }
         }
+
+        // Oro→rojo: una tirada que parecía 5★ rompe a 6★ (~10%).
+        // Solo si no salió ningún 6★ (natural o doble) y al menos un 5★ puro sí.
+        // La presentación ya hace el fakeout oro→rojo sola al ver el 6★.
+        if (planned.length >= 1) {
+            const bUp = this.BANNERS[bannerId];
+            if (bUp && !bUp.isMetaphor) {
+                const isSixUp = (r) => ((r.stars || 0) >= 6 || r.rarity === 'mythic');
+                const isFivePure = (r) => ((r.stars || 0) === 5 || r.rarity === 'epic');
+                if (!planned.some(isSixUp)) {
+                    const fiveSlotsUp = planned
+                        .map((r, i) => (isFivePure(r) ? i : -1))
+                        .filter((i) => i >= 0);
+                    if (fiveSlotsUp.length >= 1 && Math.random() < 0.10) {
+                        const slot = fiveSlotsUp[Math.floor(Math.random() * fiveSlotsUp.length)];
+                        const st = this.getState(bannerId);
+                        const dFeat = (typeof this.getFeaturedFor === 'function')
+                            ? this.getFeaturedFor(bannerId, 6)
+                            : this.getFeatured(bannerId);
+                        const featOpen = dFeat.id
+                            && dFeat.stars === 6
+                            && this.getTemplate(dFeat.id);
+                        const stdOpen = this.availablePool(
+                            (bUp.pool6 || []).filter((id) => id !== dFeat.id), true);
+                        let charId = null;
+                        let featured = false;
+                        if (featOpen && Math.random() < 0.5) {
+                            charId = dFeat.id;
+                            featured = true;
+                        } else if (stdOpen.length) {
+                            charId = stdOpen[Math.floor(Math.random() * stdOpen.length)];
+                        } else if (featOpen) {
+                            charId = dFeat.id;
+                            featured = true;
+                        }
+                        if (charId) {
+                            planned[slot] = this.characterResult(charId, 6, featured);
+                            planned[slot].bannerId = bannerId;
+                            planned[slot].fakeoutUpgrade = true;
+                            st.pity6 = 0;
+                            st.pity5 = 0;
+                            st.pity4 = 0;
+                            this.saveState(bannerId, st);
+                        }
+                    }
+                }
+            }
+        }
         return planned;
     },
 
