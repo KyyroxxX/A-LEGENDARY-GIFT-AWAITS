@@ -17,15 +17,10 @@ const GachaRoster = {
      *  (Espada order). Already-owned units are grandfathered, never taken. */
     SEAL_CHAIN: [{ id: 'ulquiorra', needs: 'starrk' }],
 
-    /** The game code only drops after THE 50/50 AND Ren maxed (C3). */
+    /** The game code drops right after THE 50/50 (no Ren needed). */
     legendaryEligible() {
         try {
-            const boss = !!(GameState.get('bossDefeated') || GameState.flag('gate_final_cleared'));
-            if (!boss) return false;
-            if (typeof CharProgress !== 'undefined' && CharProgress.isMaxed) {
-                return CharProgress.isMaxed('ren');
-            }
-            return (typeof CharProgress !== 'undefined' ? CharProgress.copiesOf('ren') : 0) >= 4;
+            return !!(GameState.get('bossDefeated') || GameState.flag('gate_final_cleared'));
         } catch (_) {
             return false;
         }
@@ -1261,11 +1256,11 @@ const GachaRoster = {
                 st.pity6 = 0;
                 st.pity5 = 0;
                 st.pity4 = 0;
-                // The gift drops ONCE and only when eligible (boss + Ren C3).
-                // Hard pity 7★ forces it; soft 7★ rolls the 50/50.
+                // The gift drops ONCE and only when eligible (boss beaten).
+                // First eligible 7★ is ALWAYS the gift (immediate post-boss).
                 // Otherwise the 7★ always resolves to a Metaphor unit.
                 const giftOpen = !GameState.get('legendaryObtained') && this.legendaryEligible();
-                if (giftOpen && (wasHard || Math.random() < featChance)) {
+                if (giftOpen) {
                     result = {
                         kind: 'legendary',
                         rarity: 'celestial',

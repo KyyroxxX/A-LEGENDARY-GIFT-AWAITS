@@ -124,7 +124,7 @@ const ChronicleData = {
 
         { mid: 'gate_final', enc: 'boss', enemy: 'boss5050', name: 'THE 50/50', stage: 'destiny', inv: 60,
             title: 'FINAL · THE 50/50',
-            blurb: 'Detrás del Joker del destino hay tres sillas: Eren Yeager, Griffith y Mob. Tienen a Ren Amamiya encarcelado para alimentar el 50/50… y usan a Mob en contra de su voluntad. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3). Victoria = trío en C3 + +200 tiradas rojas. El regalo solo sale con Ren al máximo.',
+            blurb: 'Detrás del Joker del destino hay tres sillas: Eren Yeager, Griffith y Mob. Tienen a Ren Amamiya encarcelado para alimentar el 50/50… y usan a Mob en contra de su voluntad. Se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3). Victoria = trío en C3 + +200 tiradas rojas. El regalo sale en tu primer 7★.',
             sealed: '✦ THE 50/50 · SELLADO — COLECCIÓN INCOMPLETA',
             sealedBlurb: 'Sellado: consigue TODOS los personajes con TODOS sus dupes (4★ C6 · 5★/6★ C3). Los sellados no cuentan. La historia no importa.',
             isFinal: true }
@@ -760,7 +760,8 @@ const ChronicleData = {
         return Math.max(0, i * this.SIDES_PER_DAY);
     },
 
-    /** Lock state for a story mission: chain + 3-archives-per-day (+collection for final). */
+    /** Lock de historia: SOLO el capítulo anterior (sin archivos ni colección).
+     *  Cada clear pasa de día y abre el siguiente; el FINAL solo pide gate_21. */
     storyLockAt(index) {
         const row = this.STORY[index];
         if (!row) return { locked: true, reason: 'day' };
@@ -769,15 +770,9 @@ const ChronicleData = {
         const prevCleared = prev
             ? !!((typeof GameState !== 'undefined') && GameState.flag(`${prev.mid}_cleared`))
             : true;
-        const need = this.sidesRequiredFor(index);
+        const need = 0;
         const have = this.sideClears();
         if (!prevCleared) return { locked: true, reason: 'prev', need, have };
-        if (have < need) return { locked: true, reason: 'sides', need, have };
-        if (row.isFinal) {
-            const collectionOk = (typeof GachaRoster !== 'undefined' && GachaRoster.bossUnlockedByCollection)
-                ? GachaRoster.bossUnlockedByCollection() : true;
-            if (!collectionOk) return { locked: true, reason: 'collection', need, have };
-        }
         return { locked: false, need, have };
     },
 

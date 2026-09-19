@@ -76,7 +76,7 @@ const GameManager = {
             chikiGain = rate * 30;
             GameState.addChikistrites(chikiGain);
             // Farmeo Metaphor/P5R: cada repetido da +60 tickets rojos (el regalo
-            // solo sale del banner tras vencer a THE 50/50 con Ren al máximo).
+            // solo sale del banner tras vencer a THE 50/50).
             if (typeof GameState.addMetaphorTicket === 'function' && !GameState.get('legendaryObtained')) {
                 GameState.addMetaphorTicket(60);
                 metaGain += 60;

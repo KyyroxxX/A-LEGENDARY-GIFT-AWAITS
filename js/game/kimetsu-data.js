@@ -367,7 +367,7 @@ const KimetsuData = {
             id: 'urokodaki', name: 'Sakonji Urokodaki', series: 'Kimetsu no Yaiba', role: 'Support', roleTag: 'Former Water Hashira',
             img: 'assets/sprites/anim/urokodaki_idle.png', color: '#2980b9', accent: '#ecf0f1',
             resist: ['water'], weak: ['fire'],
-            maxHp: 240, maxSp: 140, atk: 48, def: 28, agi: 28, luk: 24,
+            maxHp: 275, maxSp: 150, atk: 54, def: 32, agi: 30, luk: 24,
             skills: [
                 { id: 'water_teach', name: 'Water Surface Slash', cry: 'Focus.', cost: 24, power: 90, type: 'water', desc: 'Lección · corte de agua.' },
                 { id: 'tengu_guard', name: 'Tengu Guard', cry: '…', cost: 26, power: 0, type: 'support', buff: { def: 1.5 }, turns: 2, cover: true, desc: 'Máscara · cover.' },

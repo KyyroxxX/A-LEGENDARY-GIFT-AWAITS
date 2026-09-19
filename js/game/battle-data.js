@@ -99,11 +99,11 @@ const BattleData = {
             id: 'sakura', name: 'Sakura Haruno', series: 'Naruto', role: 'Healer', roleTag: 'Medic / Buffer',
             img: 'assets/sprites/anim/sakura_idle.png', color: '#e91e63', accent: '#f8bbd0',
             resist: ['strike'], weak: ['curse'],
-            maxHp: 245, maxSp: 168, atk: 46, def: 22, agi: 28, luk: 22,
+            maxHp: 285, maxSp: 170, atk: 50, def: 26, agi: 30, luk: 24,
             skills: [
-                { id: 'heal_sakura', name: 'Shosen Jutsu', cry: '¡Te curo!', cost: 29, power: 0, type: 'support', heal: 145, desc: 'Gran cura a 1 aliado.' },
+                { id: 'heal_sakura', name: 'Shosen Jutsu', cry: '¡Te curo!', cost: 29, power: 0, type: 'support', heal: 185, desc: 'Gran cura a 1 aliado.' },
                 { id: 'cherry_punch', name: 'Cherry Blossom Impact', cry: 'CHA!', cost: 33, power: 125, type: 'strike', desc: 'Puño monstruo (byakugou).' },
-                { id: 'heal_all', name: 'Mystical Palm Wave', cry: '¡Todos arriba!', cost: 57, power: 0, type: 'support', heal: 95, aoeHeal: true, restoreSp: 25, desc: 'Cura al equipo + 25 CP.' },
+                { id: 'heal_all', name: 'Mystical Palm Wave', cry: '¡Todos arriba!', cost: 57, power: 0, type: 'support', heal: 120, aoeHeal: true, restoreSp: 25, desc: 'Cura al equipo + 25 CP.' },
                 { id: 'strength_buff', name: 'Inner Sakura', cry: 'SHANNARO!', cost: 37, power: 0, type: 'support', allyBuff: { atk: 1.45, def: 1.25 }, turns: 3, targetAlly: true, desc: 'Buff a 1 aliado ATK/DEF ↑' }
             ]
         },
@@ -129,18 +129,18 @@ const BattleData = {
             id: 'josuke', name: 'Josuke Higashikata', series: 'JoJo', role: 'Healer', roleTag: 'Crazy Diamond',
             img: 'assets/sprites/anim/josuke_idle.png', color: '#3498db', accent: '#f5b041',
             transform: true, transformName: 'Crazy Diamond', resist: ['strike'], weak: ['fire'],
-            maxHp: 270, maxSp: 146, atk: 48, def: 26, agi: 28, luk: 18,
+            maxHp: 305, maxSp: 155, atk: 54, def: 28, agi: 30, luk: 20,
             skills: [
-                { id: 'heal_josuke', name: 'Crazy Diamond Fix', cry: 'CRAZY DIAMOND!', cost: 33, power: 0, type: 'support', heal: 160, desc: 'Repara heridas · gran cura.' },
+                { id: 'heal_josuke', name: 'Crazy Diamond Fix', cry: 'CRAZY DIAMOND!', cost: 33, power: 0, type: 'support', heal: 200, desc: 'Repara heridas · gran cura.' },
                 { id: 'dona', name: 'DORA RUSH', cry: 'DORARARARA!', cost: 29, power: 92, type: 'strike', hits: 4, desc: '4 hits · Crazy Diamond.' },
-                { id: 'restore_all', name: 'What a Beautiful Duwang', cry: '¡Arreglado!', cost: 61, power: 0, type: 'support', heal: 55, aoeHeal: true, restoreSp: 24, desc: 'Cura equipo + 24 CP.' },
+                { id: 'restore_all', name: 'What a Beautiful Duwang', cry: '¡Arreglado!', cost: 61, power: 0, type: 'support', heal: 75, aoeHeal: true, restoreSp: 24, desc: 'Cura equipo + 24 CP.' },
                 { id: 'cd_awaken', name: 'Crazy Diamond!', cry: 'CRAZY DIAMOND!', cost: 48, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 10, transformAtk: 1.35, transformDef: 1.2, desc: 'TRANSFORM · Crazy Diamond permanece · técnicas exclusivas.' }
             ],
             transformedSkills: [
                 { id: 'dora_barrage', name: 'DORA Barrage', cry: 'DORARARARA!', cost: 34, power: 128, type: 'strike', hits: 6, desc: 'Aluvión de Crazy Diamond.' },
                 { id: 'fix_pulse', name: 'Restore Pulse', cry: '¡Arreglado!', cost: 36, power: 0, type: 'support', heal: 135, cleanse: true, desc: 'Cura fuerte + limpia debuffs.' },
                 { id: 'reflect_fix', name: 'Angy Fix', cry: 'Don\'t mess with the hair!', cost: 42, power: 140, type: 'strike', debuff: { atk: 0.75 }, debuffTurns: 2, desc: 'Golpe + ATK enemigo ↓' },
-                { id: 'team_restore', name: 'Group Restoration', cry: 'Crazy Diamond!', cost: 58, power: 0, type: 'support', heal: 100, aoeHeal: true, partyBuff: { def: 1.35 }, turns: 3, restoreSp: 25, desc: 'Cura equipo + DEF ↑ + 25 CP.' }
+                { id: 'team_restore', name: 'Group Restoration', cry: 'Crazy Diamond!', cost: 58, power: 0, type: 'support', heal: 120, aoeHeal: true, partyBuff: { def: 1.35 }, turns: 3, restoreSp: 25, desc: 'Cura equipo + DEF ↑ + 25 CP.' }
             ]
         },
         {
@@ -203,12 +203,12 @@ const BattleData = {
             id: 'orihime', name: 'Orihime Inoue', series: 'Bleach', role: 'Support', roleTag: 'Shield / Heal / Bless',
             img: 'assets/characters/orihime.webp', color: '#f5b041', accent: '#f9e79f',
             resist: ['bless', 'psy'], weak: ['slash'],
-            maxHp: 210, maxSp: 174, atk: 28, def: 20, agi: 26, luk: 30,
+            maxHp: 250, maxSp: 175, atk: 34, def: 24, agi: 28, luk: 30,
             skills: [
-                { id: 'soten', name: 'Soten Kisshun', cry: 'SOTEN KISSHUN! I REJECT!', cost: 33, power: 0, type: 'support', heal: 170, desc: 'I reject · gran cura.' },
+                { id: 'soten', name: 'Soten Kisshun', cry: 'SOTEN KISSHUN! I REJECT!', cost: 33, power: 0, type: 'support', heal: 210, desc: 'I reject · gran cura.' },
                 { id: 'santen', name: 'Santen Kesshun', cry: 'SANTEN KESSHUN! I REJECT!', cost: 29, power: 0, type: 'support', allyBuff: { def: 1.65 }, turns: 3, targetAlly: true, desc: 'Escudo · DEF ↑↑ a 1 aliado.' },
                 { id: 'koten', name: 'Koten Zanshun', cry: 'KOTEN ZANSHUN! I REJECT!', cost: 41, power: 120, type: 'bless', desc: 'Bendición · puede causar DOWN a THE 50/50.' },
-                { id: 'heal_wave', name: 'Shun Shun Rikka', cry: '¡Shun Shun Rikka!', cost: 61, power: 0, type: 'support', heal: 105, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura equipo + limpia + 25 CP.' }
+                { id: 'heal_wave', name: 'Shun Shun Rikka', cry: '¡Shun Shun Rikka!', cost: 61, power: 0, type: 'support', heal: 130, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura equipo + limpia + 25 CP.' }
             ]
         },
         // —— EXTRA ROSTER ——
@@ -681,7 +681,7 @@ const BattleData = {
             id: 'hinata', name: 'Hinata Hyuga', series: 'Naruto', role: 'Support', roleTag: 'Byakugan',
             img: 'assets/sprites/anim/hinata_idle.png', color: '#5b2c6f', accent: '#d7bde2',
             resist: ['pierce'], weak: ['curse'],
-            maxHp: 240, maxSp: 146, atk: 48, def: 24, agi: 34, luk: 22,
+            maxHp: 270, maxSp: 150, atk: 52, def: 26, agi: 34, luk: 24,
             skills: [
                 { id: 'hakke', name: 'Hakke Rokujuyon Sho', cry: 'Hakke!', cost: 37, power: 105, type: 'pierce', hits: 4, desc: '64 palmas.' },
                 { id: 'air_palm', name: 'Kucho', cry: 'Kucho!', cost: 29, power: 90, type: 'wind', desc: 'Palma de aire.' },

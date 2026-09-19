@@ -418,7 +418,7 @@ const GachaScene = {
                             <li>Dupes → <strong>4★ C0–C6</strong> · <strong>5★/6★ C0–C3</strong> (sube poder; 6★ domina el techo).</li>
                             <li>4★ max → +1 sello · 5★ C3 → +1 sello · 6★ C3 → +2 sellos. Canjea en <strong>DUPES</strong>.</li>
                             <li>Metaphor (rojas): +200 por apartado · +200 THE 50/50 · +20 por repetir combates. No se compran.</li>
-                            <li>El <strong>regalo</strong> solo sale tras vencer a THE 50/50 <strong>con Ren al máximo</strong>.</li>
+                            <li>El <strong>regalo</strong> sale en tu primer 7★ tras vencer a THE 50/50.</li>
                             <li>Presupuesto ~2.8k INV (vía Chikistrites) para completar el roster.</li>
                             <li><strong>THE 50/50</strong> se desbloquea con TODA la colección al máximo (4★ C6 · 5★/6★ C3). La historia no importa.</li>
                             <li>~${GachaRoster.totalPullsRequired()} invocaciones de presupuesto.</li>
@@ -478,7 +478,7 @@ const GachaScene = {
                 const ok = (typeof GachaRoster !== 'undefined' && GachaRoster.legendaryEligible)
                     ? GachaRoster.legendaryEligible() : true;
                 return ok ? '7★ CELESTIAL GARANTIZADO en la próxima tirada · será el REGALO'
-                    : '7★ garantizado, pero el REGALO está bloqueado (boss + Ren C3)';
+                    : '7★ garantizado, pero el REGALO está bloqueado (vence al boss)';
             }
             if (p7 >= soft) return `Garantía suave 7★ · bloqueado en ${hard - p7} tirada${hard - p7 === 1 ? '' : 's'}`;
             return `7★ celestial en ${hard} · sube desde ${soft}`;
@@ -1112,7 +1112,7 @@ const GachaScene = {
                         <li><strong>+200</strong> al vencer <strong>THE 50/50</strong>.</li>
                         <li><strong>+20</strong> por cada combate repetido (farmeo).</li>
                         <li>Total <strong>80</strong> = garantía dura del banner Metaphor.</li>
-                        <li>El <strong>regalo</strong> solo puede salir tras vencer a THE 50/50 <strong>con Ren al máximo (C3)</strong>.</li>
+                        <li>El <strong>regalo</strong> sale en tu primer 7★ tras vencer a THE 50/50.</li>
                     </ul>
                     <p class="gw-currency-info-foot">Se usan solo en el banner rojo.</p>`
             });
@@ -1774,7 +1774,7 @@ const GachaScene = {
                     const ren = bl.renHave >= bl.renNeed ? `✓ Ren C${bl.renNeed - 1}` : `✗ Ren C${Math.max(0, bl.renHave - 1)}/C${bl.renNeed - 1}`;
                     return `<p class="gw-details-foot">Regalo: hard pity 7★ lo garantiza · ${boss} · ${ren}</p>`;
                 })()}
-                <p class="gw-details-foot">Gasta tiradas <strong>rojas</strong>. Garantía 7★ en ${b.hard7 || 80} · 5★ en ${b.hard5 || 50}. El regalo solo sale tras vencer a THE 50/50 con Ren al máximo. Contador: <strong id="details-pity">0</strong>.</p>`;
+                <p class="gw-details-foot">Gasta tiradas <strong>rojas</strong>. Garantía 7★ en ${b.hard7 || 80} · 5★ en ${b.hard5 || 50}. El regalo sale en tu primer 7★ tras vencer a THE 50/50. Contador: <strong id="details-pity">0</strong>.</p>`;
         }
 
         const pair = (typeof GachaRoster !== 'undefined' && GachaRoster.getFeaturedPair)

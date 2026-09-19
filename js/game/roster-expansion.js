@@ -135,8 +135,9 @@
         { id: 'chopper', name: 'Tony Tony Chopper', series: 'One Piece', role: 'Healer', roleTag: 'Doctor', color: '#e74c3c',
             transform: true, transformName: 'Monster Point',
             resist: ['strike', 'bless'], weak: ['fire', 'slash'],
+            maxHp: 300, maxSp: 150, atk: 54, def: 30, agi: 32, luk: 20,
             skills: [
-                { id: 'heal_chop', name: 'Rumble Ball Heal', cry: 'I\'ll save you!', cost: 28, power: 0, type: 'support', heal: 140, desc: 'Cura.' },
+                { id: 'heal_chop', name: 'Rumble Ball Heal', cry: 'I\'ll save you!', cost: 28, power: 0, type: 'support', heal: 180, desc: 'Cura.' },
                 { id: 'scope', name: 'Scope', cry: 'Heavy Point!', cost: 26, power: 100, type: 'strike', desc: 'Heavy Point.' },
                 { id: 'guard_point', name: 'Guard Point', cry: '!', cost: 24, power: 0, type: 'support', buff: { def: 1.8 }, turns: 2, desc: 'DEF ↑↑.' },
                 { id: 'monster_point', name: 'Monster Point', cry: 'MONSTER POINT!', cost: 62, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 16, transformAtk: 1.85, transformAgi: 0.9, transformDef: 1.35, desc: 'TRANSFORM · Monster Point · poder brutal, CP caro.' }
@@ -396,16 +397,16 @@
             ] },
         { id: 'ff', name: 'Foo Fighters', series: 'JoJo', role: 'Healer', roleTag: 'Plankton', color: '#1abc9c', accent: '#2ecc71',
             transform: true, transformName: 'Plankton Swarm', resist: ['water', 'pierce'], weak: ['fire', 'ice'],
-            maxHp: 290, maxSp: 155, atk: 52, def: 28, agi: 34, luk: 20,
+            maxHp: 315, maxSp: 160, atk: 56, def: 30, agi: 34, luk: 22,
             skills: [
                 { id: 'plankton_shot', name: 'Plankton Shot', cry: 'FF!', cost: 26, power: 100, type: 'pierce', hits: 3, desc: 'Balas de plancton.' },
-                { id: 'ff_heal', name: 'Wound Seal', cry: 'I got this!', cost: 32, power: 0, type: 'support', heal: 120, desc: 'Sella heridas.' },
+                { id: 'ff_heal', name: 'Wound Seal', cry: 'I got this!', cost: 32, power: 0, type: 'support', heal: 160, desc: 'Sella heridas.' },
                 { id: 'water_need', name: 'Water Supply', cry: 'Need water…', cost: 28, power: 0, type: 'support', partyBuff: { def: 1.2 }, turns: 2, heal: 40, aoeHeal: true, restoreSp: 25, desc: 'Hidrata equipo + 25 CP.' },
                 { id: 'ff_awaken', name: 'Plankton Swarm', cry: 'Foo Fighters!', cost: 50, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 10, transformAtk: 1.3, transformDef: 1.2, desc: 'TRANSFORM · enjambre.' }
             ],
             transformedSkills: [
                 { id: 'bullet_barrage', name: 'Plankton Barrage', cry: 'Fire!', cost: 34, power: 135, type: 'pierce', hits: 5, desc: 'Ráfaga ×5.' },
-                { id: 'ff_heal_max', name: 'Colony Heal', cry: 'Stay with me!', cost: 36, power: 0, type: 'support', heal: 100, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura equipo + limpia + 25 CP.' },
+                { id: 'ff_heal_max', name: 'Colony Heal', cry: 'Stay with me!', cost: 36, power: 0, type: 'support', heal: 130, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura equipo + limpia + 25 CP.' },
                 { id: 'invade', name: 'Invade Body', cry: 'Gotcha!', cost: 38, power: 145, type: 'water', debuff: { agi: 0.65 }, debuffTurns: 2, desc: 'Invade · AGI ↓' },
                 { id: 'ff_finale', name: 'Full Colony', cry: 'We are FF!', cost: 55, power: 160, type: 'water', aoe: true, desc: 'Colonia completa AoE.' }
             ] },

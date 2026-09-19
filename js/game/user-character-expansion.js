@@ -61,8 +61,8 @@ const UserCharacterExpansion = {
             { id: 'tobi_eye', name: 'Sharingan: Genjutsu', cry: 'Mírame.', cost: 32, power: 0, type: 'support', debuff: { atk: 0.7, luk: 0.6 }, debuffTurns: 2, targetEnemy: true, desc: 'Ilusión ocular · ATK/LUK ↓.' },
             { id: 'tobi_phase', name: 'Kamui Phase', cry: 'Intangible.', cost: 34, power: 0, type: 'support', buff: { agi: 1.6, luk: 1.4 }, turns: 3, desc: 'Atraviesa todo · AGI/LUK ↑↑.' }
         ] },
-        { id: 'karin', name: 'Karin Uzumaki', series: 'Naruto', role: 'Healer', roleTag: 'Sensor', type: 'support', color: '#c2185b', skills: [
-            { id: 'karin_bite', name: 'Healing Bite', cry: '¡Cúrate!', cost: 26, power: 0, type: 'support', heal: 150, desc: 'Cura a un aliado.' },
+        { id: 'karin', name: 'Karin Uzumaki', series: 'Naruto', role: 'Healer', roleTag: 'Sensor', type: 'support', color: '#c2185b', maxHp: 310, maxSp: 170, atk: 50, def: 26, agi: 34, luk: 22, skills: [
+            { id: 'karin_bite', name: 'Healing Bite', cry: '¡Cúrate!', cost: 26, power: 0, type: 'support', heal: 190, desc: 'Cura a un aliado.' },
             { id: 'karin_sensor', name: 'Sensor Kagura', cry: 'Te veo.', cost: 28, power: 0, type: 'support', partyBuff: { agi: 1.3, luk: 1.35 }, turns: 3, desc: 'Precisión y velocidad del equipo.' },
             { id: 'chain_bind', name: 'Adamantine Chains', cry: '¡Quieto!', cost: 34, power: 120, type: 'pierce', desc: 'Cadenas de chakra.' },
             { id: 'chakra_scan', name: 'Chakra Diagnosis', cry: 'No te mueras.', cost: 42, power: 0, type: 'support', heal: 70, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura y limpia estados + 25 CP.' }
@@ -104,16 +104,16 @@ const UserCharacterExpansion = {
         { id: 'goro', name: 'Goro Akechi', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Crow', type: 'bless', color: '#ecf0f1', transform: true, transformName: 'Black Mask', moves: ['Kouha', 'Rapier Feint', 'Detective Insight'], xMoves: ['Megidola', 'Laevateinn', 'Black Mask Counter', 'Robin Hood Collapse'] },
         { id: 'ann', name: 'Ann Takamaki', series: 'Persona 5 Royal', role: 'Caster', roleTag: 'Panther', type: 'fire', color: '#c0392b', transform: true, transformName: 'Carmen Awakened', moves: ['Agi', 'Whip Rush', 'Tarunda'], xMoves: ['Maragion', 'High Energy', "Carmen's Fire", 'Blazing Panther'] },
         { id: 'sumire', name: 'Kasumi Yoshizawa', series: 'Persona 5 Royal', role: 'DPS', roleTag: 'Violet', type: 'bless', color: '#922b21', transform: true, transformName: 'Sumire · Violet', moves: ['Assault Dive', 'Brave Step', 'Sword Ballet'], xMoves: ['Masquerade', 'Sword Dance', 'Violet Focus', 'Sword of Liberation'] },
-        { id: 'tae', name: 'Tae Takemi', series: 'Persona 5 Royal', role: 'Healer', roleTag: 'Back-Alley Doctor', type: 'support', color: '#34495e', skills: [
-            { id: 'takemi_medicine', name: 'Experimental Medicine', cry: 'Esto puede doler.', cost: 30, power: 0, type: 'support', heal: 180, desc: 'Cura intensa.' },
+        { id: 'tae', name: 'Tae Takemi', series: 'Persona 5 Royal', role: 'Healer', roleTag: 'Back-Alley Doctor', type: 'support', color: '#34495e', maxHp: 320, maxSp: 170, atk: 52, def: 28, agi: 30, luk: 22, skills: [
+            { id: 'takemi_medicine', name: 'Experimental Medicine', cry: 'Esto puede doler.', cost: 30, power: 0, type: 'support', heal: 230, desc: 'Cura intensa.' },
             { id: 'takemi_poison', name: 'Toxicology Dose', cry: 'Traga.', cost: 28, power: 105, type: 'curse', dot: 22, dotTurns: 3, desc: 'Veneno médico.' },
             { id: 'takemi_stim', name: 'Stimulant', cry: 'No te duermas.', cost: 34, power: 0, type: 'support', partyBuff: { atk: 1.3, agi: 1.2 }, turns: 3, desc: 'Estimulante de combate.' },
-            { id: 'takemi_house_call', name: 'House Call', cry: 'Consulta terminada.', cost: 54, power: 0, type: 'support', heal: 80, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura al equipo y limpia estados + 25 CP.' }
+            { id: 'takemi_house_call', name: 'House Call', cry: 'Consulta terminada.', cost: 54, power: 0, type: 'support', heal: 110, aoeHeal: true, cleanse: true, restoreSp: 25, desc: 'Cura al equipo y limpia estados + 25 CP.' }
         ] },
-        { id: 'futaba', name: 'Futaba Sakura', series: 'Persona 5 Royal', role: 'Support', roleTag: 'Oracle', type: 'psy', color: '#e67e22', transform: true, transformName: 'Necronomicon Awakened', skills: [
+        { id: 'futaba', name: 'Futaba Sakura', series: 'Persona 5 Royal', role: 'Support', roleTag: 'Oracle', type: 'psy', color: '#e67e22', maxHp: 300, maxSp: 175, atk: 48, def: 26, agi: 34, luk: 28, transform: true, transformName: 'Necronomicon Awakened', skills: [
             { id: 'oracle_boost', name: 'Oracle Boost', cry: '¡Buff de datos!', cost: 28, power: 0, type: 'support', partyBuff: { atk: 1.35, def: 1.25, agi: 1.2 }, turns: 3, desc: 'Buff total del equipo.' },
             { id: 'position_hack', name: 'Position Hack', cry: '¡Te tengo!', cost: 30, power: 0, type: 'support', debuff: { agi: 0.55, def: 0.75 }, debuffTurns: 2, targetEnemy: true, desc: 'Hack táctico al enemigo.' },
-            { id: 'moral_support', name: 'Moral Support', cry: '¡No pierdas!', cost: 34, power: 0, type: 'support', heal: 90, aoeHeal: true, restoreSp: 30, desc: 'Soporte remoto + 30 CP.' },
+            { id: 'moral_support', name: 'Moral Support', cry: '¡No pierdas!', cost: 34, power: 0, type: 'support', heal: 130, aoeHeal: true, restoreSp: 30, desc: 'Soporte remoto + 30 CP.' },
             { id: 'futaba_awaken', name: 'Necronomicon Awakened', cry: '¡Necronomicon!', cost: 58, power: 0, type: 'support', transform: true, once: true, transformPersistent: true, transformUpkeep: 12, transformAtk: 1.35, transformAgi: 1.35, desc: 'TRANSFORM · Necronomicon despierta · permanece hasta quedarse sin CP.' }
         ], transformedSkills: [
             { id: 'oracle_barrage', name: 'Oracle Barrage', cry: '¡Datos!', cost: 34, power: 140, type: 'psy', hits: 3, desc: 'Bombardeo de datos ×3.' },
@@ -162,9 +162,9 @@ const UserCharacterExpansion = {
             { id: 'utopia_decree', name: 'Utopia Decree', cry: 'My world.', cost: 32, power: 0, type: 'support', partyBuff: { atk: 1.3, def: 1.2 }, turns: 3, desc: 'Decreto · equipo ↑.' },
             { id: 'tyrant_requiem', name: 'Tyrant Requiem', cry: 'DIE for utopia!', cost: 66, power: 210, type: 'almighty', desc: 'Réquiem del tirano · finisher.' }
         ] },
-        { id: 'gallica', name: 'Gallica', series: 'Metaphor: ReFantazio', role: 'Support', roleTag: 'Fairy Guide', type: 'support', color: '#aed6f1', accent: '#f9e79f', resist: ['wind'], weak: ['curse'], maxHp: 240, maxSp: 170, atk: 42, def: 26, agi: 46, luk: 34, skills: [
+        { id: 'gallica', name: 'Gallica', series: 'Metaphor: ReFantazio', role: 'Support', roleTag: 'Fairy Guide', type: 'support', color: '#aed6f1', accent: '#f9e79f', resist: ['wind'], weak: ['curse'], maxHp: 270, maxSp: 175, atk: 46, def: 28, agi: 46, luk: 34, skills: [
             { id: 'scout', name: 'Fairy Scout', cry: 'I see it!', cost: 26, power: 0, type: 'support', partyBuff: { agi: 1.35, luk: 1.35 }, turns: 3, desc: 'Exploración · AGI/LUK equipo ↑.' },
-            { id: 'fairy_dust', name: 'Fairy Dust', cry: 'Sprinkles!', cost: 30, power: 0, type: 'support', heal: 120, cleanse: true, restoreSp: 25, desc: 'Polvo · cura + limpia + 25 CP.' },
+            { id: 'fairy_dust', name: 'Fairy Dust', cry: 'Sprinkles!', cost: 30, power: 0, type: 'support', heal: 150, cleanse: true, restoreSp: 25, desc: 'Polvo · cura + limpia + 25 CP.' },
             { id: 'hide_wings', name: 'Hide Wings', cry: 'Shh!', cost: 26, power: 0, type: 'support', buff: { def: 1.5, agi: 1.3 }, turns: 3, desc: 'Escondite · DEF/AGI ↑.' },
             { id: 'guide_wind', name: 'Guiding Wind', cry: 'This way!', cost: 24, power: 90, type: 'wind', desc: 'Viento guía.' }
         ] },

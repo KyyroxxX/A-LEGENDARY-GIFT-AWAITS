@@ -586,6 +586,47 @@ const BattleFlavor = {
         return { setup, shout };
     },
 
+    /** Gritos épicos por técnica (cut-ins de ataque). {skill} = nombre de la técnica. */
+    skillShouts: {
+        finisher: ['¡ESTO SE ACABA… {skill}!', '¡Mi obra maestra… {skill}!', '¡Adiós… {skill}!'],
+        nuke: ['¡Desaparece… {skill}!', '¡Todo o nada… {skill}!', '¡Esta es mi respuesta… {skill}!'],
+        aoe: ['¡Que tiemble el campo… {skill}!', '¡A TODOS… {skill}!', '¡Sin escondites… {skill}!'],
+        barrage: ['¡Una… tras otra… {skill}!', '¡No pares… {skill}!', '¡Lluvia… {skill}!'],
+        blade: ['¡Corta… {skill}!', '¡Un solo filo… {skill}!', '¡Ni el acero aguanta… {skill}!'],
+        buff: ['¡Ahora… {skill}!', '¡Sube el ritmo… {skill}!', '¡Por los míos… {skill}!'],
+        debuff: ['¡Rómpete… {skill}!', '¡Al suelo… {skill}!', '¡Tu fin empieza… {skill}!'],
+        heal: ['¡Aguanta… {skill}!', '¡Aún no… {skill}!', '¡Levanta… {skill}!'],
+        hex: ['¡Tu mente es mía… {skill}!', '¡Pesadilla… {skill}!', '¡Ríndete… {skill}!'],
+        strike: ['¡Toma esto!', '¡Directo!', '¡Sin piedad!']
+    },
+
+    /** Diálogo Persona de la técnica: { setup, shout }. Determinista por skill. */
+    skillDialogue(unit, sk) {
+        if (!sk) return null;
+        if (sk.transform || sk.advanceTransform) {
+            const d = this.transformDialogue(unit, sk);
+            return { setup: d.vow, shout: d.cry };
+        }
+        const power = sk.power || 0;
+        let kind = 'strike';
+        if (sk.once && power >= 150) kind = 'finisher';
+        else if (power >= 185) kind = 'nuke';
+        else if (sk.heal) kind = 'heal';
+        else if (sk.buff || sk.partyBuff || sk.allyBuff || sk.charge || sk.cover) kind = 'buff';
+        else if (sk.debuff || sk.stun || sk.dot) kind = 'debuff';
+        else if (sk.type === 'curse' || sk.type === 'psy') kind = 'hex';
+        else if (sk.aoe) kind = 'aoe';
+        else if ((sk.hits || 1) >= 4) kind = 'barrage';
+        else if (['slash', 'pierce', 'gun'].includes(sk.type)) kind = 'blade';
+        const pool = this.skillShouts[kind] || this.skillShouts.strike;
+        let h = 0;
+        for (const c of String(sk.id || sk.name || '?')) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+        const setup = pool[h % pool.length].replace('{skill}', sk.name || 'técnica');
+        let shout = (sk.cry && !this.WEAK_CRIES.has(sk.cry)) ? sk.cry : null;
+        if (!shout) shout = `${sk.name || 'Técnica'}!`;
+        return { setup, shout };
+    },
+
     /** Diálogo Persona del despertar: { vow, cry }. Determinista por personaje. */
     transformDialogue(unit, sk) {
         const id = unit?.id || '';

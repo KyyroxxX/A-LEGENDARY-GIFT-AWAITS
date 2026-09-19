@@ -250,7 +250,7 @@ const TutorialSpotlight = {
             body: 'El banner rojo usa <strong>tickets Metaphor</strong>: +200 por final de apartado, +20 por repetir combates, +200 al vencer a THE 50/50 (80 = hard pity).',
             bullets: [
                 'Perder el 50/50 celestial da personajes Metaphor con cinemática royal',
-                'El regalo (código) solo sale tras vencer al boss CON Ren al máximo',
+                'El regalo (código) sale en tu primer 7★ tras vencer al boss',
                 'Ren solo sale AQUÍ tras vencer a THE 50/50'
             ]
         },

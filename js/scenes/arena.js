@@ -137,7 +137,7 @@ const ArenaScene = {
                                     <span class="arena-hero-gold">DE LOS ELEGIDOS</span>
                                 </h2>
                                 <p class="arena-hero-sub">Combates por turnos · One Piece · Naruto · JoJo · Bleach · JJK</p>
-                                <p class="arena-hero-hint">Combates → Chikistrites. En el Convenio: <strong>${(typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160} Chiki = 1 INV</strong> (botón +). Repetir frentes da menos, pero permite farmear. Tiradas Metaphor (rojas): +200 al cerrar cada apartado · +20 por repetir · +200 al vencer THE 50/50 (80 = hard pity). No se compran. El regalo solo sale tras vencer a THE 50/50 con Ren al máximo. THE 50/50 exige TODA la colección al máximo.</p>
+                                <p class="arena-hero-hint">Combates → Chikistrites. En el Convenio: <strong>${(typeof CONFIG !== 'undefined' && CONFIG.chikiPerInvocation) || 160} Chiki = 1 INV</strong> (botón +). Repetir frentes da menos, pero permite farmear. Tiradas Metaphor (rojas): +200 al cerrar cada apartado · +20 por repetir · +200 al vencer THE 50/50 (80 = hard pity). No se compran. El regalo sale en tu primer 7★ tras vencer a THE 50/50. THE 50/50 exige TODA la colección al máximo.</p>
                                 <div class="arena-train-line">
                                     <span>CONSTELACIÓN</span>
                                     <b id="arena-train-stats">C0 · 0/0</b>
@@ -379,12 +379,6 @@ const ArenaScene = {
         if (index <= 0) return false;
         if (opts.dayLock && typeof ChronicleData !== 'undefined' && ChronicleData.storyLockAt) {
             return ChronicleData.storyLockAt(index).locked;
-        }
-        const m = list[index];
-        if (m && (m.id === 'gate_final' || m.isFinal)) {
-            if (typeof GachaRoster !== 'undefined' && GachaRoster.bossUnlockedByCollection) {
-                return !GachaRoster.bossUnlockedByCollection();
-            }
         }
         return !this.isCleared(list[index - 1]);
     },
