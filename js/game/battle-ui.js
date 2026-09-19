@@ -419,8 +419,13 @@ const BattleUI = {
         const series = (typeof GachaRoster !== 'undefined')
             ? GachaRoster.seriesList()
             : ['One Piece', 'Naruto', 'JoJo', 'Bleach'];
-        let activeSeries = series.find(s => playable.some(p => p.series === s && selected.has(p.id)))
-            || series.find(s => playable.some(p => p.series === s))
+        // Apartado The 50/50: solo existe si ya tienes al trío (cero spoilers).
+        const TRIO_5050 = ['eren', 'griffith', 'mob'];
+        const trioOwned = TRIO_5050.some(id => playable.some(p => p.id === id));
+        if (trioOwned) series.push('The 50/50');
+        const groupOf = (p) => (trioOwned && TRIO_5050.includes(p.id)) ? 'The 50/50' : p.series;
+        let activeSeries = series.find(s => playable.some(p => groupOf(p) === s && selected.has(p.id)))
+            || series.find(s => playable.some(p => groupOf(p) === s))
             || series[0];
         let typeFilter = ''; // '' = all; otherwise BattleData type id
         let page = 0;
@@ -433,7 +438,7 @@ const BattleUI = {
 
         const render = () => {
             const rosterAll = playable
-                .filter(p => p.series === activeSeries)
+                .filter(p => groupOf(p) === activeSeries)
                 .sort((a, b) => starsForCharacter(b) - starsForCharacter(a));
             const roster = typeFilter
                 ? rosterAll.filter(p => BattleData.dealsType(p, typeFilter))
@@ -496,7 +501,7 @@ const BattleUI = {
                         <section class="psel-roster">
                             <nav class="psel-tabs" role="tablist">
                                 ${series.map(s => {
-                                    const n = playable.filter(p => p.series === s).length;
+                                    const n = playable.filter(p => groupOf(p) === s).length;
                                     return `
                                     <button class="psel-tab ${s === activeSeries ? 'on' : ''}" data-series="${s}" type="button" role="tab" ${n ? '' : 'disabled'}>
                                         <span>${s}${n ? ` (${n})` : ''}</span>

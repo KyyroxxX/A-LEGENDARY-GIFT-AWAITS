@@ -710,9 +710,10 @@ const BattleEngine = {
         base *= attacker.buffs.damage || 1;
         base *= 1 + (attacker.damageBonus || 0) + (attacker.buffs.damageBonus || 0) + (skill.damageBonus || 0);
         if (skill.pierce) base *= 1.12;
-        // Ritmo rápido: el plantel pega +50% y los enemigos +25%.
+        // Ritmo rápido: el plantel pega +50% y los enemigos -5% neto
+        // (1.25 × 0.75 tras el recorte global del 25%).
         // Los topes de cappedDamage siguen evitando one-shots.
-        base *= attacker.side === 'ally' ? 1.5 : 1.25;
+        base *= attacker.side === 'ally' ? 1.5 : 0.95;
         if (attacker.charged) {
             base *= 1.45;
             attacker.charged = false;
