@@ -122,6 +122,24 @@ const GameState = {
     },
 
     save() {
+        // Escrituras agrupadas: pulls y turnos hacían decenas de writes
+        // síncronos a localStorage. Se vacía en ~250ms o al ocultar la página.
+        if (this._saveTimer) return;
+        try {
+            this._saveTimer = setTimeout(() => {
+                this._saveTimer = null;
+                this.flush();
+            }, 250);
+        } catch (_) {
+            this.flush();
+        }
+    },
+
+    flush() {
+        if (this._saveTimer) {
+            clearTimeout(this._saveTimer);
+            this._saveTimer = null;
+        }
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._state));
         } catch (e) {
@@ -340,6 +358,20 @@ const GameState = {
         this.save();
     }
 };
+
+/** Vaciar el save pendiente al ocultar/cerrar (el save va con debounce). */
+if (typeof window !== 'undefined') {
+    window.addEventListener('pagehide', () => {
+        try { GameState.flush(); } catch (_) { /* ignore */ }
+    });
+    if (typeof document !== 'undefined') {
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                try { GameState.flush(); } catch (_) { /* ignore */ }
+            }
+        });
+    }
+}
 
 /** Manual QA helpers — paste in DevTools. Does not auto-run. */
 if (typeof window !== 'undefined') {

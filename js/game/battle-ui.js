@@ -1374,6 +1374,7 @@ const BattleUI = {
             };
             try {
                 const img = new Image();
+                try { img.decoding = 'async'; } catch (_) { /* ignore */ }
                 img.onload = () => {
                     let box = null;
                     try { box = this.measureArtBox(img); } catch (_) { box = null; }

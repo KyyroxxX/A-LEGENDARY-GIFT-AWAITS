@@ -584,7 +584,8 @@ const ChronicleData = {
                 } else {
                     // THE 50/50 son ELLOS: Eren, Griffith y Mob. Ren está encarcelado,
                     // no pelea. Cada uno fasea al morir (segunda fase del motor).
-                    const trioBase = { maxHp: 440, atk: 68, def: 28, agi: 32, luk: 24, color: '#c41e3a' };
+                    // Base contenida + dampeners del encuentro: épico pero pasable.
+                    const trioBase = { maxHp: 370, atk: 60, def: 26, agi: 30, luk: 24, color: '#c41e3a' };
                     enemies.push(this.mk('eren', 'Eren Yeager', { ...st, ...trioBase }));
                     enemies.push(this.mk('griffith', 'Griffith', { ...st, ...trioBase }));
                     enemies.push(this.mk('mob', 'Mob', { ...st, ...trioBase }));
@@ -603,8 +604,8 @@ const ChronicleData = {
                         partySpScale: 1.18,
                         partySpRegen: 18,
                         partyHpRegenPct: 0.04,
-                        enemyHpScale: 1.0,
-                        enemyAtkScale: 1.05
+                        enemyHpScale: 0.85,
+                        enemyAtkScale: 0.85
                     } : {})
                 };
             });
