@@ -1,0 +1,197 @@
+/**
+ * PERSONA 5 THEME LAYER — ransom, halftone, slashes, hard shadows.
+ * Loads last: pure additive overrides, never rewrites components.
+ * Battle HUD text stays readable (no ransom inside combat chrome).
+ */
+:root {
+    --p5r-red: #e60012;
+    --p5r-deep: #a3000c;
+    --p5r-black: #0b0b0d;
+    --p5r-paper: #f6f4ef;
+}
+
+body {
+    font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+}
+
+/* Film grain halftone over everything (print feel, pointer-transparent) */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: radial-gradient(circle, #000 1.4px, transparent 1.5px);
+    background-size: 13px 13px;
+}
+
+::selection {
+    background: var(--p5r-red);
+    color: #fff;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #0b0b0d;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--p5r-red);
+}
+
+/* ============ RANSOM LETTERING (big titles only, applied by JS) ============ */
+.p5-ransom {
+    display: inline-block;
+}
+.p5-ransom .ch {
+    --t: translateX(0);
+    display: inline-block;
+    line-height: 1;
+    padding: 0 0.01em;
+    transition: transform 0.15s;
+}
+.p5-ransom .ch.box {
+    background: var(--p5r-black);
+    color: #fff;
+    padding: 0.02em 0.08em;
+    margin: 0 0.03em;
+}
+.p5-ransom .ch.boxw {
+    background: #fff;
+    color: var(--p5r-black);
+    padding: 0.02em 0.08em;
+    margin: 0 0.03em;
+}
+.p5-ransom .ch.red {
+    color: var(--p5r-red);
+    text-shadow: 1px 1px 0 #000;
+}
+.p5-ransom:hover .ch {
+    animation: p5ransom-jitter 0.35s ease both;
+}
+.p5-ransom:hover .ch:nth-child(odd) {
+    animation-delay: 0.03s;
+}
+.p5-ransom:hover .ch:nth-child(3n) {
+    animation-delay: 0.06s;
+}
+@keyframes p5ransom-jitter {
+    0% { transform: var(--t) translateY(0); }
+    35% { transform: var(--t) translateY(-6px) rotate(3deg); }
+    70% { transform: var(--t) translateY(2px) rotate(-2deg); }
+    100% { transform: var(--t) translateY(0); }
+}
+
+/* ============ SCENE HEADERS: black slash + red bar ============ */
+.psel-title,
+.gw-title-line,
+.gw-title-gold,
+.final-title,
+.vn-title {
+    position: relative;
+}
+.psel-title::before,
+.final-title::before,
+.vn-title::before {
+    content: '';
+    position: absolute;
+    left: -4%;
+    top: 12%;
+    height: 76%;
+    width: 0;
+    background: var(--p5r-black);
+    transform: skewX(-16deg);
+    z-index: -1;
+}
+.gw-title::after,
+.psel-head::after,
+.final-content::before {
+    content: '';
+    display: block;
+    height: 8px;
+    background: var(--p5r-red);
+    transform: skewX(-24deg);
+    margin-top: 6px;
+}
+.gw-title::after {
+    width: 100%;
+}
+.psel-head::after {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.final-content::before {
+    width: 120px;
+    margin: 0 auto 10px;
+}
+
+/* ============ CTA BUTTONS: skew + hard shadow + invert ============ */
+.btn-convene,
+.psel-go,
+.psel-back,
+.final-continue,
+.btn-destiny,
+.convene-again,
+#btn-claim,
+#btn-to-final {
+    transform: skewX(-8deg);
+    box-shadow: 6px 6px 0 #000 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: transform 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s !important;
+}
+.btn-convene:hover:not(:disabled),
+.psel-go:hover:not(:disabled),
+.final-continue:hover,
+.btn-destiny:hover,
+.convene-again:hover:not(:disabled),
+#btn-claim:hover,
+#btn-to-final:hover {
+    transform: skewX(-8deg) scale(1.05) !important;
+    box-shadow: 9px 9px 0 #000 !important;
+}
+
+/* ============ CARDS: jagged red corner + deep shadow ============ */
+.arena-mission {
+    position: relative;
+}
+.arena-mission::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    background: var(--p5r-red);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    pointer-events: none;
+}
+.arena-mission:hover {
+    transform: translateX(6px);
+}
+.convene-card {
+    filter: drop-shadow(7px 7px 0 rgba(0, 0, 0, 0.5));
+}
+.convene-card:hover {
+    filter: drop-shadow(10px 10px 0 var(--p5r-red)) !important;
+}
+
+/* ============ TAGS: rotated stickers ============ */
+.am-day,
+.am-foes,
+.psel-rarity,
+.pull-fresh-tag {
+    transform: rotate(-2deg);
+    display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .p5-ransom:hover .ch {
+        animation: none !important;
+    }
+    body::after {
+        display: none;
+    }
+}
