@@ -4,7 +4,11 @@
  * Titles only (never body text, buttons or battle chrome).
  */
 (function () {
-    const SEL = ['.psel-title', '.gw-title-line', '.gw-title-gold', '.final-title', '.vn-title'];
+    const SEL = [
+        '.psel-title', '.gw-title-line', '.gw-title-gold', '.final-title', '.vn-title',
+        '.arena-hero-title', '.p5-rail-text', '.arena-block-head h2', '.psel-kicker',
+        '.legendary-title', '.br-title'
+    ];
 
     function clsFor(i) {
         const r = (i * 7 + 3) % 10;
